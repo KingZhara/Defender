@@ -1,6 +1,20 @@
-#include <iostream>
+#include <SFML/Graphics.hpp>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	sf::RenderWindow window(sf::VideoMode(304, 256), "Defender");
+
+	while (window.isOpen())
+	{
+		sf::Event e;
+		while (window.pollEvent(e))
+			if (e.type == sf::Event::Closed)
+				window.close();
+
+		window.clear();
+
+		window.display();
+	}
+
+	return 0;
 }
