@@ -139,7 +139,53 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\State\Source\AttractState.cpp" />
+    <ClCompile Include="src\Source\GameState.cpp" />
+    <ClCompile Include="src\State\Source\HighscoreState.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Lander.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Baiter.cpp" />
+    <ClCompile Include="src\Entity\Projectile\Source\Bullet.cpp" />
+    <ClCompile Include="src\Entity\Projectile\Source\Bomb.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Bomber.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Mutant.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Pod.cpp" />
+    <ClCompile Include="src\Entity\Projectile\Source\Laser.cpp" />
+    <ClCompile Include="src\Entity\Source\Player.cpp" />
+    <ClCompile Include="src\Entity\Source\Astronaut.cpp" />
+    <ClCompile Include="src\Entity\Source\Projectile.cpp" />
+    <ClCompile Include="src\Entity\Source\Enemy.cpp" />
+    <ClCompile Include="src\Source\Game.cpp" />
+    <ClCompile Include="src\Entity\Source\Entity.cpp" />
     <ClCompile Include="Defender.cpp" />
+    <ClCompile Include="src\Entity\Enemy\Source\Swarmer.cpp" />
+    <ClCompile Include="src\State\Source\StageState.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />
+    <ClInclude Include="src\Entity\Entity.hpp" />
+    <ClInclude Include="src\Game.hpp" />
+    <ClInclude Include="src\Entity\Projectile\Projectile.hpp" />
+    <ClInclude Include="src\State\State.hpp" />
+    <ClInclude Include="src\State\AttractState.h" />
+    <ClInclude Include="Defender.hpp" />
+    <ClInclude Include="src\GameState.h" />
+    <ClInclude Include="src\State\HighscoreState.h" />
+    <ClInclude Include="src\Entity\Enemy\Lander.h" />
+    <ClInclude Include="src\Entity\Projectile\Bullet.h" />
+    <ClInclude Include="src\Entity\Enemy\Baiter.h" />
+    <ClInclude Include="src\Entity\Projectile\Bomb.h" />
+    <ClInclude Include="src\Entity\Enemy\Bomber.h" />
+    <ClInclude Include="src\Entity\Enemy\Mutant.h" />
+    <ClInclude Include="src\Entity\Enemy\Pod.h" />
+    <ClInclude Include="src\Entity\Projectile\Laser.h" />
+    <ClInclude Include="src\Entity\Player.h" />
+    <ClInclude Include="src\Entity\Astronaut.h" />
+    <ClInclude Include="src\Entity\Projectile.h" />
+    <ClInclude Include="src\Entity\Enemy.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Entity\Entity.h" />
+    <ClInclude Include="src\Entity\Enemy\Swarmer.h" />
+    <ClInclude Include="src\State\StageState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
