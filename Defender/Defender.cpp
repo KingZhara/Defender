@@ -2,7 +2,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(304, 256), "Defender");
+	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
 
 	while (window.isOpen())
 	{
