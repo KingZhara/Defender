@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/Entity/Enemy.h"
+#include "../Enemy.h"
 
 class Bomber : public Enemy
 {
