@@ -111,6 +111,7 @@
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>SFML/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utility\Source\Animation.cpp" />
     <ClCompile Include="src\State\Source\AttractState.cpp" />
     <ClCompile Include="src\Source\GameState.cpp" />
     <ClCompile Include="src\State\Source\HighscoreState.cpp" />
@@ -159,8 +161,10 @@
     <ClCompile Include="Defender.cpp" />
     <ClCompile Include="src\Entity\Enemy\Source\Swarmer.cpp" />
     <ClCompile Include="src\State\Source\StageState.cpp" />
+    <ClCompile Include="src\Utility\Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\Animation.h" />
     <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />
     <ClInclude Include="src\Entity\Entity.hpp" />
     <ClInclude Include="src\Game.hpp" />
@@ -186,6 +190,11 @@
     <ClInclude Include="src\Entity\Entity.h" />
     <ClInclude Include="src\Entity\Enemy\Swarmer.h" />
     <ClInclude Include="src\State\StageState.h" />
+    <ClInclude Include="src\Utility\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\spritesheet.png" />
+    <Image Include="res\spritesheet.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
