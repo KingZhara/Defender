@@ -13,8 +13,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "GameState.h"
+#include "Utility/Action.h"
 
-class Game
+class Game : public sf::Drawable
 {
 public:
 
@@ -22,9 +23,9 @@ public:
 
 	~Game();
 
-	void tick();
+	void tick(Action& actions);
 
-	void draw(const sf::RenderWindow& window);
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
 

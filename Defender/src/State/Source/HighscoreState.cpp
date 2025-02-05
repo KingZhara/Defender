@@ -8,6 +8,7 @@ HighscoreState::~HighscoreState()
 {
 }
 
-void HighscoreState::tick()
+bool HighscoreState::tick()
 {
+	return false;
 }

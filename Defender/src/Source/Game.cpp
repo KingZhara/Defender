@@ -8,12 +8,16 @@ Game::~Game()
 {
 }
 
-void Game::tick()
+void Game::tick(Action& actions)
 {
-	state.tick();
+	if (state.type != GameState::State::STAGE && actions)
+		state.switchState(true);
+
+	if (state.tick(actions))
+		state.switchState();
 }
 
-void Game::draw(const sf::RenderWindow& window)
+void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	state.draw(window);
+	state.draw(target, states);
 }

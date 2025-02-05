@@ -8,6 +8,7 @@ StageState::~StageState()
 {
 }
 
-void StageState::tick()
+bool StageState::tick(Action& actions)
 {
+	return false;
 }

@@ -10,7 +10,7 @@ public:
 
 	~HighscoreState();
 
-	void tick();
+	bool tick();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -41,7 +42,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		states.shader = shader;
-		target.draw(frame);
+		target.draw(frame, states);
 	}
 
 public:

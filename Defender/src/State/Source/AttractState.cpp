@@ -8,6 +8,7 @@ AttractState::~AttractState()
 {
 }
 
-void AttractState::tick()
+bool AttractState::tick()
 {
+	return false;
 }
