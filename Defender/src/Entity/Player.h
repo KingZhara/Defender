@@ -4,4 +4,3 @@ class Player :
     public Entity
 {
 };
-
