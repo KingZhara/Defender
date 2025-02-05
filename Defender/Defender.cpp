@@ -1,8 +1,12 @@
 #include <SFML/Graphics.hpp>
 
+#include "Defender.hpp"
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
+
+	Game game;
 
 	while (window.isOpen())
 	{
@@ -11,8 +15,10 @@ int main()
 			if (e.type == sf::Event::Closed)
 				window.close();
 
-		window.clear();
+		game.tick();
 
+		window.clear();
+		game.draw(window);
 		window.display();
 	}
 
