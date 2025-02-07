@@ -4,6 +4,7 @@
 GameState::GameState()
 {
 	type = State::ATTRACT;
+	new (&attractState) AttractState();
 }
 
 // TODO free state memory
@@ -44,28 +45,24 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GameState::switchState(bool stage)
 {
-	// Map to the correct state switching logic
-	switch (type)
+	// Destroy the current state before switching
+	this->~GameState();
+
+	// Set the new state type
+	if (stage)
 	{
-	case State::ATTRACT:
-		attractState.~AttractState();
-		if (stage)
-			stageState     = StageState();
-		else
-			highscoreState = HighscoreState();
-		break;
+		type = State::STAGE;
+		new (&stageState) StageState();
+	}
+	else
+	{
+		type = (type == State::ATTRACT) ? State::HIGHSCORE :
+			(type == State::HIGHSCORE) ? State::ATTRACT :
+			State::HIGHSCORE;
 
-	case State::HIGHSCORE:
-		highscoreState.~HighscoreState();
-		if (stage)
-			stageState   = StageState();
+		if (type == State::ATTRACT)
+			new (&attractState) AttractState();
 		else
-			attractState = AttractState();
-		break;
-
-	case State::STAGE:
-		stageState.~StageState();
-		highscoreState = HighscoreState();
-		break;
+			new (&highscoreState) HighscoreState();
 	}
 }
