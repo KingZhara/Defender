@@ -50,11 +50,11 @@ public:
 	 * @param length_ The length of the sprite
 	 * @param bounds  The texture bounds of the sprite
 	 */
-	Animation(double      framelength = 1./15., uint8_t     length_,
-			  sf::IntRect bounds,               sf::Shader* shader_ = nullptr)
-		: frameTimer(Timer<double>(framelength)),
-		  frame(sf::Sprite(*tex, bounds)), LENGTH(length_),
-		  shader(shader_), start(frame.getTextureRect().left) {}
+	Animation(uint8_t length_,               sf::IntRect bounds,
+			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
+		: frame(sf::Sprite(*tex, bounds)),
+		  shader(shader_), frameTimer(Timer(framelength)),
+		  LENGTH(length_), start(frame.getTextureRect().left) {}
 
 	/**
 	 * 
