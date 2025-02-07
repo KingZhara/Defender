@@ -19,9 +19,6 @@ private:
 	// The number of frames
 	const uint8_t LENGTH;
 
-	// Space between frames
-	uint8_t margin;
-
 	// The current frame of the animation
 	uint8_t currentFrame = 0;
 
@@ -31,17 +28,15 @@ private:
 	/**
 	 * The sprite sheet used for all sprites
 	 */
-	static sf::Texture tex;
+	static const sf::Texture* tex;
 
 	/**
 	 * Draw method provided by drawable
-	 *
-	 * @todo allow for shaders w/ randerstates
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		states.shader = shader;
-		target.draw(frame);
+		target.draw(frame, states);
 	}
 
 public:
@@ -49,15 +44,17 @@ public:
 
 	/**
 	 * The animation constructor.
-	 * 
+	 *
+	 * @todo update these docs
 	 * @param framelength The length of time (in seconds) of each frame
-	 * @param margin_ The space between individual sprites
 	 * @param length_ The length of the sprite
 	 * @param bounds  The texture bounds of the sprite
 	 */
-	Animation(double framelength, uint8_t margin_, uint8_t length_, sf::IntRect bounds, sf::Shader* shader_ = nullptr)
-		: frameTimer(Timer<double>(framelength)), margin(margin_),
-		  frame(sf::Sprite(tex, bounds)), LENGTH(length_), shader(shader_), start(frame.getTextureRect().left) {}
+	Animation(double      framelength = 1./15., uint8_t     length_,
+			  sf::IntRect bounds,               sf::Shader* shader_ = nullptr)
+		: frameTimer(Timer<double>(framelength)),
+		  frame(sf::Sprite(*tex, bounds)), LENGTH(length_),
+		  shader(shader_), start(frame.getTextureRect().left) {}
 
 	/**
 	 * 
@@ -65,7 +62,7 @@ public:
 	 */
 	static void setTexture(const sf::Texture& texture)
 	{
-		tex = texture;
+		tex = &texture;
 	}
 
 	/**
@@ -80,7 +77,7 @@ public:
 			if (++currentFrame == LENGTH)
 				currentFrame = 0;
 
-			newBounds.left = start + (margin + newBounds.width) * currentFrame;
+			newBounds.left = start + newBounds.width * currentFrame;
 			frame.setTextureRect(newBounds);
 		}
 	}

@@ -190,10 +190,13 @@
     <ClInclude Include="src\Entity\Entity.h" />
     <ClInclude Include="src\Entity\Enemy\Swarmer.h" />
     <ClInclude Include="src\State\StageState.h" />
+    <ClInclude Include="src\Utility\EntityID.h" />
+    <ClInclude Include="src\Utility\ShaderID.h" />
     <ClInclude Include="src\Utility\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\spritesheet.png" />
+    <Image Include="..\..\..\..\Documents\Visual Studio 2022\defendersprites.jpg" />
+    <Image Include="res\defendersprites.jpg" />
     <Image Include="res\spritesheet.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -164,12 +164,21 @@
     <ClInclude Include="src\Utility\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\EntityID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\ShaderID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\spritesheet.png">
+    <Image Include="res\spritesheet.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\spritesheet.png">
+    <Image Include="..\..\..\..\Documents\Visual Studio 2022\defendersprites.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\defendersprites.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
