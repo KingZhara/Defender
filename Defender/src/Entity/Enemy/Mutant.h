@@ -11,6 +11,8 @@ class Mutant :
     */
     const uint16_t xp = 150;
 
+    //https://en.wikipedia.org/wiki/List_of_software_palettes#/media/File:RGB_6levels_palette_color_test_chart.png
+
     virtual bool tick();
 };
 
