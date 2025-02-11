@@ -1,10 +1,10 @@
 #pragma once
 #include <unordered_map>
-#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics.hpp>
 #include "../Utility/ShaderID.h"
 #include "../Utility/EntityID.h"
 
-class Entity
+class Entity : public sf::Drawable
 {
 public:
 private:
@@ -15,9 +15,15 @@ private:
 		ShaderID::ShaderID shader = ShaderID::NONE;
 		double frameLength = 1./15.;
 	};
-	bool tick();
-	static const SpriteData SpriteTable[EntityID::LENGTH];
-	void draw(sf::RenderTarget&, sf::RenderStates) const;
+
+	// The data table used for generating a given sprite
+	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
+
+	// The data table used for generating a given sprite
+	static const uint16_t XP_TABLE[EntityID::LENGTH];
+
+	virtual bool tick();
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
 
  

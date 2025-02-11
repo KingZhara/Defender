@@ -14,5 +14,7 @@ class Lander :
     */
 
     const uint16_t xp = 150;
+
+    virtual bool tick();
 };
 

@@ -10,5 +10,6 @@ class Baiter :
     const uint16_t xp = 200;
 
 
+    virtual bool tick();
 };
 

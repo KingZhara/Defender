@@ -9,5 +9,7 @@ class Pod :
     horizontally or at a shallow angle.
     */
     const uint16_t xp = 1000;
+
+    virtual bool tick();
 };
 

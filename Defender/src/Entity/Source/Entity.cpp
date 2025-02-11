@@ -1,7 +1,7 @@
 #include "../Entity.h"
 
 
-const Entity::SpriteData Entity::SpriteTable[EntityID::LENGTH] =
+const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 {
 	{ // Player
 		{}, // Sprite IntRect
@@ -29,4 +29,20 @@ const Entity::SpriteData Entity::SpriteTable[EntityID::LENGTH] =
 	},
 	{ // Swarmer
 	}
+};
+
+
+const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
+{
+	0,
+	250,
+	0,
+	0,
+	0,
+	150,
+	150,
+	200,
+	250,
+	1000,
+	150
 };

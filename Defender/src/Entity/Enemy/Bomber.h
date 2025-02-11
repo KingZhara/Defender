@@ -10,5 +10,7 @@ class Bomber : public Enemy
 	stationary bombs.
 	*/
 	const uint16_t xp = 250;
+
+	virtual bool tick();
 };
 

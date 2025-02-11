@@ -10,5 +10,7 @@ class Mutant :
     they move vertically.
     */
     const uint16_t xp = 150;
+
+    virtual bool tick();
 };
 
