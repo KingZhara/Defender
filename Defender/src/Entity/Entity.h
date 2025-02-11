@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics.hpp>
 #include "../Utility/ShaderID.h"
 #include "../Utility/EntityID.h"
 
@@ -17,7 +17,7 @@ private:
 	};
 	bool tick();
 	static const SpriteData SpriteTable[EntityID::LENGTH];
-	void draw(sf::RenderTarget&, sf::RenderStates) const;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
  
