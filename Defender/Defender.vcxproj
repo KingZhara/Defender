@@ -164,6 +164,7 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\Action.h" />
     <ClInclude Include="src\Utility\Animation.h" />
     <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />
     <ClInclude Include="src\Entity\Entity.hpp" />

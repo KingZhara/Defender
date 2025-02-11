@@ -1,5 +1,70 @@
 #pragma once
-class GameState
-{
-};
 
+#include <SFML/Graphics.hpp>
+#include "State/State.hpp"
+#include "Utility/Action.h"
+
+/**
+ * 
+ */
+struct GameState : sf::Drawable
+{
+	/**
+	 * The union that holds the individual states
+	 */
+	union
+	{
+		AttractState attractState;
+		HighscoreState highscoreState;
+		StageState stageState;
+	};
+
+	/**
+	 * The different Game states
+	 */
+	enum class State : uint8_t
+	{
+		ATTRACT,
+		HIGHSCORE,
+		STAGE
+	};
+
+	/**
+	 * Constructor; initializes as AttractState
+	 */
+	GameState();
+
+	/**
+	 * Destructor; Maps to the appropriate state destructor
+	 */
+	~GameState() override;
+
+	/**
+	 * Maps to the appropriate state tick method
+	 * 
+	 * @return If state must change
+	 */
+	bool tick(Action& actions);
+
+	/**
+	 * Maps to the appropriate draw method with the supplied data
+	 * 
+	 * @param target The render target; what is being drawn / drawn to
+	 * @param states The render states used when drawing the stages
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * Switches the state according to the default rules:
+	 * 1. Attract   -> Highscore
+	 * 2. Highscore -> Attract
+	 * 3. Stage     -> Highscore
+	 * 4. *         -> Stage (stage == true?)
+	 * 
+	 * @param stage Stage switch predicate
+	 */
+	void switchState(bool stage = false);
+
+	// The current state
+	State type;
+};
