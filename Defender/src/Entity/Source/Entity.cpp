@@ -34,15 +34,15 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 
 const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
 {
-	0,
-	250,
-	0,
-	0,
-	0,
-	150,
-	150,
-	200,
-	250,
-	1000,
-	150
+	0,    // PLAYER
+	250,  // ASTRONAUT
+	0,    // BULLET
+	0,    // LASER
+	0,    // BOMB
+	150,  // LANDER
+	150,  // MUTANT
+	200,  // BAITER
+	250,  // BOMBER
+	1000, // POD
+	150   // SWARMER
 };
