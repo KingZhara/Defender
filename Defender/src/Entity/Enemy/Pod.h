@@ -8,6 +8,5 @@ class Pod :
     splits into 3 swarmers. It seems to just slowly fly across the screen 
     horizontally or at a shallow angle.
     */
-    const uint16_t xp = 1000;
 };
 

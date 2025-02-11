@@ -9,6 +9,5 @@ class Bomber : public Enemy
 	left or right with a little random variation in their height and drop 
 	stationary bombs.
 	*/
-	const uint16_t xp = 250;
 };
 

@@ -9,6 +9,5 @@ class Mutant :
     toward the player and shoots at them , always going horizontally before 
     they move vertically.
     */
-    const uint16_t xp = 150;
 };
 
