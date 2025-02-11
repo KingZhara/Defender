@@ -199,6 +199,7 @@
     <Image Include="..\..\..\..\Documents\Visual Studio 2022\defendersprites.jpg" />
     <Image Include="res\defendersprites.jpg" />
     <Image Include="res\spritesheet.png" />
+    <Image Include="res\Windows_16colors_palette_color_test_chart.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
