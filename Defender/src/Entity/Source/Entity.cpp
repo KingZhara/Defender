@@ -30,3 +30,18 @@ const Entity::SpriteData Entity::SpriteTable[EntityID::LENGTH] =
 	{ // Swarmer
 	}
 };
+
+bool Entity::tick()
+{
+	return false;
+}
+
+bool Entity::collide(Entity* other)
+{
+	return false;
+}
+
+void Entity::setPos(sf::Vector2f newPos)
+{
+	pos = newPos;
+}

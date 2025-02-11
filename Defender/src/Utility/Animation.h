@@ -5,7 +5,7 @@
 
 #include "Timer.h"
 
-class Animation : sf::Drawable
+class Animation : public sf::Drawable
 {
 private:
 	// The frame being displayed
@@ -82,5 +82,7 @@ public:
 			frame.setTextureRect(newBounds);
 		}
 	}
+
+	void nextFrame(double deltaTime);
 };
 
