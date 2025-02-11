@@ -15,7 +15,9 @@ private:
 		ShaderID::ShaderID shader = ShaderID::NONE;
 		double frameLength = 1./15.;
 	};
-
+	bool tick();
 	static const SpriteData SpriteTable[EntityID::LENGTH];
+	void draw(sf::RenderTarget&, sf::RenderStates) const;
 };
 
+ 
