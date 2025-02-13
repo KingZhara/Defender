@@ -31,6 +31,21 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	}
 };
 
+bool Entity::tick()
+{
+	return false;
+}
+
+bool Entity::collide(Entity* other)
+{
+	return false;
+}
+
+void Entity::setPos(sf::Vector2f newPos)
+{
+	pos = newPos;
+}
+
 
 const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
 {

@@ -10,12 +10,6 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(320, 256), "Defender");
 
-	sf::Font font;
-	font.loadFromFile("res/defender.ttf");
-	sf::Text testText;
-	testText.setFont(font);
-	testText.setString("ABCDEF\nGHIJKL\nMNOPQR\nSTUVWXYZ\n0123456789\n.?:'");
-
 	Game game;
 
 	Action actions;
@@ -45,7 +39,6 @@ int main()
 
 		window.clear();
 		window.draw(game);
-		window.draw(testText);
 		window.display();
 	}
 
