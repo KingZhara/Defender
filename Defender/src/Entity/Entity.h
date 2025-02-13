@@ -35,11 +35,6 @@ private:
 	// The data table used for generating a given sprite
 	static const uint16_t XP_TABLE[EntityID::LENGTH];
 
-	virtual bool tick();
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	static const SpriteData SpriteTable[EntityID::LENGTH];
-
 	sf::Vector2f pos, vel;
 
 	bool isScripted;
