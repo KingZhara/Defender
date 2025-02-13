@@ -31,4 +31,16 @@ private:
 
 	GameState state;
 };
-
+/*
+purple : #80F
+Magenta: #F0F
+blue:  : #080
+green  : #080
+yellow : #ff0
+cyan   : #0ff
+red    : #f00
+gray   : #888
+white  : #fff
+black  : #000
+brown  : #940
+*/
