@@ -8,9 +8,10 @@ void getAction(Action& actions, sf::Keyboard::Key key);
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(320, 256), "Defender");
+	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
 
 	Game game;
+	//GameState state;
 
 	Action actions;
 
@@ -39,6 +40,7 @@ int main()
 
 		window.clear();
 		window.draw(game);
+		//window.draw(state);
 		window.display();
 	}
 

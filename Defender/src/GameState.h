@@ -3,22 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include "State/State.hpp"
 #include "Utility/Action.h"
+#include <variant>
 
 /**
  * 
  */
 struct GameState : sf::Drawable
 {
-	/**
-	 * The union that holds the individual states
-	 */
-	union
-	{
-		AttractState attractState;
-		HighscoreState highscoreState;
-		StageState stageState;
-	};
-
 	/**
 	 * The different Game states
 	 */
@@ -67,4 +58,5 @@ struct GameState : sf::Drawable
 
 	// The current state
 	State type;
+	std::variant<AttractState, HighscoreState, StageState> state = AttractState();
 };
