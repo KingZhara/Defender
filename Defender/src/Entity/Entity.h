@@ -5,7 +5,7 @@
 #include "../Utility/EntityID.h"
 #include "../Utility/Animation.h"
 
-class Entity
+class Entity : public sf::Drawable
 {
 public:
 	bool tick();
@@ -28,6 +28,15 @@ private:
 		ShaderID::ShaderID shader = ShaderID::NONE;
 		double frameLength = 1./15.;
 	};
+
+	// The data table used for generating a given sprite
+	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
+
+	// The data table used for generating a given sprite
+	static const uint16_t XP_TABLE[EntityID::LENGTH];
+
+	virtual bool tick();
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	static const SpriteData SpriteTable[EntityID::LENGTH];
 

@@ -1,7 +1,7 @@
 #include "../Entity.h"
 
 
-const Entity::SpriteData Entity::SpriteTable[EntityID::LENGTH] =
+const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 {
 	{ // Player
 		{}, // Sprite IntRect
@@ -45,3 +45,20 @@ void Entity::setPos(sf::Vector2f newPos)
 {
 	pos = newPos;
 }
+};
+
+
+const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
+{
+	0,    // PLAYER
+	250,  // ASTRONAUT
+	0,    // BULLET
+	0,    // LASER
+	0,    // BOMB
+	150,  // LANDER
+	150,  // MUTANT
+	200,  // BAITER
+	250,  // BOMBER
+	1000, // POD
+	150   // SWARMER
+};

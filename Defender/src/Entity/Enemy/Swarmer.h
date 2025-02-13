@@ -10,5 +10,7 @@ class Swarmer :
     the player. We should also make sure that they spawn in groups.
     */
     const uint16_t xp = 150;
+
+    virtual bool tick();
 };
 
