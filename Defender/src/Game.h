@@ -11,7 +11,6 @@
 */
 
 #include <SFML/Graphics.hpp>
-
 #include "GameState.h"
 #include "Utility/Action.h"
 
