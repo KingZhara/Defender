@@ -9,18 +9,6 @@ GameState::GameState()
 	new (&state) AttractState();
 }
 
-// TODO free state memory
-GameState::~GameState()
-{
-	// Destroy the appropriate state
-	switch (type)
-	{
-	case State::ATTRACT:   std::get<AttractState>(state).~AttractState();     break;
-	case State::HIGHSCORE: std::get<HighscoreState>(state).~HighscoreState(); break;
-	case State::STAGE:     std::get<StageState>(state).~StageState();         break;
-	 }
-}
-
 bool GameState::tick(Action& actions)
 {
 	// Map to the appropriate tick method
@@ -48,14 +36,11 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GameState::switchState(bool stage)
 {
-	// Destroy the current state before switching
-	this->~GameState();
-
 	// Set the new state type
 	if (stage)
 	{
 		type = State::STAGE;
-		state.emplace<StageState>(StageState());
+		state.emplace<StageState>(); // No need to construct then move
 	}
 	else
 	{
@@ -64,8 +49,8 @@ void GameState::switchState(bool stage)
 			State::HIGHSCORE;
 
 		if (type == State::ATTRACT)
-			state.emplace<AttractState>(AttractState());
+			state.emplace<AttractState>();
 		else
-			state.emplace<HighscoreState>(HighscoreState());
+			state.emplace<HighscoreState>();
 	}
 }

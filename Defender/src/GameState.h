@@ -28,7 +28,7 @@ struct GameState : sf::Drawable
 	/**
 	 * Destructor; Maps to the appropriate state destructor
 	 */
-	~GameState() override;
+	~GameState() override = default;
 
 	/**
 	 * Maps to the appropriate state tick method
