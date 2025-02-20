@@ -4,10 +4,19 @@
 #include "../Utility/ShaderID.h"
 #include "../Utility/EntityID.h"
 #include "../Utility/Animation.h"
+#include "../Utility/EntityScript/EntityScript.h"
+
+// new EntityScript(EntityScript::ScriptType::DONE) - BLANK SCRIPT
 
 class Entity : public sf::Drawable
 {
 public:
+	// @todo Complete shader retrieval through UI when possible
+	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
+		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
+		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
+		  animation(SPRITE_TABLE[ID].frameCount, SPRITE_TABLE[ID].bounds, SPRITE_TABLE[ID].frameLength/*SPRITE_TABLE[ID].shader*/) {}
+
 	void tick();
 
 	bool collide(Entity* other);
@@ -41,8 +50,7 @@ private:
 
 	bool isScripted;
 
-	// TODO
-	//EntityScript* script;
+	EntityScript* script;
 
 	Animation animation;
 

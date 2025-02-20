@@ -38,6 +38,6 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
 }
 
-void EntityManager::particleize(sf::Vector2f pos, EntityID::EntityID ID)
+void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
 {
 }

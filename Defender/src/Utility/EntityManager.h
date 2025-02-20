@@ -31,6 +31,13 @@ class EntityManager : public sf::Drawable
 	};
 
 public:
+	enum class SpawnType
+	{
+		PLAYER,
+		PROJECTILE,
+		ENEMY,
+		ASTRONAUT,
+	};
 
 	EntityManager(bool scripted);
 
@@ -39,7 +46,7 @@ public:
 	
 	bool tick(Action& actions);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void particleize(sf::Vector2f pos, EntityID::EntityID ID);
+	void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
 	void killArea(sf::Vector2<uint16_t> domain);
 
 	// @todo If time permits, play with optimization, potentially using a spacial tree.
@@ -68,7 +75,7 @@ private:
 	EntityHolder<Projectile> projectiles;
 	EntityHolder<Enemy>      enemies;
 	EntityHolder<Astronaut>  astronauts;
-	EntityHolder<Entity>     particles;
+	EntityHolder<Entity>     particles; // Always scripted
 	Player* player = nullptr;
 
 	bool scripted;

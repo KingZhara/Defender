@@ -11,6 +11,8 @@ private:
 	// The frame being displayed
 	sf::Sprite frame;
 
+	sf::RectangleShape squar = sf::RectangleShape({ 50.f, 50.f });
+
 	// The shader that is applied to this animation
 	sf::Shader* shader = nullptr;
 
@@ -37,12 +39,12 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		states.shader = shader;
-		target.draw(frame, states);
+		target.draw(/*frame*/squar, states);
 	}
 
 public:
 	Animation() = delete;
-
+	
 	/**
 	 * The animation constructor.
 	 *

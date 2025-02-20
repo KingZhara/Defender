@@ -167,6 +167,9 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\EntityScript\EntityMoveScript.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntityScript.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntityWaitScript.h" />
     <ClInclude Include="src\Utility\EntityManager.h" />
     <ClInclude Include="src\Utility\Action.h" />
     <ClInclude Include="src\Utility\Animation.h" />
