@@ -83,6 +83,8 @@ public:
 		}
 	}
 
+	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
+
 	void nextFrame(double deltaTime);
 };
 

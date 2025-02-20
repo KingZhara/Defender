@@ -37,7 +37,7 @@ void Entity::tick()
 
 bool Entity::collide(Entity* other)
 {
-	return false;
+	return animation.getBounds().intersects(other->animation.getBounds());
 }
 
 void Entity::setPos(sf::Vector2f newPos)
