@@ -11,8 +11,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
 
 	Game game;
-	//GameState state;
 
+	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState
 	Action actions;
 
 	while (window.isOpen())
@@ -33,6 +33,8 @@ int main()
 			//		 It is suggested to make joystick button keybinds dynamic with defaults
 			//		 that can be saved to disk so that in practice the code
 			//		 must not be modified to handle the buttons on the machine.
+			//		 Key mappings are OS & Jopystick/controller dependent therefore we
+			//		 cannot know with certainty what they will be.
 			case sf::Event::JoystickButtonPressed:
 			case sf::Event::JoystickConnected:
 			case sf::Event::JoystickDisconnected:

@@ -31,9 +31,8 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	}
 };
 
-bool Entity::tick()
+void Entity::tick()
 {
-	return false;
 }
 
 bool Entity::collide(Entity* other)

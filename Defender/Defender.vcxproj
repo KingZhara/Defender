@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utility\Source\EntityManager.cpp" />
     <ClCompile Include="src\Utility\Source\Animation.cpp" />
     <ClCompile Include="src\State\Source\AttractState.cpp" />
     <ClCompile Include="src\Source\GameState.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\EntityManager.h" />
     <ClInclude Include="src\Utility\Action.h" />
     <ClInclude Include="src\Utility\Animation.h" />
     <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />

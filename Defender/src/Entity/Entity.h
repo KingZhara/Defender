@@ -8,11 +8,13 @@
 class Entity : public sf::Drawable
 {
 public:
-	bool tick();
+	void tick();
 
 	bool collide(Entity* other);
 
 	void setPos(sf::Vector2f newPos);
+	sf::Vector2f getPos() { return pos; }
+	EntityID::EntityID getID() { return ID; }
 
 private:
 
@@ -38,10 +40,13 @@ private:
 	sf::Vector2f pos, vel;
 
 	bool isScripted;
+
 	// TODO
 	//EntityScript* script;
 
 	Animation animation;
+
+	const EntityID::EntityID ID;
 };
 
  
