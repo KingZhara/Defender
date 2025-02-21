@@ -15,8 +15,6 @@ struct EntityScript
 
 	// The next component of the script
 	EntityScript* next = nullptr;
-	// The target position if this script is a MOVE script
-	sf::Vector2f target;
 	// The type of script
 	ScriptType type;
 

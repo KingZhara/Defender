@@ -12,6 +12,8 @@ Game::~Game()
 
 void Game::tick(Action& actions)
 {
+	std::cout << actions << actions.flags.fire << actions.flags.left;	
+
 	if (state.type != GameState::State::STAGE && actions)
 		state.switchState(true);
 
@@ -21,6 +23,5 @@ void Game::tick(Action& actions)
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	std::cout << "dra\n"; 
 	state.draw(target, states);
 }
