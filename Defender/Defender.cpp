@@ -65,29 +65,29 @@ void setAction(Action& actions, sf::Keyboard::Key key)
 	{
 	case Key::Up:       // THRUST
 	case Key::W:
-		actions.flags |= 0b00001000;
+		actions.flags.thrust = true;
 		break;
 
 	case Key::Left:     // LEFT
 	case Key::A:
-		actions.flags |= 0b00100000;
+		actions.flags.left = true;
 		break;
 
 	case Key::Right:    // RIGHT
 	case Key::D:
-		actions.flags |= 0b00010000;
+		actions.flags.right = true;
 		break;
 
 	case Key::Space:    // FIRE
-		actions.flags |= 0b00000100;
+		actions.flags.fire = true;
 		break;
 
 	case Key::LShift:   // HYPERSPACE
-		actions.flags |= 0b00000001;
+		actions.flags.hyperspace = true;
 		break;
 
 	case Key::LControl: // SMART BOMB
-		actions.flags |= 0b00000010;
+		actions.flags.smart_bomb = true;
 		break;
 
 	}
