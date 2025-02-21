@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <SFML/System/Vector2.hpp>
 
+// @todo figure out why size seems off...
 struct EntityScript
 {
 	enum class ScriptType : uint8_t
