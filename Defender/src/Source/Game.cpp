@@ -12,8 +12,6 @@ Game::~Game()
 
 void Game::tick(Action& actions)
 {
-	std::cout << actions << actions.flags.fire << actions.flags.left;	
-
 	if (state.type != GameState::State::STAGE && actions)
 		state.switchState(true);
 
