@@ -16,6 +16,7 @@ int main()
 
 	loadSpritesheet();
 
+
 	while (window.isOpen())
 	{
 		sf::Event e;

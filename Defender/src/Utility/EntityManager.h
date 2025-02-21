@@ -47,7 +47,8 @@ public:
 	bool tick(Action& actions);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
-	void killArea(sf::Vector2<uint16_t> domain);
+	void killArea(sf::FloatRect viewport);
+	void hyperspace(sf::FloatRect viewport);
 
 	// @todo If time permits, play with optimization, potentially using a spacial tree.
 	template<typename T>

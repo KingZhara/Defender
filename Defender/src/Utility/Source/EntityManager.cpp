@@ -57,3 +57,12 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
 {
 }
+
+void EntityManager::killArea(sf::FloatRect viewport)
+{
+}
+
+void EntityManager::hyperspace(sf::FloatRect viewport)
+{
+    player->setPos({ (float)(std::rand() % (int)viewport.left), (float)(std::rand() % (int)viewport.top)});
+}

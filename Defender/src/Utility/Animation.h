@@ -11,8 +11,6 @@ private:
 	// The frame being displayed
 	sf::Sprite frame;
 
-	sf::RectangleShape squar = sf::RectangleShape({ 50.f, 50.f });
-
 	// The shader that is applied to this animation
 	sf::Shader* shader = nullptr;
 
@@ -39,7 +37,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		states.shader = shader;
-		target.draw(/*frame*/squar, states);
+		target.draw(frame, states);
 	}
 
 public:
@@ -57,10 +55,7 @@ public:
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
 		  shader(shader_), frameTimer(Timer(framelength)),
-		  LENGTH(length_), start(frame.getTextureRect().left)
-	{
-		squar.setFillColor(sf::Color::Cyan);
-	}
+		  LENGTH(length_), start(frame.getTextureRect().left) {}
 
 	/**
 	 * 
