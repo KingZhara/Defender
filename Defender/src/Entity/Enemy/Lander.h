@@ -12,5 +12,8 @@ class Lander :
     astronaut, it heads straight toward it. They also shoot at the player
     when in range.
     */
+
+
+    virtual bool tick();
 };
 

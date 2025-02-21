@@ -9,5 +9,7 @@ class Swarmer :
     it goes off screen, in that case it repeats the cycle. They also shoot at 
     the player. We should also make sure that they spawn in groups.
     */
+
+    virtual bool tick();
 };
 
