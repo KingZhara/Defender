@@ -57,7 +57,10 @@ public:
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
 		  shader(shader_), frameTimer(Timer(framelength)),
-		  LENGTH(length_), start(frame.getTextureRect().left) {}
+		  LENGTH(length_), start(frame.getTextureRect().left)
+	{
+		squar.setFillColor(sf::Color::Cyan);
+	}
 
 	/**
 	 * 

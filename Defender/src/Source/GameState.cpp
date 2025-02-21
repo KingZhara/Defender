@@ -24,7 +24,6 @@ bool GameState::tick(Action& actions)
 
 void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	std::cout << "Dra2\n";
 	// Map to the appropriate draw method
 	switch (type)
 	{

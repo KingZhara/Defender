@@ -5,12 +5,7 @@ StageState::StageState()
 {
 }
 
-StageState::~StageState()
-{
-}
-
 bool StageState::tick(Action& actions)
 {
-	std::cout << "STAGE\n";
 	return false;
 }

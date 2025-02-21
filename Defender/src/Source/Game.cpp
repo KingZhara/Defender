@@ -21,6 +21,5 @@ void Game::tick(Action& actions)
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	std::cout << "dra\n"; 
 	state.draw(target, states);
 }

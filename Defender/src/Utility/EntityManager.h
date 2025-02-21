@@ -39,9 +39,9 @@ public:
 		ASTRONAUT,
 	};
 
-	EntityManager(bool scripted);
+	EntityManager(bool scripted_);
 
-	~EntityManager();
+	~EntityManager() override = default;
 
 	
 	bool tick(Action& actions);
@@ -57,7 +57,7 @@ public:
 			if (entities.entities.at(i) != nullptr &&
 				entities.entities.at(i)->collide(projectiles.entities.at(projectile)))
 			{
-				particleize(entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
+				particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
 
 				delete projectiles.entities.at(projectile);
 				delete entities.entities.at(i);
