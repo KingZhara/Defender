@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include "../Utility/ShaderID.h"
@@ -15,7 +16,8 @@ public:
 	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
 		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
 		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
-		  animation(SPRITE_TABLE[ID].frameCount, SPRITE_TABLE[ID].bounds, SPRITE_TABLE[ID].frameLength/*SPRITE_TABLE[ID].shader*/) {}
+		  animation(SPRITE_TABLE[ID].frameCount, SPRITE_TABLE[ID].bounds, SPRITE_TABLE[ID].frameLength/*SPRITE_TABLE[ID].shader*/)
+{}
 
 	void tick();
 
@@ -27,8 +29,9 @@ public:
 
 private:
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		std::cout << "ANIMDRA\n";
 		target.draw(animation, states);
 	}
 	

@@ -39,9 +39,9 @@ public:
 		ASTRONAUT,
 	};
 
-	EntityManager(bool scripted);
+	EntityManager(bool scripted_);
 
-	~EntityManager();
+	~EntityManager() override = default;
 
 	
 	bool tick(Action& actions);

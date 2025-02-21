@@ -5,15 +5,16 @@
 #include "src/Utility/Action.h"
 
 void setAction(Action& actions, sf::Keyboard::Key key);
+void loadSpritesheet();
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
-
 	Game game;
-
 	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState
 	Action actions;
+
+	loadSpritesheet();
 
 	while (window.isOpen())
 	{
@@ -91,6 +92,14 @@ void setAction(Action& actions, sf::Keyboard::Key key)
 		break;
 
 	}
+}
+
+void loadSpritesheet()
+{
+	sf::Texture tex;
+	tex.loadFromFile("res/Spritesheet.png");
+
+	Animation::setTexture(tex);
 }
 
 //         ___   ___   ___

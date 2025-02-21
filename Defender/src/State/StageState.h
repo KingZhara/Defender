@@ -2,19 +2,21 @@
 
 #include <SFML/Graphics.hpp>
 #include "../Utility/Action.h"
+#include "../Utility/EntityManager.h"
 
 class StageState : public sf::Drawable
 {
 public:
-
 	StageState();
 
-	~StageState();
+	~StageState() = default;
 
 	bool tick(Action& actions);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-
+		target.draw(entityManager, states);
 	}
+
+	EntityManager entityManager = EntityManager(false);
 };
