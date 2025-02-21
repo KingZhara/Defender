@@ -38,6 +38,7 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
 }
 
+// Use for spawning entity or for death
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
 {
 }
