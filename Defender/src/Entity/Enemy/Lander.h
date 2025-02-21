@@ -13,7 +13,6 @@ class Lander :
     when in range.
     */
 
-    const uint16_t xp = 150;
 
     virtual bool tick();
 };
