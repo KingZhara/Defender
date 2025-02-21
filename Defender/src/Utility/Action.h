@@ -6,5 +6,10 @@ struct Action
 	uint8_t flags = 0;
 
 	operator bool() const noexcept { return flags; }
+
+	// Do not mark explicit
+	Action(uint8_t flags_) : flags(flags_) {}
+
+	Action() = default;
 };
 

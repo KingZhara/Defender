@@ -4,20 +4,15 @@
 
 #include "src/Utility/Action.h"
 
-void getAction(Action& actions, sf::Keyboard::Key key);
+void setAction(Action& actions, sf::Keyboard::Key key);
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(320, 256), "Defender");
-
-	sf::Font font;
-	font.loadFromFile("res/defender.ttf");
-	sf::Text testText;
-	testText.setFont(font);
-	testText.setString("ABCDEF\nGHIJKL\nMNOPQR\nSTUVWXYZ\n0123456789\n.?:'");
+	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
 
 	Game game;
 
+	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState
 	Action actions;
 
 	while (window.isOpen())
@@ -31,8 +26,18 @@ int main()
 				break;
 
 			case sf::Event::KeyPressed:
-				getAction(actions, e.key.code);
+				setAction(actions, e.key.code);
 				break;
+
+			// @todo Handle Joystick connections/disconnections & button presses
+			//		 It is suggested to make joystick button keybinds dynamic with defaults
+			//		 that can be saved to disk so that in practice the code
+			//		 must not be modified to handle the buttons on the machine.
+			//		 Key mappings are OS & Jopystick/controller dependent therefore we
+			//		 cannot know with certainty what they will be.
+			case sf::Event::JoystickButtonPressed:
+			case sf::Event::JoystickConnected:
+			case sf::Event::JoystickDisconnected:
 
 			default:
 				break;
@@ -45,7 +50,7 @@ int main()
 
 		window.clear();
 		window.draw(game);
-		window.draw(testText);
+		//window.draw(state);
 		window.display();
 	}
 
@@ -53,9 +58,39 @@ int main()
 }
 
 
-void getAction(Action& actions, sf::Keyboard::Key key)
+void setAction(Action& actions, sf::Keyboard::Key key)
 {
-	
+	using Key = sf::Keyboard::Key;
+	switch (key)
+	{
+	case Key::Up:       // THRUST
+	case Key::W:
+		actions.flags |= 0b00001000;
+		break;
+
+	case Key::Left:     // LEFT
+	case Key::A:
+		actions.flags |= 0b00100000;
+		break;
+
+	case Key::Right:    // RIGHT
+	case Key::D:
+		actions.flags |= 0b00010000;
+		break;
+
+	case Key::Space:    // FIRE
+		actions.flags |= 0b00000100;
+		break;
+
+	case Key::LShift:   // HYPERSPACE
+		actions.flags |= 0b00000001;
+		break;
+
+	case Key::LControl: // SMART BOMB
+		actions.flags |= 0b00000010;
+		break;
+
+	}
 }
 
 //         ___   ___   ___

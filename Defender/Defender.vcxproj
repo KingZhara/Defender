@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{85e0c315-a7dd-4520-ba35-37c0eaea8ace}</ProjectGuid>
     <RootNamespace>Defender</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -94,6 +94,7 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>SFML/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,7 +102,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>SFML/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;gdi32.lib;freetype.lib;winmm.libsfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;gdi32.lib;freetype.lib;winmm.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,6 +130,7 @@
       <PreprocessorDefinitions>SFML_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>SFML/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,10 +138,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>SFML/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;gdi32.lib;freetype.lib;winmm.libsfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;gdi32.lib;freetype.lib;winmm.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utility\Source\EntityManager.cpp" />
     <ClCompile Include="src\Utility\Source\Animation.cpp" />
     <ClCompile Include="src\State\Source\AttractState.cpp" />
     <ClCompile Include="src\Source\GameState.cpp" />
@@ -164,6 +167,10 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\EntityScript\EntityMoveScript.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntityScript.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntityWaitScript.h" />
+    <ClInclude Include="src\Utility\EntityManager.h" />
     <ClInclude Include="src\Utility\Action.h" />
     <ClInclude Include="src\Utility\Animation.h" />
     <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />
@@ -199,6 +206,7 @@
     <Image Include="..\..\..\..\Documents\Visual Studio 2022\defendersprites.jpg" />
     <Image Include="res\defendersprites.jpg" />
     <Image Include="res\spritesheet.png" />
+    <Image Include="res\Windows_16colors_palette_color_test_chart.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

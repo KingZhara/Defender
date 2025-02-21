@@ -81,6 +81,9 @@
     <ClCompile Include="src\Utility\Source\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\Source\EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Entity.h">
@@ -170,6 +173,21 @@
     <ClInclude Include="src\Utility\ShaderID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\Action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\EntityScript\EntityScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\EntityScript\EntityMoveScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\EntityScript\EntityWaitScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\spritesheet.png">
@@ -179,6 +197,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\defendersprites.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Windows_16colors_palette_color_test_chart.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
