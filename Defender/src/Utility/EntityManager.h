@@ -15,6 +15,7 @@ class EntityManager : public sf::Drawable
 
 		// Dead entity search information
 		uint16_t first, last, count;
+		bool insertionSide = false;
 
 		void updateData(bool death, uint16_t index)
 		{
@@ -48,7 +49,9 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
 	void killArea(sf::Vector2<uint16_t> domain);
+	void spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID);
 
+private:
 	// @todo If time permits, play with optimization, potentially using a spacial tree.
 	template<typename T>
 	void collisionWrapper(uint16_t projectile, EntityHolder<T>& entities) {
@@ -71,7 +74,36 @@ public:
 		}
 	}
 
-private:
+	template<typename T>
+	void spawnWrapper(sf::Vector2f pos, EntityID::EntityID ID, EntityHolder<T>& entities)
+	{
+		uint16_t index;
+
+		if (entities.count != 0)
+		{
+			entities.entities.at(entities.insertionSide ? entities.first : entities.last) = new T(pos, ID);
+
+			--entities.count;
+
+			if (entities.count == 0)
+			{
+				entities.first = 0;
+				entities.last = 0;
+				entities.insertionSide = false;
+			}
+			else
+			{
+				// search for the next entity on the appropriate side! & flip insertion side
+				entities.insertionSide ?
+
+			}
+		}
+		else
+		{
+			
+		}
+	}
+
 	EntityHolder<Projectile> projectiles;
 	EntityHolder<Enemy>      enemies;
 	EntityHolder<Astronaut>  astronauts;

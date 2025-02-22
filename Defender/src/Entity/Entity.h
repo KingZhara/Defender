@@ -24,6 +24,7 @@ public:
 	void setPos(sf::Vector2f newPos);
 	sf::Vector2f getPos() { return pos; }
 	EntityID::EntityID getID() { return ID; }
+	const uint16_t getXP() { return XP_TABLE[ID]; }
 
 private:
 
@@ -42,8 +43,6 @@ private:
 
 	// The data table used for generating a given sprite
 	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
-
-	// The data table used for generating a given sprite
 	static const uint16_t XP_TABLE[EntityID::LENGTH];
 
 	sf::Vector2f pos, vel;
