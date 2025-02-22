@@ -1,5 +1,10 @@
 #include "../EntityManager.h"
 
+EntityManager::EntityManager(bool scripted_) : scripted(scripted_)
+{
+    player = new Player({ 50, 50 });
+}
+
 bool EntityManager::tick(Action& actions)
 {
     bool playerDeath = false;
@@ -36,17 +41,28 @@ bool EntityManager::tick(Action& actions)
 
 void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    for (auto& astronaut : astronauts.entities)
+        target.draw(*astronaut, states);
+
+	for (auto& enemy : enemies.entities)
+        target.draw(*enemy, states);
+
+    for (auto& projectile : projectiles.entities)
+        target.draw(*projectile, states);
+
+    target.draw(*player, states);
 }
 
+// Use for spawning entity or for death
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
 {
 }
 
-void EntityManager::killArea(sf::Vector2<uint16_t> domain)
+void EntityManager::killArea(sf::FloatRect viewport)
 {
 }
 
-void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
+void EntityManager::hyperspace(sf::FloatRect viewport)
 {
-    
+    player->setPos({ (float)(std::rand() % (int)viewport.left), (float)(std::rand() % (int)viewport.top)});
 }

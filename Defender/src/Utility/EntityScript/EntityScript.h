@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <SFML/System/Vector2.hpp>
 
+// @todo figure out why size seems off...
 struct EntityScript
 {
 	enum class ScriptType : uint8_t
@@ -15,8 +16,6 @@ struct EntityScript
 
 	// The next component of the script
 	EntityScript* next = nullptr;
-	// The target position if this script is a MOVE script
-	sf::Vector2f target;
 	// The type of script
 	ScriptType type;
 
