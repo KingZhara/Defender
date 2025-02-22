@@ -66,3 +66,22 @@ void EntityManager::hyperspace(sf::FloatRect viewport)
 {
     player->setPos({ (float)(std::rand() % (int)viewport.left), (float)(std::rand() % (int)viewport.top)});
 }
+
+void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
+{
+    switch (type)
+    {
+    case SpawnType::PROJECTILE:
+        spawnWrapper(pos, ID, projectiles);
+        break;
+    case SpawnType::ENEMY:
+        spawnWrapper(pos, ID, enemies);
+        break;
+    case SpawnType::ASTRONAUT:
+        spawnWrapper(pos, ID, astronauts);
+        break;
+    case SpawnType::PLAYER:
+        player = new Player(pos);
+        break;
+    }
+}

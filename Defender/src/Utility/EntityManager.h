@@ -95,14 +95,30 @@ private:
 			else
 			{
 				// search for the next entity on the appropriate side! & flip insertion side
-				entities.insertionSide ?
-
+				for (int i = entities.insertionSide
+						? entities.last
+						: entities.first;
+					entities.insertionSide
+						? i > entities.first
+						: i < entities.last; 
+					entities.insertionSide
+						? --i
+						: ++i)
+				{
+					if (entities.entities.at(i) == nullptr)
+						entities.insertionSide
+							? entities.last  = i
+							: entities.first = i;
+				}
 			}
 		}
 		else
 		{
-			
+			entities.entities.push_back(nullptr);
+			index = entities.entities.size();
 		}
+
+		entities.entities.at(index) = new T(pos, ID);
 	}
 
 	EntityHolder<Projectile> projectiles;
