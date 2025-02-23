@@ -2,26 +2,25 @@
 
 EntityManager::EntityManager(bool scripted_) : scripted(scripted_)
 {
-    player = new Player({ 50, 50 });
 }
 
-bool EntityManager::tick(Action& actions)
+bool EntityManager::tick(Action& actions, double deltatime)
 {
     bool playerDeath = false;
 
     player->setActions(actions);
 
-    player->tick();
+    player->tick(deltatime);
 
     // Tick enemies
     for (auto& enemy : enemies.entities)
         if (enemy != nullptr)
-			enemy->tick();
+			enemy->tick(deltatime);
 
     // Tick astronauts
     for (auto& astronaut : astronauts.entities)
         if (astronaut != nullptr)
-            astronaut->tick();
+            astronaut->tick(deltatime);
 
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {

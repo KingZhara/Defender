@@ -22,7 +22,7 @@ public:
 
 	~Game();
 
-	void tick(Action& actions);
+	void tick(Action& actions, double deltatime);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

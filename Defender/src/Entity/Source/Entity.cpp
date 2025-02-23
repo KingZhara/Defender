@@ -52,8 +52,9 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	}
 };
 
-void Entity::tick()
+void Entity::tick(double deltatime)
 {
+	animation.tick(deltatime);
 }
 
 bool Entity::collide(Entity* other)

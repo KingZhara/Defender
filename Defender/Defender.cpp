@@ -6,15 +6,27 @@
 
 void setAction(Action& actions, sf::Keyboard::Key key);
 void loadSpritesheet();
+sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspectWidth, int aspectHeight);
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(292, 240), "Defender");
+	// 73 : 60
+	sf::Vector2u resolution = getMaxAspectResolution(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height, 73, 60);
+
+	sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y), "Defender");
 	Game game;
 	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState
 	Action actions;
 
+	sf::View viewport = sf::View(sf::FloatRect(0, 0, 292, 240));
+
+	sf::Clock clock;
+
 	loadSpritesheet();
+
+	StageState::setView(window, viewport);
+
+	Timer<double> timer = Timer<double>(1.);
 
 
 	while (window.isOpen())
@@ -48,7 +60,7 @@ int main()
 				window.close();
 		}
 
-		game.tick(actions);
+		game.tick(actions, clock.restart().asMilliseconds() / 1000.);
 
 		window.clear();
 		window.draw(game);
@@ -59,6 +71,26 @@ int main()
 	return 0;
 }
 
+
+sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspectWidth, int aspectHeight) {
+	sf::Vector2u resolution;
+
+	// Compute width-first scaling
+	int heightForMaxWidth = (screenWidth * aspectHeight) / aspectWidth;
+
+	if (heightForMaxWidth <= screenHeight) {
+		// The width-first scaling fits
+		resolution.x = screenWidth;
+		resolution.y = heightForMaxWidth;
+	}
+	else {
+		// The height-first scaling is needed
+		resolution.x = (screenHeight * aspectWidth) / aspectHeight;
+		resolution.y = screenHeight;
+	}
+
+	return resolution;
+}
 
 void setAction(Action& actions, sf::Keyboard::Key key)
 {

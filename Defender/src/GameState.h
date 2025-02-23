@@ -35,7 +35,7 @@ struct GameState : sf::Drawable
 	 * 
 	 * @return If state must change
 	 */
-	bool tick(Action& actions);
+	bool tick(Action& actions, double deltatime);
 
 	/**
 	 * Maps to the appropriate draw method with the supplied data

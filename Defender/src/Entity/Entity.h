@@ -16,10 +16,9 @@ public:
 	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
 		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
 		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
-		  animation(SPRITE_TABLE[ID].frameCount, SPRITE_TABLE[ID].bounds, SPRITE_TABLE[ID].frameLength/*SPRITE_TABLE[ID].shader*/)
-{}
+		  animation(SPRITE_TABLE[ID_].frameCount, SPRITE_TABLE[ID_].bounds, SPRITE_TABLE[ID_].frameLength/*SPRITE_TABLE[ID].shader*/) {}
 
-	void tick();
+	virtual void tick(double deltatime);
 
 	bool collide(Entity* other);
 

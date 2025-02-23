@@ -10,6 +10,12 @@ public:
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::PLAYER, isScripted_, script_) {}
 
+
+	virtual void tick(double deltatime)
+	{
+		Entity::tick(deltatime);
+	}
+
     void setActions(Action& actions);
 private:
     Action actions;

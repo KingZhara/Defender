@@ -8,7 +8,7 @@ AttractState::~AttractState()
 {
 }
 
-bool AttractState::tick()
+bool AttractState::tick(double deltatime)
 {
 	return false;
 }

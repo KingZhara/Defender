@@ -10,12 +10,12 @@ Game::~Game()
 {
 }
 
-void Game::tick(Action& actions)
+void Game::tick(Action& actions, double deltatime)
 {
 	if (state.type != GameState::State::STAGE && actions)
 		state.switchState(true);
 
-	if (state.tick(actions))
+	if (state.tick(actions, deltatime))
 		state.switchState();
 }
 

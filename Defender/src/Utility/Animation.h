@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "Timer.h"
@@ -36,6 +37,8 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+		std::cout << "ANIMDRA\n";
+
 		states.shader = shader;
 		target.draw(frame, states);
 	}
@@ -54,7 +57,7 @@ public:
 	Animation(uint8_t length_,               sf::IntRect bounds,
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
-		  shader(shader_), frameTimer(Timer(framelength)),
+		  shader(shader_), frameTimer(Timer<double>(framelength)),
 		  LENGTH(length_), start(frame.getTextureRect().left) {}
 
 	/**
@@ -72,6 +75,8 @@ public:
 	 */
 	void tick(double deltatime)
 	{
+		std::cout << "ANIMTIK\n\n";
+
 		sf::IntRect newBounds = frame.getTextureRect();
 		if (frameTimer.tick(deltatime))
 		{

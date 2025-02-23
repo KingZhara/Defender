@@ -45,7 +45,7 @@ public:
 	~EntityManager() override = default;
 
 	
-	bool tick(Action& actions);
+	bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
 	void killArea(sf::FloatRect viewport);

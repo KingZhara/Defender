@@ -10,7 +10,7 @@ public:
 
 	~AttractState();
 
-	bool tick();
+	bool tick(double deltatime);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{

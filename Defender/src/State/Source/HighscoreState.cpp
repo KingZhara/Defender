@@ -8,7 +8,7 @@ HighscoreState::~HighscoreState()
 {
 }
 
-bool HighscoreState::tick()
+bool HighscoreState::tick(double deltatime)
 {
 	return false;
 }
