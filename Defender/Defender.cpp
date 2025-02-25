@@ -13,7 +13,7 @@ int main()
 	// 73 : 60
 	sf::Vector2u resolution = getMaxAspectResolution(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height, 73, 60);
 	// The game window
-	sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y), "Defender");
+	sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y), "Defender", sf::Style::Titlebar | sf::Style::Close);
 	// The game itself
 	Game game;
 	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState

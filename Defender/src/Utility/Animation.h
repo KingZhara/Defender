@@ -37,8 +37,6 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		std::cout << "ANIMDRA\n";
-
 		states.shader = shader;
 		target.draw(frame, states);
 	}
@@ -75,8 +73,6 @@ public:
 	 */
 	void tick(double deltatime)
 	{
-		std::cout << "ANIMTIK\n\n";
-
 		sf::IntRect newBounds = frame.getTextureRect();
 		if (frameTimer.tick(deltatime))
 		{
