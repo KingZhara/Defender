@@ -18,9 +18,9 @@ public:
 		if (actions.flags.thrust)
 			vel.x += (left ? -0.5f : +0.5f);
 		if (actions.flags.up)
-			vel.y -= 0.5f;
+			vel.y -= 0.2f;
 		if (actions.flags.down)
-			vel.y += 0.5f;
+			vel.y += 0.2f;
 	}
 
     void setActions(Action& actions);
