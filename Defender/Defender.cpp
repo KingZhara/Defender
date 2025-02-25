@@ -4,7 +4,7 @@
 
 #include "src/Utility/Action.h"
 
-void setAction(Action& actions, sf::Keyboard::Key key);
+void setAction(Action& actions, sf::Keyboard::Key key, bool pressed);
 sf::Texture* loadSpritesheet();
 sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspectWidth, int aspectHeight);
 
@@ -43,7 +43,11 @@ int main()
 				break;
 
 			case sf::Event::KeyPressed:
-				setAction(actions, e.key.code);
+				setAction(actions, e.key.code, true);
+				break;
+
+			case sf::Event::KeyReleased:
+				setAction(actions, e.key.code, false);
 				break;
 
 			// @todo Handle Joystick connections/disconnections & button presses
@@ -53,6 +57,7 @@ int main()
 			//		 Key mappings are OS & Jopystick/controller dependent therefore we
 			//		 cannot know with certainty what they will be.
 			case sf::Event::JoystickButtonPressed:
+			case sf::Event::JoystickMoved:
 			case sf::Event::JoystickConnected:
 			case sf::Event::JoystickDisconnected:
 
@@ -97,36 +102,41 @@ sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspec
 	return resolution;
 }
 
-void setAction(Action& actions, sf::Keyboard::Key key)
+void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 {
 	using Key = sf::Keyboard::Key;
 	switch (key)
 	{
-	case Key::Up:       // THRUST
-	case Key::W:
-		actions.flags.thrust = true;
+	case Key::Up:       // UP
+		actions.flags.up = pressed;
 		break;
 
-	case Key::Left:     // LEFT
-	case Key::A:
-		actions.flags.left = true;
+	case Key::Down:		// DOWN
+		actions.flags.down = pressed;
 		break;
 
-	case Key::Right:    // RIGHT
-	case Key::D:
-		actions.flags.right = true;
+	case Key::W:		// THRUST
+		actions.flags.thrust = pressed;
+		break;
+
+	case Key::A:		// LEFT
+		actions.flags.left = pressed;
+		break;
+
+	case Key::D:		// RIGHT
+		actions.flags.right = pressed;
 		break;
 
 	case Key::Space:    // FIRE
-		actions.flags.fire = true;
+		actions.flags.fire = pressed;
 		break;
 
 	case Key::LShift:   // HYPERSPACE
-		actions.flags.hyperspace = true;
+		actions.flags.hyperspace = pressed;
 		break;
 
 	case Key::LControl: // SMART BOMB
-		actions.flags.smart_bomb = true;
+		actions.flags.smart_bomb = pressed;
 		break;
 
 	}

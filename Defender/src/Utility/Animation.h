@@ -84,6 +84,16 @@ public:
 		}
 	}
 
+	void setPosition(sf::Vector2f pos)
+	{
+		frame.setPosition(pos);
+	}
+
+	void setDirection(bool left)
+	{
+		frame.setScale(left ? 1 : -1, 1);
+	}
+
 	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
 };
 
