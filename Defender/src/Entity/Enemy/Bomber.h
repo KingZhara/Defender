@@ -9,7 +9,9 @@ class Bomber : public Enemy
 	left or right with a little random variation in their height and drop 
 	stationary bombs.
 	*/
+private:
 
-	virtual bool tick();
+	void tick(double deltaTime);
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

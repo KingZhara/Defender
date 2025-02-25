@@ -8,7 +8,9 @@ class Pod :
     splits into 3 swarmers. It seems to just slowly fly across the screen 
     horizontally or at a shallow angle.
     */
+private:
 
-    virtual bool tick();
+    void tick(double deltaTime);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
