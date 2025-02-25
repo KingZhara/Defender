@@ -9,7 +9,9 @@ class Swarmer :
     it goes off screen, in that case it repeats the cycle. They also shoot at 
     the player. We should also make sure that they spawn in groups.
     */
+private:
 
-    virtual bool tick();
+    void tick(double deltaTime);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

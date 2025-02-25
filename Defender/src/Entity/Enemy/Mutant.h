@@ -11,7 +11,9 @@ class Mutant :
     */
 
     //https://en.wikipedia.org/wiki/List_of_software_palettes#/media/File:RGB_6levels_palette_color_test_chart.png
+private:
 
-    virtual bool tick();
+    void tick(double deltaTime);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
