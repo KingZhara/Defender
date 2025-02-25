@@ -27,7 +27,7 @@ public:
 	EntityID::EntityID getID() { return ID; }
 	const uint16_t getXP() { return XP_TABLE[ID]; }
 
-private:
+protected:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{

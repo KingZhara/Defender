@@ -14,10 +14,18 @@ public:
 	virtual void tick(double deltatime)
 	{
 		Entity::tick(deltatime);
+
+		if (actions.flags.thrust)
+			vel.x += (left ? -0.5f : +0.5f);
+		if (actions.flags.up)
+			vel.y -= 0.5f;
+		if (actions.flags.down)
+			vel.y += 0.5f;
 	}
 
     void setActions(Action& actions);
 private:
     Action actions;
+	bool left = false; // false: right, true: left
 
 };
