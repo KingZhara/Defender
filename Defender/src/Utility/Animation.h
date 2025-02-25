@@ -86,7 +86,7 @@ public:
 
 	void setPosition(sf::Vector2f pos)
 	{
-		frame.setPosition(pos);
+		frame.setPosition(round(pos.x), round(pos.y));
 	}
 
 	void setDirection(bool left)
