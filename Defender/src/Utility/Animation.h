@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "Timer.h"
@@ -10,8 +11,6 @@ class Animation : public sf::Drawable
 private:
 	// The frame being displayed
 	sf::Sprite frame;
-
-	sf::RectangleShape squar = sf::RectangleShape({ 50.f, 50.f });
 
 	// The shader that is applied to this animation
 	sf::Shader* shader = nullptr;
@@ -38,8 +37,10 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+		std::cout << "ANIMDRA\n";
+
 		states.shader = shader;
-		target.draw(/*frame*/squar, states);
+		target.draw(frame, states);
 	}
 
 public:
@@ -56,19 +57,16 @@ public:
 	Animation(uint8_t length_,               sf::IntRect bounds,
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
-		  shader(shader_), frameTimer(Timer(framelength)),
-		  LENGTH(length_), start(frame.getTextureRect().left)
-	{
-		squar.setFillColor(sf::Color::Cyan);
-	}
+		  shader(shader_), frameTimer(Timer<double>(framelength)),
+		  LENGTH(length_), start(frame.getTextureRect().left) {}
 
 	/**
 	 * 
 	 * @param texture 
 	 */
-	static void setTexture(const sf::Texture& texture)
+	static void setTexture(const sf::Texture* texture)
 	{
-		tex = &texture;
+		tex = texture;
 	}
 
 	/**
@@ -77,6 +75,8 @@ public:
 	 */
 	void tick(double deltatime)
 	{
+		std::cout << "ANIMTIK\n\n";
+
 		sf::IntRect newBounds = frame.getTextureRect();
 		if (frameTimer.tick(deltatime))
 		{
@@ -89,7 +89,5 @@ public:
 	}
 
 	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
-
-	void nextFrame(double deltaTime);
 };
 

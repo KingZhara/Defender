@@ -6,8 +6,8 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	{ // Player
 		{0,16,15,6}, // Sprite IntRect
 		2, // Sprite frame count
-		ShaderID::NONE, // Sprite shader (Optional parameter)
-		1. / 15., // Sprite frame length (Optional parameter, double)
+		// Shader type
+		// Custom frame length
 	},
 	{ // Astronaut
 		{42, 0, 3, 8},
@@ -52,8 +52,9 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	}
 };
 
-void Entity::tick()
+void Entity::tick(double deltatime)
 {
+	animation.tick(deltatime);
 }
 
 bool Entity::collide(Entity* other)

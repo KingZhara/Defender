@@ -16,16 +16,16 @@ public:
 	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
 		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
 		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
-		  animation(SPRITE_TABLE[ID].frameCount, SPRITE_TABLE[ID].bounds, SPRITE_TABLE[ID].frameLength/*SPRITE_TABLE[ID].shader*/)
-{}
+		  animation(SPRITE_TABLE[ID_].frameCount, SPRITE_TABLE[ID_].bounds, SPRITE_TABLE[ID_].frameLength/*SPRITE_TABLE[ID].shader*/) {}
 
-	void tick();
+	virtual void tick(double deltatime);
 
 	bool collide(Entity* other);
 
 	void setPos(sf::Vector2f newPos);
 	sf::Vector2f getPos() { return pos; }
 	EntityID::EntityID getID() { return ID; }
+	const uint16_t getXP() { return XP_TABLE[ID]; }
 
 private:
 
@@ -39,13 +39,11 @@ private:
 		sf::IntRect bounds;
 		uint8_t frameCount;
 		ShaderID::ShaderID shader = ShaderID::NONE;
-		double frameLength = 1./15.;
+		double frameLength = 1./2.;
 	};
 
 	// The data table used for generating a given sprite
 	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
-
-	// The data table used for generating a given sprite
 	static const uint16_t XP_TABLE[EntityID::LENGTH];
 
 	sf::Vector2f pos, vel;

@@ -2,26 +2,25 @@
 
 EntityManager::EntityManager(bool scripted_) : scripted(scripted_)
 {
-    player = new Player({ 50, 50 });
 }
 
-bool EntityManager::tick(Action& actions)
+bool EntityManager::tick(Action& actions, double deltatime)
 {
     bool playerDeath = false;
 
     player->setActions(actions);
 
-    player->tick();
+    player->tick(deltatime);
 
     // Tick enemies
     for (auto& enemy : enemies.entities)
         if (enemy != nullptr)
-			enemy->tick();
+			enemy->tick(deltatime);
 
     // Tick astronauts
     for (auto& astronaut : astronauts.entities)
         if (astronaut != nullptr)
-            astronaut->tick();
+            astronaut->tick(deltatime);
 
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
@@ -56,4 +55,32 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 // Use for spawning entity or for death
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
 {
+}
+
+void EntityManager::killArea(sf::FloatRect viewport)
+{
+}
+
+void EntityManager::hyperspace(sf::FloatRect viewport)
+{
+    player->setPos({ (float)(std::rand() % (int)viewport.left), (float)(std::rand() % (int)viewport.top)});
+}
+
+void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
+{
+    switch (type)
+    {
+    case SpawnType::PROJECTILE:
+        spawnWrapper(pos, ID, projectiles);
+        break;
+    case SpawnType::ENEMY:
+        spawnWrapper(pos, ID, enemies);
+        break;
+    case SpawnType::ASTRONAUT:
+        spawnWrapper(pos, ID, astronauts);
+        break;
+    case SpawnType::PLAYER:
+        player = new Player(pos);
+        break;
+    }
 }

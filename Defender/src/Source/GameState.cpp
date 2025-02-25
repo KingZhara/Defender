@@ -9,14 +9,14 @@ GameState::GameState()
 	new (&state) AttractState();
 }
 
-bool GameState::tick(Action& actions)
+bool GameState::tick(Action& actions, double deltatime)
 {
 	// Map to the appropriate tick method
 	switch (type)
 	{
-	case State::ATTRACT:   return std::get<AttractState>(state).tick();
-	case State::HIGHSCORE: return std::get<HighscoreState>(state).tick();
-	case State::STAGE:     return std::get<StageState>(state).tick(actions);
+	case State::ATTRACT:   return std::get<AttractState>(state).tick(deltatime);
+	case State::HIGHSCORE: return std::get<HighscoreState>(state).tick(deltatime);
+	case State::STAGE:     return std::get<StageState>(state).tick(actions, deltatime);
 	default:
 		return true;
 	}
