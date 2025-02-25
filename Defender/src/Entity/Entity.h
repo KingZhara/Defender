@@ -39,7 +39,7 @@ private:
 		sf::IntRect bounds;
 		uint8_t frameCount;
 		ShaderID::ShaderID shader = ShaderID::NONE;
-		double frameLength = 1./15.;
+		double frameLength = 1./2.;
 	};
 
 	// The data table used for generating a given sprite

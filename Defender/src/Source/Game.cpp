@@ -12,6 +12,7 @@ Game::~Game()
 
 void Game::tick(Action& actions, double deltatime)
 {
+
 	if (state.type != GameState::State::STAGE && actions)
 		state.switchState(true);
 

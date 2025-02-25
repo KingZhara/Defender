@@ -64,9 +64,9 @@ public:
 	 * 
 	 * @param texture 
 	 */
-	static void setTexture(const sf::Texture& texture)
+	static void setTexture(const sf::Texture* texture)
 	{
-		tex = &texture;
+		tex = texture;
 	}
 
 	/**
@@ -89,7 +89,5 @@ public:
 	}
 
 	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
-
-	void nextFrame(double deltaTime);
 };
 

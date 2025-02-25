@@ -5,32 +5,35 @@
 #include "src/Utility/Action.h"
 
 void setAction(Action& actions, sf::Keyboard::Key key);
-void loadSpritesheet();
+sf::Texture* loadSpritesheet();
 sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspectWidth, int aspectHeight);
 
 int main()
 {
 	// 73 : 60
 	sf::Vector2u resolution = getMaxAspectResolution(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height, 73, 60);
-
+	// The game window
 	sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y), "Defender");
+	// The game itself
 	Game game;
 	// Player actions; passed throughout the tick pipeline as special handling is included in AttractState
 	Action actions;
-
+	// The games viewport
 	sf::View viewport = sf::View(sf::FloatRect(0, 0, 292, 240));
-
+	// The Clock used for deltatime
 	sf::Clock clock;
+	// The games sprite textures
+	sf::Texture* textures = loadSpritesheet();
 
-	loadSpritesheet();
-
+	// Set the view for corret scaling with window size
 	StageState::setView(window, viewport);
 
-	Timer<double> timer = Timer<double>(1.);
+	window.setFramerateLimit(60);
 
-
+	// Min game loop
 	while (window.isOpen())
 	{
+		// The windows events
 		sf::Event e;
 		while (window.pollEvent(e))
 		{
@@ -67,6 +70,8 @@ int main()
 		//window.draw(state);
 		window.display();
 	}
+
+	delete textures;
 
 	return 0;
 }
@@ -127,12 +132,14 @@ void setAction(Action& actions, sf::Keyboard::Key key)
 	}
 }
 
-void loadSpritesheet()
+sf::Texture* loadSpritesheet()
 {
-	sf::Texture tex;
-	tex.loadFromFile("res/Spritesheet.png");
+	sf::Texture *tex = new sf::Texture;
+	tex->loadFromFile("res/Spritesheet.png");
 
 	Animation::setTexture(tex);
+
+	return tex;
 }
 
 //         ___   ___   ___
