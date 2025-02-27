@@ -55,6 +55,15 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 void Entity::tick(double deltatime)
 {
 	animation.tick(deltatime);
+
+	pos += vel;
+	vel *= 0.9f;
+	if (abs(vel.x) < 0.1f)
+		vel.x = 0;
+	if (abs(vel.y) < 0.1f)
+		vel.y = 0;
+
+	animation.setPosition(pos);
 }
 
 bool Entity::collide(Entity* other)
@@ -65,6 +74,7 @@ bool Entity::collide(Entity* other)
 void Entity::setPos(sf::Vector2f newPos)
 {
 	pos = newPos;
+	animation.setPosition(newPos);
 }
 
 

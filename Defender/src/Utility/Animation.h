@@ -37,8 +37,6 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		std::cout << "ANIMDRA\n";
-
 		states.shader = shader;
 		target.draw(frame, states);
 	}
@@ -75,8 +73,6 @@ public:
 	 */
 	void tick(double deltatime)
 	{
-		std::cout << "ANIMTIK\n\n";
-
 		sf::IntRect newBounds = frame.getTextureRect();
 		if (frameTimer.tick(deltatime))
 		{
@@ -86,6 +82,16 @@ public:
 			newBounds.left = start + newBounds.width * currentFrame;
 			frame.setTextureRect(newBounds);
 		}
+	}
+
+	void setPosition(sf::Vector2f pos)
+	{
+		frame.setPosition(round(pos.x), round(pos.y));
+	}
+
+	void setDirection(bool left)
+	{
+		frame.setScale(left ? 1 : -1, 1);
 	}
 
 	// Used by the player for direction switching :D

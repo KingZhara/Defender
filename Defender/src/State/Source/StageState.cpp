@@ -17,6 +17,5 @@ bool StageState::tick(Action& actions, double deltatime)
 
 	entityManager.tick(actions, deltatime);
 
-	std::cout << "STAGE\n";
 	return false;
 }

@@ -28,12 +28,6 @@ public:
 	const uint16_t getXP() { return XP_TABLE[ID]; }
 
 protected:
-	Animation& getAnim()
-	{
-		return animation;
-	}
-
-private:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{

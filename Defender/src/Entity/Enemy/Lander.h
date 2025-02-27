@@ -13,7 +13,9 @@ class Lander :
     when in range.
     */
 
+private:
 
-    virtual bool tick();
+    void tick(double deltaTime);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

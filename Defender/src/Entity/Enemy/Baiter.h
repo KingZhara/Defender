@@ -8,6 +8,9 @@ class Baiter :
     but only when they feel like it. They also seem to fly in a random pattern until they decide to fly towards you. They also shoot at you.
     */
 
-    virtual bool tick();
+private:
+
+    void tick(double deltaTime);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

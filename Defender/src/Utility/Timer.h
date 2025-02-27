@@ -14,14 +14,12 @@ public:
 
 	bool tick(T deltatime)
 	{
-		std::cout << '\n' << deltatime;
 		// Increment the time
 		time += deltatime;
 
 		// Reset if needed
 		if (time >= BASE)
 		{
-			std::cout << " SWAPPED FRAME!!!\n";
 			time = 0;
 			return true;
 		}

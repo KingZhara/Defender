@@ -10,11 +10,12 @@ struct Action
 		uint8_t fire       : 1 = 0;
 		uint8_t smart_bomb : 1 = 0;
 		uint8_t hyperspace : 1 = 0;
-		uint8_t padding    : 2 = 0;
+		uint8_t up		   : 1 = 0;
+		uint8_t down	   : 1 = 0;
 
 		operator bool() const noexcept
 		{
-			return left || right || thrust || fire || smart_bomb || hyperspace;
+			return left || right || thrust || fire || smart_bomb || hyperspace || up || down;
 		}
 	};
 
