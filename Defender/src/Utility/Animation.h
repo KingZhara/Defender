@@ -89,11 +89,6 @@ public:
 		frame.setPosition(round(pos.x), round(pos.y));
 	}
 
-	void setDirection(bool left)
-	{
-		frame.setScale(left ? 1 : -1, 1);
-	}
-
 	// Used by the player for direction switching :D
 	sf::Sprite& getSprite()
 	{
