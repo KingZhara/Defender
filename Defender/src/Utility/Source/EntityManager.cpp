@@ -59,6 +59,9 @@ void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID
 
 void EntityManager::killArea(sf::FloatRect viewport)
 {
+    for (uint16_t i = 0; i < enemies.entities.size(); i++)
+        if (enemies.entities.at(i)->getPos().x > viewport.left && enemies.entities.at(i)->getPos().x < viewport.left + viewport.width)
+            enemies.kill(i);
 }
 
 void EntityManager::hyperspace(sf::FloatRect viewport)
@@ -71,13 +74,13 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
     switch (type)
     {
     case SpawnType::PROJECTILE:
-        spawnWrapper(pos, ID, projectiles);
+        projectiles.spawn(pos, ID);
         break;
     case SpawnType::ENEMY:
-        spawnWrapper(pos, ID, enemies);
+        projectiles.spawn(pos, ID);
         break;
     case SpawnType::ASTRONAUT:
-        spawnWrapper(pos, ID, astronauts);
+        projectiles.spawn(pos, ID);
         break;
     case SpawnType::PLAYER:
         player = new Player(pos);

@@ -13,7 +13,13 @@ public:
 
 	virtual void tick(double deltatime)
 	{
+		sf::IntRect texRect = getAnim().getSprite().getTextureRect();
+
 		Entity::tick(deltatime);
+
+		texRect
+
+		animation.getSprite().setTextureRect()
 	}
 
     void setActions(Action& actions);

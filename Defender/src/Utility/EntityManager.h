@@ -29,6 +29,55 @@ class EntityManager : public sf::Drawable
 			else if (index > last)
 				last = index;
 		}
+
+		void kill(uint16_t index)
+		{
+			delete entities.at(index);
+
+			entities.at(index) = nullptr;
+
+			updateData(true, index);
+		}
+
+		void spawn(sf::Vector2f pos, EntityID::EntityID ID)
+		{
+			uint16_t index;
+
+			if (count != 0)
+			{
+				entities.at(insertionSide ? first : last) = new T(pos, ID);
+
+				--count;
+
+				// search for the next entity on the appropriate side! & flip insertion side
+				// @todo convert to the appropriate do-while loop
+				for (int i = insertionSide
+						? last
+						: first;
+					insertionSide
+						? i > first
+						: i < last;
+					insertionSide
+						? --i
+						: ++i)
+				{
+					if (entities.at(i) == nullptr)
+					{
+						insertionSide
+							? last = i
+							: first = i;
+						index = i;
+					}
+				}
+			}
+			else
+			{
+				entities.push_back(nullptr);
+				index = entities.size();
+			}
+
+			entities.at(index) = new T(pos, ID);
+		}
 	};
 
 public:
@@ -55,70 +104,18 @@ public:
 private:
 	// @todo If time permits, play with optimization, potentially using a spacial tree.
 	template<typename T>
-	void collisionWrapper(uint16_t projectile, EntityHolder<T>& entities) {
+	void collisionWrapper(uint16_t entity, EntityHolder<T>& entities) {
 		for (uint16_t i = 0; i < entities.entities.size(); i++)
 		{
 			if (entities.entities.at(i) != nullptr &&
-				entities.entities.at(i)->collide(projectiles.entities.at(projectile)))
+				entities.entities.at(i)->collide(projectiles.entities.at(entity)))
 			{
 				particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
 
-				delete projectiles.entities.at(projectile);
-				delete entities.entities.at(i);
-
-				projectiles.entities.at(projectile) = nullptr;
-				entities.entities.at(i) = nullptr;
-
-				projectiles.updateData(true, projectile);
-				entities.updateData(true, i);
+				projectiles.kill(entity);
+				entities.kill(i);
 			}
 		}
-	}
-
-	template<typename T>
-	void spawnWrapper(sf::Vector2f pos, EntityID::EntityID ID, EntityHolder<T>& entities)
-	{
-		uint16_t index;
-
-		if (entities.count != 0)
-		{
-			entities.entities.at(entities.insertionSide ? entities.first : entities.last) = new T(pos, ID);
-
-			--entities.count;
-
-			if (entities.count == 0)
-			{
-				entities.first = 0;
-				entities.last = 0;
-				entities.insertionSide = false;
-			}
-			else
-			{
-				// search for the next entity on the appropriate side! & flip insertion side
-				for (int i = entities.insertionSide
-						? entities.last
-						: entities.first;
-					entities.insertionSide
-						? i > entities.first
-						: i < entities.last; 
-					entities.insertionSide
-						? --i
-						: ++i)
-				{
-					if (entities.entities.at(i) == nullptr)
-						entities.insertionSide
-							? entities.last  = i
-							: entities.first = i;
-				}
-			}
-		}
-		else
-		{
-			entities.entities.push_back(nullptr);
-			index = entities.entities.size();
-		}
-
-		entities.entities.at(index) = new T(pos, ID);
 	}
 
 	EntityHolder<Projectile> projectiles;

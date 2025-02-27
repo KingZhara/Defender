@@ -88,6 +88,12 @@ public:
 		}
 	}
 
+	// Used by the player for direction switching :D
+	sf::Sprite& getSprite()
+	{
+		return frame;
+	}
+
 	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
 };
 
