@@ -84,6 +84,11 @@ public:
 		}
 	}
 
+	void setStart(uint16_t start_)
+	{
+		start = start_;
+	}
+
 	void setPosition(sf::Vector2f pos)
 	{
 		frame.setPosition(round(pos.x), round(pos.y));
