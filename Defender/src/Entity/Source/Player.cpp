@@ -2,21 +2,15 @@
 
 void Player::setActions(Action& actions)
 {
-	//sf::IntRect texRect = animation.getSprite().getTextureRect();
-
 	this->actions = actions;
 	if (actions.flags.left)
 	{
 		left = true;
-
-		animation.setStart(0);
+		animation.setTexturePos(sf::Vector2i(SPRITE_TABLE[EntityID::PLAYER].bounds.width * 2, 16));
 	}
-	else if (actions.flags.right)
+	if (actions.flags.right)
 	{
 		left = false;
-
+		animation.setTexturePos(sf::Vector2i(0, 16));
 	}
-
-
-	//animation.getSprite().setTextureRect(texRect);
 }

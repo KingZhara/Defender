@@ -101,5 +101,14 @@ public:
 	}
 
 	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
+
+	void setTexturePos(sf::Vector2i pos)
+	{
+		sf::IntRect rect = frame.getTextureRect();
+		rect.left = pos.x;
+		rect.top = pos.y;
+		frame.setTextureRect(rect);
+		start = pos.x;
+	}
 };
 
