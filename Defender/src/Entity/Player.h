@@ -26,8 +26,10 @@ public:
 	}
 
     void setActions(Action& actions);
+
+
 private:
-    Action actions;
+	Action actions;
 	bool left = false; // false: right, true: left
 
 };
