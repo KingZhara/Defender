@@ -6,7 +6,7 @@ sf::View* StageState::viewport = nullptr;
 StageState::StageState()
 {
 	entityManager.spawn(EntityManager::SpawnType::PLAYER, { 50, 50 }, EntityID::PLAYER);
-	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, { 50, 50 }, EntityID::ASTRONAUT);
+	//entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, { 50, 50 }, EntityID::ASTRONAUT);
 }
 
 bool StageState::tick(Action& actions, double deltatime)

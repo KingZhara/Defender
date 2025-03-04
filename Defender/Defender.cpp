@@ -104,11 +104,14 @@ sf::Vector2u getMaxAspectResolution(int screenWidth, int screenHeight, int aspec
 
 void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 {
+	static Action actionStates;
+
 	using Key = sf::Keyboard::Key;
 	switch (key)
 	{
 	case Key::W:       // UP
-		actions.flags.up = pressed;
+		actions.flags.up = pressed && actionStates.flags || !pressed && actionStates ? false : true;
+		actionStates.flags.up = 
 		break;
 
 	case Key::S:		// DOWN
