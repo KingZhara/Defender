@@ -22,6 +22,13 @@ struct Action
 
 	operator bool() const noexcept { return flags; }
 
+	Action& operator=(const Action& other)
+	{
+		flags = other.flags;
+
+		return *this;
+	}
+
 	// Do not mark explicit
 	Action(Flags flags_) : flags(flags_) {}
 
