@@ -13,8 +13,6 @@ public:
 
 	virtual void tick(double deltatime)
 	{
-		sf::IntRect texRect = animation.getSprite().getTextureRect();
-
 		Entity::tick(deltatime);
 
 		if (actions.flags.thrust)
@@ -22,16 +20,11 @@ public:
 		if (actions.flags.up)
 		{
 			vel.y -= 0.2f;
-			texRect
 		}
 		if (actions.flags.down)
 		{
 			vel.y += 0.2f;
 		}
-
-		texRect
-
-		animation.getSprite().setTextureRect()
 	}
 
     void setActions(Action& actions);
