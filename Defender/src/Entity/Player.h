@@ -16,7 +16,7 @@ public:
 		Entity::tick(deltatime);
 
 		if (actions.flags.thrust)
-			vel.x += (left ? -0.5f : +0.5f);
+			vel.x += (actions.flags.left ? -0.5f : +0.5f);
 		if (actions.flags.up)
 		{
 			vel.y -= 0.2f;
@@ -30,6 +30,5 @@ public:
     void setActions(Action& actions);
 private:
     Action actions;
-	bool left = false; // false: right, true: left
 
 };
