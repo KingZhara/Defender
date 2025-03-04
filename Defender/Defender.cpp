@@ -107,24 +107,21 @@ void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 	using Key = sf::Keyboard::Key;
 	switch (key)
 	{
-	case Key::Up:       // UP
+	case Key::W:       // UP
 		actions.flags.up = pressed;
 		break;
 
-	case Key::Down:		// DOWN
+	case Key::S:		// DOWN
 		actions.flags.down = pressed;
 		break;
 
-	case Key::W:		// THRUST
+	case Key::A:		// THRUST
 		actions.flags.thrust = pressed;
 		break;
 
-	case Key::A:		// LEFT
-		actions.flags.left = pressed;
-		break;
-
-	case Key::D:		// RIGHT
-		actions.flags.right = pressed;
+	case Key::D:		// CHANGE DIRECTION
+		if (pressed)
+			actions.flags.left = !actions.flags.left;
 		break;
 
 	case Key::Space:    // FIRE
