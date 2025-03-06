@@ -4,9 +4,9 @@ class Enemy :
     public Entity
 {
 public:
-	Enemy(sf::Vector2f pos_,
+	Enemy(sf::Vector2f pos_, EntityID::EntityID id_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, EntityID::PLAYER, isScripted_, script_) {}
+		: Entity(pos_, id_, isScripted_, script_) {}
 
 };
 
