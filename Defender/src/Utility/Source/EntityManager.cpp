@@ -22,6 +22,7 @@ bool EntityManager::tick(Action& actions, double deltatime)
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
 
+    //detects projectile collisions with player
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
 	    if (projectiles.entities.at(i) != nullptr)
