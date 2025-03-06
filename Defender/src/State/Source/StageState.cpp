@@ -2,6 +2,9 @@
 #include <iostream>
 
 sf::View* StageState::viewport = nullptr;
+EntityManager StageState::entityManager = EntityManager(false);
+Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
+StageState::PlayerState StageState::playerState = PlayerState();
 
 StageState::StageState()
 {
@@ -12,12 +15,66 @@ StageState::StageState()
 
 bool StageState::tick(Action& actions, double deltatime)
 {
-	if (actions.flags.hyperspace)
-		entityManager.hyperspace(viewport->getViewport());
-	if (actions.flags.smart_bomb)
-		entityManager.killArea(viewport->getViewport());
+	static bool playerDead = false;
 
-	entityManager.tick(actions, deltatime);
+	// For this to be adjustable it should be moved to the class definition with appropriate methods
+	static const ScoreType rewardReq = 10000;
+	// Last cutoff multiple where rewards were given
+	static uint16_t lastReward = 1;
+
+	if (!playerDead)
+	{
+		// @todo check if a cooldown was needed, I am just assuming it is - Ricky
+		// Handle the hyperspace cooldown
+		if (!hyperspaceCooldown.isComplete())
+			hyperspaceCooldown.tick(deltatime);
+
+		// Execute hyperspace if applicable
+		if (actions.flags.hyperspace && hyperspaceCooldown.isComplete())
+			entityManager.hyperspace(viewport->getViewport());
+
+		// Handle and update smart bombs accordingly
+		if (actions.flags.smart_bomb && playerState.smart_bombs > 0)
+		{
+			entityManager.killArea(viewport->getViewport());
+			--playerState.smart_bombs;
+		}
+
+		if (entityManager.getScore() >= rewardReq * lastReward)
+		{
+			++lastReward;
+
+			if (playerState.smart_bombs != 3)
+				++playerState.smart_bombs;
+			if (playerState.lives != 3)
+				++playerState.lives;
+		}
+
+		// Handle player death.
+		playerDead = entityManager.tick(actions, deltatime);
+	}
+	// Should handle saving the high score if needed
+	if (playerDead && --playerState.lives == 0)
+		return SaveHighscore(actions);
+
+	// else
+	playerDead = false;
+
+	return false;
+}
+
+bool StageState::SaveHighscore(Action& actions)
+{
+	static bool validScore = false;
+	static char name[3] = {' ', ' ', ' '};
+
+	// Utilize static methods in HighscoreState to handle checking if the score is applicable, and then saving the score
+
+	// if high score is applicable
+	//     change key @ pos; 1-3
+
+	// if complete
+	//     utilize static method in HighscoreState to save score
 
 	return false;
 }

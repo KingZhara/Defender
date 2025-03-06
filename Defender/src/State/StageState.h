@@ -6,6 +6,13 @@
 
 class StageState : public sf::Drawable
 {
+	struct PlayerState
+	{
+		uint8_t lives : 2 = 3;
+		uint8_t smart_bombs : 2 = 0;
+		uint8_t padding : 4 = 0;
+	};
+
 public:
 	StageState();
 
@@ -23,7 +30,12 @@ public:
 		// if change size reassign window.setView
 		window.setView(viewport_);
 	}
+private:
+	static bool SaveHighscore(Action& actions);
 
-	EntityManager entityManager = EntityManager(false);
+
+	static EntityManager entityManager;
 	static sf::View* viewport;
+	static Timer<double> hyperspaceCooldown;
+	static PlayerState playerState;
 };

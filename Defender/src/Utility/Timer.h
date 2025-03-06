@@ -6,24 +6,38 @@ template<typename T> requires(std::is_arithmetic_v<T>)
 class Timer
 {
 private:
+	bool preIncrement;
 	T time;
 	const T BASE;
 
 public:
-	explicit Timer(T BASE_) : BASE(BASE_), time(BASE_) {}
+	Timer(T BASE_, bool preIncrement_ = true) : BASE(BASE_), preIncrement(preIncrement_), time(BASE_) {}
 
 	bool tick(T deltatime)
 	{
-		// Increment the time
-		time += deltatime;
+		if (preIncrement)
+			time += deltatime;
 
-		// Reset if needed
 		if (time >= BASE)
 		{
 			time = 0;
 			return true;
 		}
 
+		if (!preIncrement)
+			time += deltatime;
+
 		return false;
+	}
+
+	/**
+	 *
+	 * @warning Only useful if using post-increment
+	 * 
+	 * @return If the timer has completed
+	 */
+	bool isComplete()
+	{
+		return time >= BASE;
 	}
 };

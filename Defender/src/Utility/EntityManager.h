@@ -4,7 +4,7 @@
 #include "Action.h"
 #include "../Entity/Entity.hpp"
 
-
+using ScoreType = uint64_t;
 
 class EntityManager : public sf::Drawable
 {
@@ -100,6 +100,10 @@ public:
 	void killArea(sf::FloatRect viewport);
 	void hyperspace(sf::FloatRect viewport);
 	void spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID);
+	ScoreType getScore()
+	{
+		return score;
+	}
 
 private:
 	// @todo If time permits, play with optimization, potentially using a spacial tree.
@@ -124,6 +128,8 @@ private:
 	EntityHolder<Entity>     particles; // Always scripted
 	Player* player = nullptr;
 
+	// @todo Make score update
+	ScoreType score = 0;
 	bool scripted;
 };
 
