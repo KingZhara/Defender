@@ -14,7 +14,7 @@ class EntityManager : public sf::Drawable
 		std::vector<T*> entities;
 
 		// Dead entity search information
-		uint16_t first, last, count;
+		uint16_t first = 0, last = 0, count = 0;
 		bool insertionSide = false;
 
 		void updateData(bool death, uint16_t index)
@@ -72,8 +72,8 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
-				entities.push_back(nullptr);
 				index = entities.size();
+				entities.push_back(nullptr);
 			}
 
 			entities.at(index) = new T(pos, ID);

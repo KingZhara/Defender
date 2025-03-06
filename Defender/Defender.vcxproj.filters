@@ -190,9 +190,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Documents\Visual Studio 2022\defendersprites.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\defendersprites.jpg">
       <Filter>Resource Files</Filter>
     </Image>
