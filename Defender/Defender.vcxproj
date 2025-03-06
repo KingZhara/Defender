@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utility\UserInterface\Source\Minimap.cpp" />
     <ClCompile Include="src\Utility\Source\EntityManager.cpp" />
     <ClCompile Include="src\Utility\Source\Animation.cpp" />
     <ClCompile Include="src\State\Source\AttractState.cpp" />
@@ -165,8 +166,11 @@
     <ClCompile Include="src\Entity\Enemy\Source\Swarmer.cpp" />
     <ClCompile Include="src\State\Source\StageState.cpp" />
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
+    <ClCompile Include="src\Utility\UserInterface\Source\UserInterface.cpp" />
+    <ClCompile Include="src\Utility\UserInterface\Source\Stars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utility\UserInterface\Minimap.h" />
     <ClInclude Include="src\Utility\EntityScript\EntityMoveScript.h" />
     <ClInclude Include="src\Utility\EntityScript\EntityScript.h" />
     <ClInclude Include="src\Utility\EntityScript\EntityWaitScript.h" />
@@ -201,6 +205,8 @@
     <ClInclude Include="src\Utility\EntityID.h" />
     <ClInclude Include="src\Utility\ShaderID.h" />
     <ClInclude Include="src\Utility\Timer.h" />
+    <ClInclude Include="src\Utility\UserInterface\UserInterface.h" />
+    <ClInclude Include="src\Utility\UserInterface\Stars.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\defendersprites.jpg" />
