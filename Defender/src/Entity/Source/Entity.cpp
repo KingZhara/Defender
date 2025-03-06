@@ -10,8 +10,8 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 		// Custom frame length
 	},
 	{ // Astronaut
-		{42, 0, 3, 8},
-		0
+		{43, 0, 3, 8},
+		1
 	},
 	{ // Bullet
 		{8,8,3,3},
@@ -44,11 +44,11 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	},
 	{ // Pod
 		{35,0,7,7},
-		0
+		1
 	},
 	{ // Swarmer
 		{14,8,5,4},
-		0
+		1
 	}
 };
 

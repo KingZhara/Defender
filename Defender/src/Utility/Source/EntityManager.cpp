@@ -78,10 +78,10 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
         projectiles.spawn(pos, ID);
         break;
     case SpawnType::ENEMY:
-        projectiles.spawn(pos, ID);
+        enemies.spawn(pos, ID);
         break;
     case SpawnType::ASTRONAUT:
-        projectiles.spawn(pos, ID);
+        astronauts.spawn(pos, ID);
         break;
     case SpawnType::PLAYER:
         player = new Player(pos);
