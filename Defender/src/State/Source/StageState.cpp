@@ -54,8 +54,16 @@ bool StageState::tick(Action& actions, double deltatime)
 		playerDead = entityManager.tick(actions, deltatime);
 	}
 	// Should handle saving the high score if needed
-	if (playerDead && --playerState.lives == 0)
-		return SaveHighscore(actions);
+	if (playerDead)
+	{
+		if (playerState.lives <= 1)
+		{
+			playerState.lives = 0;
+			return SaveHighscore(actions);
+		}
+
+		--playerState.lives;
+	}
 
 	// else
 	playerDead = false;
