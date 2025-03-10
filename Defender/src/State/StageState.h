@@ -30,9 +30,8 @@ public:
 		{
 			static sf::Text initials;
 			initials.setFont(UserInterface::getFont());
-			initials.setStyle(sf::Text::Style::Underlined);
-			initials.setLetterSpacing(2);
 			initials.setString(name);
+			initials.setCharacterSize(32);
 			initials.setPosition(viewport->getCenter());
 			target.draw(initials);
 		}

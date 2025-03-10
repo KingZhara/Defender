@@ -28,6 +28,8 @@ int main()
 	// Set the view for corret scaling with window size
 	StageState::setView(window, viewport);
 
+	UserInterface::initialize();
+
 	window.setFramerateLimit(60);
 
 	// Min game loop
@@ -107,19 +109,23 @@ void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 	using Key = sf::Keyboard::Key;
 	switch (key)
 	{
-	case Key::W:       // UP
+	case Key::W:		// UP
+	case Key::Up:       // UP
 		actions.flags.up = pressed;
 		break;
 
 	case Key::S:		// DOWN
+	case Key::Down:		// DOWN
 		actions.flags.down = pressed;
 		break;
 
 	case Key::A:		// THRUST
+	case Key::Left:		// THRUST
 		actions.flags.thrust = pressed;
 		break;
 
 	case Key::D:		// CHANGE DIRECTION
+	case Key::Right:	// CHANGE DIRECTION
 		if (pressed)
 			actions.flags.left = !actions.flags.left;
 		break;

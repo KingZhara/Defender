@@ -5,7 +5,7 @@ sf::View* StageState::viewport = nullptr;
 EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
-char StageState::name[3] = { ' ', ' ', ' ' };
+char StageState::name[3] = { 'A', 'A', 'A' };
 
 StageState::StageState()
 {
@@ -83,6 +83,21 @@ bool StageState::SaveHighscore(Action& actions)
 
 	// if complete
 	//     utilize static method in HighscoreState to save score
+
+	static uint8_t pos = 0;
+
+	if (actions.flags.down)
+	{
+		name[pos]++;
+		std::cout << pos << " " << name << std::endl;
+	}
+	else if (actions.flags.down)
+		name[pos]--;
+
+	else if (actions.flags.left)
+		pos--;
+	else if (actions.flags.thrust)
+		pos++;
 
 	return false;
 }
