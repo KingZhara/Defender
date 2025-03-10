@@ -39,4 +39,5 @@ private:
 	static sf::View* viewport;
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
+	static char name[3];
 };

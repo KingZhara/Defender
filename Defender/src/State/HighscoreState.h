@@ -14,7 +14,7 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-
+		target.clear(sf::Color::Red);
 	}
 };
 
