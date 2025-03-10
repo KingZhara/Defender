@@ -42,12 +42,10 @@ bool EntityManager::tick(Action& actions, double deltatime)
     {
         while (!playerDeath && enemyIndex < enemies.entities.size())
         {
-            std::cout << "\nCHECKING... " << enemyIndex;
             playerDeath = player->collide(enemies.entities.at(enemyIndex++));
         }
     }
 
-    std::cout << playerDeath << "\n";
 
     return playerDeath;
 }
