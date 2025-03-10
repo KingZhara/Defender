@@ -28,10 +28,8 @@ public:
 			target.draw(entityManager, states);
 		else
 		{
-			static sf::Text initials;
 			initials.setFont(UserInterface::getFont());
 			initials.setString(name);
-			initials.setCharacterSize(32);
 			initials.setPosition(viewport->getCenter());
 			target.draw(initials);
 		}
@@ -52,4 +50,5 @@ private:
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
 	static char name[3];
+	static sf::Text initials;
 };

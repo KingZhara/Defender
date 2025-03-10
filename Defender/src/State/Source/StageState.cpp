@@ -6,6 +6,7 @@ EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[3] = { 'A', 'A', 'A' };
+sf::Text StageState::initials;
 
 StageState::StageState()
 {
@@ -87,19 +88,23 @@ bool StageState::SaveHighscore(Action& actions)
 	//     utilize static method in HighscoreState to save score
 
 	static uint8_t pos = 0;
+	static int fontSize = 30;
 
 	if (actions.flags.down)
 	{
-		name[pos]++;
-		std::cout << pos << " " << name << std::endl;
+		fontSize--;
+		//name[pos]++;
+		//std::cout << pos << " " << name << std::endl;
 	}
-	else if (actions.flags.down)
-		name[pos]--;
-
+	else if (actions.flags.up)
+		fontSize++;
+		//name[pos]--;
+	initials.setCharacterSize(fontSize);
+	/*
 	else if (actions.flags.left)
 		pos--;
 	else if (actions.flags.thrust)
-		pos++;
+		pos++;*/
 
 	return false;
 }
