@@ -23,13 +23,26 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		target.draw(entityManager, states);
+		// TODO add timer for death animation
+		if (playerState.lives > 0) 
+			target.draw(entityManager, states);
+		else
+		{
+			static sf::Text initials;
+			initials.setFont(UserInterface::getFont());
+			initials.setStyle(sf::Text::Style::Underlined);
+			initials.setLetterSpacing(2);
+			initials.setString(name);
+			initials.setPosition(viewport->getCenter());
+			target.draw(initials);
+		}
 	}
 
 	static void setView(sf::RenderWindow& window, sf::View& viewport_)
 	{
 		// if change size reassign window.setView
 		window.setView(viewport_);
+		viewport = &viewport_;
 	}
 private:
 	static bool SaveHighscore(Action& actions);
