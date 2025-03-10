@@ -19,7 +19,7 @@ public:
 		Entity::tick(deltatime);
 
 		if (actions.flags.thrust)
-			vel.x += (actions.flags.left ? -0.5f : +0.5f);
+			vel.x += (actions.flags.left ? -0.25f : +0.25f);
 		if (actions.flags.up)
 			vel.y -= 0.2f;
 		if (actions.flags.down)
