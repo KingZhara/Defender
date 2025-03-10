@@ -7,6 +7,7 @@ EntityManager::EntityManager(bool scripted_) : scripted(scripted_)
 bool EntityManager::tick(Action& actions, double deltatime)
 {
     bool playerDeath = false;
+    uint16_t enemyIndex = 0;
 
     player->setActions(actions);
 
@@ -22,7 +23,7 @@ bool EntityManager::tick(Action& actions, double deltatime)
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
 
-    //detects projectile collisions with player
+    // Handles all entity collisions with projectiles
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
 	    if (projectiles.entities.at(i) != nullptr)
@@ -30,8 +31,18 @@ bool EntityManager::tick(Action& actions, double deltatime)
             if (!playerDeath)
                 playerDeath = player->collide(projectiles.entities.at(i));
 
+
             collisionWrapper<Enemy>(i, enemies);
             collisionWrapper<Astronaut>(i, astronauts);
+	    }
+    }
+
+    // Handles player collision with enemies
+    if (!playerDeath)
+    {
+	    while (!playerDeath && enemyIndex < enemies.entities.size())
+	    {
+		    
 	    }
     }
 

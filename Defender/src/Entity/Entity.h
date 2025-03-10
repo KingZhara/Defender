@@ -48,6 +48,8 @@ protected:
 
 	sf::Vector2f pos, vel;
 
+	static sf::Vector2f* playerPos;
+
 	bool isScripted;
 
 	EntityScript* script;

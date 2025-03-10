@@ -52,6 +52,8 @@ const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 	}
 };
 
+sf::Vector2f* Entity::playerPos = nullptr;
+
 void Entity::tick(double deltatime)
 {
 	animation.tick(deltatime);

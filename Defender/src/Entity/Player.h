@@ -8,7 +8,10 @@ class Player :
 public:
 	Player(sf::Vector2f pos_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, EntityID::PLAYER, isScripted_, script_) {}
+		: Entity(pos_, EntityID::PLAYER, isScripted_, script_)
+	{
+		playerPos = &pos;
+	}
 
 
 	virtual void tick(double deltatime)
