@@ -11,6 +11,8 @@ StageState::StageState()
 	entityManager.spawn(EntityManager::SpawnType::PLAYER, { 50, 50 }, EntityID::PLAYER);
 	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, { 50, 50 }, EntityID::ASTRONAUT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 }
 
 bool StageState::tick(Action& actions, double deltatime)
