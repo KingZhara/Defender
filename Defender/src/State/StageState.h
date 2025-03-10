@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Utility/Action.h"
 #include "../Utility/EntityManager.h"
+#include "../Utility/UserInterface/UserInterface.h"
 
 class StageState : public sf::Drawable
 {

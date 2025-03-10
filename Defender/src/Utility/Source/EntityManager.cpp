@@ -39,8 +39,15 @@ bool EntityManager::tick(Action& actions, double deltatime)
 
     // Handles player collision with enemies
     if (!playerDeath)
-	    while (!playerDeath && enemyIndex < enemies.entities.size())
+    {
+        while (!playerDeath && enemyIndex < enemies.entities.size())
+        {
+            std::cout << "\nCHECKING... " << enemyIndex;
             playerDeath = player->collide(enemies.entities.at(enemyIndex++));
+        }
+    }
+
+    std::cout << playerDeath << "\n";
 
     return playerDeath;
 }
