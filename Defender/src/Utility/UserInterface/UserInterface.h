@@ -55,8 +55,8 @@ public:
 	static void initialize();
 
 	static const sf::Font& getFont();
-	static const sf::Shader& getFlashingShader();
-	static const sf::Shader& getShiftingShader();
+	static const sf::Shader* getFlashingShader();
+	static const sf::Shader* getShiftingShader();
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
 	static void drawForeground(sf::RenderTarget&, sf::View&);
@@ -68,8 +68,8 @@ private:
 	static sf::Font    font          ;
 	static sf::Text    score         ;
 	static sf::Text    credits       ; // @todo find out if this is necessary...
-	static sf::Shader  flashingShader;
-	static sf::Shader  shiftingShader;
+	static sf::Shader* flashingShader;
+	static sf::Shader* shiftingShader;
 
 };
 
