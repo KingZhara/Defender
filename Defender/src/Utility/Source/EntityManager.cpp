@@ -42,7 +42,13 @@ bool EntityManager::tick(Action& actions, double deltatime)
     {
         while (!playerDeath && enemyIndex < enemies.entities.size())
         {
-            playerDeath = player->collide(enemies.entities.at(enemyIndex++));
+            if (enemies.entities.at(enemyIndex) != nullptr)
+            {
+                playerDeath = player->collide(enemies.entities.at(enemyIndex));
+                if (playerDeath)
+                    enemies.kill(enemyIndex);
+            }
+        	++enemyIndex;
         }
     }
 
@@ -53,13 +59,22 @@ bool EntityManager::tick(Action& actions, double deltatime)
 void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     for (auto& astronaut : astronauts.entities)
-        target.draw(*astronaut, states);
+    {
+        if (astronaut != nullptr)
+	        target.draw(*astronaut, states);
+	}
 
-	for (auto& enemy : enemies.entities)
-        target.draw(*enemy, states);
+    for (auto& enemy : enemies.entities)
+    {
+        if (enemy != nullptr)
+	        target.draw(*enemy, states);
+    }
 
     for (auto& projectile : projectiles.entities)
-        target.draw(*projectile, states);
+    {
+        if (projectile != nullptr)
+	        target.draw(*projectile, states);
+	}
 
     target.draw(*player, states);
 }
