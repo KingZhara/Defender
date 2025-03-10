@@ -87,12 +87,6 @@
     <ClCompile Include="src\Utility\UserInterface\Source\UserInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\UserInterface\Source\Minimap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utility\UserInterface\Source\Stars.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Entity.h">
@@ -198,12 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\UserInterface\UserInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility\UserInterface\Minimap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility\UserInterface\Stars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

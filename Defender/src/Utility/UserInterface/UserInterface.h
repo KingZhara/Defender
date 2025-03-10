@@ -1,17 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "Minimap.h"
-#include "Stars.h"
 
-
-class UserInterface : public sf::Drawable
+class UserInterface
 {
-	class World
+	// ################# WORLD BACKGROUND #################
+	class World : public sf::Drawable
 	{
 		class Component
 		{
-			enum class type
+			enum class Type
 			{
 				UP,
 				DOWN,
@@ -19,44 +17,51 @@ class UserInterface : public sf::Drawable
 			};
 		public:
 		private:
+			Component* next;
+			Type type;
+			uint8_t length;
 		};
 	public:
+		static void generate();
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	private:
+		static sf::RectangleShape border;
+		static sf::Image background;
+	};
+	// ################# WORLD BACKGROUND END #############
+
+	// ################# MINIMAP ##########################
+	class Minimap : public sf::Drawable
+	{
+	public:
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	private:
 	};
+	// ################# MINIMAP END ######################
+
+	// ################# STARS BACKGROUND #################
+	class Stars : public sf::Drawable
+	{
+	public:
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	private:
+	};
+	// ################# STARS BACKGROUND END #############
+
 public:
-	UserInterface()
-	{
-		if (!initialized)
-		{
-			font.loadFromFile("res/defender.ttf");
-			flashingShader.loadFromFile("res/shaders/flashing", sf::Shader::Type::Fragment);
-			shiftingShader.loadFromFile("res/shaders/shifting", sf::Shader::Type::Fragment);
+	UserInterface() = delete;
 
-			initialized = true;
-		}
-		
-	}
+	static void initialize();
 
-	static const sf::Font& getFont()
-	{
-		return font;
-	}
+	static const sf::Font& getFont();
+	static const sf::Shader& getFlashingShader();
+	static const sf::Shader& getShiftingShader();
 
-	static const sf::Shader& getFlashingShader()
-	{
-		return flashingShader;
-	}
-
-	static const sf::Shader& getShiftingShader()
-	{
-		return shiftingShader;
-	}
-
-	void drawBackground(sf::RenderTarget&, sf::View&);
-	void drawForeground(sf::RenderTarget&, sf::View&);
+	static void drawBackground(sf::RenderTarget&, sf::View&);
+	static void drawForeground(sf::RenderTarget&, sf::View&);
 
 private:
-	static     bool    initialized   ;
 	static     World   world         ;
 	static     Stars   stars         ;
 	static     Minimap minimap       ;
