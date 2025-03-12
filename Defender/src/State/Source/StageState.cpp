@@ -6,6 +6,7 @@ EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[3] = { ' ', ' ', ' ' };
+uint8_t StageState::namePos = 0;
 
 StageState::StageState()
 {
@@ -86,7 +87,6 @@ bool StageState::SaveHighscore(Action& actions)
 	// if complete
 	//     utilize static method in HighscoreState to save score
 
-	static uint8_t pos = 0;
 	static bool leftPressed = false;
 	static bool rightPressed = false;
 	static bool upPressed = false;
@@ -94,23 +94,23 @@ bool StageState::SaveHighscore(Action& actions)
 
 	if (actions.flags.down && !downPressed)
 	{
-		name[pos]++;
+		name[namePos]++;
 	}
 	else if (actions.flags.up && !upPressed)
 	{
-		name[pos]--;
+		name[namePos]--;
 	}
 	else if (actions.flags.leftHS && !leftPressed)
 	{
-		if (pos < 2)
-			pos++;
+		if (namePos < 2)
+			namePos++;
 		else
 			return true;
 	}
 	else if (actions.flags.thrust && !rightPressed)
 	{
-		if (pos > 0)
-			pos--;
+		if (namePos > 0)
+			namePos--;
 	}
 
 	leftPressed = actions.flags.leftHS;
@@ -118,7 +118,7 @@ bool StageState::SaveHighscore(Action& actions)
 	upPressed = actions.flags.up;
 	downPressed = actions.flags.down;
 
-	std::cout << int(pos) << " " << name << std::endl;
+	std::cout << int(namePos) << " " << name << std::endl;
 
 	return false;
 }

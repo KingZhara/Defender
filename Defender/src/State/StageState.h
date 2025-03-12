@@ -26,13 +26,35 @@ public:
 		static sf::Text initials;
 		initials.setFont(UserInterface::getFont());
 		initials.setString(name);
-		initials.setPosition(viewport->getCenter());
+		initials.setCharacterSize(30);
+		initials.setPosition(viewport->getCenter() - initials.getGlobalBounds().getSize() / 2.f);
+
+		static sf::RectangleShape underline;
+		underline.setSize(sf::Vector2f(30, 5));
+		sf::Vector2f bounds = initials.getGlobalBounds().getSize();
+		switch (namePos)
+		{
+		case 2:
+			underline.setPosition(viewport->getCenter() - sf::Vector2f(-45, 30));
+			break;
+
+		case 1:
+			underline.setPosition(viewport->getCenter() - sf::Vector2f(-15, 30));
+			break;
+
+		case 0:
+			underline.setPosition(viewport->getCenter() - sf::Vector2f(15, 30));
+			break;
+		}
 
 		// TODO add timer for death animation
 		if (playerState.lives > 0) 
 			target.draw(entityManager, states);
 		else
-			target.draw(initials);
+		{
+			target.draw(initials, states);
+			target.draw(underline, states);
+		}
 	}
 
 	static void setView(sf::RenderWindow& window, sf::View& viewport_)
@@ -50,4 +72,5 @@ private:
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
 	static char name[3];
+	static uint8_t namePos;
 };
