@@ -5,7 +5,7 @@ sf::View* StageState::viewport = nullptr;
 EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
-char StageState::name[3] = { 'A', 'A', 'A' };
+char StageState::name[3] = { ' ', ' ', ' ' };
 
 StageState::StageState()
 {
@@ -13,6 +13,10 @@ StageState::StageState()
 	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, { 50, 50 }, EntityID::ASTRONAUT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 100 }, EntityID::LANDER);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 }
 
@@ -87,17 +91,38 @@ bool StageState::SaveHighscore(Action& actions)
 	//     utilize static method in HighscoreState to save score
 
 	static uint8_t pos = 0;
+	static bool leftPressed = false;
+	static bool rightPressed = false;
+	static bool upPressed = false;
+	static bool downPressed = false;
 
-	if (actions.flags.down)
+	if (actions.flags.down && !downPressed)
+	{
 		name[pos]++;
-	else if (actions.flags.up)
+	}
+	else if (actions.flags.up && !upPressed)
+	{
 		name[pos]--;
-	else if (actions.flags.left)
-		pos--;
-	else if (actions.flags.thrust)
-		pos++;
+	}
+	else if (actions.flags.leftHS && !leftPressed)
+	{
+		if (pos < 2)
+			pos++;
+		else
+			return true;
+	}
+	else if (actions.flags.thrust && !rightPressed)
+	{
+		if (pos > 0)
+			pos--;
+	}
 
-	std::cout << pos << " " << name << std::endl;
+	leftPressed = actions.flags.leftHS;
+	rightPressed = actions.flags.thrust;
+	upPressed = actions.flags.up;
+	downPressed = actions.flags.down;
+
+	std::cout << int(pos) << " " << name << std::endl;
 
 	return false;
 }
