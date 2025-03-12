@@ -11,6 +11,7 @@ struct Action
 		uint8_t hyperspace : 1 = 0;
 		uint8_t up		   : 1 = 0;
 		uint8_t down	   : 1 = 0;
+		uint8_t leftHS	   : 1 = 0; // For highscore because the other left was weird
 
 		operator bool() const noexcept
 		{

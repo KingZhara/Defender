@@ -125,10 +125,12 @@ void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 		break;
 
 	case Key::D:		// CHANGE DIRECTION
-	case Key::Right:	// CHANGE DIRECTION
 		if (pressed)
 			actions.flags.left = !actions.flags.left;
 		break;
+
+	case Key::Right:	// CHANGE DIRECTION
+		actions.flags.leftHS = pressed;
 
 	case Key::Space:    // FIRE
 		actions.flags.fire = pressed;
