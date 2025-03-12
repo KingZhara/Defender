@@ -30,20 +30,20 @@ public:
 		initials.setPosition(viewport->getCenter() - initials.getGlobalBounds().getSize() / 2.f);
 
 		static sf::RectangleShape underline;
-		underline.setSize(sf::Vector2f(30, 5));
+		underline.setSize(sf::Vector2f(15, 5));
 		sf::Vector2f bounds = initials.getGlobalBounds().getSize();
 		switch (namePos)
 		{
-		case 2:
-			underline.setPosition(viewport->getCenter() - sf::Vector2f(-45, 30));
+		case 0:
+			underline.setPosition(viewport->getCenter() + sf::Vector2f(-25 - 5, 30));
 			break;
 
 		case 1:
-			underline.setPosition(viewport->getCenter() - sf::Vector2f(-15, 30));
+			underline.setPosition(viewport->getCenter() + sf::Vector2f(0 - 5, 30));
 			break;
 
-		case 0:
-			underline.setPosition(viewport->getCenter() - sf::Vector2f(15, 30));
+		case 2:
+			underline.setPosition(viewport->getCenter() + sf::Vector2f(25 - 5, 30));
 			break;
 		}
 
