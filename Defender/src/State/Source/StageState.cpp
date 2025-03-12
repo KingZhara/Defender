@@ -90,5 +90,39 @@ bool StageState::SaveHighscore(Action& actions)
 	// if complete
 	//     utilize static method in HighscoreState to save score
 
+	static uint8_t pos = 0;
+	static bool leftPressed = false;
+	static bool rightPressed = false;
+	static bool upPressed = false;
+	static bool downPressed = false;
+
+	if (actions.flags.down && !downPressed)
+	{
+		name[pos]++;
+	}
+	else if (actions.flags.up && !upPressed)
+	{
+		name[pos]--;
+	}
+	else if (actions.flags.leftHS && !leftPressed)
+	{
+		if (pos < 2)
+			pos++;
+		else
+			return true;
+	}
+	else if (actions.flags.thrust && !rightPressed)
+	{
+		if (pos > 0)
+			pos--;
+	}
+
+	leftPressed = actions.flags.leftHS;
+	rightPressed = actions.flags.thrust;
+	upPressed = actions.flags.up;
+	downPressed = actions.flags.down;
+
+	std::cout << int(pos) << " " << name << std::endl;
+
 	return false;
 }
