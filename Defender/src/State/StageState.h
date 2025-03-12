@@ -23,16 +23,16 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+		static sf::Text initials;
+		initials.setFont(UserInterface::getFont());
+		initials.setString(name);
+		initials.setPosition(viewport->getCenter());
+
 		// TODO add timer for death animation
 		if (playerState.lives > 0) 
 			target.draw(entityManager, states);
 		else
-		{
-			initials.setFont(UserInterface::getFont());
-			initials.setString(name);
-			initials.setPosition(viewport->getCenter());
 			target.draw(initials);
-		}
 	}
 
 	static void setView(sf::RenderWindow& window, sf::View& viewport_)
@@ -50,5 +50,4 @@ private:
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
 	static char name[3];
-	static sf::Text initials;
 };
