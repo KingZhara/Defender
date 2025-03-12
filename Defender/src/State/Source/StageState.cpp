@@ -5,7 +5,7 @@ sf::View* StageState::viewport = nullptr;
 EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
-char StageState::name[3] = { 'A', 'A', 'A' };
+char StageState::name[3] = { ' ', ' ', ' ' };
 
 StageState::StageState()
 {
