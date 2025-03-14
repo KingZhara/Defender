@@ -3,7 +3,8 @@
 class Swarmer :
     public Enemy
 {
-    Swarmer(sf::Vector2f pos_,
+public:
+    explicit Swarmer(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Enemy(pos_, EntityID::SWARMER, isScripted_, script_)
     {}

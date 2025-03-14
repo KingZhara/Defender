@@ -3,7 +3,8 @@
 class Lander :
     public Enemy
 {
-    Lander(sf::Vector2f pos_,
+public:
+    explicit Lander(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Enemy(pos_, EntityID::LANDER, isScripted_, script_)
     {}

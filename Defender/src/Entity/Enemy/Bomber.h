@@ -4,7 +4,8 @@
 
 class Bomber : public Enemy
 {
-	Bomber(sf::Vector2f pos_,
+public:
+	explicit Bomber(sf::Vector2f pos_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Enemy(pos_, EntityID::BOMBER, isScripted_, script_)
 	{}

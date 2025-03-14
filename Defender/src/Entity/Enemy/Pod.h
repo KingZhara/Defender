@@ -3,7 +3,8 @@
 class Pod :
     public Enemy
 {
-    Pod(sf::Vector2f pos_,
+public:
+    explicit Pod(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Enemy(pos_, EntityID::POD, isScripted_, script_)
     {}
