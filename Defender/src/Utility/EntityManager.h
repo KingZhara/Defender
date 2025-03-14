@@ -27,7 +27,7 @@ class EntityManager : public sf::Drawable
 				last = index;
 		}
 
-		void spawn(sf::Vector2f pos, EntityID::EntityID ID)
+		uint16_t spawn(sf::Vector2f pos, EntityID::EntityID ID)
 		{
 			uint16_t index = 0;
 
@@ -39,6 +39,8 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
+				std::cout << first << ' ' << last << ' ' << count;
+
 				if (count > 1)
 					getIndex(index);
 				else // count == 1
@@ -50,6 +52,8 @@ class EntityManager : public sf::Drawable
 
 			// Place new entity
 			entities.at(index) = new T(pos, ID);
+
+			return index;
 		}
 
 		~EntityHolder()
@@ -123,17 +127,17 @@ public:
 		ASTRONAUT,
 	};
 
-	EntityManager(bool scripted_);
+	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-
+	/*
 	void test()
 	{
 		enemies.kill(2);
 		enemies.kill(5);
 		enemies.kill(6);
 		enemies.kill(1);
-	}
+	}*/
 	
 	bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -162,6 +166,9 @@ private:
 			}
 		}
 	}
+
+	static void clearQueue();
+
 
 	static EntityHolder<Projectile> projectiles;
 	static EntityHolder<Enemy>      enemies;

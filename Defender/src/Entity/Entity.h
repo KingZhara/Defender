@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <queue>
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include "../Utility/ShaderID.h"
@@ -12,17 +13,30 @@
 class Entity : public sf::Drawable
 {
 public:
+	struct QueuedEntity
+	{
+		sf::Vector2f pos;
+		double rot;
+		EntityID::EntityID id;
+	};
+
 	// @todo Complete shader retrieval through UI when possible
 	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
 		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
 		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
 		  animation(SPRITE_TABLE[ID_].frameCount, SPRITE_TABLE[ID_].bounds, SPRITE_TABLE[ID_].frameLength/*SPRITE_TABLE[ID].shader*/) {}
 
+	static std::queue<QueuedEntity>& getQueue()
+	{
+		return entityQueue;
+	}
+
 	virtual void tick(double deltatime);
 
 	bool collide(Entity* other);
 
 	void setPos(sf::Vector2f newPos);
+	void setVel(sf::Vector2f newPos);
 	sf::Vector2f getPos() { return pos; }
 	EntityID::EntityID getID() { return ID; }
 	const uint16_t getXP() { return XP_TABLE[ID]; }
@@ -45,6 +59,9 @@ protected:
 	// The data table used for generating a given sprite
 	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
 	static const uint16_t XP_TABLE[EntityID::LENGTH];
+
+
+	static std::queue<QueuedEntity> entityQueue;
 
 	sf::Vector2f pos, vel;
 
