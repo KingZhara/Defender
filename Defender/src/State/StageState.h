@@ -58,6 +58,17 @@ public:
 		window.setView(viewport_);
 		viewport = &viewport_;
 	}
+
+	std::string getInitials()
+	{
+		static char nameStr[4];
+		nameStr[0] = validChars[name[0]];
+		nameStr[1] = validChars[name[1]];
+		nameStr[2] = validChars[name[2]];
+		nameStr[3] = '\0';
+		return std::string(nameStr);
+	}
+
 private:
 	static bool SaveHighscore(Action& actions);
 
