@@ -128,7 +128,5 @@ bool StageState::SaveHighscore(Action& actions)
 	upPressed = actions.flags.up;
 	downPressed = actions.flags.down;
 
-	std::cout << int(namePos) << " " << name << std::endl;
-
 	return false;
 }
