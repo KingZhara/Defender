@@ -24,8 +24,14 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		static sf::Text initials;
+		static char nameStr[4];
+		nameStr[0] = validChars[name[0]];
+		nameStr[1] = validChars[name[1]];
+		nameStr[2] = validChars[name[2]];
+		nameStr[3] = '\0';
+
+		initials.setString(nameStr);
 		initials.setFont(UserInterface::getFont());
-		initials.setString(name);
 		initials.setCharacterSize(30);
 		initials.setPosition(viewport->getCenter() - initials.getGlobalBounds().getSize() / 2.f);
 
@@ -73,4 +79,6 @@ private:
 	static PlayerState playerState;
 	static char name[3];
 	static uint8_t namePos;
+
+	static const char validChars[];
 };
