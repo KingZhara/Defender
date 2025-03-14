@@ -39,6 +39,8 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
+				std::cout << first << ' ' << last << ' ' << count;
+
 				if (count > 1)
 					getIndex(index);
 				else // count == 1
@@ -125,17 +127,17 @@ public:
 		ASTRONAUT,
 	};
 
-	EntityManager(bool scripted_);
+	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-
+	/*
 	void test()
 	{
 		enemies.kill(2);
 		enemies.kill(5);
 		enemies.kill(6);
 		enemies.kill(1);
-	}
+	}*/
 	
 	bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

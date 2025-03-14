@@ -1,5 +1,6 @@
 #include "../Entity.h"
 
+std::queue<Entity::QueuedEntity> Entity::entityQueue;
 
 const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 {
