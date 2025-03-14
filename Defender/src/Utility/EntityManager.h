@@ -54,7 +54,7 @@ class EntityManager : public sf::Drawable
 
 
 			// Place new entity
-			entities.at(index) = new E(pos, ID);
+			entities.at(index) = new E(pos);
 
 			return index;
 		}
