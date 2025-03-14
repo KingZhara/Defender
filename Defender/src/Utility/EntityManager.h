@@ -52,6 +52,20 @@ class EntityManager : public sf::Drawable
 			entities.at(index) = new T(pos, ID);
 		}
 
+		~EntityHolder()
+		{
+			for (auto& entity : entities)
+				delete entity;
+		}
+
+		void reset()
+		{
+			for (auto& entity : entities)
+				delete entity;
+
+			entities.clear();
+			entities.shrink_to_fit();
+		}
 
 	private:
 
@@ -133,9 +147,9 @@ public:
 	}
 
 private:
-	// @todo If time permits, play with optimization, potentially using a spacial tree.
+	// @todo If time permits, play with optimization, potentially using a spatial tree.
 	template<typename T>
-	void collisionWrapper(uint16_t entity, EntityHolder<T>& entities) {
+	static void collisionWrapper(uint16_t entity, EntityHolder<T>& entities) {
 		for (uint16_t i = 0; i < entities.entities.size(); i++)
 		{
 			if (entities.entities.at(i) != nullptr &&
@@ -149,14 +163,14 @@ private:
 		}
 	}
 
-	EntityHolder<Projectile> projectiles;
-	EntityHolder<Enemy>      enemies;
-	EntityHolder<Astronaut>  astronauts;
-	EntityHolder<Entity>     particles; // Always scripted
-	Player* player = nullptr;
+	static EntityHolder<Projectile> projectiles;
+	static EntityHolder<Enemy>      enemies;
+	static EntityHolder<Astronaut>  astronauts;
+	static EntityHolder<Entity>     particles; // Always scripted
+	static Player* player;
 
 	// @todo Make score update
-	ScoreType score = 0;
-	bool scripted;
+	static ScoreType score;
+	static bool scripted;
 };
 

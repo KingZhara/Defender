@@ -1,7 +1,28 @@
 #include "../EntityManager.h"
 
-EntityManager::EntityManager(bool scripted_) : scripted(scripted_)
+bool EntityManager::scripted = true;
+
+
+EntityManager::EntityHolder<Projectile> EntityManager::projectiles;
+EntityManager::EntityHolder<Enemy>      EntityManager::enemies;
+EntityManager::EntityHolder<Astronaut>  EntityManager::astronauts;
+EntityManager::EntityHolder<Entity>     EntityManager::particles; // Always scripted
+Player* EntityManager::player = nullptr;
+
+// @todo Make score update
+static ScoreType score;
+
+EntityManager::EntityManager(bool scripted_)
 {
+    scripted = scripted_;
+
+    projectiles.reset();
+    enemies.reset();
+    astronauts.reset();
+    particles.reset();
+
+    delete player;
+    player == nullptr;
 }
 
 bool EntityManager::tick(Action& actions, double deltatime)
