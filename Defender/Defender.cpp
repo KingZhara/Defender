@@ -126,7 +126,7 @@ void setAction(Action& actions, sf::Keyboard::Key key, bool pressed)
 
 	case Key::D:		// CHANGE DIRECTION
 		if (pressed)
-			actions.flags.left = !actions.flags.left;
+			actions.flags.left = ~actions.flags.left;
 		break;
 
 	case Key::Right:	// CHANGE DIRECTION

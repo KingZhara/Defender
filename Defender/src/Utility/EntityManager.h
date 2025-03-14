@@ -35,7 +35,7 @@ class EntityManager : public sf::Drawable
 			if (count == 0)
 			{
 				entities.emplace_back(nullptr);
-				index = entities.size() - 1;
+				index = static_cast<uint16_t>(entities.size() - 1);
 			}
 			else
 			{
@@ -137,11 +137,11 @@ public:
 	
 	bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
-	void killArea(sf::FloatRect viewport);
-	void hyperspace(sf::FloatRect viewport);
-	void spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID);
-	ScoreType getScore()
+	static void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
+	static void killArea(sf::FloatRect viewport);
+	static void hyperspace(sf::FloatRect viewport);
+	static void spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID);
+	static ScoreType getScore()
 	{
 		return score;
 	}

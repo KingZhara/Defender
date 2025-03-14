@@ -10,7 +10,7 @@ EntityManager::EntityHolder<Entity>     EntityManager::particles; // Always scri
 Player* EntityManager::player = nullptr;
 
 // @todo Make score update
-static ScoreType score;
+ScoreType EntityManager::score;
 
 EntityManager::EntityManager(bool scripted_)
 {
@@ -22,7 +22,7 @@ EntityManager::EntityManager(bool scripted_)
     particles.reset();
 
     delete player;
-    player == nullptr;
+    player = nullptr;
 }
 
 bool EntityManager::tick(Action& actions, double deltatime)
@@ -79,24 +79,27 @@ bool EntityManager::tick(Action& actions, double deltatime)
 
 void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Draw all astronauuts
     for (auto& astronaut : astronauts.entities)
-    {
         if (astronaut != nullptr)
 	        target.draw(*astronaut, states);
-	}
 
+    // Draw all enemies
     for (auto& enemy : enemies.entities)
-    {
         if (enemy != nullptr)
 	        target.draw(*enemy, states);
-    }
 
+    // Draw all projectiles
     for (auto& projectile : projectiles.entities)
-    {
         if (projectile != nullptr)
 	        target.draw(*projectile, states);
-	}
 
+    // Draw all particles
+    for (auto& particle : particles.entities)
+        if (particle != nullptr)
+            target.draw(*particle, states);
+
+    // Draw the player
     target.draw(*player, states);
 }
 
