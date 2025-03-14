@@ -171,6 +171,9 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
             enemies.spawn<Swarmer>(pos, ID);
 			break;
 
+        default:
+            throw std::runtime_error("Invalid Type : EntityManager::spawn;ENEM(sw)");
+
         }
         break;
     case SpawnType::ASTRONAUT:
