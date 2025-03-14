@@ -23,4 +23,12 @@ void Enemy::tick(double deltatime)
 
 		Entity::tick(deltatime);
 	}
+
+	Entity::entityQueue.emplace(
+		QueuedEntity{
+			pos,
+			atan2(vel.y, vel.x),
+			EntityID::BOMB
+		}
+	);
 }
