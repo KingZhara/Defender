@@ -36,8 +36,13 @@ bool EntityManager::tick(Action& actions, double deltatime)
 
     // Tick enemies
     for (auto& enemy : enemies.entities)
+    {
+        std::cout << enemy << ", X: " << enemy->getPos().x << ", Y: " << enemy->getPos().y << '\n';
         if (enemy != nullptr)
-			enemy->tick(deltatime);
+        {
+            enemy->tick(deltatime);
+        }
+    }
 
     // Tick astronauts
     for (auto& astronaut : astronauts.entities)
@@ -79,6 +84,9 @@ bool EntityManager::tick(Action& actions, double deltatime)
 
 void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // @todo correct animation calling
+
+    std::cout << "DRAW!!!\n";
     // Draw all astronauuts
     for (auto& astronaut : astronauts.entities)
         if (astronaut != nullptr)
@@ -86,8 +94,16 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 
     // Draw all enemies
     for (auto& enemy : enemies.entities)
+    {
+        std::cout << "ENTITY: ";
         if (enemy != nullptr)
-	        target.draw(*enemy, states);
+        {
+            std::cout << "YES";
+            target.draw(*enemy, states);
+        }
+
+        std::cout << '\n';
+    }
 
     // Draw all projectiles
     for (auto& projectile : projectiles.entities)
@@ -122,6 +138,8 @@ void EntityManager::hyperspace(sf::FloatRect viewport)
 
 void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
 {
+    std::cout << "SPAWN!\n";
+
     switch (type)
     {
     case SpawnType::PROJECTILE:
@@ -182,6 +200,7 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
     case SpawnType::PLAYER:
         player = new Player(pos);
         break;
+
     }
 }
 

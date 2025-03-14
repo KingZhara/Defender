@@ -15,6 +15,7 @@ class EntityManager : public sf::Drawable
 
 		void kill(uint16_t index)
 		{
+			std::cout << "KILL!\n";
 			delete entities.at(index);
 
 			entities.at(index) = nullptr;
@@ -50,8 +51,6 @@ class EntityManager : public sf::Drawable
 
 				--count;
 			}
-
-
 
 			// Place new entity
 			entities.at(index) = new E(pos);
