@@ -13,7 +13,7 @@ void Mutant::tick(double deltaTime)
 		if (attack == 255)
 			attack = 0;
 
-		if ((evenCheck / 5) > (attack / 5))
+		if (pos.x > attackPos && pos.x < attackPos + 10)
 			vel.x = 0.5f;
 		else
 			vel.x = -0.5f;
