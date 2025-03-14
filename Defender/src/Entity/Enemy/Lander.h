@@ -3,6 +3,11 @@
 class Lander :
     public Enemy
 {
+    Lander(sf::Vector2f pos_,
+        bool         isScripted_ = false, EntityScript* script_ = nullptr)
+        : Enemy(pos_, EntityID::LANDER, isScripted_, script_)
+    {}
+
     /*
     The lander gives the player 150 xp upon death. Also needs a method to 
     convert into a mutant. Landers also abduct astronauts off the

@@ -3,6 +3,11 @@
 class Swarmer :
     public Enemy
 {
+    Swarmer(sf::Vector2f pos_,
+        bool         isScripted_ = false, EntityScript* script_ = nullptr)
+        : Enemy(pos_, EntityID::SWARMER, isScripted_, script_)
+    {}
+
     /*
     The swarmer gives the player 150 xp upon death. It's behaviour seems to be 
     heading in the direction of the player and not changing direction until 

@@ -2,12 +2,10 @@
 
 void Mutant::tick(double deltaTime)
 {
-	double evenCheck;
 
 	if (abs(playerPos->x - pos.x) < 70)
 	{
 		attack++;
-		evenCheck = attack;
 		if (attack == 1)
 			attackPos = pos.x;
 		if (attack == 255)
@@ -27,7 +25,7 @@ void Mutant::tick(double deltaTime)
 	{
 		attack = 0;
 
-		vel.x = 0.5f;
+		//vel.x = 0.5f;
 		vel.y = 0;
 	}
 
