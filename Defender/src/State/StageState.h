@@ -25,39 +25,28 @@ public:
 	{
 		static sf::Text initials;
 		static char nameStr[4];
-		nameStr[0] = validChars[name[0]];
-		nameStr[1] = validChars[name[1]];
-		nameStr[2] = validChars[name[2]];
-		nameStr[3] = '\0';
-
-		initials.setString(nameStr);
-		initials.setFont(UserInterface::getFont());
-		initials.setCharacterSize(30);
-		initials.setPosition(viewport->getCenter() - initials.getGlobalBounds().getSize() / 2.f);
-
 		static sf::RectangleShape underline;
-		underline.setSize(sf::Vector2f(15, 5));
-		sf::Vector2f bounds = initials.getGlobalBounds().getSize();
-		switch (namePos)
-		{
-		case 0:
-			underline.setPosition(viewport->getCenter() + sf::Vector2f(-25 - 5, 30));
-			break;
-
-		case 1:
-			underline.setPosition(viewport->getCenter() + sf::Vector2f(0 - 5, 30));
-			break;
-
-		case 2:
-			underline.setPosition(viewport->getCenter() + sf::Vector2f(25 - 5, 30));
-			break;
-		}
 
 		// TODO add timer for death animation
 		if (playerState.lives > 0) 
 			target.draw(entityManager, states);
 		else
 		{
+			nameStr[0] = validChars[name[0]];
+			nameStr[1] = validChars[name[1]];
+			nameStr[2] = validChars[name[2]];
+			nameStr[3] = '\0';
+
+			initials.setString(nameStr);
+			initials.setFont(UserInterface::getFont());
+			initials.setCharacterSize(30);
+			initials.setPosition(viewport->getCenter() - sf::Vector2f(23.5f, 6.5f));
+
+			underline.setSize(sf::Vector2f(15.f, 2.5));
+			// center underline under current character
+			underline.setPosition(viewport->getCenter() + 
+				sf::Vector2f((namePos - 1) * 18.75f - 7.5f, 25.f));
+
 			target.draw(initials, states);
 			target.draw(underline, states);
 		}
@@ -69,6 +58,17 @@ public:
 		window.setView(viewport_);
 		viewport = &viewport_;
 	}
+
+	std::string getInitials()
+	{
+		static char nameStr[4];
+		nameStr[0] = validChars[name[0]];
+		nameStr[1] = validChars[name[1]];
+		nameStr[2] = validChars[name[2]];
+		nameStr[3] = '\0';
+		return std::string(nameStr);
+	}
+
 private:
 	static bool SaveHighscore(Action& actions);
 

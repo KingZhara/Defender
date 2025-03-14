@@ -4,8 +4,6 @@ void Enemy::tick(double deltatime)
 {
 	if (getID() == EntityID::MUTANT) 
 	{
-		
-
 		Entity::tick(deltatime);
 	}
 
@@ -23,7 +21,7 @@ void Enemy::tick(double deltatime)
 
 		Entity::tick(deltatime);
 	}
-
+	/*
 	Entity::entityQueue.emplace(
 		QueuedEntity{
 			pos,
@@ -31,4 +29,5 @@ void Enemy::tick(double deltatime)
 			EntityID::BOMB
 		}
 	);
+	*/
 }
