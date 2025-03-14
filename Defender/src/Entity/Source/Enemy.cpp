@@ -27,7 +27,7 @@ void Enemy::tick(double deltatime)
 	Entity::entityQueue.emplace(
 		QueuedEntity{
 			pos,
-			atan2(vel.y, vel.x),
+			atan2(playerPos->y - pos.y, playerPos->x - pos.x),
 			EntityID::BOMB
 		}
 	);
