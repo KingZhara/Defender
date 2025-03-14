@@ -138,3 +138,19 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
         break;
     }
 }
+
+void EntityManager::clearQueue()
+{
+    while (!Entity::getQueue().empty())
+    {
+        Entity::QueuedEntity& e = Entity::getQueue().front();
+
+        if (e.id < EntityID::BULLET || e.id > EntityID::BOMB)
+            throw std::runtime_error("Don't do that. : EntityManager::clearQueue()");
+
+        projectiles.entities.at(projectiles.spawn(e.pos, e.id))->setVel({
+            static_cast<float>(cos(e.rot)),
+            static_cast<float>(cos(e.rot))
+            });
+    }
+}

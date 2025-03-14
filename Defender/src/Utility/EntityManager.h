@@ -27,7 +27,7 @@ class EntityManager : public sf::Drawable
 				last = index;
 		}
 
-		void spawn(sf::Vector2f pos, EntityID::EntityID ID)
+		uint16_t spawn(sf::Vector2f pos, EntityID::EntityID ID)
 		{
 			uint16_t index = 0;
 
@@ -50,6 +50,8 @@ class EntityManager : public sf::Drawable
 
 			// Place new entity
 			entities.at(index) = new T(pos, ID);
+
+			return index;
 		}
 
 		~EntityHolder()
@@ -162,6 +164,9 @@ private:
 			}
 		}
 	}
+
+	static void clearQueue();
+
 
 	static EntityHolder<Projectile> projectiles;
 	static EntityHolder<Enemy>      enemies;
