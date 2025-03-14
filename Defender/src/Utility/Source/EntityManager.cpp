@@ -191,12 +191,31 @@ void EntityManager::clearQueue()
     {
         Entity::QueuedEntity& e = Entity::getQueue().front();
 
-        if (e.id < EntityID::BULLET || e.id > EntityID::BOMB)
-            throw std::runtime_error("Don't do that. : EntityManager::clearQueue()");
+        switch (e.id)
+        {
+        case EntityID::BULLET:
+            projectiles.entities.at(projectiles.spawn<Bullet>(e.pos, e.id))->setVel({
+                static_cast<float>(cos(e.rot)),
+                static_cast<float>(cos(e.rot))
+                });
+            break;
 
-        projectiles.entities.at(projectiles.spawn(e.pos, e.id))->setVel({
-            static_cast<float>(cos(e.rot)),
-            static_cast<float>(cos(e.rot))
-            });
+        case EntityID::LASER:
+            projectiles.entities.at(projectiles.spawn<Laser>(e.pos, e.id))->setVel({
+                static_cast<float>(cos(e.rot)),
+                static_cast<float>(cos(e.rot))
+                });
+            break;
+
+        case EntityID::BOMB:
+            projectiles.entities.at(projectiles.spawn<Bomb>(e.pos, e.id))->setVel({
+                static_cast<float>(cos(e.rot)),
+                static_cast<float>(cos(e.rot))
+                });
+            break;
+
+        default:
+            throw std::runtime_error("Don't do that. : EntityManager::clearQueue()");
+        }
     }
 }
