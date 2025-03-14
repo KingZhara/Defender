@@ -27,6 +27,7 @@ class EntityManager : public sf::Drawable
 				last = index;
 		}
 
+		template<typename E>
 		uint16_t spawn(sf::Vector2f pos, EntityID::EntityID ID)
 		{
 			uint16_t index = 0;
@@ -39,7 +40,7 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
-				std::cout << first << ' ' << last << ' ' << count;
+				std::cout << first << ' ' << last << ' ' << count << '\n';
 
 				if (count > 1)
 					getIndex(index);
@@ -50,8 +51,10 @@ class EntityManager : public sf::Drawable
 				--count;
 			}
 
+
+
 			// Place new entity
-			entities.at(index) = new T(pos, ID);
+			entities.at(index) = new E(pos, ID);
 
 			return index;
 		}
@@ -102,7 +105,7 @@ class EntityManager : public sf::Drawable
 			}
 		}
 
-		uint16_t getNextIndex(uint16_t start, uint16_t extrema, uint8_t diff)
+		uint16_t getNextIndex(uint16_t start, uint16_t extrema, int8_t diff)
 		{
 			// Search for the first nullptr in selected direction(diff)
 			do
