@@ -125,13 +125,59 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
     switch (type)
     {
     case SpawnType::PROJECTILE:
-        projectiles.spawn(pos, ID);
+        switch (ID)
+        {
+		case EntityID::BULLET:
+            projectiles.spawn<Bullet>(pos, ID);
+            break;
+
+		case EntityID::LASER:
+            projectiles.spawn<Laser>(pos, ID);
+            break;
+
+        case EntityID::BOMB:
+            projectiles.spawn<Bomb>(pos, ID);
+            break;
+
+		default:
+			throw std::runtime_error("Invalid Type : EntityManager::spawn;PROJ(sw)");
+
+        }
         break;
     case SpawnType::ENEMY:
-        enemies.spawn(pos, ID);
+        switch (ID)
+        {
+		case EntityID::LANDER:
+            enemies.spawn<Lander>(pos, ID);
+            break;
+
+		case EntityID::MUTANT:
+            enemies.spawn<Mutant>(pos, ID);
+            break;
+
+		case EntityID::BAITER:
+            enemies.spawn<Baiter>(pos, ID);
+            break;
+
+		case EntityID::BOMBER:
+            enemies.spawn<Bomber>(pos, ID);
+			break;
+
+		case EntityID::POD:
+            enemies.spawn<Pod>(pos, ID);
+			break;
+
+		case EntityID::SWARMER:
+            enemies.spawn<Swarmer>(pos, ID);
+			break;
+
+        default:
+            throw std::runtime_error("Invalid Type : EntityManager::spawn;ENEM(sw)");
+
+        }
         break;
     case SpawnType::ASTRONAUT:
-        astronauts.spawn(pos, ID);
+        astronauts.spawn<Astronaut>(pos, ID);
         break;
     case SpawnType::PLAYER:
         player = new Player(pos);

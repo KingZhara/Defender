@@ -71,10 +71,11 @@ bool StageState::tick(Action& actions, double deltatime)
 		}
 
 		--playerState.lives;
-	}
 
-	// else
-	playerDead = false;
+
+		//@todo Add respawning mechanics...
+		playerDead = false;
+	}
 
 	return false;
 }
@@ -125,8 +126,6 @@ bool StageState::SaveHighscore(Action& actions)
 	rightPressed = actions.flags.thrust;
 	upPressed = actions.flags.up;
 	downPressed = actions.flags.down;
-
-	std::cout << int(namePos) << " " << name << std::endl;
 
 	return false;
 }
