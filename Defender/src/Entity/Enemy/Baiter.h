@@ -14,8 +14,6 @@ public:
     but only when they feel like it. They also seem to fly in a random pattern until they decide to fly towards you. They also shoot at you.
     */
 
-private:
-
     void tick(double deltaTime);
 };
 

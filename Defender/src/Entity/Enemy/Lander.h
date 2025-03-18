@@ -19,8 +19,6 @@ public:
     when in range.
     */
 
-private:
-
     void tick(double deltaTime);
 };
 
