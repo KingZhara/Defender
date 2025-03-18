@@ -37,7 +37,6 @@ bool EntityManager::tick(Action& actions, double deltatime)
     // Tick enemies
     for (auto& enemy : enemies.entities)
     {
-        std::cout << enemy << ", X: " << enemy->getPos().x << ", Y: " << enemy->getPos().y << '\n';
         if (enemy != nullptr)
         {
             if (dynamic_cast<Lander*>(enemy))
@@ -90,7 +89,6 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
     // @todo correct animation calling
 
-    std::cout << "DRAW!!!\n";
     // Draw all astronauuts
     for (auto& astronaut : astronauts.entities)
         if (astronaut != nullptr)
@@ -99,14 +97,10 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
     // Draw all enemies
     for (auto& enemy : enemies.entities)
     {
-        std::cout << "ENTITY: ";
         if (enemy != nullptr)
         {
-            std::cout << "YES";
             target.draw(*enemy, states);
         }
-
-        std::cout << '\n';
     }
 
     // Draw all projectiles
@@ -142,7 +136,6 @@ void EntityManager::hyperspace(sf::FloatRect viewport)
 
 void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
 {
-    std::cout << "SPAWN!\n";
 
     switch (type)
     {
