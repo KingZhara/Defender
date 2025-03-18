@@ -40,6 +40,10 @@ bool EntityManager::tick(Action& actions, double deltatime)
         std::cout << enemy << ", X: " << enemy->getPos().x << ", Y: " << enemy->getPos().y << '\n';
         if (enemy != nullptr)
         {
+            if (dynamic_cast<Lander*>(enemy))
+                ((Lander*)enemy)->tick(deltatime);
+
+
             enemy->tick(deltatime);
         }
     }
