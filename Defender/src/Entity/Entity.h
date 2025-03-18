@@ -45,6 +45,7 @@ protected:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		std::cout << "ENTITYDRAW!!!";
 		target.draw(animation, states);
 	}
 	

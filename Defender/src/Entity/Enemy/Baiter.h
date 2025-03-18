@@ -17,6 +17,5 @@ public:
 private:
 
     void tick(double deltaTime);
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

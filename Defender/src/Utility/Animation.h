@@ -37,6 +37,7 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+		std::cout << "ANIMDRA!!!\n" << "[" << frame.getLocalBounds().left << ", " << frame.getLocalBounds().top << ", " << frame.getLocalBounds().width << ", " << frame.getLocalBounds().height << "]" << frame.getPosition().x << " " << frame.getPosition().y << "\n";
 		states.shader = shader;
 		target.draw(frame, states);
 	}
@@ -56,7 +57,10 @@ public:
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
 		  shader(shader_), frameTimer(Timer<double>(framelength)),
-		  LENGTH(length_), start(frame.getTextureRect().left) {}
+		  LENGTH(length_), start(frame.getTextureRect().left)
+	{
+		std::cout << length_ << ", [" << bounds.left << ", " << bounds.top << ", " << bounds.height << ", " << bounds.width << "\n";
+	}
 
 	/**
 	 * 

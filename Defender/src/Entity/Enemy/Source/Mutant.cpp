@@ -31,8 +31,3 @@ void Mutant::tick(double deltaTime)
 
 	return;
 }
-
-void Mutant::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-
-}
