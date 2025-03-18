@@ -14,7 +14,6 @@ public:
     splits into 3 swarmers. It seems to just slowly fly across the screen 
     horizontally or at a shallow angle.
     */
-private:
 
     void tick(double deltaTime);
 };

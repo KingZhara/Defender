@@ -1,5 +1,5 @@
 #include "../Enemy.h"
-
+/*
 void Enemy::tick(double deltatime)
 {
 	if (getID() == EntityID::MUTANT) 
@@ -29,5 +29,5 @@ void Enemy::tick(double deltatime)
 			EntityID::BOMB
 		}
 	);
-	*/
-}
+	
+}*/

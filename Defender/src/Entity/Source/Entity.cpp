@@ -82,6 +82,7 @@ void Entity::setPos(sf::Vector2f newPos)
 
 void Entity::setVel(sf::Vector2f newVel)
 {
+
 	vel = newVel;
 }
 

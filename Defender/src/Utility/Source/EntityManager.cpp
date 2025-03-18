@@ -41,9 +41,21 @@ bool EntityManager::tick(Action& actions, double deltatime)
         {
             if (dynamic_cast<Lander*>(enemy))
                 ((Lander*)enemy)->tick(deltatime);
+            else if (dynamic_cast<Mutant*>(enemy))
+                ((Mutant*)enemy)->tick(deltatime);
+            else if (dynamic_cast<Pod*>(enemy))
+                ((Pod*)enemy)->tick(deltatime);
+            else if (dynamic_cast<Baiter*>(enemy))
+                ((Baiter*)enemy)->tick(deltatime);
+            else if (dynamic_cast<Swarmer*>(enemy))
+                ((Swarmer*)enemy)->tick(deltatime);
+            else if (dynamic_cast<Bomber*>(enemy))
+                ((Bomber*)enemy)->tick(deltatime);
+            else
+                throw std::runtime_error("Failed to cast enemy! : EntityManager::Tick()");
 
 
-            enemy->tick(deltatime);
+            //enemy->tick(deltatime);
         }
     }
 

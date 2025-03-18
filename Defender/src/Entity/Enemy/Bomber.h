@@ -15,8 +15,6 @@ public:
 	left or right with a little random variation in their height and drop 
 	stationary bombs.
 	*/
-private:
-
 	void tick(double deltaTime);
 };
 
