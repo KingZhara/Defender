@@ -36,4 +36,15 @@ void Enemy::tick(double deltatime)
 
 		Entity::tick(deltatime);
 	}
+
+	// Sample projectile firing
+
+	Entity::getQueue().emplace(
+		Entity::QueuedEntity
+		{
+			pos, // Position it will spawn
+			atan2(vel.y, vel.x), // Angle in range (-pi, pi]
+			EntityID::BULLET // Entity ID
+		}
+		);
 }

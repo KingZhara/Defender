@@ -79,6 +79,11 @@ void Entity::setPos(sf::Vector2f newPos)
 	animation.setPosition(newPos);
 }
 
+void Entity::setVel(sf::Vector2f newVel)
+{
+	vel = newVel;
+}
+
 
 const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
 {

@@ -30,8 +30,8 @@ bool EntityManager::tick(Action& actions, double deltatime)
     bool playerDeath = false;
     uint16_t enemyIndex = 0;
 
+    // Tick player first
     player->setActions(actions);
-
     player->tick(deltatime);
 
     // Tick enemies
@@ -43,6 +43,9 @@ bool EntityManager::tick(Action& actions, double deltatime)
     for (auto& astronaut : astronauts.entities)
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
+
+    // Spawn all projectiles
+    clearQueue();
 
     // Handles all entity collisions with projectiles
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
@@ -136,5 +139,24 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
     case SpawnType::PLAYER:
         player = new Player(pos);
         break;
+    }
+}
+
+void EntityManager::clearQueue()
+{
+    while (!Entity::getQueue().empty())
+    {
+        Entity::QueuedEntity& e = Entity::getQueue().front();
+
+        if (e.id < EntityID::BULLET || e.id > EntityID::BOMB)
+            throw std::runtime_error("Don't do that. : EntityManager::tick()");
+
+        projectiles.entities.at(projectiles.spawn(e.pos, e.id))->setVel(
+            {
+                static_cast<float>(cos(e.direction)),
+                static_cast<float>(sin(e.direction))
+            });
+
+        Entity::getQueue().pop();
     }
 }
