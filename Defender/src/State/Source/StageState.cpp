@@ -5,18 +5,18 @@ sf::View* StageState::viewport = nullptr;
 EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
-char StageState::name[3] = { ' ', ' ', ' ' };
+char StageState::name[3] = { 0, 0, 0 };
 uint8_t StageState::namePos = 0;
+
+const char StageState::validChars[] = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 StageState::StageState()
 {
+	entityManager = EntityManager();
 	entityManager.spawn(EntityManager::SpawnType::PLAYER, { 250, 150 }, EntityID::PLAYER);
 	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, { 50, 50 }, EntityID::ASTRONAUT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 100 }, EntityID::LANDER);
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 }
@@ -71,10 +71,11 @@ bool StageState::tick(Action& actions, double deltatime)
 		}
 
 		--playerState.lives;
-	}
 
-	// else
-	playerDead = false;
+
+		//@todo Add respawning mechanics...
+		playerDead = false;
+	}
 
 	return false;
 }
@@ -98,11 +99,15 @@ bool StageState::SaveHighscore(Action& actions)
 
 	if (actions.flags.down && !downPressed)
 	{
-		name[namePos]++;
+		if (validChars[++name[namePos]] == '\0')
+			name[namePos] = 0;
 	}
 	else if (actions.flags.up && !upPressed)
 	{
-		name[namePos]--;
+		if (validChars[name[namePos]] == ' ')
+			name[namePos] = sizeof(validChars) - 2;
+		else
+			name[namePos]--;
 	}
 	else if (actions.flags.leftHS && !leftPressed)
 	{
@@ -121,8 +126,6 @@ bool StageState::SaveHighscore(Action& actions)
 	rightPressed = actions.flags.thrust;
 	upPressed = actions.flags.up;
 	downPressed = actions.flags.down;
-
-	std::cout << int(namePos) << " " << name << std::endl;
 
 	return false;
 }

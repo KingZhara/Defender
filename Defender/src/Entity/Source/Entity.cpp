@@ -1,5 +1,6 @@
 #include "../Entity.h"
 
+std::queue<Entity::QueuedEntity> Entity::entityQueue;
 
 const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
 {
@@ -81,6 +82,7 @@ void Entity::setPos(sf::Vector2f newPos)
 
 void Entity::setVel(sf::Vector2f newVel)
 {
+
 	vel = newVel;
 }
 

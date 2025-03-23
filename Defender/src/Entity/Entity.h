@@ -16,9 +16,9 @@ public:
 	struct QueuedEntity
 	{
 		sf::Vector2f pos;
-		double direction;
+		double rot;
 		EntityID::EntityID id;
- 	};
+	};
 
 	// @todo Complete shader retrieval through UI when possible
 	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
@@ -36,7 +36,7 @@ public:
 	bool collide(Entity* other);
 
 	void setPos(sf::Vector2f newPos);
-	void setVel(sf::Vector2f newVel);
+	void setVel(sf::Vector2f newPos);
 	sf::Vector2f getPos() { return pos; }
 	EntityID::EntityID getID() { return ID; }
 	const uint16_t getXP() { return XP_TABLE[ID]; }
@@ -45,6 +45,7 @@ protected:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		std::cout << "ENTITYDRAW!!!";
 		target.draw(animation, states);
 	}
 	
@@ -60,6 +61,9 @@ protected:
 	static const SpriteData SPRITE_TABLE[EntityID::LENGTH];
 	static const uint16_t XP_TABLE[EntityID::LENGTH];
 	static sf::Vector2f* playerPos;
+
+	static std::queue<QueuedEntity> entityQueue;
+
 
 	static std::queue<QueuedEntity> entityQueue;
 

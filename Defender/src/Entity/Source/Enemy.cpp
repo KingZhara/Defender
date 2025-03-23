@@ -1,24 +1,9 @@
 #include "../Enemy.h"
-
+/*
 void Enemy::tick(double deltatime)
 {
-	bool attackMode = false;
-
 	if (getID() == EntityID::MUTANT) 
 	{
-		if (abs(playerPos->x-pos.x)<70) 
-		{
-			if (playerPos->y < pos.y)
-				vel.y = -0.5f;
-			if (playerPos->y > pos.y)
-				vel.y = 0.5f;
-		}
-		else 
-		{
-			vel.x = 0.5f;
-			vel.y = 0;
-		}
-
 		Entity::tick(deltatime);
 	}
 
@@ -36,15 +21,13 @@ void Enemy::tick(double deltatime)
 
 		Entity::tick(deltatime);
 	}
-
-	// Sample projectile firing
-
-	Entity::getQueue().emplace(
-		Entity::QueuedEntity
-		{
-			pos, // Position it will spawn
-			atan2(vel.y, vel.x), // Angle in range (-pi, pi]
-			EntityID::BULLET // Entity ID
+	/*
+	Entity::entityQueue.emplace(
+		QueuedEntity{
+			pos,
+			atan2(playerPos->y - pos.y, playerPos->x - pos.x),
+			EntityID::BOMB
 		}
-		);
-}
+	);
+	
+}*/

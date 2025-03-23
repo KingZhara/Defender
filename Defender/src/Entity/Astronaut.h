@@ -4,8 +4,8 @@ class Astronaut :
     public Entity
 {
 public:
-	Astronaut(sf::Vector2f pos_, EntityID::EntityID id_,
+	explicit Astronaut(sf::Vector2f pos_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, id_, isScripted_, script_) {}
+		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_) {}
 };
 
