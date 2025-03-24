@@ -133,8 +133,34 @@ void EntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 }
 
 // Use for spawning entity or for death
-void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID)
+// @todo test
+// @todo make death behavior
+void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID)
 {
+    sf::IntRect bounds = Entity::getBounds(ID);
+    int8_t row = 0, col = 0;
+
+    do
+    {
+        do
+        {
+            particles.entities.at(particles.spawn<Entity>(
+            { pos.x + col, pos.y + row }, 
+                sf::IntRect{ bounds.left + col, bounds.top + row,
+                	2 % (bounds.width - col + 1) , 2 % (bounds.height - row + 1)
+                }))->setVel(
+            {
+                (float)(col - bounds.width / 2),
+                (float)(row - bounds.height / 2),
+            });
+
+
+            row += 2;
+        } while (col <= bounds.height);
+
+        col = 0;
+        row += 2;
+    } while (row <= bounds.width);
 }
 
 void EntityManager::killArea(sf::FloatRect viewport)
@@ -149,7 +175,7 @@ void EntityManager::hyperspace(sf::FloatRect viewport)
     player->setPos({ (float)(std::rand() % (int)viewport.left), (float)(std::rand() % (int)viewport.top)});
 }
 
-void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID)
+void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID)
 {
 
     switch (type)
@@ -158,15 +184,15 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
         switch (ID)
         {
 		case EntityID::BULLET:
-            projectiles.spawn<Bullet>(pos, ID);
+            projectiles.spawn<Bullet>(pos);
             break;
 
 		case EntityID::LASER:
-            projectiles.spawn<Laser>(pos, ID);
+            projectiles.spawn<Laser>(pos);
             break;
 
         case EntityID::BOMB:
-            projectiles.spawn<Bomb>(pos, ID);
+            projectiles.spawn<Bomb>(pos);
             break;
 
 		default:
@@ -178,27 +204,27 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
         switch (ID)
         {
 		case EntityID::LANDER:
-            enemies.spawn<Lander>(pos, ID);
+            enemies.spawn<Lander>(pos);
             break;
 
 		case EntityID::MUTANT:
-            enemies.spawn<Mutant>(pos, ID);
+            enemies.spawn<Mutant>(pos);
             break;
 
 		case EntityID::BAITER:
-            enemies.spawn<Baiter>(pos, ID);
+            enemies.spawn<Baiter>(pos);
             break;
 
 		case EntityID::BOMBER:
-            enemies.spawn<Bomber>(pos, ID);
+            enemies.spawn<Bomber>(pos);
 			break;
 
 		case EntityID::POD:
-            enemies.spawn<Pod>(pos, ID);
+            enemies.spawn<Pod>(pos);
 			break;
 
 		case EntityID::SWARMER:
-            enemies.spawn<Swarmer>(pos, ID);
+            enemies.spawn<Swarmer>(pos);
 			break;
 
         default:
@@ -207,7 +233,7 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID I
         }
         break;
     case SpawnType::ASTRONAUT:
-        astronauts.spawn<Astronaut>(pos, ID);
+        astronauts.spawn<Astronaut>(pos);
         break;
     case SpawnType::PLAYER:
         player = new Player(pos);
@@ -225,21 +251,21 @@ void EntityManager::clearQueue()
         switch (e.id)
         {
         case EntityID::BULLET:
-            projectiles.entities.at(projectiles.spawn<Bullet>(e.pos, e.id))->setVel({
+            projectiles.entities.at(projectiles.spawn<Bullet>(e.pos))->setVel({
                 static_cast<float>(cos(e.rot)),
                 static_cast<float>(cos(e.rot))
                 });
             break;
 
         case EntityID::LASER:
-            projectiles.entities.at(projectiles.spawn<Laser>(e.pos, e.id))->setVel({
+            projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
                 static_cast<float>(cos(e.rot)),
                 static_cast<float>(cos(e.rot))
                 });
             break;
 
         case EntityID::BOMB:
-            projectiles.entities.at(projectiles.spawn<Bomb>(e.pos, e.id))->setVel({
+            projectiles.entities.at(projectiles.spawn<Bomb>(e.pos))->setVel({
                 static_cast<float>(cos(e.rot)),
                 static_cast<float>(cos(e.rot))
                 });
@@ -248,24 +274,5 @@ void EntityManager::clearQueue()
         default:
             throw std::runtime_error("Don't do that. : EntityManager::clearQueue()");
         }
-    }
-}
-
-void EntityManager::clearQueue()
-{
-    while (!Entity::getQueue().empty())
-    {
-        Entity::QueuedEntity& e = Entity::getQueue().front();
-
-        if (e.id < EntityID::BULLET || e.id > EntityID::BOMB)
-            throw std::runtime_error("Don't do that. : EntityManager::tick()");
-
-        projectiles.entities.at(projectiles.spawn(e.pos, e.id))->setVel(
-            {
-                static_cast<float>(cos(e.direction)),
-                static_cast<float>(sin(e.direction))
-            });
-
-        Entity::getQueue().pop();
     }
 }

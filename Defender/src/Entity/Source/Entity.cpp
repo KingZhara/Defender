@@ -74,6 +74,11 @@ bool Entity::collide(Entity* other)
 	return animation.getBounds().intersects(other->animation.getBounds());
 }
 
+sf::IntRect const & Entity::getBounds(const EntityID::ID ID)
+{
+	return SPRITE_TABLE[ID].bounds;
+}
+
 void Entity::setPos(sf::Vector2f newPos)
 {
 	pos = newPos;

@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdint>
 
-namespace EntityID
+struct EntityID
 {
-	enum EntityID : uint8_t
+	enum ID : uint8_t
 	{
 		PLAYER,
 		ASTRONAUT,
@@ -19,6 +19,8 @@ namespace EntityID
 		POD,
 		SWARMER,
 
+		PARTICLE,
+
 		LENGTH
 	};
-}
+};

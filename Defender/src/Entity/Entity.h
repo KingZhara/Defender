@@ -17,14 +17,17 @@ public:
 	{
 		sf::Vector2f pos;
 		double rot;
-		EntityID::EntityID id;
+		EntityID::ID id;
 	};
 
 	// @todo Complete shader retrieval through UI when possible
-	Entity(sf::Vector2f pos_,                EntityID::EntityID ID_,
+	Entity(sf::Vector2f pos_,				 EntityID::ID ID_,
 		   bool         isScripted_ = false, EntityScript*      script_ = nullptr)
 		: pos(pos_), ID(ID_), isScripted(isScripted_), script(script_),
 		  animation(SPRITE_TABLE[ID_].frameCount, SPRITE_TABLE[ID_].bounds, SPRITE_TABLE[ID_].frameLength/*SPRITE_TABLE[ID].shader*/) {}
+
+	Entity(sf::Vector2f pos_, sf::IntRect bounds) : pos(pos_), ID(EntityID::PARTICLE), isScripted(false), script(nullptr),
+		animation({ 1, bounds }) {}
 
 	static std::queue<QueuedEntity>& getQueue()
 	{
@@ -34,18 +37,18 @@ public:
 	virtual void tick(double deltatime);
 
 	bool collide(Entity* other);
+	static sf::IntRect const & getBounds(const EntityID::ID ID);
 
 	void setPos(sf::Vector2f newPos);
 	void setVel(sf::Vector2f newPos);
 	sf::Vector2f getPos() { return pos; }
-	EntityID::EntityID getID() { return ID; }
+	EntityID::ID getID() { return ID; }
 	const uint16_t getXP() { return XP_TABLE[ID]; }
 
 protected:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		std::cout << "ENTITYDRAW!!!";
 		target.draw(animation, states);
 	}
 	
@@ -64,9 +67,6 @@ protected:
 
 	static std::queue<QueuedEntity> entityQueue;
 
-
-	static std::queue<QueuedEntity> entityQueue;
-
 	sf::Vector2f pos, vel;
 
 	bool isScripted;
@@ -75,7 +75,5 @@ protected:
 
 	Animation animation;
 
-	const EntityID::EntityID ID;
+	const EntityID::ID ID;
 };
-
- 

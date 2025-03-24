@@ -28,8 +28,10 @@ class EntityManager : public sf::Drawable
 				last = index;
 		}
 
+		// For all non-entity specifications
 		template<typename E>
-		uint16_t spawn(sf::Vector2f pos, EntityID::EntityID ID)
+		requires (!std::is_same_v<E, Entity> && std::derived_from<E, T>)
+		uint16_t spawn(sf::Vector2f pos)
 		{
 			uint16_t index = 0;
 
@@ -54,6 +56,38 @@ class EntityManager : public sf::Drawable
 
 			// Place new entity
 			entities.at(index) = new E(pos);
+
+			return index;
+		}
+
+		// Specifically for the entity specification, used solely for particles
+		template<typename E>
+		requires (std::is_same_v<E, Entity>)
+		uint16_t spawn(sf::Vector2f pos, sf::IntRect bounds)
+		{
+			uint16_t index = 0;
+
+			// Generate index
+			if (count == 0)
+			{
+				entities.emplace_back(nullptr);
+				index = static_cast<uint16_t>(entities.size() - 1);
+			}
+			else
+			{
+				std::cout << first << ' ' << last << ' ' << count << '\n';
+
+				if (count > 1)
+					getIndex(index);
+				else // count == 1
+					index = first;
+
+
+				--count;
+			}
+
+			// Place new entity
+			entities.at(index) = new E(pos, bounds);
 
 			return index;
 		}
@@ -143,10 +177,10 @@ public:
 	
 	bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	static void particleize(bool spawn, sf::Vector2f pos, EntityID::EntityID ID);
+	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID);
 	static void killArea(sf::FloatRect viewport);
 	static void hyperspace(sf::FloatRect viewport);
-	static void spawn(SpawnType type, sf::Vector2f pos, EntityID::EntityID ID);
+	static void spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID);
 	static ScoreType getScore()
 	{
 		return score;
