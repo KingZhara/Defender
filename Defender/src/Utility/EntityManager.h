@@ -54,6 +54,7 @@ class EntityManager : public sf::Drawable
 				--count;
 			}
 
+			std::cout << index << '\n';
 			// Place new entity
 			entities.at(index) = new E(pos);
 
