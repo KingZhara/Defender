@@ -71,10 +71,34 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-
+		switch (stage)
+		{
+		case 3: // Copyright
+		case 2: // Defender
+		case 1: // Electronics Inc
+		case 0: // Williams
+			target.draw(willVert, willPos * 4, sf::Quads, states);
+		}
 	}
 
 private:
+
+	struct WillNode
+	{
+		float x, y;
+		short delay;
+		short flags; // 1 start, 2 end
+
+		WillNode(float x = 0, float y = 0, short delay = 0, short flags = 0):
+			x(x), y(y), delay(delay), flags(flags) {}
+	};
+
+	int willPos = 0;
+
+	static WillNode willNodes[];
+	sf::Vertex willVert[100 * 4];
+
+	int stage = 0;
 	
 };
 
