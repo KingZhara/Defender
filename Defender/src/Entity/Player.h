@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include <numbers>
 #include "../Utility/Action.h"
 
 class Player :
@@ -14,8 +15,8 @@ public:
 	}
 
 
-	virtual void tick(double deltatime)
-	{
+	virtual void tick(double deltatime) override
+    {
 		Entity::tick(deltatime);
 
 		if (actions.flags.thrust)
@@ -24,6 +25,8 @@ public:
 			vel.y -= 0.2f;
 		if (actions.flags.down)
 			vel.y += 0.2f;
+		if (actions.flags.fire)
+			Entity::entityQueue.emplace(pos, vel.x > 0 ? 0 : std::numbers::pi, EntityID::LASER);
 	}
 
     void setActions(Action& actions);

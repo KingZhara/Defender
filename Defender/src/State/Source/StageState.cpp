@@ -25,6 +25,7 @@ bool StageState::tick(Action& actions, double deltatime)
 {
 	static bool playerDead = false;
 
+
 	// For this to be adjustable it should be moved to the class definition with appropriate methods
 	static const ScoreType rewardReq = 10000;
 	// Last cutoff multiple where rewards were given

@@ -18,9 +18,13 @@ public:
     uint8_t attack = 0;
     uint16_t attackPos;
 
+    // Range [0, 3]; 0, 1 = up; 2, 3 = down;
+    uint8_t bobStage;
+    Timer<double> bobbing{ 1. / 15. };
+
 
     //https://en.wikipedia.org/wiki/List_of_software_palettes#/media/File:RGB_6levels_palette_color_test_chart.png
 
-    void tick(double deltaTime);
+    virtual void tick(double deltatime) override;
 };
 
