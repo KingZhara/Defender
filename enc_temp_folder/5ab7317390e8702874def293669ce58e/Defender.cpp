@@ -107,7 +107,7 @@ int main()
 
         smoothShader.setUniform("currentFrame", currentFrame.getTexture());
         smoothShader.setUniform("lastFrame", previousFrame.getTexture());
-        smoothShader.setUniform("maxDelta", 0.01f);
+        smoothShader.setUniform("maxDelta", 0.00001f);
 
         sf::Sprite passthrough(currentFrame.getTexture());
 
