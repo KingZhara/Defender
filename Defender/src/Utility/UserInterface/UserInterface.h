@@ -54,22 +54,22 @@ public:
 
 	static void initialize();
 
+	// @todo complete shader conversion...
 	static const sf::Font& getFont();
-	static const sf::Shader* getFlashingShader();
-	static const sf::Shader* getShiftingShader();
+	static       sf::Shader* getShiftingShader();
+	static const void shaderTick(double deltatime);
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
 	static void drawForeground(sf::RenderTarget&, sf::View&);
 
 private:
-	static     World   world         ;
-	static     Stars   stars         ;
-	static     Minimap minimap       ;
-	static sf::Font    font          ;
-	static sf::Text    score         ;
-	static sf::Text    credits       ; // @todo find out if this is necessary...
-	static sf::Shader* flashingShader;
-	static sf::Shader* shiftingShader;
+	static      World   world         ;
+	static      Stars   stars         ;
+	static      Minimap minimap       ;
+	static sf ::Font    font          ;
+	static sf ::Text    score         ;
+	static sf ::Text    credits       ; // @todo find out if this is necessary...
+	static sf ::Shader* shiftingShader;
 
 };
 

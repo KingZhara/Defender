@@ -209,6 +209,11 @@
     <Image Include="res\Spritesheet.png" />
     <Image Include="res\Windows_16colors_palette_color_test_chart.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\epilepsySmooth.frag" />
+    <None Include="res\shaders\flashing.frag" />
+    <None Include="res\shaders\shifting.frag" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,12 +1,33 @@
 #include "../Mutant.h"
 
+sf::Shader* Mutant::shader = nullptr;
+std::vector<sf::Glsl::Vec3> Mutant::brightColors = { // Data table from somewhere...
+	{1.0f, 0.0f, 0.0f},
+	{0.0f, 1.0f, 0.0f},
+	{1.0f, 1.0f, 0.0f},
+	{0.0f, 0.0f, 1.0f},
+	{1.0f, 0.0f, 1.0f},
+	{0.0f, 1.0f, 1.0f},
+	{1.0f, 1.0f, 1.0f},
+	{1.0f, 0.5f, 0.0f}
+};
+
 void Mutant::tick(double deltatime)
 {
+	static Timer<double> replaceType{ 1 / 2. };
+	static bool type = false;
 	static const sf::Vector2f speed = { 1.5, 1.5 };
 
-	// unless the mutants are directly above or below the player, they aim to be around 1/8 of the screen above or below the player
-	// The mutants bob up and down every other frame; up, nul, up, nul, down, nul, down, nul, repeat
-	// For bobbing, we will approximate to once every 4 frames instead of every frame~ 15fps conversion
+	if (replaceType.tick(deltatime))
+		type = !type;
+
+	if (type)
+		shader->setUniform("ReplaceColor", brightColors[rand() % brightColors.size()]);
+	else
+		shader->setUniform("ReplaceColor", sf::Glsl::Vec3(0, 0, 0));
+
+	std::cout << "TICKY TYPY" << type << ' ' << '\n';
+
 
 	// Bobbing
 	if (bobbing.tick(deltatime))
@@ -26,6 +47,7 @@ void Mutant::tick(double deltatime)
 
 
 	// Attack
+	// @todo implement attacks - is very easy
 
 	// Movement
 	// If above the player
@@ -66,4 +88,12 @@ void Mutant::tick(double deltatime)
 	}
 
 	Entity::tick(deltatime);
+}
+
+void Mutant::initShader()
+{
+	shader = new sf::Shader;
+	shader->loadFromFile("./res/shader/flashing.frag", sf::Shader::Type::Fragment);
+
+	shader->setUniform("targetColor", sf::Glsl::Vec3{ 136, 0, 255 });
 }

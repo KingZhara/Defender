@@ -10,7 +10,7 @@ class Animation : public sf::Drawable
 {
 private:
 	// The frame being displayed
-	sf::Sprite frame;
+	mutable sf::Sprite frame;
 
 	// The shader that is applied to this animation
 	sf::Shader* shader = nullptr;
@@ -37,8 +37,7 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		//std::cout << "ANIMDRA!!!\n" << "[" << frame.getLocalBounds().left << ", " << frame.getLocalBounds().top << ", " << frame.getLocalBounds().width << ", " << frame.getLocalBounds().height << "]" << frame.getPosition().x << " " << frame.getPosition().y << "\n";
-		states.shader = shader;
+	    states.shader = shader;
 		target.draw(frame, states);
 	}
 
@@ -59,7 +58,8 @@ public:
 		  shader(shader_), frameTimer(Timer<double>(framelength)),
 		  LENGTH(length_), start(frame.getTextureRect().left)
 	{
-		//std::cout << length_ << ", [" << bounds.left << ", " << bounds.top << ", " << bounds.height << ", " << bounds.width << "\n";
+		if (shader)
+			shader->setUniform("texture", frame.getTexture());
 	}
 
 	/**
@@ -99,7 +99,7 @@ public:
 	}
 
 	// Used by the player for direction switching :D
-	sf::Sprite& getSprite()
+	sf::Sprite& getSprite() const
 	{
 		return frame;
 	}
