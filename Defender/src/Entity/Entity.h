@@ -16,8 +16,10 @@ public:
     struct QueuedEntity
     {
         sf::Vector2f pos;
-        double       rot;
         EntityID::ID id;
+
+		QueuedEntity(sf::Vector2f pos_, EntityID::ID id_) : pos(pos_), id(id_) {}
+        QueuedEntity() = delete;
     };
 
     // @todo Complete shader retrieval through UI when possible
@@ -48,11 +50,12 @@ public:
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     virtual void                     tick(double deltatime);
-    bool                             collide(Entity *other);
+    virtual bool                     collide(Entity* other);
     static const sf::IntRect &       getBounds(EntityID::ID ID);
     void                             setPos(sf::Vector2f newPos);
     void                             setVel(sf::Vector2f newPos);
     sf::Vector2f                     getPos() { return pos; }
+    sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return XP_TABLE[ID]; }
 

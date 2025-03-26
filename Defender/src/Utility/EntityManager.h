@@ -45,7 +45,7 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
-				std::cout << first << ' ' << last << ' ' << count << '\n';
+				//std::cout << first << ' ' << last << ' ' << count << '\n';
 
 				if (count > 1)
 					getIndex(index);
@@ -56,7 +56,7 @@ class EntityManager : public sf::Drawable
 				--count;
 			}
 
-			std::cout << index << '\n';
+			//std::cout << index << '\n';
 			// Place new entity
 			entities.at(index) = new E(pos);
 
@@ -78,7 +78,7 @@ class EntityManager : public sf::Drawable
 			}
 			else
 			{
-				std::cout << first << ' ' << last << ' ' << count << '\n';
+				//std::cout << first << ' ' << last << ' ' << count << '\n';
 
 				if (count > 1)
 					getIndex(index);
@@ -169,7 +169,8 @@ public:
 	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-	/*
+    static void adjViewport(sf::View * view);
+    /*
 	void test()
 	{
 		enemies.kill(2);
@@ -178,7 +179,7 @@ public:
 		enemies.kill(1);
 	}*/
 
-    static bool tick(Action& actions, double deltatime);
+    static bool tick(Action& actions, double deltatime, float );
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID);
 	static void killArea(sf::FloatRect viewport);
@@ -192,18 +193,30 @@ public:
 private:
 	// @todo If time permits, play with optimization, potentially using a spatial tree.
 	template<typename T>
-	static void collisionWrapper(uint16_t entity, EntityHolder<T>& entities) {
-		for (uint16_t i = 0; i < entities.entities.size(); i++)
+	static bool collisionWrapper(uint16_t entity, EntityHolder<T>& entities)
+    {
+		uint16_t i = 0;
+		bool died = false;
+
+		while (i < entities.entities.size() && died != true)
 		{
+			//std::cout << entities.entities.at(i) << ' ' << projectiles.entities.at(entity) << '\n';
+
 			if (entities.entities.at(i) != nullptr &&
-				entities.entities.at(i)->collide(projectiles.entities.at(entity)))
+				projectiles.entities.at(entity)->collide(entities.entities.at(i)))
 			{
 				//particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
 
 				projectiles.kill(entity);
 				entities.kill(i);
+
+				died = true;
 			}
+
+			++i;
 		}
+
+		return died;
 	}
 
 	static void clearQueue();

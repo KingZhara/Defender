@@ -60,7 +60,7 @@ void Entity::tick(double deltatime)
 	animation.tick(deltatime);
 
 	pos += vel;
-	vel *= 0.9f;
+	// vel *= 0.9f; // Don't apply friction - Ricky
 	if (abs(vel.x) < 0.1f)
 		vel.x = 0;
 	if (abs(vel.y) < 0.1f)

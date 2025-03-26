@@ -1,4 +1,5 @@
 #include "../EntityManager.h"
+#include "../common.h"
 
 bool EntityManager::scripted = true;
 
@@ -25,7 +26,63 @@ EntityManager::EntityManager(bool scripted_)
     player = nullptr;
 }
 
-bool EntityManager::tick(Action &actions, double deltatime)
+void EntityManager::adjViewport(sf::View *view)
+{
+    // The view follows the player, moving at a varying speed and keeping the player with a minimum of 1/4 of the screen on either side.
+    // the views movement speed seems proportional to the distance of the player from its position on the sorrect side, and the players movement itself; not moving? no change.
+
+    // The goal here is to generate a motion factor and then apply it
+
+    // get player direction
+    // get player position
+    // get player velocity
+    // get offset from opposing side
+    // view speed should be player speed + player speed * playfield width/(playfield width - offset)
+
+    // if the player is outside of the view range, move the view accordingly
+    // otherwise, move the view at a speed proportional to the player's speed as described above.
+
+    // view offset
+    double viewOffset = 0;
+
+    // player position - playfield percentage
+    uint16_t offsetFactor = 0;
+
+    // playfield width
+    uint16_t playfieldWidth = view->getSize().x / 2;
+
+
+    if (player->getPos().x < view->getCenter().x - view->getSize().x / 4)
+        viewOffset = player->getPos().x - (view->getCenter().x - view->getSize()
+                                                                      .x / 4);
+    else if (player->getPos().x > view->getCenter().x + view->getSize().x / 4)
+        viewOffset = player->getPos().x - (view->getCenter().x + view->getSize()
+                                                                      .x / 4);
+    else // Within range
+    {
+        // Calculate offset factor
+        if (player->getVel().x > 0)
+            offsetFactor = player->getPos().x - view->getCenter().x
+                                              - view->getSize().x / 4;
+        else if (player->getVel().x < 0)
+            offsetFactor = player->getPos().x - view->getCenter().x
+                                              + view->getSize().x / 4;
+
+
+        viewOffset = player->getVel().x + (playfieldWidth - offsetFactor == 0
+                                               ? 0
+                                               : player->getVel().x *
+                                                     playfieldWidth /
+                                                    (playfieldWidth -
+                                                     offsetFactor));
+    }
+
+    std::cout << "ADJUSTING... " << viewOffset << '\n';
+
+    view->move(viewOffset, 0);
+}
+
+bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
 {
     bool     playerDeath = false;
     uint16_t enemyIndex  = 0;
@@ -65,13 +122,23 @@ bool EntityManager::tick(Action &actions, double deltatime)
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
     }
-    /*
+
     // Tick projectiles
-    for (auto &projectile : projectiles.entities)
+    for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
-        if (projectile != nullptr)
-            projectile->tick(deltatime);
-    }*/
+        if (projectiles.entities.at(i) != nullptr)
+        {
+            projectiles.entities.at(i)->tick(deltatime);
+
+            if (projectiles.entities.at(i)->getPos().y > COMN::resolution.y ||
+                projectiles.entities.at(i)->getPos().y < 0 ||
+                projectiles.entities.at(i)->getPos().x > center +
+                COMN::resolution.x / 2 ||
+                projectiles.entities.at(i)->getPos().x < center -
+                COMN::resolution.x / 2)
+                projectiles.kill(i);
+        }
+    }
 
     // Spawn all projectiles
     clearQueue();
@@ -85,8 +152,8 @@ bool EntityManager::tick(Action &actions, double deltatime)
                 playerDeath = player->collide(projectiles.entities.at(i));
 
 
-            collisionWrapper<Enemy>(i, enemies);
-            collisionWrapper<Astronaut>(i, astronauts);
+            if (!playerDeath && !collisionWrapper<Enemy>(i, enemies))
+                collisionWrapper<Astronaut>(i, astronauts);
         }
     }
 
@@ -271,28 +338,30 @@ void EntityManager::clearQueue()
 {
     while (!Entity::getQueue().empty())
     {
-        Entity::QueuedEntity &e = Entity::getQueue().front();
+        Entity::QueuedEntity &e   = Entity::getQueue().front();
+        double                rot = atan2(player->getPos().y - e.pos.y,
+                                          player->getPos().x - e.pos.x);
 
         switch (e.id)
         {
         case EntityID::BULLET:
             projectiles.entities.at(projectiles.spawn<Bullet>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)) * 7,
-                static_cast<float>(sin(e.rot)) * 7
+                static_cast<float>(cos(rot)) * 2 + player->getVel().x,
+                static_cast<float>(sin(rot)) * 2 + player->getVel().y
             });
             break;
 
         case EntityID::LASER:
             projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)) * 7,
-                static_cast<float>(sin(e.rot)) * 7
+                static_cast<float>(cos(rot)) * 3,
+                static_cast<float>(sin(rot)) * 3
             });
             break;
 
         case EntityID::BOMB:
             projectiles.entities.at(projectiles.spawn<Bomb>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)) * 7,
-                static_cast<float>(sin(e.rot)) * 7
+                static_cast<float>(cos(rot)) * 3,
+                static_cast<float>(sin(rot)) * 3
             });
             break;
 

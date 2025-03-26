@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
-
 #include "Defender.hpp"
-
+#include "src/Utility/DisplayManager.h"
 #include "src/Utility/Action.h"
+#include "src/Utility/common.h"
 
 void         setAction(Action &actions, sf::Keyboard::Key key, bool pressed);
 sf::Texture *loadSpritesheet();
@@ -13,64 +13,27 @@ sf::Vector2u getMaxAspectResolution(int screenWidth,
 
 int main()
 {
-    // 73 : 60
-    sf::Vector2u resolution = getMaxAspectResolution(
-            sf::VideoMode::getDesktopMode().width,
-            sf::VideoMode::getDesktopMode().height, 73, 60);
-    // The game window
-    sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y),
-                            "Defender", sf::Style::Titlebar | sf::Style::Close);
     // The game itself
     Game game;
     // Player actions; passed throughout the tick pipeline as special handling is included in AttractState
     Action actions;
-    // The games viewport
-    auto viewport = sf::View(sf::FloatRect(0, 0, 292, 240));
     // The Clock used for deltatime
     sf::Clock clock;
-    // The games sprite textures
-    sf::Texture *textures = loadSpritesheet();
-
-    sf::RenderTexture currentFrame;
-    sf::RenderTexture previousFrame;
-    sf::RenderTexture output;
-
-    sf::Shader smoothShader;
-
-    // This is your brain on drugs pookie
-    smoothShader.loadFromFile("./res/shaders/epilepsySmooth.frag",
-                              sf::Shader::Type::Fragment);
-
-    if (!currentFrame.create(resolution.x, resolution.y) ||
-        !previousFrame.create(resolution.x, resolution.y) ||
-        !output.create(resolution.x, resolution.y))
-        std::cerr << "Failed to create render textures.\n";
-
-    currentFrame.setSmooth(false);
-    previousFrame.setSmooth(false);
-    output.setSmooth(false);
-    textures->setSmooth(false);
-
-    previousFrame.clear(sf::Color::Black);
-    previousFrame.display();
-
-    // Set the view for correct scaling with window size
-    StageState::setView(window, viewport);
 
     UserInterface::initialize();
-
-    window.setFramerateLimit(60);
+    DisplayManager::initialize();
 
     // Min game loop
-    while (window.isOpen())
+    while (DisplayManager::getWindow()->isOpen())
     {
         // The windows events
         sf::Event e;
-        while (window.pollEvent(e))
+        while (DisplayManager::getWindow()->pollEvent(e))
         {
             switch (e.type)
             {
             case sf::Event::Closed:
+                DisplayManager::getWindow()->close();
                 break;
 
             case sf::Event::KeyPressed:
@@ -95,63 +58,15 @@ int main()
             default:
                 break;
             }
-            if (e.type == sf::Event::Closed)
-                window.close();
         }
 
         game.tick(actions, clock.restart().asMilliseconds() / 1000.);
 
-        currentFrame.clear();
-        currentFrame.draw(game);
-        currentFrame.display();
-
-        smoothShader.setUniform("currentFrame", currentFrame.getTexture());
-        smoothShader.setUniform("lastFrame", previousFrame.getTexture());
-        smoothShader.setUniform("maxDelta", 0.3f);
-
-        output.clear();
-        output.draw(sf::Sprite(currentFrame.getTexture()), &smoothShader);
-        output.display();
-
-        window.clear();
-        window.draw(sf::Sprite(output.getTexture()));
-        window.display();
-
-        previousFrame.clear();
-        previousFrame.draw(sf::Sprite(output.getTexture()));
-        previousFrame.display();
+        DisplayManager::getRenderTarget()->draw(game);
+        DisplayManager::draw();
     }
-
-    delete textures;
 
     return 0;
-}
-
-
-sf::Vector2u getMaxAspectResolution(int screenWidth,
-                                    int screenHeight,
-                                    int aspectWidth,
-                                    int aspectHeight)
-{
-    sf::Vector2u resolution;
-
-    // Compute width-first scaling
-    int heightForMaxWidth = (screenWidth * aspectHeight) / aspectWidth;
-
-    if (heightForMaxWidth <= screenHeight)
-    {
-        // The width-first scaling fits
-        resolution.x = screenWidth;
-        resolution.y = heightForMaxWidth;
-    }
-    else
-    {
-        // The height-first scaling is needed
-        resolution.x = (screenHeight * aspectWidth) / aspectHeight;
-        resolution.y = screenHeight;
-    }
-
-    return resolution;
 }
 
 void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
@@ -194,16 +109,6 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
         actions.flags.smart_bomb = pressed;
         break;
     }
-}
-
-sf::Texture *loadSpritesheet()
-{
-    auto tex = new sf::Texture;
-    tex->loadFromFile("res/Spritesheet.png");
-
-    Animation::setTexture(tex);
-
-    return tex;
 }
 
 //         ___   ___   ___

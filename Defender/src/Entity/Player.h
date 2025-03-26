@@ -18,6 +18,7 @@ public:
 	virtual void tick(double deltatime) override
     {
 		Entity::tick(deltatime);
+		vel *= 0.9f;
 
 		if (actions.flags.thrust)
 			vel.x += (actions.flags.left ? -0.25f : +0.25f);
@@ -26,7 +27,7 @@ public:
 		if (actions.flags.down)
 			vel.y += 0.2f;
 		if (actions.flags.fire)
-			entityQueue.emplace(pos, vel.x > 0 ? 0 : std::numbers::pi, EntityID::LASER);
+			entityQueue.emplace(pos, EntityID::LASER);
 	}
 
     void setActions(Action& actions);

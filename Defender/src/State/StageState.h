@@ -3,7 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include "../Utility/Action.h"
 #include "../Utility/EntityManager.h"
+#include "../Utility/common.h"
 #include "../Utility/UserInterface/UserInterface.h"
+#include "../Utility/DisplayManager.h"
 
 class StageState : public sf::Drawable
 {
@@ -27,6 +29,20 @@ public:
 		static char nameStr[4];
 		static sf::RectangleShape underline;
 
+		static sf::RectangleShape viewBounds = sf::RectangleShape(sf::Vector2f(COMN::resolution.x, COMN::resolution.y));
+		static bool initialized = false;
+
+		if (!initialized)
+		{
+			viewBounds.setOutlineColor(sf::Color::Red);
+			viewBounds.setOutlineThickness(10);
+		}
+
+		viewBounds.setPosition(DisplayManager::getView().getCenter().x - DisplayManager::getView().getSize().x / 2,
+			DisplayManager::getView().getCenter().y - DisplayManager::getView().getSize().y / 2);
+
+		target.draw(viewBounds, states);
+
 		// TODO add timer for death animation
 		if (playerState.lives > 0) 
 			target.draw(entityManager, states);
@@ -40,23 +56,16 @@ public:
 			initials.setString(nameStr);
 			initials.setFont(UserInterface::getFont());
 			initials.setCharacterSize(30);
-			initials.setPosition(viewport->getCenter() - sf::Vector2f(23.5f, 6.5f));
+			initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(23.5f, 6.5f));
 
 			underline.setSize(sf::Vector2f(15.f, 2.5));
 			// center underline under current character
-			underline.setPosition(viewport->getCenter() + 
+			underline.setPosition(DisplayManager::getView().getCenter() +
 				sf::Vector2f((namePos - 1) * 18.75f - 7.5f, 25.f));
 
 			target.draw(initials, states);
 			target.draw(underline, states);
 		}
-	}
-
-	static void setView(sf::RenderWindow& window, sf::View& viewport_)
-	{
-		// if change size reassign window.setView
-		window.setView(viewport_);
-		viewport = &viewport_;
 	}
 
 	std::string getInitials()
@@ -74,7 +83,6 @@ private:
 
 
 	static EntityManager entityManager;
-	static sf::View* viewport;
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
 	static char name[3];
