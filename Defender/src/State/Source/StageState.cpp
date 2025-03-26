@@ -40,7 +40,7 @@ bool StageState::tick(Action& actions, double deltatime)
 
 		// Execute hyperspace if applicable
 		if (actions.flags.hyperspace && hyperspaceCooldown.isComplete())
-			entityManager.hyperspace(viewport->getViewport());
+			entityManager.hyperspace(viewport->getSize(), viewport->getCenter().x - (viewport->getSize().x / 2.f));
 
 		// Handle and update smart bombs accordingly
 		if (actions.flags.smart_bomb && playerState.smart_bombs > 0)

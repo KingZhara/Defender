@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <concepts>
+#include <vector>
 #include "Action.h"
 #include "../Entity/Entity.hpp"
 
@@ -34,6 +34,8 @@ class EntityManager : public sf::Drawable
 		uint16_t spawn(sf::Vector2f pos)
 		{
 			uint16_t index = 0;
+
+			std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
 
 			// Generate index
 			if (count == 0)
@@ -175,12 +177,12 @@ public:
 		enemies.kill(6);
 		enemies.kill(1);
 	}*/
-	
-	bool tick(Action& actions, double deltatime);
+
+    static bool tick(Action& actions, double deltatime);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID);
 	static void killArea(sf::FloatRect viewport);
-	static void hyperspace(sf::FloatRect viewport);
+	static void hyperspace(sf::Vector2f size, float left);
 	static void spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID);
 	static ScoreType getScore()
 	{
@@ -196,7 +198,7 @@ private:
 			if (entities.entities.at(i) != nullptr &&
 				entities.entities.at(i)->collide(projectiles.entities.at(entity)))
 			{
-				particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
+				//particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
 
 				projectiles.kill(entity);
 				entities.kill(i);

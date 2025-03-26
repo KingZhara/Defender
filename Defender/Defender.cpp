@@ -54,7 +54,7 @@ int main()
     previousFrame.clear(sf::Color::Black);
     previousFrame.display();
 
-    // Set the view for corret scaling with window size
+    // Set the view for correct scaling with window size
     StageState::setView(window, viewport);
 
     UserInterface::initialize();
@@ -107,21 +107,18 @@ int main()
 
         smoothShader.setUniform("currentFrame", currentFrame.getTexture());
         smoothShader.setUniform("lastFrame", previousFrame.getTexture());
-        smoothShader.setUniform("maxDelta", 0.01f);
-
-        sf::Sprite passthrough(currentFrame.getTexture());
+        smoothShader.setUniform("maxDelta", 0.3f);
 
         output.clear();
-        output.draw(passthrough, &smoothShader);
+        output.draw(sf::Sprite(currentFrame.getTexture()), &smoothShader);
         output.display();
 
         window.clear();
-        sf::Sprite finalSprite(output.getTexture());
-        window.draw(finalSprite);
+        window.draw(sf::Sprite(output.getTexture()));
         window.display();
 
         previousFrame.clear();
-        previousFrame.draw(sf::Sprite(currentFrame.getTexture()));
+        previousFrame.draw(sf::Sprite(output.getTexture()));
         previousFrame.display();
     }
 

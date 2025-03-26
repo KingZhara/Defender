@@ -14,6 +14,7 @@ std::vector<sf::Glsl::Vec3> Mutant::brightColors = { // Data table from somewher
 
 void Mutant::tick(double deltatime)
 {
+	static Timer<double> attackTimer{ 2 };
 	static Timer<double> replaceType{ 1 / 2. };
 	static bool type = false;
 	static const sf::Vector2f speed = { 1.5, 1.5 };
@@ -26,28 +27,27 @@ void Mutant::tick(double deltatime)
 	else
 		shader->setUniform("ReplaceColor", sf::Glsl::Vec3(0, 0, 0));
 
-	std::cout << "TICKY TYPY" << type << ' ' << '\n';
-
-
-	// Bobbing
-	if (bobbing.tick(deltatime))
+	// Bob up or down on even intervals
+	if (bobStage % 2 == 0)
 	{
-		// Bob up or down on even intervals
-		if (bobStage % 2 == 0)
-		{
-			if (bobStage <= 3)
-				pos.y += 2;
-			else
-				pos.y -= 2;
-		}
+		if (bobStage <= 3)
+			pos.y += 1;
+		else
+			pos.y -= 1;
+	}
 
 		// Update
 		bobStage = (bobStage + 1) % 8;
-	}
 
 
 	// Attack
 	// @todo implement attacks - is very easy
+		if (attackTimer.tick(deltatime))
+		{
+			std::cout << "FIRE!!! __ -- ^^ -- __ !!!ERIF\n";
+			entityQueue.emplace(pos,
+				atan2(playerPos->y - pos.y, playerPos->x - pos.x), EntityID::BULLET);
+		}
 
 	// Movement
 	// If above the player
@@ -70,18 +70,14 @@ void Mutant::tick(double deltatime)
 		else
 			vel.x = -speed.x;
 
-		std::cout << abs(pos.y - playerPos->y) << " > " << 240 / 4 + 5 << '\n';
-
 		// If we are out of the ideal range (screen height / 8 +- 5)
-		if (abs(pos.y - playerPos->y) > 240 / 4 + 5 || abs(pos.y - playerPos->y) < 240 / 4 - 5)
+		if (pos.y - playerPos->y > 240 / 8 + 5 || pos.y - playerPos->y < -240 / 8 - 5)
 		{
-			std::cout << "A>>>>>" << '\n';
-
 			// If above the range, move down
-			if (abs(pos.y - playerPos->y) > 240 / 4 + 5)
-				vel.y = +speed.y;
-			else
+			if (pos.y - playerPos->y > 240 / 8 + 5)
 				vel.y = -speed.y;
+			else
+				vel.y = speed.y;
 		}
 		else
 			vel.y = 0;

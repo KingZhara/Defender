@@ -26,7 +26,7 @@ public:
 		if (actions.flags.down)
 			vel.y += 0.2f;
 		if (actions.flags.fire)
-			Entity::entityQueue.emplace(pos, vel.x > 0 ? 0 : std::numbers::pi, EntityID::LASER);
+			entityQueue.emplace(pos, vel.x > 0 ? 0 : std::numbers::pi, EntityID::LASER);
 	}
 
     void setActions(Action& actions);

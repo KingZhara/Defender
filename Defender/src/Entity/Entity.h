@@ -25,7 +25,7 @@ public:
            EntityID::ID  ID_,
            bool          isScripted_ = false,
            EntityScript *script_ = nullptr,
-           sf::Shader *  shader = nullptr) : pos(pos_), isScripted(isScripted_),
+           sf::Shader   *shader = nullptr) : pos(pos_), isScripted(isScripted_),
                                              script(script_),
                                              animation(
                                                      SPRITE_TABLE[ID_].
@@ -35,7 +35,10 @@ public:
                                                      frameLength
                                                      /*SPRITE_TABLE[ID].shader*/,
                                                      shader),
-                                             ID(ID_) {}
+                                             ID(ID_)
+    {
+        std::cout << pos.x << ' ' << pos.y << '\n';
+    }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds) : pos(pos_),
                                                     isScripted(false),

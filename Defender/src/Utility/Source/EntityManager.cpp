@@ -1,4 +1,4 @@
-#include "..\EntityManager.h"
+#include "../EntityManager.h"
 
 bool EntityManager::scripted = true;
 
@@ -39,22 +39,22 @@ bool EntityManager::tick(Action &actions, double deltatime)
     {
         if (enemy != nullptr)
         {
-            if      (dynamic_cast<Lander*>(enemy))
-                     dynamic_cast<Lander*> (enemy)->tick(deltatime);
-            else if (dynamic_cast<Mutant*> (enemy))
-                     dynamic_cast<Mutant*> (enemy)->tick(deltatime);
-            else if (dynamic_cast<Pod*>    (enemy))
-                     dynamic_cast<Pod*>    (enemy)->tick(deltatime);
-            else if (dynamic_cast<Baiter*> (enemy))
-                     dynamic_cast<Baiter*> (enemy)->tick(deltatime);
+            if (dynamic_cast<Lander*>(enemy))
+                dynamic_cast<Lander*>(enemy)->tick(deltatime);
+            else if (dynamic_cast<Mutant*>(enemy))
+                dynamic_cast<Mutant*>(enemy)->tick(deltatime);
+            else if (dynamic_cast<Pod*>(enemy))
+                dynamic_cast<Pod*>(enemy)->tick(deltatime);
+            else if (dynamic_cast<Baiter*>(enemy))
+                dynamic_cast<Baiter*>(enemy)->tick(deltatime);
             else if (dynamic_cast<Swarmer*>(enemy))
-                     dynamic_cast<Swarmer*>(enemy)->tick(deltatime);
-            else if (dynamic_cast<Bomber*> (enemy))
-                     dynamic_cast<Bomber*> (enemy)->tick(deltatime);
+                dynamic_cast<Swarmer*>(enemy)->tick(deltatime);
+            else if (dynamic_cast<Bomber*>(enemy))
+                dynamic_cast<Bomber*>(enemy)->tick(deltatime);
             else
             {
                 throw std::runtime_error(
-                                "Failed to cast enemy! : EntityManager::Tick()");
+                        "Failed to cast enemy! : EntityManager::Tick()");
             }
         }
     }
@@ -65,6 +65,13 @@ bool EntityManager::tick(Action &actions, double deltatime)
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
     }
+    /*
+    // Tick projectiles
+    for (auto &projectile : projectiles.entities)
+    {
+        if (projectile != nullptr)
+            projectile->tick(deltatime);
+    }*/
 
     // Spawn all projectiles
     clearQueue();
@@ -187,11 +194,11 @@ void EntityManager::killArea(sf::FloatRect viewport)
     }
 }
 
-void EntityManager::hyperspace(sf::FloatRect viewport)
+void EntityManager::hyperspace(sf::Vector2f size, float left)
 {
     player->setPos({
-        static_cast<float>(std::rand() % static_cast<int>(viewport.left)),
-        static_cast<float>(std::rand() % static_cast<int>(viewport.top))
+        static_cast<float>(std::rand() % static_cast<int>(size.x + left)),
+        static_cast<float>(std::rand() % static_cast<int>(size.y))
     });
 }
 
@@ -216,7 +223,7 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID)
 
         default:
             throw std::runtime_error(
-                            "Invalid Type : EntityManager::spawn;PROJ(sw)");
+                    "Invalid Type : EntityManager::spawn;PROJ(sw)");
         }
         break;
     case SpawnType::ENEMY:
@@ -248,7 +255,7 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID)
 
         default:
             throw std::runtime_error(
-                            "Invalid Type : EntityManager::spawn;ENEM(sw)");
+                    "Invalid Type : EntityManager::spawn;ENEM(sw)");
         }
         break;
     case SpawnType::ASTRONAUT:
@@ -270,28 +277,28 @@ void EntityManager::clearQueue()
         {
         case EntityID::BULLET:
             projectiles.entities.at(projectiles.spawn<Bullet>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)),
-                static_cast<float>(cos(e.rot))
+                static_cast<float>(cos(e.rot)) * 7,
+                static_cast<float>(sin(e.rot)) * 7
             });
             break;
 
         case EntityID::LASER:
             projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)),
-                static_cast<float>(cos(e.rot))
+                static_cast<float>(cos(e.rot)) * 7,
+                static_cast<float>(sin(e.rot)) * 7
             });
             break;
 
         case EntityID::BOMB:
             projectiles.entities.at(projectiles.spawn<Bomb>(e.pos))->setVel({
-                static_cast<float>(cos(e.rot)),
-                static_cast<float>(cos(e.rot))
+                static_cast<float>(cos(e.rot)) * 7,
+                static_cast<float>(sin(e.rot)) * 7
             });
             break;
 
         default:
             throw std::runtime_error( // Invalid entity was queued
-                            "Don't do that. : EntityManager::clearQueue()");
+                    "Don't do that. : EntityManager::clearQueue()");
         }
 
         Entity::getQueue().pop();

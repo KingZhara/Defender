@@ -1,4 +1,4 @@
-uniform sampler2D texture;
+uniform sampler2D textureaa;
 uniform vec3 targetColor;
 uniform vec3 replaceColor;
 
