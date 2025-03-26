@@ -30,7 +30,7 @@ class EntityManager : public sf::Drawable
 
 		// For all non-entity specifications
 		template<typename E>
-		requires (!std::is_same_v<E, Entity> && std::derived_from<E, T>)
+		requires (!std::is_same_v<E, Entity> && std::is_base_of_v<T, E>)
 		uint16_t spawn(sf::Vector2f pos)
 		{
 			uint16_t index = 0;
