@@ -28,9 +28,9 @@ private:
     static sf::Texture *     textures     ; // In-game textures
     static sf::RenderTexture* currentFrame ; // The current frame being drawn
     static sf::RenderTexture* previousFrame;
-    static sf::RenderTexture* output       ;
     static sf::Shader*        smoothShader ;
     static sf::View          viewport     ;
+    static bool outputTexture;
 
     static sf::Texture *loadSpritesheet();
     static sf::Vector2u getMaxAspectResolution(int screenWidth,

@@ -30,9 +30,6 @@ bool StageState::tick(Action& actions, double deltatime)
 
 	if (!playerDead)
 	{
-		// Adjust viewport
-		entityManager.adjViewport(&DisplayManager::getView());
-
 		// @todo check if a cooldown was needed, I am just assuming it is - Ricky
 		// Handle the hyperspace cooldown
 		if (!hyperspaceCooldown.isComplete())
@@ -77,6 +74,8 @@ bool StageState::tick(Action& actions, double deltatime)
 		//@todo Add respawning mechanics...
 		playerDead = false;
 	}
+	else
+		EntityManager::adjViewport(&DisplayManager::getView());
 
 	return false;
 }

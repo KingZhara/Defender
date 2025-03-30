@@ -29,20 +29,6 @@ public:
 		static char nameStr[4];
 		static sf::RectangleShape underline;
 
-		static sf::RectangleShape viewBounds = sf::RectangleShape(sf::Vector2f(COMN::resolution.x, COMN::resolution.y));
-		static bool initialized = false;
-
-		if (!initialized)
-		{
-			viewBounds.setOutlineColor(sf::Color::Red);
-			viewBounds.setOutlineThickness(10);
-		}
-
-		viewBounds.setPosition(DisplayManager::getView().getCenter().x - DisplayManager::getView().getSize().x / 2,
-			DisplayManager::getView().getCenter().y - DisplayManager::getView().getSize().y / 2);
-
-		target.draw(viewBounds, states);
-
 		// TODO add timer for death animation
 		if (playerState.lives > 0) 
 			target.draw(entityManager, states);

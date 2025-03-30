@@ -13,7 +13,5 @@ public:
     virtual void tick(double deltatime) override
     {
         Entity::tick(deltatime);
-
-        std::cout << "pos... " << pos.x << ' ' << pos.y << '\n';
     }
 };

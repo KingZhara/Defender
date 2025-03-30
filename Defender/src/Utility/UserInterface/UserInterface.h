@@ -9,15 +9,18 @@ class UserInterface
 	{
 		class Component
 		{
-			enum class Type
+			enum Type : uint8_t
 			{
 				UP,
 				DOWN,
 				FLAT
 			};
 		public:
+			Component(uint8_t type_, uint8_t length_) : type(static_cast<Type>(type_)), length(length_) {}
+
+			uint8_t generate(sf::Image& img, sf::Vector2u& pos, uint16_t maxDx);
+
 		private:
-			Component* next;
 			Type type;
 			uint8_t length;
 		};
@@ -27,7 +30,8 @@ class UserInterface
 
 	private:
 		static sf::RectangleShape border;
-		static sf::Image background;
+		static sf::Sprite background;
+		static sf::Texture* bgTex;
 	};
 	// ################# WORLD BACKGROUND END #############
 

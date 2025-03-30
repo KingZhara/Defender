@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "DisplayManager.h"
 #include "Timer.h"
 
 class Animation : public sf::Drawable
@@ -93,8 +94,8 @@ public:
 		start = start_;
 	}
 
-	void setPosition(sf::Vector2f pos)
-	{
+	void setPosition(sf::Vector2f pos) const
+    {
 		frame.setPosition(round(pos.x), round(pos.y));
 	}
 
@@ -104,7 +105,7 @@ public:
 		return frame;
 	}
 
-	sf::FloatRect getBounds() { return frame.getGlobalBounds(); }
+	sf::FloatRect getBounds() const { return frame.getGlobalBounds(); }
 
 	void setTexturePos(sf::Vector2i pos)
 	{

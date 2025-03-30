@@ -12,6 +12,8 @@ Game::~Game()
 
 void Game::tick(Action& actions, double deltatime)
 {
+	//std::cout << "Viewport Data: " << DisplayManager::getView().getSize().x << ", " << DisplayManager::getView().getSize().y << " | " << DisplayManager::getView().getCenter().x << DisplayManager::getView().getCenter().y << '\n';
+
 	if (state.type != GameState::State::STAGE && actions)
 		state.switchState(true);
 

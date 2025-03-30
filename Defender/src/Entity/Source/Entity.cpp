@@ -1,5 +1,7 @@
 #include "../Entity.h"
 
+#include "../../Utility/DisplayManager.h"
+
 std::queue<Entity::QueuedEntity> Entity::entityQueue;
 
 const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
@@ -59,6 +61,9 @@ void Entity::tick(double deltatime)
 {
 	animation.tick(deltatime);
 
+
+	std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ")," << " (" << (pos.x - DisplayManager::getView().getCenter().x) << ", " << (pos.x - DisplayManager::getView().getCenter().y) << ") ";
+
 	pos += vel;
 	// vel *= 0.9f; // Don't apply friction - Ricky
 	if (abs(vel.x) < 0.1f)
@@ -66,7 +71,9 @@ void Entity::tick(double deltatime)
 	if (abs(vel.y) < 0.1f)
 		vel.y = 0;
 
+	std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ") ";
 	animation.setPosition(pos);
+	std::cout << '\n';
 }
 
 bool Entity::collide(Entity* other)

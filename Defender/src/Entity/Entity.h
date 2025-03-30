@@ -39,7 +39,7 @@ public:
                                                      shader),
                                              ID(ID_)
     {
-        std::cout << pos.x << ' ' << pos.y << '\n';
+        //std::cout << pos.x << ' ' << pos.y << '\n';
     }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds) : pos(pos_),

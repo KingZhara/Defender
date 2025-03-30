@@ -47,10 +47,7 @@ void Mutant::tick(double deltatime)
     // Attack
     // @todo implement attacks - is very easy
     if (attackTimer.tick(deltatime))
-    {
-        std::cout << "FIRE!!! __ -- ^^ -- __ !!!ERIF\n";
         entityQueue.emplace(QueuedEntity( pos, EntityID::BULLET ));
-    }
 
     // Movement
     // If above the player

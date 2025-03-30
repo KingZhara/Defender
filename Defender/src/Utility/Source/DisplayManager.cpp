@@ -9,12 +9,12 @@ sf::Vector2u DisplayManager::resolution = getMaxAspectResolution(
     sf::VideoMode::getDesktopMode().height, COMN::aspectRatio.x, COMN::aspectRatio.y);
 // The game window
 sf::RenderWindow* DisplayManager::window = nullptr;
-sf::RenderTexture* DisplayManager::currentFrame;
-sf::RenderTexture* DisplayManager::previousFrame;
-sf::RenderTexture* DisplayManager::output;
+sf::RenderTexture* DisplayManager::currentFrame = nullptr;
+sf::RenderTexture* DisplayManager::previousFrame = nullptr;
 sf::Texture* DisplayManager::textures = nullptr; // In-game textures
-sf::Shader* DisplayManager::smoothShader;
+sf::Shader* DisplayManager::smoothShader = nullptr;
 sf::View DisplayManager::viewport = sf::View(sf::FloatRect(0, 0, COMN::resolution.x, COMN::resolution.y));
+bool DisplayManager::outputTexture = true;
 
 
 
@@ -24,7 +24,6 @@ void DisplayManager::initialize()
         "Defender", sf::Style::Titlebar | sf::Style::Close);
     currentFrame = new sf::RenderTexture;
     previousFrame = new sf::RenderTexture;
-    output = new sf::RenderTexture;
     smoothShader = new sf::Shader;
 
 
@@ -35,22 +34,22 @@ void DisplayManager::initialize()
 
 
     if (!currentFrame->create(resolution.x, resolution.y) ||
-        !previousFrame->create(resolution.x, resolution.y) ||
-        !output->create(resolution.x, resolution.y))
+        !previousFrame->create(resolution.x, resolution.y))
         std::cerr << "Failed to create render textures.\n";
 
     textures = textures = loadSpritesheet();
 
     currentFrame->setSmooth(false);
     previousFrame->setSmooth(false);
-    output->setSmooth(false);
     textures->setSmooth(false);
 
     previousFrame->clear(sf::Color::Black);
     previousFrame->display();
 
 
+    window->setView(viewport);
     currentFrame->setView(viewport);
+    previousFrame->setView(viewport);
 
     window->setFramerateLimit(60);
 }
@@ -58,35 +57,36 @@ void DisplayManager::initialize()
 void DisplayManager::clean()
 {
     delete textures;
+    delete window;
+	delete currentFrame;
+	delete previousFrame;
+	delete smoothShader;
 }
 
 void DisplayManager::draw()
 {
+    //window->setView(viewport);
+    currentFrame->setView(viewport);
+    previousFrame->setView(viewport);
     // Assumes getRenderTarget() has been called, and the current frame has been drawn to
-    currentFrame->display();
+    (outputTexture ? currentFrame : previousFrame)->display();
 
-    smoothShader->setUniform("currentFrame", currentFrame->getTexture());
-    smoothShader->setUniform("lastFrame", previousFrame->getTexture());
+    smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
+    smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
     smoothShader->setUniform("maxDelta", 1.0f); // 0.3 is a safe-ish value
 
-    output->clear();
-    output->draw(sf::Sprite(currentFrame->getTexture()), smoothShader);
-    output->display();
-
     window->clear();
-    window->draw(sf::Sprite(output->getTexture()));
+    window->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
     window->display();
 
-    previousFrame->clear();
-    previousFrame->draw(sf::Sprite(output->getTexture()));
-    previousFrame->display();
+    (outputTexture ? currentFrame : previousFrame)->clear();
 
-    currentFrame->clear();
+	outputTexture = !outputTexture;
 }
 
 sf::RenderTexture * DisplayManager::getRenderTarget()
 {
-    return currentFrame;
+    return (outputTexture ? currentFrame : previousFrame);
 }
 
 sf::Texture * DisplayManager::loadSpritesheet()

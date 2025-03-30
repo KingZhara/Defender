@@ -28,58 +28,65 @@ EntityManager::EntityManager(bool scripted_)
 
 void EntityManager::adjViewport(sf::View *view)
 {
-    // The view follows the player, moving at a varying speed and keeping the player with a minimum of 1/4 of the screen on either side.
-    // the views movement speed seems proportional to the distance of the player from its position on the sorrect side, and the players movement itself; not moving? no change.
+    static double playfieldFactor    = 2. / 4.;
+    static double normalizationWidth = 50;
+    const  double playfieldWidth     = view->getSize().x - (view->getSize().x * playfieldFactor)          ; // Playfield width
+    const  double centeredPlayer     = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.; // The players position centered to its hitbox
+    double        viewOffset         = player->getVel().x                                                 ; // View offset
+    double        xOffset                                                                                 ; // Player position - playfield percentage
+    bool   atEdge             = false;
 
-    // The goal here is to generate a motion factor and then apply it
-
-    // get player direction
-    // get player position
-    // get player velocity
-    // get offset from opposing side
-    // view speed should be player speed + player speed * playfield width/(playfield width - offset)
-
-    // if the player is outside of the view range, move the view accordingly
-    // otherwise, move the view at a speed proportional to the player's speed as described above.
-
-    // view offset
-    double viewOffset = 0;
-
-    // player position - playfield percentage
-    uint16_t offsetFactor = 0;
-
-    // playfield width
-    uint16_t playfieldWidth = view->getSize().x / 2;
-
-
-    if (player->getPos().x < view->getCenter().x - view->getSize().x / 4)
-        viewOffset = player->getPos().x - (view->getCenter().x - view->getSize()
-                                                                      .x / 4);
-    else if (player->getPos().x > view->getCenter().x + view->getSize().x / 4)
-        viewOffset = player->getPos().x - (view->getCenter().x + view->getSize()
-                                                                      .x / 4);
-    else // Within range
+    if (player->getVel().x > 0) // If moving right
     {
-        // Calculate offset factor
-        if (player->getVel().x > 0)
-            offsetFactor = player->getPos().x - view->getCenter().x
-                                              - view->getSize().x / 4;
-        else if (player->getVel().x < 0)
-            offsetFactor = player->getPos().x - view->getCenter().x
-                                              + view->getSize().x / 4;
+        // Player relative to the left playfield cutoff (center - field width / 2)
+        xOffset = centeredPlayer - (view->getCenter().x - playfieldWidth / 2);
 
+        // Set if it has reached its side
+        if (xOffset <= 4.5) // 4.5 is a magic number for stabilization. it probably makes sense if you follow the viewport and player tick pipelines more closely, im not gonna.
+            atEdge = true;
 
-        viewOffset = player->getVel().x + (playfieldWidth - offsetFactor == 0
-                                               ? 0
-                                               : player->getVel().x *
-                                                     playfieldWidth /
-                                                    (playfieldWidth -
-                                                     offsetFactor));
+        // Apply a normalization width to prevent reaching the asymptote & a minimum value
+        xOffset = std::max(xOffset + normalizationWidth, -1.);
     }
+    else if (player->getVel().x < 0) // If moving left
+    {
+        // Player relative to the left playfield cutoff (center + field width / 2)
+        xOffset = centeredPlayer - (view->getCenter().x + playfieldWidth / 2);
 
-    std::cout << "ADJUSTING... " << viewOffset << '\n';
+        // Set if it has reached its side
+        if (xOffset >= -4.5)
+            atEdge = true;
 
-    view->move(viewOffset, 0);
+        // Apply a normalization width to prevent reaching the asymptote & a minimum value
+        xOffset = std::min(xOffset - normalizationWidth, 1.);
+    }
+    else // If not moving
+        return;
+
+    // Offset MUST be positive
+    if (xOffset < 0)
+        xOffset = -xOffset;
+
+    // Apply a scaling speed difference based off of the offset
+    if (!atEdge)
+    {
+        viewOffset += player->getVel().x * xOffset / 100;
+
+
+        // Finally move by dx, performing screen width wrapping as well as integer bound rounding.
+        view->setCenter(
+            static_cast<float>(
+                static_cast<int>(std::round(view->getCenter().x + viewOffset)) %
+                static_cast<int>(std::round(view->getSize().x * 9))),
+            COMN::resolution.y / 2);
+    }
+    else
+    {
+        view->setCenter({
+            (float)std::round(centeredPlayer + (player->getVel().x > 0 ? 1 : -1) * playfieldWidth / 2),
+            COMN::resolution.y / 2
+            });
+    }
 }
 
 bool EntityManager::tick(Action &actions, double deltatime, float center = 0)

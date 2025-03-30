@@ -1,7 +1,10 @@
 #pragma once
-#include "Entity.h"
+#include <algorithm>
 #include <numbers>
+#include "Entity.h"
 #include "../Utility/Action.h"
+#include "../Utility/DisplayManager.h"
+#include "../Utility/common.h"
 
 class Player :
     public Entity
@@ -28,7 +31,15 @@ public:
 			vel.y += 0.2f;
 		if (actions.flags.fire)
 			entityQueue.emplace(pos, EntityID::LASER);
-	}
+
+        pos.y = std::max<float>(pos.y, 0);
+
+        pos.y = std::min(pos.y, COMN::resolution.y - getBounds(EntityID::PLAYER).height);
+
+		//pos.x = static_cast<float>(
+		//	static_cast<int>(std::round(pos.x + getBounds(EntityID::PLAYER).width / 2)) %
+		//	static_cast<int>(std::round(DisplayManager::getView().getSize().x * 9)));
+    }
 
     void setActions(Action& actions);
 

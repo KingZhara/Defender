@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+
 #include "SFML/System/Vector2.hpp"
 
 struct Vec2f
@@ -20,6 +22,11 @@ struct COMN
 		73,
 		60
 	};
+
+	static constexpr uint16_t worldSize = 9 * resolution.x;
+
+	static constexpr uint16_t worldBgHeight = 80;
+	static constexpr uint16_t worldBgStart = 20;
 
 	COMN() = delete;
 };
