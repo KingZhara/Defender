@@ -20,14 +20,14 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
     // Type dictates direction
     // All lengths represent a change in position by 
     const uint16_t maxDy = std::min<uint16_t>(
-            (COMN::worldSize - (pos.x + pos.y)) / 2, 
+            (COMN::worldSize - (pos.x + (pos.y - 20))) / 2, 
 		    type == Type::UP
                      ? COMN::worldBgHeight - pos.y
                      : pos.y);
 
     maxDx = std::min<uint16_t>(255, maxDx);
 
-	std::cout << "MAX DX: " << (short)maxDx << ", MAX DY: " << maxDy << " | POS: (" << pos.x << ", " << pos.y << "), OFFSET: " << pos.x + pos.y << '\n';
+	std::cout << "MAX DX: " << (short)maxDx << ", MAX DY: " << maxDy << " | POS: (" << pos.x << ", " << pos.y << "), OFFSET: " << pos.x + pos.y - 20 << '\n';
 
     std::cout << (COMN::worldSize - (pos.x + pos.y)) / 2 << ", " << (type == Type::UP ? COMN::worldBgHeight - pos.y : pos.y) << '\n';
 
