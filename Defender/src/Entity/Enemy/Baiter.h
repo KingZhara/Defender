@@ -6,7 +6,7 @@ class Baiter :
 public:
     explicit Baiter(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
-        : Enemy(pos_, EntityID::MUTANT, isScripted_, script_)
+        : Enemy(pos_, EntityID::BAITER, isScripted_, script_)
     {}
 
     /*
