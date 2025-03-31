@@ -51,7 +51,7 @@ void Mutant::tick(double deltatime)
 
     // Movement
     // If above the player
-    /*
+    
     if (abs(pos.x - playerPos->x) <
         4) // 2 = square radius on the x-axis around the player
     {
@@ -84,7 +84,7 @@ void Mutant::tick(double deltatime)
         }
         else
             vel.y = 0;
-    }*/
+    }
 
     Entity::tick(deltatime);
 }

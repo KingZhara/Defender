@@ -27,7 +27,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
 
     maxDx = std::min<uint16_t>(255, maxDx);
 
-	std::cout << "MAX DX: " << (short)maxDx << ", MAX DY: " << maxDy << " | POS: (" << pos.x << ", " << pos.y << "), OFFSET: " << pos.x + pos.y - 20 << '\n';
+	//std::cout << "MAX DX: " << (short)maxDx << ", MAX DY: " << maxDy << " | POS: (" << pos.x << ", " << pos.y << "), OFFSET: " << pos.x + pos.y << '\n';
 
     std::cout << (COMN::worldSize - (pos.x + pos.y)) / 2 << ", " << (type == Type::UP ? COMN::worldBgHeight - pos.y : pos.y) << '\n';
 
@@ -57,11 +57,11 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
     if (type == Type::FLAT)
         length /= 2;
 
-    std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
+    //std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
 
     for (uint8_t i = 0; i < length; i++)
     {
-        std::cout << "    ";
+        //std::cout << "    ";
         switch (type)
         {
         case Type::UP:
@@ -75,7 +75,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         case Type::FLAT:
             // [  ##]
             // [##  ]
-            std::cout << "(" << pos.x << ", " << pos.y << "), ";
+            //std::cout << "(" << pos.x << ", " << pos.y << "), ";
             img.setPixel(pos.x + 1, pos.y, sf::Color::White);
             ++pos.x;
             ++i;
@@ -83,11 +83,11 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         }
 
         ++pos.x;
-        std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
+        //std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
         img.setPixel(pos.x, pos.y, sf::Color::White);
     }
 
-	std::cout << "}\n\n";
+	//std::cout << "}\n\n";
 
     return length;
 }

@@ -164,6 +164,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
         }
     }
 
+    /*
     // Handles player collision with enemies
     if (!playerDeath)
     {
@@ -178,7 +179,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
             ++enemyIndex;
         }
     }
-
+    */
     return playerDeath;
 }
 
@@ -260,12 +261,14 @@ void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID)
 
 void EntityManager::killArea(sf::FloatRect viewport)
 {
+    
     for (uint16_t i = 0; i < enemies.entities.size(); i++)
     {
         if (enemies.entities.at(i)->getPos().x > viewport.left &&
             enemies.entities.at(i)->getPos().x < viewport.left + viewport.width)
             enemies.kill(i);
     }
+    
 }
 
 void EntityManager::hyperspace(sf::Vector2f size, float left)
