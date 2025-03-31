@@ -17,7 +17,7 @@ std::vector<sf::Glsl::Vec3> Mutant::brightColors =
 
 void Mutant::tick(double deltatime)
 {
-    static Timer<double>      attackTimer{2};
+    static Timer<double>      attackTimer{.5};
     static Timer<double>      replaceType{1 / 2.};
     static bool               type  = false;
     static const sf::Vector2f speed = {1.5, 1};
@@ -51,7 +51,7 @@ void Mutant::tick(double deltatime)
 
     // Movement
     // If above the player
-    /*
+    
     if (abs(pos.x - playerPos->x) <
         4) // 2 = square radius on the x-axis around the player
     {
@@ -84,7 +84,7 @@ void Mutant::tick(double deltatime)
         }
         else
             vel.y = 0;
-    }*/
+    }
 
     Entity::tick(deltatime);
 }
