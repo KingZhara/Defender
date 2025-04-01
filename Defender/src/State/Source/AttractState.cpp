@@ -21,9 +21,9 @@ bool AttractState::tick(double deltatime)
 	static double deltaTime;
 	deltaTime += deltatime;
 
-	while (deltaTime > 1)
+	while (deltaTime >= 0.05)
 	{
-		deltaTime -= 1;
+		deltaTime -= 0.05;
 
 		switch (stage)
 		{

@@ -161,7 +161,8 @@ void UserInterface::initialize()
     shiftingShader->loadFromFile("res/shaders/shifting.frag",
                                  sf::Shader::Type::Fragment);
 
-    UserInterface::World::generate();
+    // INFINITE LOOP, temporary comment out
+    // UserInterface::World::generate();
     Mutant::initShader();
 }
 
