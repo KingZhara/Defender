@@ -60,9 +60,9 @@ bool AttractState::tick(double deltatime)
 	static double deltaTime;
 	deltaTime += deltatime;
 
-	while (deltaTime >= 0.045)
+	while (deltaTime >= 0.04)
 	{
-		deltaTime -= 0.045;
+		deltaTime -= 0.04;
 
 		if (timer)
 		{
@@ -74,8 +74,8 @@ bool AttractState::tick(double deltatime)
 			{
 			case 0: // Williams
 				willPos++;
-				for (int x = 0; x < willSteps.getSize().x; x++)
-					for (int y = 0; y < willSteps.getSize().y; y++)
+				for (unsigned x = 0; x < willSteps.getSize().x; x++)
+					for (unsigned y = 0; y < willSteps.getSize().y; y++)
 						if (willSteps.getPixel(x, y).toInteger() < willPos && 
 							willSteps.getPixel(x, y).toInteger())
 							willImg.setPixel(x, y, sf::Color::White);
@@ -87,7 +87,7 @@ bool AttractState::tick(double deltatime)
 				{
 					willPos = 0;
 					stage++;
-					timer += 100;
+					timer += 80;
 				}
 
 				break;
@@ -96,20 +96,20 @@ bool AttractState::tick(double deltatime)
 				electronicsInc.setFillColor(sf::Color::White);
 				presents.setFillColor(sf::Color::White);
 				stage++;
-				timer += 100;
+				timer += 80;
 				break;
 
 			case 2: // Defender
 				defender.setFillColor(sf::Color::White);
 				stage++;
-				timer += 100;
+				timer += 80;
 				break;
 
 			case 3: // Copyright credits
 				copyright.setFillColor(sf::Color::White);
 				credits.setFillColor(sf::Color::White);
 				stage++;
-				timer += 100;
+				timer += 80;
 				break;
 
 			case 4:

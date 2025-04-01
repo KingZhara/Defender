@@ -21,12 +21,14 @@ public:
 		case 3: // Copyright
 			target.draw(copyright, states);
 			target.draw(credits, states);
+			[[fallthrough]];
 		case 2: // Defender
 			target.draw(defender, states);
-
+			[[fallthrough]];
 		case 1: // Electronics Inc
 			target.draw(electronicsInc, states);
 			target.draw(presents, states);
+			[[fallthrough]];
 		case 0: // Williams
 			target.draw(williams, states);
 		}
@@ -43,7 +45,7 @@ private:
 	sf::Texture defenderTex;
 	sf::RectangleShape defender;
 
-	int willPos = 0;
+	unsigned willPos = 0;
 
 	int stage = 0;
 	
