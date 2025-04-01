@@ -155,6 +155,7 @@ void UserInterface::Stars::draw(sf::RenderTarget &target,
 void UserInterface::initialize()
 {
     font.loadFromFile("res/defendermono.ttf");
+    font.setSmooth(false);
 
     shiftingShader = new sf::Shader;
 

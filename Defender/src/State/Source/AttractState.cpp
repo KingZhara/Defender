@@ -2,6 +2,8 @@
 #include "../../Utility/UserInterface/UserInterface.h"
 #include "../../Utility/common.h"
 
+#include <iostream>
+
 
 AttractState::AttractState()
 {
@@ -16,13 +18,13 @@ AttractState::AttractState()
 
 	electronicsInc.setFont(UserInterface::getFont());
 	electronicsInc.setFillColor(sf::Color(0));
-	electronicsInc.setCharacterSize(12);
+	electronicsInc.setCharacterSize(16);
 	electronicsInc.setString("ELECTRONICS INC.");
 	electronicsInc.setPosition(COMN::resolution.x * 0.3, 50);
 	
 	presents.setFont(UserInterface::getFont());
 	presents.setFillColor(sf::Color(0));
-	presents.setCharacterSize(12);
+	presents.setCharacterSize(16);
 	presents.setString("PRESENTS");
 	presents.setPosition(COMN::resolution.x * 0.4, 60);
 
@@ -37,13 +39,13 @@ AttractState::AttractState()
 	// This uses a different font, fix later
 	copyright.setFont(UserInterface::getFont());
 	copyright.setFillColor(sf::Color(0));
-	copyright.setCharacterSize(10);
-	copyright.setString("COPYRIGHT CR 1980");
+	copyright.setCharacterSize(16);
+	copyright.setString("COPYRIGHT @~ 1980");
 	copyright.setPosition(COMN::resolution.x * 0.35, 150);
 	
 	credits.setFont(UserInterface::getFont());
 	credits.setFillColor(sf::Color(0));
-	credits.setCharacterSize(12);
+	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x * 0.3, 160);
 }
@@ -83,6 +85,7 @@ bool AttractState::tick(double deltatime)
 
 				if (willPos > 110)
 				{
+					willPos = 0;
 					stage++;
 					timer += 100;
 				}
@@ -109,8 +112,8 @@ bool AttractState::tick(double deltatime)
 				timer += 100;
 				break;
 
-			//case 4:
-				//return true;
+			case 4:
+				return true;
 			}
 		}
 	}
