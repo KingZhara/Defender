@@ -37,10 +37,10 @@ AttractState::AttractState()
 
 
 	// This uses a different font, fix later
-	copyright.setFont(UserInterface::getFont());
+	copyright.setFont(UserInterface::getOtherFont());
 	copyright.setFillColor(sf::Color(0));
 	copyright.setCharacterSize(16);
-	copyright.setString("COPYRIGHT @~ 1980");
+	copyright.setString("COPYRIGHT @ 1980");
 	copyright.setPosition(COMN::resolution.x * 0.35, 150);
 	
 	credits.setFont(UserInterface::getFont());

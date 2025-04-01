@@ -60,6 +60,7 @@ public:
 
 	// @todo complete shader conversion...
 	static const sf::Font& getFont();
+	static const sf::Font& getOtherFont();
 	static       sf::Shader* getShiftingShader();
 	static const void shaderTick(double deltatime);
 
@@ -71,6 +72,7 @@ private:
 	static      Stars   stars         ;
 	static      Minimap minimap       ;
 	static sf ::Font    font          ;
+	static sf ::Font    otherFont     ;
 	static sf ::Text    score         ;
 	static sf ::Text    credits       ; // @todo find out if this is necessary...
 	static sf ::Shader* shiftingShader;
