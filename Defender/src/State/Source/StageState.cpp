@@ -7,7 +7,7 @@ StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[3] = { 0, 0, 0 };
 uint8_t StageState::namePos = 0;
 
-const char StageState::validChars[] = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const char StageState::validChars[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 StageState::StageState()
 {
