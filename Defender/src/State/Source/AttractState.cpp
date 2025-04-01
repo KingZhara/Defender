@@ -18,15 +18,15 @@ AttractState::AttractState()
 
 	electronicsInc.setFont(UserInterface::getFont());
 	electronicsInc.setFillColor(sf::Color(0));
-	electronicsInc.setCharacterSize(16);
 	electronicsInc.setString("ELECTRONICS INC.");
-	electronicsInc.setPosition(COMN::resolution.x * 0.3, 50);
-	
+	electronicsInc.setCharacterSize(16);
+	electronicsInc.setPosition(COMN::resolution.x / 2 - (18 * 16 / 4), 50);
+
 	presents.setFont(UserInterface::getFont());
 	presents.setFillColor(sf::Color(0));
 	presents.setCharacterSize(16);
 	presents.setString("PRESENTS");
-	presents.setPosition(COMN::resolution.x * 0.4, 60);
+	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
 
 
 	defenderTex.loadFromFile("res/defender.png");
@@ -41,13 +41,13 @@ AttractState::AttractState()
 	copyright.setFillColor(sf::Color(0));
 	copyright.setCharacterSize(16);
 	copyright.setString("COPYRIGHT @ 1980");
-	copyright.setPosition(COMN::resolution.x * 0.35, 150);
+	copyright.setPosition(COMN::resolution.x / 2 - 40, 150);
 	
 	credits.setFont(UserInterface::getFont());
 	credits.setFillColor(sf::Color(0));
 	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
-	credits.setPosition(COMN::resolution.x * 0.3, 160);
+	credits.setPosition(COMN::resolution.x / 4, 160);
 }
 
 AttractState::~AttractState()
