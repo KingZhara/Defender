@@ -11,38 +11,41 @@ AttractState::AttractState()
 
 	williams.setSize(sf::Vector2f(willSteps.getSize().x, willSteps.getSize().y));
 	williams.setTexture(&willTex);
-	williams.setOrigin(williams.getGlobalBounds().getSize() / 2.f);
-	williams.setPosition(COMN::resolution.x / 2, 20);
+	williams.setPosition(COMN::resolution.x / 2 - williams.getGlobalBounds().getSize().x / 2, 10);
 
 
 	electronicsInc.setFont(UserInterface::getFont());
 	electronicsInc.setFillColor(sf::Color(0));
-	electronicsInc.setCharacterSize(15);
+	electronicsInc.setCharacterSize(12);
 	electronicsInc.setString("ELECTRONICS INC.");
-	electronicsInc.setOrigin(electronicsInc.getGlobalBounds().getSize() / 2.f);
-	electronicsInc.setPosition(COMN::resolution.x / 2, 50);
+	electronicsInc.setPosition(COMN::resolution.x * 0.3, 50);
 	
 	presents.setFont(UserInterface::getFont());
 	presents.setFillColor(sf::Color(0));
-	presents.setCharacterSize(15);
+	presents.setCharacterSize(12);
 	presents.setString("PRESENTS");
-	presents.setOrigin(presents.getGlobalBounds().getSize() / 2.f);
-	presents.setPosition(COMN::resolution.x / 2, 60);
+	presents.setPosition(COMN::resolution.x * 0.4, 60);
 
 
+	defenderTex.loadFromFile("res/defender.png");
+	defender.setSize(sf::Vector2f(defenderTex.getSize()) / 2.f);
+	defender.setTexture(&defenderTex);
+	defender.setPosition(COMN::resolution.x / 2 - defender.getGlobalBounds().getSize().x / 2, 90);
+	defender.setFillColor(sf::Color(0));
+
+
+	// This uses a different font, fix later
 	copyright.setFont(UserInterface::getFont());
 	copyright.setFillColor(sf::Color(0));
-	copyright.setCharacterSize(15);
+	copyright.setCharacterSize(10);
 	copyright.setString("COPYRIGHT CR 1980");
-	copyright.setOrigin(copyright.getGlobalBounds().getSize() / 2.f);
-	copyright.setPosition(COMN::resolution.x / 2, 120);
+	copyright.setPosition(COMN::resolution.x * 0.35, 150);
 	
 	credits.setFont(UserInterface::getFont());
 	credits.setFillColor(sf::Color(0));
-	credits.setCharacterSize(15);
+	credits.setCharacterSize(12);
 	credits.setString("CREDITS: 00");
-	credits.setOrigin(credits.getGlobalBounds().getSize() / 2.f);
-	credits.setPosition(COMN::resolution.x / 2, 130);
+	credits.setPosition(COMN::resolution.x * 0.3, 160);
 }
 
 AttractState::~AttractState()
@@ -94,6 +97,7 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 2: // Defender
+				defender.setFillColor(sf::Color::White);
 				stage++;
 				timer += 100;
 				break;

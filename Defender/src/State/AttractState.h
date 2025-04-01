@@ -22,6 +22,7 @@ public:
 			target.draw(copyright, states);
 			target.draw(credits, states);
 		case 2: // Defender
+			target.draw(defender, states);
 
 		case 1: // Electronics Inc
 			target.draw(electronicsInc, states);
@@ -38,6 +39,9 @@ private:
 	sf::RectangleShape williams;
 
 	sf::Text electronicsInc, presents, copyright, credits;
+
+	sf::Texture defenderTex;
+	sf::RectangleShape defender;
 
 	int willPos = 0;
 
