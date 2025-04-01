@@ -29,14 +29,19 @@ AttractState::AttractState()
 	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
 
 
-	defenderTex.loadFromFile("res/defender.png");
-	defender.setSize(sf::Vector2f(defenderTex.getSize()) / 2.f);
-	defender.setTexture(&defenderTex);
-	defender.setPosition(COMN::resolution.x / 2 - defender.getGlobalBounds().getSize().x / 2, 90);
-	defender.setFillColor(sf::Color(0));
+	defenderFrontTex.loadFromFile("res/defenderFront.png");
+	defenderFront.setSize(sf::Vector2f(defenderFrontTex.getSize()) / 2.f);
+	defenderFront.setTexture(&defenderFrontTex);
+	defenderFront.setPosition(COMN::resolution.x / 2 - defenderFront.getGlobalBounds().getSize().x / 2, 90);
+	defenderFront.setFillColor(sf::Color(0));
+
+	defenderSidesTex.loadFromFile("res/defenderSides.png");
+	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
+	defenderSides.setTexture(&defenderSidesTex);
+	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
+	defenderSides.setFillColor(sf::Color(0));
 
 
-	// This uses a different font, fix later
 	copyright.setFont(UserInterface::getOtherFont());
 	copyright.setFillColor(sf::Color(0));
 	copyright.setCharacterSize(16);
@@ -100,7 +105,8 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 2: // Defender
-				defender.setFillColor(sf::Color::White);
+				defenderFront.setFillColor(sf::Color::White);
+				defenderSides.setFillColor(sf::Color::White);
 				stage++;
 				timer += 80;
 				break;

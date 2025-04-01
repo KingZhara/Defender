@@ -23,7 +23,8 @@ public:
 			target.draw(credits, states);
 			[[fallthrough]];
 		case 2: // Defender
-			target.draw(defender, states);
+			target.draw(defenderSides, states);
+			target.draw(defenderFront, states);
 			[[fallthrough]];
 		case 1: // Electronics Inc
 			target.draw(electronicsInc, states);
@@ -42,8 +43,8 @@ private:
 
 	sf::Text electronicsInc, presents, copyright, credits;
 
-	sf::Texture defenderTex;
-	sf::RectangleShape defender;
+	sf::Texture defenderFrontTex, defenderSidesTex;
+	sf::RectangleShape defenderFront, defenderSides;
 
 	unsigned willPos = 0;
 
