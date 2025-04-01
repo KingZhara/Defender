@@ -1,17 +1,15 @@
 #include "../AttractState.h"
 
-AttractState::WillNode AttractState::willNodes[]
-{
-	WillNode(10,  10, 10, 1),
-	WillNode(30, 100, 10),
-	WillNode(50,  10, 10),
-
-	WillNode(100, 10, 10, 2),
-};
-
 
 AttractState::AttractState()
 {
+	willSteps.loadFromFile("res/williams.png");
+	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+
+	willTex.create(willSteps.getSize().x, willSteps.getSize().y);
+
+	williams.setSize(sf::Vector2f(willSteps.getSize().x, willSteps.getSize().y));
+	williams.setTexture(&willTex);
 }
 
 AttractState::~AttractState()
@@ -20,52 +18,25 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static WillNode lastWill;
-	static int timer = 0;
+	static double deltaTime;
+	deltaTime += deltatime;
 
-	if (timer)
+	while (deltaTime > 1)
 	{
-		timer--;
-		return false;
+		deltaTime -= 1;
+
+		switch (stage)
+		{
+		case 0: // Williams
+			willPos++;
+			for (int x = 0; x < willSteps.getSize().x; x++)
+				for (int y = 0; y < willSteps.getSize().y; y++)
+					if (willSteps.getPixel(x, y).toInteger() < willPos && willSteps.getPixel(x, y).toInteger())
+						willImg.setPixel(x, y, sf::Color::White);
+
+			willTex.update(willImg);
+			williams.setTexture(&willTex);
+		}
 	}
-
-	switch (stage)
-	{
-	case 0: // Williams
-	{
-		timer += willNodes[willPos].delay;
-
-		// https://github.com/SFML/SFML/wiki/Source:-Line-segment-with-thickness
-
-		float thickness = 5.f;
-
-		sf::Vector2f point2(willNodes[willPos].x, willNodes[willPos].y);
-		sf::Vector2f point1;
-		if (willNodes[willPos].flags & 1)
-			point1 = point2;
-		else
-			point1 = sf::Vector2f(lastWill.x, lastWill.y);
-
-		sf::Vector2f dir = point2 - point1;
-		sf::Vector2f unitDir = dir / std::sqrt(dir.x * dir.x + dir.y * dir.y);
-
-		sf::Vector2f offset = (thickness / 2.f) * sf::Vector2f(-unitDir.y, unitDir.x);
-
-		willVert[willPos * 4 + 0].position = point1 + offset;
-		willVert[willPos * 4 + 1].position = point2 + offset;
-		willVert[willPos * 4 + 2].position = point2 - offset;
-		willVert[willPos * 4 + 3].position = point1 - offset;
-
-		lastWill = willNodes[willPos];
-
-		if (willNodes[willPos].flags & 2)
-			stage++;
-
-		willPos++;
-
-		break;
-	}
-	}
-
 	return false;
 }
