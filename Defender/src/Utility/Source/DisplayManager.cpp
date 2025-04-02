@@ -35,6 +35,9 @@ void DisplayManager::initialize()
     previousFrame = new sf::RenderTexture;
     smoothShader = new sf::Shader;
 
+    window->setView(viewport);
+    currentFrame->setView(viewport);
+    previousFrame->setView(viewport);
 
     // This is your brain on drugs pookie
     smoothShader->loadFromFile("./res/shaders/epilepsySmooth.frag",
@@ -54,11 +57,6 @@ void DisplayManager::initialize()
 
     previousFrame->clear(sf::Color::Black);
     previousFrame->display();
-
-
-    window->setView(viewport);
-    currentFrame->setView(viewport);
-    previousFrame->setView(viewport);
 
     window->setFramerateLimit(60);
 }
