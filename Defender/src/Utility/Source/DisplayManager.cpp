@@ -28,6 +28,7 @@ void DisplayManager::initialize()
     viewport.setSize(COMN::resolution.x, COMN::resolution.y);
     viewport.setCenter(COMN::resolution.x / 2.f, COMN::resolution.y / 2.f);
 
+	std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     // Create the window at scaled resolution
     window = new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y),
         "Defender", sf::Style::Titlebar | sf::Style::Close);
