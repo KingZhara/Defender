@@ -83,7 +83,8 @@ protected:
     // The data table used for generating a given sprite
     static const SpriteData         SPRITE_TABLE[EntityID::LENGTH];
     static const uint16_t           XP_TABLE[EntityID::LENGTH];
-    static sf::Vector2f *           playerPos;
+    static sf::Vector2f* playerPos;
+    static sf::Vector2f* playerVel;
     static std::queue<QueuedEntity> entityQueue;
 
     sf::Vector2f       pos, vel;

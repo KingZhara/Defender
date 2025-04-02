@@ -12,15 +12,8 @@ void Baiter::tick(double deltaTime)
 
 	if (init) 
 	{
-		if (playerPos->x > pos.x)
-			destinationX = (playerPos->x + abs(pos.x - playerPos->x));
-		else
-			destinationX = (playerPos->x + (pos.x - playerPos->x));
-
-		if (playerPos->y > pos.y)
-			destinationY = (playerPos->y + abs(pos.y - playerPos->y));
-		else
-			destinationY = (playerPos->y + (pos.y - playerPos->y));
+			destinationX = (playerPos->x + (playerPos->x - pos.x)/2);
+			destinationY = (playerPos->y + (playerPos->y - pos.y)/2);
 
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);

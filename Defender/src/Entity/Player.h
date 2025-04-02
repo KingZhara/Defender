@@ -15,6 +15,7 @@ public:
 		: Entity(pos_, EntityID::PLAYER, isScripted_, script_)
 	{
 		playerPos = &pos;
+		playerVel = &vel;
 	}
 
 
