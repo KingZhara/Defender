@@ -99,7 +99,7 @@ bool AttractState::tick(double deltatime)
 			case 1: // Electronics Inc presents
 				electronicsInc.setFillColor(COMN::ShaderTarget);
 				presents.setFillColor(COMN::ShaderTarget);
-				std::cout << "FC: " << (short)electronicsInc.getFillColor().r << ", " << (short)electronicsInc.getFillColor().g << ", " << (short)electronicsInc.getFillColor().b;
+				//std::cout << "FC: " << (short)electronicsInc.getFillColor().r << ", " << (short)electronicsInc.getFillColor().g << ", " << (short)electronicsInc.getFillColor().b;
 				stage++;
 				stageTimer.tick(1);
 				break;

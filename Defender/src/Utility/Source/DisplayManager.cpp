@@ -29,7 +29,7 @@ void DisplayManager::initialize()
     viewport.setSize(COMN::resolution.x, COMN::resolution.y);
     viewport.setCenter(COMN::resolution.x / 2.f, COMN::resolution.y / 2.f);
 
-	std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
+	//std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     // Create the window at scaled resolution
     window = new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y),
         "Defender", sf::Style::Titlebar | sf::Style::Close);
@@ -81,7 +81,6 @@ void DisplayManager::draw(sf::Drawable& all)
     (outputTexture ? currentFrame : previousFrame)->clear();
 	(outputTexture ? currentFrame : previousFrame)->draw(all);
 
-    //std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     // I want to note that a compute shader calculating mean entropy between frames would be ideal, but this is the best I can do for now.
     smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
     smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
@@ -90,7 +89,7 @@ void DisplayManager::draw(sf::Drawable& all)
 	// Apply the shader after drawing the current frame
 	(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
 
-    std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
+    //std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     //window->setView(viewport);
     currentFrame->setView(viewport);
     previousFrame->setView(viewport);
