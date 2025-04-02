@@ -90,7 +90,6 @@ void DisplayManager::draw(sf::Drawable& all)
 	// Apply the shader after drawing the current frame
 	(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
 
-    std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     //window->setView(viewport);
     currentFrame->setView(viewport);
     previousFrame->setView(viewport);
