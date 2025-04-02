@@ -15,19 +15,16 @@ public:
 
 	bool tick(T deltatime)
 	{
-		std::cout << "DT: " << deltatime << ", BEF_T: " << time;
 		if (preIncrement)
 			time += deltatime;
-		std::cout << ", AF_T: " << time;
+
 		if (time >= BASE)
 		{
-			std::cout << ", (RESET!)";
 			time -= BASE;
-			std::cout << ", FINT: " << time << '\n';
+
 			return true;
 		}
 
-		std::cout << ", FINT: " << time << '\n';
 		if (!preIncrement)
 			time += deltatime;
 

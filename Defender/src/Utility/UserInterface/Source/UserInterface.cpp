@@ -211,6 +211,7 @@ const void UserInterface::shaderTick(double deltatime)
 	static bool               type = false;
     static HSV                shiftReplacement;
 
+    std::cout << "SHTCK\n";
 
     if (replaceType.tick(deltatime))
     {

@@ -164,7 +164,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
         }
     }
 
-    /*
+    
     // Handles player collision with enemies
     if (!playerDeath)
     {
@@ -179,7 +179,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
             ++enemyIndex;
         }
     }
-    */
+    
     return playerDeath;
 }
 
