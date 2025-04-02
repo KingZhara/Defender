@@ -21,16 +21,17 @@ public:
 		case 4:
 
 		case 3: // Copyright
-			target.draw(copyright, UserInterface::getShiftingShader());
-			target.draw(credits, UserInterface::getShiftingShader());
+			states.shader = UserInterface::getShiftingShader();
+			target.draw(copyright, states);
+			target.draw(credits, states);
 			[[fallthrough]];
 		case 2: // Defender
 			target.draw(defenderSides, states); // Stays red
-			target.draw(defenderFront, UserInterface::getFlashingShader());
+			target.draw(defenderFront, states);
 			[[fallthrough]];
 		case 1: // Electronics Inc
-			target.draw(electronicsInc, UserInterface::getShiftingShader());
-			target.draw(presents, UserInterface::getShiftingShader());
+			target.draw(electronicsInc, states);
+			target.draw(presents, states);
 			[[fallthrough]];
 		case 0: // Williams
 			target.draw(williams, states); // Will require alternate shader
