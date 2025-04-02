@@ -60,6 +60,7 @@ public:
 
 	// @todo complete shader conversion...
 	static const sf::Font& getFont();
+	static const sf::Font& getOtherFont();
 	static       sf::Shader* getShiftingShader();
 	static       sf::Shader* getFlashingShader();
 	static const void shaderTick(double deltatime);
@@ -77,5 +78,6 @@ private:
 	static sf::Shader*    shiftingShader;
 	static sf::Shader*    flashingShader;
 	static sf::Glsl::Vec3 brightColors[];
+	static sf ::Font    otherFont     ;
 };
 

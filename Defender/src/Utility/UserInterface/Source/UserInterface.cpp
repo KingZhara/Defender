@@ -8,6 +8,7 @@ UserInterface::World UserInterface::world;
 UserInterface::Stars UserInterface::stars;
 UserInterface::Minimap UserInterface::minimap;
 sf::Font UserInterface::font;
+sf::Font UserInterface::otherFont;
 sf::Text UserInterface::score;
 sf::Text UserInterface::credits; // @todo find out if this is necessary...
 sf::Shader* UserInterface::shiftingShader = nullptr;
@@ -178,6 +179,9 @@ void UserInterface::Stars::draw(sf::RenderTarget &target,
 void UserInterface::initialize()
 {
     font.loadFromFile("res/defendermono.ttf");
+    font.setSmooth(false);
+    otherFont.loadFromFile("res/defendercr.ttf");
+    otherFont.setSmooth(false);
 
     // Shaders
     shiftingShader = new sf::Shader;
@@ -196,6 +200,7 @@ void UserInterface::initialize()
 }
 
 const sf::Font &UserInterface::getFont() { return font; }
+const sf::Font &UserInterface::getOtherFont() { return otherFont; }
 
 sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
 sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }

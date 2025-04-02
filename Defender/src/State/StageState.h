@@ -41,13 +41,13 @@ public:
 
 			initials.setString(nameStr);
 			initials.setFont(UserInterface::getFont());
-			initials.setCharacterSize(30);
-			initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(23.5f, 6.5f));
+			initials.setCharacterSize(32);
+			initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(25.f, 10.f));
 
 			underline.setSize(sf::Vector2f(15.f, 2.5));
 			// center underline under current character
 			underline.setPosition(DisplayManager::getView().getCenter() +
-				sf::Vector2f((namePos - 1) * 18.75f - 7.5f, 25.f));
+				sf::Vector2f((namePos - 1) * 20.f - 7.5f, 25.f));
 
 			target.draw(initials, states);
 			target.draw(underline, states);
