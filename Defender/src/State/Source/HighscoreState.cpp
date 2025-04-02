@@ -1,7 +1,6 @@
 #include "../HighscoreState.h"
 #include "../../Utility/Timer.h"
 #include "../../Utility/common.h"
-#include "../../Utility/UserInterface/UserInterface.h"
 
 HighscoreState::HighscoreState()
 {
@@ -14,41 +13,49 @@ HighscoreState::HighscoreState()
 	hallOfFame.setString("HALL OF FAME");
 	hallOfFame.setCharacterSize(16);
 	hallOfFame.setPosition(COMN::resolution.x / 2 - (18 * 12.75f / 4), 50);
-	hallOfFame.setFillColor(lime);
+	hallOfFame.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatodayTitle.setFont(UserInterface::getFont());
 	goatodayTitle.setString(" TODAYS \nGREATEST");
 	goatodayTitle.setCharacterSize(16);
 	goatodayTitle.setPosition(COMN::resolution.x / 4 - (18 * 8.f / 4), 80);
-	goatodayTitle.setFillColor(lime);
+	goatodayTitle.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatimeTitle.setFont(UserInterface::getFont());
 	goatimeTitle.setString("ALL TIME\nGREATEST");
 	goatimeTitle.setCharacterSize(16);
 	goatimeTitle.setPosition(COMN::resolution.x / 4 * 3 - (18 * 8.f / 4), 80);
-	goatimeTitle.setFillColor(lime);
+	goatimeTitle.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatodayUnder.setSize(sf::Vector2f(18 * 8.5f / 2, 2));
 	goatodayUnder.setPosition(COMN::resolution.x / 4 - (18 * 8.f / 4), 110);
-	goatodayUnder.setFillColor(lime);
+	goatodayUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatimeUnder.setSize(sf::Vector2f(18 * 8.5f / 2, 2));
 	goatimeUnder.setPosition(COMN::resolution.x / 4 * 3 - (18 * 8.f / 4), 110);
-	goatimeUnder.setFillColor(lime);
+	goatimeUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatoday.setFont(UserInterface::getFont());
 	goatoday.setString(makeScores(today));
 	goatoday.setCharacterSize(16);
 	goatoday.setPosition(COMN::resolution.x / 4 - (18 * 10.f / 4), 110);
-	goatoday.setFillColor(lime);
+	goatoday.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatime.setFont(UserInterface::getFont());
 	goatime.setString(makeScores(allTime));
 	goatime.setCharacterSize(16);
 	goatime.setPosition(COMN::resolution.x / 4 * 3 - (18 * 10.f / 4), 110);
-	goatime.setFillColor(lime);
+	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	tick(0);
+
+	shifting = new sf::RenderTexture;
+	shifting->create(COMN::resolution.x, COMN::resolution.y);
+	shifting->setView(DisplayManager::getView());
+	shftDra.setTexture(shifting->getTexture());
+	shftDra.setScale(1.f, -1.f);
+	shftDra.move(0, COMN::resolution.y);
+
 }
 
 HighscoreState::~HighscoreState()

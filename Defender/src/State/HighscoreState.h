@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../Utility/UserInterface/UserInterface.h"
+#include "../Utility/DisplayManager.h"
+
 class HighscoreState : public sf::Drawable
 {
 public:
@@ -14,18 +17,23 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		target.draw(defender, states);
+		UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 
-		target.draw(hallOfFame, states);
+		shifting->draw(defender, states);
 
-		target.draw(goatodayTitle, states);
-		target.draw(goatimeTitle, states);
+		shifting->draw(hallOfFame, states);
 
-		target.draw(goatodayUnder, states);
-		target.draw(goatimeUnder, states);
+		shifting->draw(goatodayTitle, states);
+		shifting->draw(goatimeTitle, states);
 
-		target.draw(goatoday);
-		target.draw(goatime);
+		shifting->draw(goatodayUnder, states);
+		shifting->draw(goatimeUnder, states);
+
+		shifting->draw(goatoday);
+		shifting->draw(goatime);
+
+		states.shader = UserInterface::getShiftingShader();
+		target.draw(shftDra, states);
 	}
 
 private:
@@ -50,5 +58,9 @@ private:
 	sf::RectangleShape defender;
 
 	sf::Color lime = sf::Color(0x89FF00FF);
+
+	sf::RenderTexture* shifting;
+
+	sf::Sprite flshDra, shftDra;
 };
 
