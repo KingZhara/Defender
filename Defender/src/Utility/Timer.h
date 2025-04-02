@@ -20,7 +20,7 @@ public:
 
 		if (time >= BASE)
 		{
-			time -= deltatime;
+			time -= BASE;
 			return true;
 		}
 
