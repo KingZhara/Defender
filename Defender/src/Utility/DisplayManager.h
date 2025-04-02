@@ -19,8 +19,7 @@ public:
     static sf::RenderWindow *getWindow() { return window; };
     static void        initialize();
     static void        clean();
-    static void draw();
-    static sf::RenderTexture* getRenderTarget();
+    static void draw(sf::Drawable& all);
 
 private:
     static sf::Vector2u      resolution   ; // Window resolution

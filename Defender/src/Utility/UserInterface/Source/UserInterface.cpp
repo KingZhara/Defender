@@ -1,6 +1,7 @@
 #include "../UserInterface.h"
 #include "../../Timer.h"
 #include "../../src/Entity/Enemy/Mutant.h"
+#include "../HSV.h"
 
 
 UserInterface::World UserInterface::world;
@@ -9,59 +10,79 @@ UserInterface::Minimap UserInterface::minimap;
 sf::Font UserInterface::font;
 sf::Text UserInterface::score;
 sf::Text UserInterface::credits; // @todo find out if this is necessary...
-sf::Shader *UserInterface::shiftingShader = nullptr;
+sf::Shader* UserInterface::shiftingShader = nullptr;
+sf::Shader* UserInterface::flashingShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
+sf::Glsl::Vec3 UserInterface::brightColors[] =
+{ // Data table from somewhere...
+    {1.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f},
+    {1.0f, 1.0f, 0.0f},
+    {0.0f, 0.0f, 1.0f},
+    {1.0f, 0.0f, 1.0f},
+    {0.0f, 1.0f, 1.0f},
+    {1.0f, 1.0f, 1.0f},
+    {1.0f, 0.5f, 0.0f}
+};
 
 
-uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& pos, uint16_t maxDx)
+uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& pos, uint16_t size)
 {
-    // Type dictates direction
-    // All lengths represent a change in position by 
-    const uint16_t maxDy = std::min<uint16_t>(
-            (COMN::worldSize - (pos.x + (pos.y - 20))) / 2, 
-		    type == Type::UP
-                     ? COMN::worldBgHeight - pos.y
-                     : pos.y);
-
-    maxDx = std::min<uint16_t>(255, maxDx);
-
-	//std::cout << "MAX DX: " << (short)maxDx << ", MAX DY: " << maxDy << " | POS: (" << pos.x << ", " << pos.y << "), OFFSET: " << pos.x + pos.y << '\n';
-
-    std::cout << (COMN::worldSize - (pos.x + pos.y)) / 2 << ", " << (type == Type::UP ? COMN::worldBgHeight - pos.y : pos.y) << '\n';
-
-    length = std::min<uint8_t>(length, std::min<uint8_t>(maxDx, maxDy));
-
-    if (maxDy == 0)
+    bool invalid;
+	std::cout << "\nSIZE: " << size << '\n';
+    do
     {
-        if (pos.y > COMN::worldBgStart)
+        invalid = false;
+
+        switch (type)
         {
-			type = Type::DOWN;
-			length = pos.y - COMN::worldBgStart;
+        case Type::FLAT:
+            // Flat draws 2x2; is invalid if at the top or the right side
+            if (pos.y >= COMN::worldBgHeight - 1 || pos.x >= COMN::worldSize - 1)
+            {
+                invalid = true;
+                type = Type::DOWN;
+            }
+            else
+                size = std::min<uint16_t>(COMN::worldSize - pos.x, size - pos.x);
+            break;
+
+        case Type::UP:
+            // This size is the upper bound
+            size = pos.y < COMN::world_startY // If below the line
+                    ? COMN::world_startY - pos.y // Take the Dy
+                    : size - (pos.x + (pos.y - COMN::world_startY)); // Else, get combined delta; y from midline
+
+            if (size == 0 && size - pos.x > 0)
+            {
+                invalid = true;
+                type = Type::DOWN;
+            }
+            break;
+
+        case Type::DOWN:
+            size = pos.y > COMN::world_startY // if above the line
+                    ? pos.y - COMN::world_startY// Take the Dx
+                    : size - (pos.x + (COMN::world_startY - pos.y)); // Else, get combined delta; y from midline
+
+            if (size == 0 && size - pos.x > 0)
+            {
+                invalid = true;
+                type = Type::UP;
+            }
+            break;
         }
-		else if (pos.y < COMN::worldBgStart)
-		{
-			type = Type::UP;
-			length = COMN::worldBgStart - pos.y;
-		}
-        else
-        {
-			length = maxDx;
-        }
-    }
+    } while (invalid);
 
-    if (length == 0)
-        return length;
+    length = std::min<uint8_t>(length, static_cast<uint8_t>(std::min<uint16_t>(255, size)));
 
-    if (type == Type::FLAT)
-        length /= 2;
-
-    //std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
+	std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
 
     for (uint8_t i = 0; i < length; i++)
     {
-        //std::cout << "    ";
+        std::cout << "    ";
         switch (type)
         {
         case Type::UP:
@@ -75,7 +96,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         case Type::FLAT:
             // [  ##]
             // [##  ]
-            //std::cout << "(" << pos.x << ", " << pos.y << "), ";
+            std::cout << "(" << pos.x << ", " << pos.y << "), ";
             img.setPixel(pos.x + 1, pos.y, sf::Color::White);
             ++pos.x;
             ++i;
@@ -83,20 +104,18 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         }
 
         ++pos.x;
-        //std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
+        std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
         img.setPixel(pos.x, pos.y, sf::Color::White);
     }
-
-	//std::cout << "}\n\n";
 
     return length;
 }
 
 void UserInterface::World::generate()
 {
-	sf::Vector2u pos(0, COMN::worldBgStart);
+	sf::Vector2u pos(0, COMN::world_startY);
     uint8_t genType = 2; // rand() % 3;
-	uint16_t genLength;
+	uint16_t genLength = 0;
     Component piece{0, 0};
     sf::Image bgIntermediary;
 	bgTex = new sf::Texture;
@@ -112,7 +131,11 @@ void UserInterface::World::generate()
 
     while (pos.x < COMN::worldSize)
     {
-        genLength = rand() % 800 + 201;
+        piece = Component{
+            static_cast<uint8_t>(rand() % 3),
+            static_cast<uint8_t>(rand() % 1 + 1)
+        };
+        /*genLength = rand() % 800 + 201;
         while (genLength > 0)
         {
             switch (genType)
@@ -128,10 +151,10 @@ void UserInterface::World::generate()
                 };
                 break;
             }
-            std::cout << '\n' << genLength << '\n';
-			genLength -= piece.generate(bgIntermediary, pos, std::min(pos.x < genLength ? genLength - pos.x : genLength, COMN::worldSize - pos.x));
-        }
-        std::cout << '\n' << pos.x << " < " << COMN::worldSize << '\n';
+            std::cout << '\n' << genLength << '\n';*/
+			genLength -= piece.generate(bgIntermediary, pos, COMN::worldSize/* - pos.x /*std::min(pos.x < genLength ? genLength - pos.x : genLength, COMN::worldSize - pos.x)*/);
+        //}
+        //std::cout << '\n' << pos.x << " < " << COMN::worldSize << '\n';
     }
 
 	bgTex->loadFromImage(bgIntermediary);
@@ -156,20 +179,49 @@ void UserInterface::initialize()
 {
     font.loadFromFile("res/defendermono.ttf");
 
+    // Shaders
     shiftingShader = new sf::Shader;
+    flashingShader = new sf::Shader;
 
-    shiftingShader->loadFromFile("res/shaders/shifting.frag",
+    shiftingShader->loadFromFile("res/shaders/replace.frag",
                                  sf::Shader::Type::Fragment);
+    flashingShader->loadFromFile("./res/shaders/replace.frag",
+        sf::Shader::Type::Fragment);
 
+    flashingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
+    shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
+
+    // World
     UserInterface::World::generate();
-    Mutant::initShader();
 }
 
 const sf::Font &UserInterface::getFont() { return font; }
 
-sf::Shader *UserInterface::getShiftingShader() { return shiftingShader; }
+sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
+sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
 
-const void UserInterface::shaderTick(double deltatime) {}
+const void UserInterface::shaderTick(double deltatime)
+{
+    static Timer<double>      replaceType{ 1 / 8. };
+	static bool               type = false;
+    static HSV                shiftReplacement;
+
+
+    if (replaceType.tick(deltatime))
+    {
+        type = !type;
+
+        if (type)
+            flashingShader->setUniform("replaceColor",
+                brightColors[rand() % 8]);
+        else
+            flashingShader->setUniform("replaceColor", sf::Glsl::Vec3(0, 0, 0));
+    }
+
+    shiftReplacement.shift();
+
+	shiftingShader->setUniform("replaceColor", shiftReplacement);
+}
 
 void UserInterface::drawBackground(sf::RenderTarget& rnd, sf::View& viewport)
 {

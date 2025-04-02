@@ -33,6 +33,7 @@ public:
                                                      SPRITE_TABLE[ID_].
                                                      frameCount,
                                                      SPRITE_TABLE[ID_].bounds,
+                                                     ID_,
                                                      SPRITE_TABLE[ID_].
                                                      frameLength
                                                      /*SPRITE_TABLE[ID].shader*/,
@@ -45,7 +46,7 @@ public:
     Entity(sf::Vector2f pos_, sf::IntRect bounds) : pos(pos_),
                                                     isScripted(false),
                                                     script(nullptr),
-                                                    animation({1, bounds}),
+                                                    animation({1, bounds, EntityID::PARTICLE}),
                                                     ID(EntityID::PARTICLE) {}
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
@@ -64,6 +65,11 @@ protected:
         draw(sf::RenderTarget &target, sf::RenderStates states) const override
     {
         target.draw(animation, states);
+    }
+
+    void setShader(sf::Shader* shader_)
+    {
+        animation.setShader(shader_);
     }
 
     struct SpriteData

@@ -5,7 +5,10 @@
 #include <SFML/Graphics.hpp>
 
 #include "DisplayManager.h"
+#include "EntityID.h"
 #include "Timer.h"
+
+#include "UserInterface/UserInterface.h"
 
 class Animation : public sf::Drawable
 {
@@ -28,6 +31,8 @@ private:
 	// The starting x position
 	uint16_t start;
 
+	EntityID::ID ID;
+
 	/**
 	 * The sprite sheet used for all sprites
 	 */
@@ -38,6 +43,11 @@ private:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+		UserInterface::getFlashingShader()->setUniform("textureSize", sf::Glsl::Vec2{ frame.getGlobalBounds().getSize() });
+
+	    if (shader)
+			shader->setUniform("texture", sf::Shader::CurrentTexture);
+
 	    states.shader = shader;
 		target.draw(frame, states);
 	}
@@ -53,23 +63,29 @@ public:
 	 * @param length_ The length of the sprite
 	 * @param bounds  The texture bounds of the sprite
 	 */
-	Animation(uint8_t length_,               sf::IntRect bounds,
+	Animation(uint8_t length_,               sf::IntRect bounds, EntityID::ID id_,
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
 		  shader(shader_), frameTimer(Timer<double>(framelength)),
-		  LENGTH(length_), start(frame.getTextureRect().left)
+		  LENGTH(length_), start(frame.getTextureRect().left), ID(id_)
 	{
-		if (shader)
-			shader->setUniform("texture", frame.getTexture());
 	}
 
 	/**
-	 * 
-	 * @param texture 
+	 *
+	 * @param texture
 	 */
 	static void setTexture(const sf::Texture* texture)
 	{
 		tex = texture;
+	}
+	/**
+	 *
+	 * @param texture
+	 */
+	void setShader(sf::Shader* shader_)
+	{
+		shader = shader_;
 	}
 
 	/**

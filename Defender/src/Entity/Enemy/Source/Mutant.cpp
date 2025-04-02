@@ -1,35 +1,10 @@
 #include "../Mutant.h"
 
-#include "../../../Utility/common.h"
-
-sf::Shader *                Mutant::shader       = nullptr;
-std::vector<sf::Glsl::Vec3> Mutant::brightColors =
-{ // Data table from somewhere...
-    {1.0f, 0.0f, 0.0f},
-    {0.0f, 1.0f, 0.0f},
-    {1.0f, 1.0f, 0.0f},
-    {0.0f, 0.0f, 1.0f},
-    {1.0f, 0.0f, 1.0f},
-    {0.0f, 1.0f, 1.0f},
-    {1.0f, 1.0f, 1.0f},
-    {1.0f, 0.5f, 0.0f}
-};
-
 void Mutant::tick(double deltatime)
 {
     static Timer<double>      attackTimer{2};
-    static Timer<double>      replaceType{1 / 2.};
-    static bool               type  = false;
+    static bool               type  = true;
     static const sf::Vector2f speed = {1.5, 1};
-
-    if (replaceType.tick(deltatime))
-        type = !type;
-
-    if (type)
-        shader->setUniform("ReplaceColor",
-                           brightColors[rand() % brightColors.size()]);
-    else
-        shader->setUniform("ReplaceColor", sf::Glsl::Vec3(0, 0, 0));
 
     // Bob up or down on even intervals
     if (bobStage % 2 == 0)
@@ -43,9 +18,7 @@ void Mutant::tick(double deltatime)
     // Update
     bobStage = (bobStage + 1) % 8;
 
-
     // Attack
-    // @todo implement attacks - is very easy
     if (attackTimer.tick(deltatime))
         entityQueue.emplace(QueuedEntity( pos, EntityID::BULLET ));
 
@@ -87,13 +60,4 @@ void Mutant::tick(double deltatime)
     }
 
     Entity::tick(deltatime);
-}
-
-void Mutant::initShader()
-{
-    shader = new sf::Shader;
-    shader->loadFromFile("./res/shader/flashing.frag",
-                         sf::Shader::Type::Fragment);
-
-    shader->setUniform("targetColor", sf::Glsl::Vec3{136, 0, 255});
 }

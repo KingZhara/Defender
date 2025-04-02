@@ -63,30 +63,31 @@ void DisplayManager::clean()
 	delete smoothShader;
 }
 
-void DisplayManager::draw()
+void DisplayManager::draw(sf::Drawable& all)
 {
+    // Draw the current frame
+    (outputTexture ? currentFrame : previousFrame)->clear();
+	(outputTexture ? currentFrame : previousFrame)->draw(all);
+
+    // I want to note that a compute shader calculating mean entropy between frames would be ideal, but this is the best I can do for now.
+    smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
+    smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
+    smoothShader->setUniform("maxDelta", 0.5f); // 0.3 is a safe-ish value
+
+	// Apply the shader after drawing the current frame
+	(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+
     //window->setView(viewport);
     currentFrame->setView(viewport);
     previousFrame->setView(viewport);
     // Assumes getRenderTarget() has been called, and the current frame has been drawn to
     (outputTexture ? currentFrame : previousFrame)->display();
 
-    smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
-    smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
-    smoothShader->setUniform("maxDelta", 1.0f); // 0.3 is a safe-ish value
-
     window->clear();
     window->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
     window->display();
 
-    (outputTexture ? currentFrame : previousFrame)->clear();
-
 	outputTexture = !outputTexture;
-}
-
-sf::RenderTexture * DisplayManager::getRenderTarget()
-{
-    return (outputTexture ? currentFrame : previousFrame);
 }
 
 sf::Texture * DisplayManager::loadSpritesheet()

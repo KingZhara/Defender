@@ -1,13 +1,15 @@
 #pragma once
 #include "../Enemy.h"
 
+#include "../../Utility/UserInterface/UserInterface.h"
+
 class Mutant :
     public Enemy
 {
 public:
     explicit Mutant(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
-        : Enemy(pos_, EntityID::MUTANT, isScripted_, script_)
+        : Enemy(pos_, EntityID::MUTANT, isScripted_, script_, UserInterface::getShiftingShader())
     {
     }
 
@@ -22,14 +24,9 @@ public:
 
     virtual void tick(double deltatime) override;
 
-    static void initShader();
-
 
 private:
     // Range [0, 3]; 0, 1 = up; 2, 3 = down;
     uint8_t bobStage;
-    static sf::Shader* shader;
-
-    static std::vector<sf::Glsl::Vec3> brightColors;
 };
 

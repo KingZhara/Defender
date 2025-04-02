@@ -206,6 +206,9 @@
     <ClInclude Include="src\Utility\DisplayManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\UserInterface\HSV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\defendersprites.jpg">
@@ -220,7 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\epilepsySmooth.frag" />
-    <None Include="res\shaders\flashing.frag" />
-    <None Include="res\shaders\shifting.frag" />
+    <None Include="res\shaders\replace.frag" />
   </ItemGroup>
 </Project>

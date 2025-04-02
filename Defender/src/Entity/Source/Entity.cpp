@@ -62,7 +62,7 @@ void Entity::tick(double deltatime)
 	animation.tick(deltatime);
 
 
-	std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ")," << " (" << (pos.x - DisplayManager::getView().getCenter().x) << ", " << (pos.x - DisplayManager::getView().getCenter().y) << ") ";
+	//std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ")," << " (" << (pos.x - DisplayManager::getView().getCenter().x) << ", " << (pos.x - DisplayManager::getView().getCenter().y) << ") ";
 
 	pos += vel;
 	// vel *= 0.9f; // Don't apply friction - Ricky
@@ -71,9 +71,9 @@ void Entity::tick(double deltatime)
 	if (abs(vel.y) < 0.1f)
 		vel.y = 0;
 
-	std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ") ";
+	//std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ") ";
 	animation.setPosition(pos);
-	std::cout << '\n';
+	//std::cout << '\n';
 }
 
 bool Entity::collide(Entity* other)

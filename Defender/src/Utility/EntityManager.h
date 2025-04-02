@@ -35,7 +35,7 @@ class EntityManager : public sf::Drawable
 		{
 			uint16_t index = 0;
 
-			std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
+			//std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
 
 			// Generate index
 			if (count == 0)

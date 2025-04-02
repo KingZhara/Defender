@@ -23,10 +23,10 @@ struct COMN
 		60
 	};
 
-	static constexpr uint16_t worldSize = 9 * resolution.x;
+	static constexpr uint16_t worldSize = static_cast<uint16_t>(9 * resolution.x);
 
-	static constexpr uint16_t worldBgHeight = 80;
-	static constexpr uint16_t worldBgStart = 20;
+	static constexpr uint8_t worldBgHeight = 80;
+	static constexpr uint8_t world_startY = 20;
 
 	COMN() = delete;
 };

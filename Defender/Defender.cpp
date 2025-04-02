@@ -62,8 +62,7 @@ int main()
 
         game.tick(actions, clock.restart().asMilliseconds() / 1000.);
 
-        DisplayManager::getRenderTarget()->draw(game);
-        DisplayManager::draw();
+        DisplayManager::draw(game);
     }
 
     return 0;
