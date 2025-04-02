@@ -15,7 +15,7 @@ class EntityManager : public sf::Drawable
 
 		void kill(uint16_t index)
 		{
-			std::cout << "KILL!\n";
+			std::cout << "KILL! CT: " << count << ", SZ: " << entities.size() << '\n';
 			delete entities.at(index);
 
 			entities.at(index) = nullptr;
@@ -37,16 +37,18 @@ class EntityManager : public sf::Drawable
 
 			//std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
 
+			std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << "\n";
 			// Generate index
 			if (count == 0)
 			{
+				std::cout << "ECOUT\n";
 				entities.emplace_back(nullptr);
 				index = static_cast<uint16_t>(entities.size() - 1);
 			}
 			else
 			{
-				//std::cout << first << ' ' << last << ' ' << count << '\n';
 
+				std::cout << "N_ECOUT\n";
 				if (count > 1)
 					getIndex(index);
 				else // count == 1
@@ -55,6 +57,7 @@ class EntityManager : public sf::Drawable
 
 				--count;
 			}
+			std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << " END\n";
 
 			//std::cout << index << '\n';
 			// Place new entity
@@ -73,11 +76,13 @@ class EntityManager : public sf::Drawable
 			// Generate index
 			if (count == 0)
 			{
+				std::cout << "ECOUT\n";
 				entities.emplace_back(nullptr);
 				index = static_cast<uint16_t>(entities.size() - 1);
 			}
 			else
 			{
+				std::cout << "N_ECOUT\n";
 				//std::cout << first << ' ' << last << ' ' << count << '\n';
 
 				if (count > 1)
@@ -108,6 +113,10 @@ class EntityManager : public sf::Drawable
 
 			entities.clear();
 			entities.shrink_to_fit();
+
+			first = 0;
+			last = 0;
+			count = 0;
 		}
 
 	private:

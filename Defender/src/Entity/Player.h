@@ -43,6 +43,11 @@ public:
 
     void setActions(Action& actions);
 
+	bool collide(Entity *other) override
+	{
+		std::cout << "PCOL\n" << '\n';
+	    return Entity::collide(other);
+	}
 
 private:
     Action actions;
