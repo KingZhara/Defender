@@ -40,7 +40,7 @@ AttractState::AttractState()
 	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
 	defenderSides.setTexture(&defenderSidesTex);
 	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
-	defenderSides.setFillColor(sf::Color(0));
+	defenderSides.setFillColor(sf::Color(255,0,0));
 
 
 	copyright.setFont(UserInterface::getOtherFont());
@@ -64,9 +64,6 @@ bool AttractState::tick(double deltatime)
 {
 	static Timer<double> textTimer{ 0.04 };
 	static Timer<int> stageTimer{80, false};
-
-
-	std::cout << "DT: " << deltatime << '\n';
 
 
 	while (textTimer.tick(deltatime))
@@ -101,14 +98,15 @@ bool AttractState::tick(double deltatime)
 
 			case 1: // Electronics Inc presents
 				electronicsInc.setFillColor(COMN::ShaderTarget);
-				presents.setFillColor(sf::Color::White);
+				presents.setFillColor(COMN::ShaderTarget);
+				std::cout << "FC: " << (short)electronicsInc.getFillColor().r << ", " << (short)electronicsInc.getFillColor().g << ", " << (short)electronicsInc.getFillColor().b;
 				stage++;
 				stageTimer.tick(1);
 				break;
 
 			case 2: // Defender
 				defenderFront.setFillColor(COMN::ShaderTarget);
-				defenderSides.setFillColor(COMN::ShaderTarget);
+				defenderSides.setFillColor(sf::Color(255, 0, 0));
 				stage++;
 				stageTimer.tick(1);
 				break;
