@@ -23,6 +23,7 @@ int main()
     UserInterface::initialize();
     DisplayManager::initialize();
 
+    clock.restart();
     // Min game loop
     while (DisplayManager::getWindow()->isOpen())
     {

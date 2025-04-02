@@ -62,10 +62,14 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static Timer<double> genTimer{ 0.04 };
+	static Timer<double> textTimer{ 0.04 };
 	static Timer<int> stageTimer{80, false};
 
-	while (genTimer.tick(deltatime))
+
+	std::cout << "DT: " << deltatime << '\n';
+
+
+	while (textTimer.tick(deltatime))
 	{
 		if (!stageTimer.isComplete())
 		{
@@ -90,7 +94,7 @@ bool AttractState::tick(double deltatime)
 				{
 					willPos = 0;
 					stage++;
-					stageTimer.tick(1);
+					stageTimer.tick(1); // Will reset
 				}
 
 				break;
