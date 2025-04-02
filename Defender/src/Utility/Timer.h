@@ -5,7 +5,7 @@
 template<typename T> requires(std::is_arithmetic_v<T>)
 class Timer
 {
-private:
+public:
 	bool preIncrement;
 	T time;
 	const T BASE;

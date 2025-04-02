@@ -79,10 +79,10 @@ void DisplayManager::draw(sf::Drawable& all)
     // I want to note that a compute shader calculating mean entropy between frames would be ideal, but this is the best I can do for now.
     smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
     smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
-    smoothShader->setUniform("maxDelta", 0.5f); // 0.3 is a safe-ish value
+    smoothShader->setUniform("maxDelta", 1.f); // 0.3 is a safe-ish value
 
 	// Apply the shader after drawing the current frame
-	(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+	//(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
 
     //std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     //window->setView(viewport);

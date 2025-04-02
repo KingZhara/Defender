@@ -42,7 +42,7 @@ AttractState::AttractState()
 	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
 	defenderSides.setTexture(&defenderSidesTex);
 	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
-	defenderSides.setFillColor(sf::Color(255,0,0));
+	defenderSides.setFillColor(sf::Color(0));
 
 
 	copyright.setFont(UserInterface::getOtherFont());
@@ -82,12 +82,14 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static Timer<float> textTimer{ 0.01 };
+	static Timer<double> textTimer{ 0.01 };
 	static Timer<int> stageTimer{80, false};
+	static sf::Clock timer;
 
-
+	//std::cout << "TXT_TMR: " << textTimer.time << ", STG_TMR: " << stageTimer.time << ", O" << '\n';
 	while (textTimer.tick(deltatime))
 	{
+		//std::cout << "TXT_TMR: " << textTimer.time << ", STG_TMR: " << stageTimer.time << ", I" << '\n';
 		if (!stageTimer.isComplete())
 		{
 			stageTimer.tick(1);
@@ -117,10 +119,12 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 1: // Electronics Inc presents
+				timer.restart();
 				electronicsInc.setFillColor(sf::Color(COMN::ShaderTarget));
 				presents.setFillColor(COMN::ShaderTarget);
 				stage++;
 				stageTimer.tick(1);
+				std::cout << "EI\n";
 				break;
 
 			case 2: // Defender
@@ -128,6 +132,7 @@ bool AttractState::tick(double deltatime)
 				defenderSides.setFillColor(sf::Color(255, 0, 0));
 				stage++;
 				stageTimer.tick(1);
+				std::cout << "D, " << timer.restart().asMilliseconds()/1000. << "\n";
 				break;
 
 			case 3: // Copyright credits

@@ -16,32 +16,33 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-
-		sf::Texture& fontTex = const_cast<sf::Texture&>(UserInterface::getFont().getTexture(electronicsInc.getCharacterSize()));
 		switch (stage)
 		{
 		case 4:
 			UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 			UserInterface::getFlashingShader()->setUniform("texture", sf::Shader::CurrentTexture);
+			[[fallthrough]];
 
 		case 3: // Copyright
 			shifting->draw(copyright, states);
 			shifting->draw(credits, states);
 			[[fallthrough]];
+
 		case 2: // Defender
 			target.draw(defenderSides, states); // Stays red
 			flashing->draw(defenderFront, states);
 			[[fallthrough]];
+
 		case 1: // Electronics Inc
 			shifting->draw(electronicsInc, states);
 			shifting->draw(presents, states);
 			[[fallthrough]];
+
 		case 0: // Williams
 			target.draw(williams, states); // Will require alternate shader
 		}
 
 		states.shader = UserInterface::getFlashingShader();
-
 		target.draw(flshDra, states);
 
 
