@@ -18,13 +18,13 @@ AttractState::AttractState()
 
 
 	electronicsInc.setFont(UserInterface::getFont());
-	electronicsInc.setFillColor(sf::Color(0));
+	electronicsInc.setFillColor(COMN::ShaderTarget);
 	electronicsInc.setString("ELECTRONICS INC.");
 	electronicsInc.setCharacterSize(16);
 	electronicsInc.setPosition(COMN::resolution.x / 2 - (18 * 16 / 4), 50);
 
 	presents.setFont(UserInterface::getFont());
-	presents.setFillColor(sf::Color(0));
+	presents.setFillColor(COMN::ShaderTarget);
 	presents.setCharacterSize(16);
 	presents.setString("PRESENTS");
 	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
@@ -40,17 +40,17 @@ AttractState::AttractState()
 	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
 	defenderSides.setTexture(&defenderSidesTex);
 	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
-	defenderSides.setFillColor(sf::Color(0));
+	defenderSides.setFillColor(sf::Color::Red);
 
 
 	copyright.setFont(UserInterface::getOtherFont());
-	copyright.setFillColor(sf::Color(0));
+	copyright.setFillColor(COMN::ShaderTarget);
 	copyright.setCharacterSize(16);
 	copyright.setString("COPYRIGHT @ 1980");
 	copyright.setPosition(COMN::resolution.x / 2 - 40, 150);
 	
 	credits.setFont(UserInterface::getFont());
-	credits.setFillColor(sf::Color(0));
+	credits.setFillColor(COMN::ShaderTarget);
 	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x / 4, 160);

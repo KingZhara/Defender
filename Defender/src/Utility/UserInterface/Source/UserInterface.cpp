@@ -196,7 +196,7 @@ void UserInterface::initialize()
     shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
 
     // World
-    UserInterface::World::generate();
+    //UserInterface::World::generate();
 }
 
 const sf::Font &UserInterface::getFont() { return font; }
