@@ -62,7 +62,7 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static Timer<float> textTimer{ 0.04 };
+	static Timer<float> textTimer{ 0.01 };
 	static Timer<int> stageTimer{80, false};
 
 
