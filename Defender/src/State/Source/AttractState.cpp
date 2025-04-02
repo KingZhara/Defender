@@ -10,6 +10,8 @@
 
 AttractState::AttractState()
 {
+	std::cout << "CONSTR\n";
+
 	willSteps.loadFromFile("res/williams.png");
 	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
 	willTex.create(willSteps.getSize().x, willSteps.getSize().y);
@@ -82,16 +84,15 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static Timer<double> textTimer{ 0.01 };
+	static Timer<double> textTimer{ 0.03 };
 	static Timer<int> stageTimer{80, false};
 	static sf::Clock timer;
 
-	//std::cout << "TXT_TMR: " << textTimer.time << ", STG_TMR: " << stageTimer.time << ", O" << '\n';
 	while (textTimer.tick(deltatime))
 	{
-		//std::cout << "TXT_TMR: " << textTimer.time << ", STG_TMR: " << stageTimer.time << ", I" << '\n';
 		if (!stageTimer.isComplete())
 		{
+			//std::cout << stage << '\n';
 			stageTimer.tick(1);
 		}
 		else
@@ -124,7 +125,6 @@ bool AttractState::tick(double deltatime)
 				presents.setFillColor(COMN::ShaderTarget);
 				stage++;
 				stageTimer.tick(1);
-				std::cout << "EI\n";
 				break;
 
 			case 2: // Defender
@@ -132,17 +132,17 @@ bool AttractState::tick(double deltatime)
 				defenderSides.setFillColor(sf::Color(255, 0, 0));
 				stage++;
 				stageTimer.tick(1);
-				std::cout << "D, " << timer.restart().asMilliseconds()/1000. << "\n";
 				break;
 
 			case 3: // Copyright credits
 				copyright.setFillColor(COMN::ShaderTarget);
 				credits.setFillColor(COMN::ShaderTarget);
 				stage++;
+				stageTimer.addTime((1 / textTimer.getBase()) * 5);
 				stageTimer.tick(1);
 				break;
 
-			case 4:// Maybe somehow delay here...
+			case 4:
 				return true;
 			}
 		}

@@ -47,6 +47,8 @@ HighscoreState::HighscoreState()
 	goatime.setCharacterSize(16);
 	goatime.setPosition(COMN::resolution.x / 4 * 3 - (18 * 10.f / 4), 110);
 	goatime.setFillColor(lime);
+
+	tick(0);
 }
 
 HighscoreState::~HighscoreState()
@@ -55,7 +57,7 @@ HighscoreState::~HighscoreState()
 
 bool HighscoreState::tick(double deltatime)
 {
-	static Timer<double> timeout{ 10 }; // 10 seconds
+	static Timer<double> timeout{ 8 }; // 10 seconds
 
 	if (timeout.tick(deltatime))
 		return true;

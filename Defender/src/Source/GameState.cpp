@@ -43,6 +43,8 @@ void GameState::switchState(bool stage)
 	}
 	else
 	{
+		std::cout << "SWTCH: " << (uint16_t)type << '\n';
+
 		type = (type == State::ATTRACT) ? State::HIGHSCORE :
 			(type == State::HIGHSCORE) ? State::ATTRACT :
 			State::HIGHSCORE;

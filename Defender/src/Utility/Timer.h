@@ -41,4 +41,15 @@ public:
 	{
 		return time >= BASE;
 	}
+
+	T getBase()
+	{
+		return BASE;
+	}
+
+	void addTime(T add_)
+	{
+		//std::cout << time << ' ' << add_ << '\n';
+		time -= add_;
+	}
 };
