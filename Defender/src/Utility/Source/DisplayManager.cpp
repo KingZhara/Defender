@@ -1,5 +1,6 @@
 #include "../DisplayManager.h"
 #include <iostream>
+#include <SFML/OpenGL.hpp>
 
 #include "../../State/StageState.h"
 
@@ -45,6 +46,10 @@ void DisplayManager::initialize()
         sf::Shader::Type::Fragment);
 
 
+    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
+    //std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n";
+    std::cout << "Vendor: " << glGetString(GL_VENDOR) << "\n";
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << "\n";
 
     if (!currentFrame->create(resolution.x, resolution.y) ||
         !previousFrame->create(resolution.x, resolution.y))
@@ -77,7 +82,7 @@ void DisplayManager::draw(sf::Drawable& all)
     (outputTexture ? currentFrame : previousFrame)->clear();
 	(outputTexture ? currentFrame : previousFrame)->draw(all);
 
-    std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
+    //std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     // I want to note that a compute shader calculating mean entropy between frames would be ideal, but this is the best I can do for now.
     smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
     smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
