@@ -1,6 +1,7 @@
 #include "../AttractState.h"
 #include "../../Utility/UserInterface/UserInterface.h"
 #include "../../Utility/common.h"
+#include "../../Utility/Timer.h"
 
 #include <iostream>
 
@@ -17,13 +18,13 @@ AttractState::AttractState()
 
 
 	electronicsInc.setFont(UserInterface::getFont());
-	electronicsInc.setFillColor(sf::Color(0));
+	electronicsInc.setFillColor(COMN::ShaderTarget);
 	electronicsInc.setString("ELECTRONICS INC.");
 	electronicsInc.setCharacterSize(16);
 	electronicsInc.setPosition(COMN::resolution.x / 2 - (18 * 16 / 4), 50);
 
 	presents.setFont(UserInterface::getFont());
-	presents.setFillColor(sf::Color(0));
+	presents.setFillColor(COMN::ShaderTarget);
 	presents.setCharacterSize(16);
 	presents.setString("PRESENTS");
 	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
@@ -39,17 +40,17 @@ AttractState::AttractState()
 	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
 	defenderSides.setTexture(&defenderSidesTex);
 	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
-	defenderSides.setFillColor(sf::Color(0));
+	defenderSides.setFillColor(sf::Color::Red);
 
 
 	copyright.setFont(UserInterface::getOtherFont());
-	copyright.setFillColor(sf::Color(0));
+	copyright.setFillColor(COMN::ShaderTarget);
 	copyright.setCharacterSize(16);
 	copyright.setString("COPYRIGHT @ 1980");
 	copyright.setPosition(COMN::resolution.x / 2 - 40, 150);
 	
 	credits.setFont(UserInterface::getFont());
-	credits.setFillColor(sf::Color(0));
+	credits.setFillColor(COMN::ShaderTarget);
 	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x / 4, 160);
@@ -61,17 +62,14 @@ AttractState::~AttractState()
 
 bool AttractState::tick(double deltatime)
 {
-	static int timer;
-	static double deltaTime;
-	deltaTime += deltatime;
+	static Timer<double> genTimer{ 0.04 };
+	static Timer<int> stageTimer{80, false};
 
-	while (deltaTime >= 0.04)
+	while (genTimer.tick(deltatime))
 	{
-		deltaTime -= 0.04;
-
-		if (timer)
+		if (!stageTimer.isComplete())
 		{
-			timer--;
+			stageTimer.tick(1);
 		}
 		else
 		{
@@ -83,7 +81,7 @@ bool AttractState::tick(double deltatime)
 					for (unsigned y = 0; y < willSteps.getSize().y; y++)
 						if (willSteps.getPixel(x, y).toInteger() < willPos && 
 							willSteps.getPixel(x, y).toInteger())
-							willImg.setPixel(x, y, sf::Color::White);
+							willImg.setPixel(x, y, COMN::ShaderTarget);
 
 				willTex.update(willImg);
 				williams.setTexture(&willTex);
@@ -92,30 +90,30 @@ bool AttractState::tick(double deltatime)
 				{
 					willPos = 0;
 					stage++;
-					timer += 80;
+					stageTimer.tick(1);
 				}
 
 				break;
 
 			case 1: // Electronics Inc presents
-				electronicsInc.setFillColor(sf::Color::White);
+				electronicsInc.setFillColor(COMN::ShaderTarget);
 				presents.setFillColor(sf::Color::White);
 				stage++;
-				timer += 80;
+				stageTimer.tick(1);
 				break;
 
 			case 2: // Defender
-				defenderFront.setFillColor(sf::Color::White);
-				defenderSides.setFillColor(sf::Color::White);
+				defenderFront.setFillColor(COMN::ShaderTarget);
+				defenderSides.setFillColor(COMN::ShaderTarget);
 				stage++;
-				timer += 80;
+				stageTimer.tick(1);
 				break;
 
 			case 3: // Copyright credits
-				copyright.setFillColor(sf::Color::White);
-				credits.setFillColor(sf::Color::White);
+				copyright.setFillColor(COMN::ShaderTarget);
+				credits.setFillColor(COMN::ShaderTarget);
 				stage++;
-				timer += 80;
+				stageTimer.tick(1);
 				break;
 
 			case 4:

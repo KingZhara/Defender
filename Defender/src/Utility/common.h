@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 
+#include <SFML/Graphics/Glsl.hpp>
+
 #include "SFML/System/Vector2.hpp"
 
 struct Vec2f
@@ -8,6 +10,24 @@ struct Vec2f
 	float x, y;
 
 	constexpr Vec2f(float x_, float y_) : x(x_), y(y_) {}
+};
+
+template <typename T>
+struct Color
+{
+	T r, g, b;
+
+	constexpr Color(T r_, T g_, T b_) : r(r_), g(g_), b(b_) {}
+
+	operator sf::Color() const
+	{
+		return sf::Color(r, g, b);
+	}
+
+	operator sf::Glsl::Vec3() const
+	{
+		return sf::Glsl::Vec3(r / 255.0f, g / 255.0f, b / 255.0f);
+	}
 };
 
 struct COMN
@@ -27,6 +47,7 @@ struct COMN
 
 	static constexpr uint8_t worldBgHeight = 80;
 	static constexpr uint8_t world_startY = 20;
+	static constexpr Color<double> ShaderTarget{ 136, 0, 255 };
 
 	COMN() = delete;
 };

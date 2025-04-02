@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../Utility/UserInterface/UserInterface.h"
+
 class AttractState : public sf::Drawable
 {
 public:
@@ -19,19 +21,19 @@ public:
 		case 4:
 
 		case 3: // Copyright
-			target.draw(copyright, states);
-			target.draw(credits, states);
+			target.draw(copyright, UserInterface::getShiftingShader());
+			target.draw(credits, UserInterface::getShiftingShader());
 			[[fallthrough]];
 		case 2: // Defender
-			target.draw(defenderSides, states);
-			target.draw(defenderFront, states);
+			target.draw(defenderSides, states); // Stays red
+			target.draw(defenderFront, UserInterface::getFlashingShader());
 			[[fallthrough]];
 		case 1: // Electronics Inc
-			target.draw(electronicsInc, states);
-			target.draw(presents, states);
+			target.draw(electronicsInc, UserInterface::getShiftingShader());
+			target.draw(presents, UserInterface::getShiftingShader());
 			[[fallthrough]];
 		case 0: // Williams
-			target.draw(williams, states);
+			target.draw(williams, states); // Will require alternate shader
 		}
 	}
 

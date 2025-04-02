@@ -223,7 +223,7 @@ const void UserInterface::shaderTick(double deltatime)
             flashingShader->setUniform("replaceColor", sf::Glsl::Vec3(0, 0, 0));
     }
 
-    shiftReplacement.shift();
+    shiftReplacement.shift(10);
 
 	shiftingShader->setUniform("replaceColor", shiftReplacement);
 }
