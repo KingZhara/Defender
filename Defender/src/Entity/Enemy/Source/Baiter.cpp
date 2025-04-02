@@ -1,4 +1,5 @@
 #include "../Baiter.h"
+#include<math.h>
 
 void Baiter::tick(double deltaTime)
 {
@@ -7,21 +8,34 @@ void Baiter::tick(double deltaTime)
 	static double slopeX = 0;
 	static double slopeY = 0;
 	static bool init = true;
+	static double rot;
 
 	if (init) 
 	{
-		destinationX = (playerPos->x - pos.x) + playerPos->x;
+		if (playerPos->x > pos.x)
+			destinationX = (playerPos->x + abs(pos.x - playerPos->x));
+		else
+			destinationX = (playerPos->x + (pos.x - playerPos->x));
 
-		destinationY = (playerPos->y - pos.y) + playerPos->y;
+		if (playerPos->y > pos.y)
+			destinationY = (playerPos->y + abs(pos.y - playerPos->y));
+		else
+			destinationY = (playerPos->y + (pos.y - playerPos->y));
 
-		slopeX = (destinationX - pos.x);
-		slopeY = (destinationY - pos.y);
+
+		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
+
+		vel.x = 3 * cos(rot) - 0 * sin(rot);
+		vel.y = 3 * sin(rot) + 0 * cos(rot);
 
 		init = false;
 	}
-	
-	vel.x = slopeX / 70;
-	vel.y = slopeY / 70;
+
+	if (vel.x > 0 && pos.x > destinationX)
+		init = true;
+
+	if (vel.x < 0 && pos.x < destinationX)
+		init = true;
 
 	Entity::tick(deltaTime);
 }
