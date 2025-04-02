@@ -47,7 +47,6 @@ void DisplayManager::initialize()
 
 
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
-    //std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n";
     std::cout << "Vendor: " << glGetString(GL_VENDOR) << "\n";
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << "\n";
 
@@ -89,7 +88,7 @@ void DisplayManager::draw(sf::Drawable& all)
     smoothShader->setUniform("maxDelta", 0.5f); // 0.3 is a safe-ish value
 
 	// Apply the shader after drawing the current frame
-	(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+	//(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
 
     //window->setView(viewport);
     currentFrame->setView(viewport);
@@ -98,7 +97,7 @@ void DisplayManager::draw(sf::Drawable& all)
     (outputTexture ? currentFrame : previousFrame)->display();
 
     window->clear();
-    window->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+    window->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture())/*, smoothShader*/);
     window->display();
 
 	outputTexture = !outputTexture;
