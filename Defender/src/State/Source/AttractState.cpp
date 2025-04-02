@@ -119,6 +119,7 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 4:
+
 				return true;
 			}
 		}

@@ -22,8 +22,7 @@ bool DisplayManager::outputTexture = true;
 
 
 void DisplayManager::initialize()
-{
-    // Window resolution chosen based on screen resolution and aspect ratio
+{// Window resolution chosen based on screen resolution and aspect ratio
     // Set view to emulate virtual resolution (same world units everywhere)
     viewport.setSize(COMN::resolution.x, COMN::resolution.y);
     viewport.setCenter(COMN::resolution.x / 2.f, COMN::resolution.y / 2.f);
