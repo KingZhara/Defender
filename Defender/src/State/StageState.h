@@ -21,7 +21,7 @@ public:
 
 	~StageState() = default;
 
-	bool tick(Action& actions, double deltatime);
+    static bool tick(Action& actions, double deltatime);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{

@@ -45,11 +45,6 @@ void DisplayManager::initialize()
     smoothShader->loadFromFile("./res/shaders/epilepsySmooth.frag",
         sf::Shader::Type::Fragment);
 
-
-    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
-    std::cout << "Vendor: " << glGetString(GL_VENDOR) << "\n";
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << "\n";
-
     if (!currentFrame->create(resolution.x, resolution.y) ||
         !previousFrame->create(resolution.x, resolution.y))
         std::cerr << "Failed to create render textures.\n";

@@ -71,6 +71,7 @@ bool StageState::tick(Action& actions, double deltatime)
 				// Reset ALL data before returning
 				playerState.lives = 3;
 				playerState.smart_bombs = 0;
+				entityManager = EntityManager();
 				playerDead = false;
 
 				return true;

@@ -1,4 +1,5 @@
 #include "../HighscoreState.h"
+#include "../../Utility/Timer.h"
 #include "../../Utility/common.h"
 #include "../../Utility/UserInterface/UserInterface.h"
 
@@ -54,13 +55,18 @@ HighscoreState::~HighscoreState()
 
 bool HighscoreState::tick(double deltatime)
 {
+	static Timer<double> timeout{ 10 }; // 10 seconds
+
+	if (timeout.tick(deltatime))
+		return true;
+
 	return false;
 }
 
 std::string HighscoreState::padNum(int num, int length)
 {
 	std::string str(length, 0);
-	snprintf(str.data(), length + 1, "%*d", length, num);
+	snprintf(str.data(), length + 1, "%*d", length, num); // This is a c++ class.
 	return str;
 }
 

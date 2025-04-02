@@ -41,11 +41,12 @@ public:
 		}
 
 		states.shader = UserInterface::getFlashingShader();
-		target.draw(sf::Sprite(flashing->getTexture()), states);
+
+		target.draw(flshDra, states);
 
 
 		states.shader = UserInterface::getShiftingShader();
-		target.draw(sf::Sprite(shifting->getTexture()), states);
+		target.draw(shftDra, states);
 	}
 
 private:
@@ -60,6 +61,8 @@ private:
 	sf::RectangleShape defenderFront, defenderSides;
 
 	sf::RenderTexture *flashing, *shifting;
+
+	sf::Sprite flshDra, shftDra;
 
 	unsigned willPos = 0;
 

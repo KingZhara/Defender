@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "../../Utility/DisplayManager.h"
+
 
 AttractState::AttractState()
 {
@@ -60,6 +62,18 @@ AttractState::AttractState()
 
 	flashing->create(COMN::resolution.x, COMN::resolution.y);
 	shifting->create(COMN::resolution.x, COMN::resolution.y);
+
+	flashing->setView(DisplayManager::getView());
+	shifting->setView(DisplayManager::getView());
+
+	flshDra.setTexture(flashing->getTexture());
+	shftDra.setTexture(shifting->getTexture());
+
+	flshDra.setScale(1.f, -1.f);
+	shftDra.setScale(1.f, -1.f);
+
+	flshDra.move(0, COMN::resolution.y);
+	shftDra.move(0, COMN::resolution.y);
 }
 
 AttractState::~AttractState()
@@ -105,8 +119,6 @@ bool AttractState::tick(double deltatime)
 			case 1: // Electronics Inc presents
 				electronicsInc.setFillColor(sf::Color(COMN::ShaderTarget));
 				presents.setFillColor(COMN::ShaderTarget);
-				//std::cout << "FC: " << (short)electronicsInc.getFillColor().r << ", " << (short)electronicsInc.getFillColor().g << ", " << (short)electronicsInc.getFillColor().b;
-				//std::cout << '\n';
 				stage++;
 				stageTimer.tick(1);
 				break;
@@ -125,8 +137,7 @@ bool AttractState::tick(double deltatime)
 				stageTimer.tick(1);
 				break;
 
-			case 4:
-
+			case 4:// Maybe somehow delay here...
 				return true;
 			}
 		}
