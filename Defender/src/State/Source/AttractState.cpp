@@ -54,6 +54,12 @@ AttractState::AttractState()
 	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x / 4, 160);
+
+	flashing = new sf::RenderTexture;
+	shifting = new sf::RenderTexture;
+
+	flashing->create(COMN::resolution.x, COMN::resolution.y);
+	shifting->create(COMN::resolution.x, COMN::resolution.y);
 }
 
 AttractState::~AttractState()

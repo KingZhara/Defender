@@ -16,26 +16,36 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
+
+		sf::Texture& fontTex = const_cast<sf::Texture&>(UserInterface::getFont().getTexture(electronicsInc.getCharacterSize()));
 		switch (stage)
 		{
 		case 4:
+			UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getFlashingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 
 		case 3: // Copyright
-			states.shader = UserInterface::getShiftingShader();
-			target.draw(copyright, states);
-			target.draw(credits, states);
+			shifting->draw(copyright, states);
+			shifting->draw(credits, states);
 			[[fallthrough]];
 		case 2: // Defender
 			target.draw(defenderSides, states); // Stays red
-			target.draw(defenderFront, states);
+			flashing->draw(defenderFront, states);
 			[[fallthrough]];
 		case 1: // Electronics Inc
-			target.draw(electronicsInc, states);
-			target.draw(presents, states);
+			shifting->draw(electronicsInc, states);
+			shifting->draw(presents, states);
 			[[fallthrough]];
 		case 0: // Williams
 			target.draw(williams, states); // Will require alternate shader
 		}
+
+		states.shader = UserInterface::getFlashingShader();
+		target.draw(sf::Sprite(flashing->getTexture()), states);
+
+
+		states.shader = UserInterface::getShiftingShader();
+		target.draw(sf::Sprite(shifting->getTexture()), states);
 	}
 
 private:
@@ -48,6 +58,8 @@ private:
 
 	sf::Texture defenderFrontTex, defenderSidesTex;
 	sf::RectangleShape defenderFront, defenderSides;
+
+	sf::RenderTexture *flashing, *shifting;
 
 	unsigned willPos = 0;
 
