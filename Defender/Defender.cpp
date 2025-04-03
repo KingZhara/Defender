@@ -13,17 +13,16 @@ sf::Vector2u getMaxAspectResolution(int screenWidth,
 
 int main()
 {
+    UserInterface::initialize();
+    DisplayManager::initialize();
+    AttractState::initialize();
+
     // The game itself
     Game game;
     // Player actions; passed throughout the tick pipeline as special handling is included in AttractState
     Action actions;
     // The Clock used for deltatime
     sf::Clock clock;
-
-    UserInterface::initialize();
-    DisplayManager::initialize();
-
-    AttractState::initialize();
 
     clock.restart();
     // Min game loop

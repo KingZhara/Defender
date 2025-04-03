@@ -33,6 +33,9 @@ AttractState::AttractState()
 	credits.setFillColor(sf::Color(0));
 
 	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+
+	shifting->clear(sf::Color(0));
+	flashing->clear(sf::Color(0));
 }
 
 void AttractState::initialize()
@@ -108,7 +111,6 @@ bool AttractState::tick(double deltatime)
 {
 	static Timer<double> textTimer{ 0.03 };
 	static Timer<int> stageTimer{80, false};
-	static sf::Clock timer;
 
 	while (textTimer.tick(deltatime))
 	{
@@ -143,7 +145,6 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 1: // Electronics Inc presents
-				timer.restart();
 				electronicsInc.setFillColor(sf::Color(COMN::ShaderTarget));
 				presents.setFillColor(COMN::ShaderTarget);
 				stage++;
