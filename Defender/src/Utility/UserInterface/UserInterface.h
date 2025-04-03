@@ -58,6 +58,12 @@ public:
 
 	static void initialize();
 
+	static void clean()
+	{
+		delete shiftingShader;
+		delete flashingShader;
+	}
+
 	// @todo complete shader conversion...
 	static const sf::Font& getFont();
 	static const sf::Font& getOtherFont();

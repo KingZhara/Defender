@@ -66,6 +66,9 @@ int main()
         DisplayManager::draw(game);
     }
 
+    DisplayManager::clean();
+    UserInterface::clean();
+
     return 0;
 }
 
