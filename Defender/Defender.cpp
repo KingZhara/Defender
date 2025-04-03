@@ -122,7 +122,7 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
 //         ___   ___   ___
 //        /   \ /   \ /   \
 //   /\/\|  |  |  |  |  |  |
-//  ('w' |  |     |  |  |  |__
+//  ('w' |  |  |  |  |  |  |__
 //   \_____/ \___/ \___/ \____)
 //
 //           Inch Cat
