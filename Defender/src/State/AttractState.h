@@ -10,6 +10,17 @@ public:
 
 	AttractState();
 
+	static void initialize();
+
+	static void clean()
+	{
+		delete willTex;
+		delete defenderFrontTex;
+		delete defenderSidesTex;
+		delete flashing;
+		delete shifting;
+	}
+
 	~AttractState();
 
 	bool tick(double deltatime);
@@ -53,19 +64,22 @@ public:
 
 private:
 
-	sf::Image willSteps, willImg;
-	sf::Texture willTex;
-	sf::RectangleShape williams;
+	static sf::Image willSteps;
+	static sf::RectangleShape williams;
 
-	sf::Text electronicsInc, presents, copyright, credits;
+	static sf::Text electronicsInc, presents, copyright, credits;
 
-	sf::Texture defenderFrontTex, defenderSidesTex;
-	sf::RectangleShape defenderFront, defenderSides;
+	static sf::Texture *defenderFrontTex, *defenderSidesTex;
+	static sf::RectangleShape defenderFront, defenderSides;
 
-	sf::RenderTexture *flashing, *shifting;
+	static sf::RenderTexture *flashing, *shifting;
 
-	sf::Sprite flshDra, shftDra;
+	static sf::Sprite flshDra, shftDra;
 
+	// needs to be recreated each time
+	static sf::Image willImg;
+	static sf::Texture* willTex;
+	
 	unsigned willPos = 0;
 
 	int stage = 0;

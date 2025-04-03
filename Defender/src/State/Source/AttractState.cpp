@@ -8,59 +8,80 @@
 #include "../../Utility/DisplayManager.h"
 
 
+sf::Image AttractState::willSteps, AttractState::willImg;
+sf::Texture* AttractState::willTex;
+sf::RectangleShape AttractState::williams;
+
+sf::Text AttractState::electronicsInc, AttractState::presents, 
+AttractState::copyright, AttractState::credits;
+
+sf::Texture* AttractState::defenderFrontTex, * AttractState::defenderSidesTex;
+sf::RectangleShape AttractState::defenderFront, AttractState::defenderSides;
+
+sf::RenderTexture* AttractState::flashing, * AttractState::shifting;
+
+sf::Sprite AttractState::flshDra, AttractState::shftDra;
+
+
 AttractState::AttractState()
 {
-	std::cout << "CONSTR\n";
+	electronicsInc.setFillColor(sf::Color(0));
+	presents.setFillColor(sf::Color(0));
+	defenderFront.setFillColor(sf::Color(0));
+	defenderSides.setFillColor(sf::Color(0));
+	copyright.setFillColor(sf::Color(0));
+	credits.setFillColor(sf::Color(0));
+
+	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+}
+
+void AttractState::initialize()
+{
+	willTex = new sf::Texture;
+	defenderFrontTex = new sf::Texture;
+	defenderSidesTex = new sf::Texture;
+	flashing = new sf::RenderTexture;
+	shifting = new sf::RenderTexture;
 
 	willSteps.loadFromFile("res/williams.png");
-	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
-	willTex.create(willSteps.getSize().x, willSteps.getSize().y);
 
 	williams.setSize(sf::Vector2f(willSteps.getSize().x, willSteps.getSize().y));
-	williams.setTexture(&willTex);
 	williams.setPosition(COMN::resolution.x / 2 - williams.getGlobalBounds().getSize().x / 2, 10);
 
+	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+	willTex->create(willSteps.getSize().x, willSteps.getSize().y);
 
 	electronicsInc.setFont(UserInterface::getFont());
-	electronicsInc.setFillColor(sf::Color(0));
 	electronicsInc.setString("ELECTRONICS INC.");
 	electronicsInc.setCharacterSize(16);
 	electronicsInc.setPosition(COMN::resolution.x / 2 - (18 * 16 / 4), 50);
 
 	presents.setFont(UserInterface::getFont());
-	presents.setFillColor(sf::Color(0));
 	presents.setCharacterSize(16);
 	presents.setString("PRESENTS");
 	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
 
 
-	defenderFrontTex.loadFromFile("res/defenderFront.png");
-	defenderFront.setSize(sf::Vector2f(defenderFrontTex.getSize()) / 2.f);
-	defenderFront.setTexture(&defenderFrontTex);
+	defenderFrontTex->loadFromFile("res/defenderFront.png");
+	defenderFront.setSize(sf::Vector2f(defenderFrontTex->getSize()) / 2.f);
+	defenderFront.setTexture(defenderFrontTex);
 	defenderFront.setPosition(COMN::resolution.x / 2 - defenderFront.getGlobalBounds().getSize().x / 2, 90);
-	defenderFront.setFillColor(sf::Color(0));
 
-	defenderSidesTex.loadFromFile("res/defenderSides.png");
-	defenderSides.setSize(sf::Vector2f(defenderSidesTex.getSize()) / 2.f);
-	defenderSides.setTexture(&defenderSidesTex);
+	defenderSidesTex->loadFromFile("res/defenderSides.png");
+	defenderSides.setSize(sf::Vector2f(defenderSidesTex->getSize()) / 2.f);
+	defenderSides.setTexture(defenderSidesTex);
 	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
-	defenderSides.setFillColor(sf::Color(0));
 
 
 	copyright.setFont(UserInterface::getOtherFont());
-	copyright.setFillColor(sf::Color(0));
 	copyright.setCharacterSize(16);
 	copyright.setString("COPYRIGHT @ 1980");
 	copyright.setPosition(COMN::resolution.x / 2 - 40, 150);
-	
+
 	credits.setFont(UserInterface::getFont());
-	credits.setFillColor(sf::Color(0));
 	credits.setCharacterSize(16);
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x / 4, 160);
-
-	flashing = new sf::RenderTexture;
-	shifting = new sf::RenderTexture;
 
 	flashing->create(COMN::resolution.x, COMN::resolution.y);
 	shifting->create(COMN::resolution.x, COMN::resolution.y);
@@ -77,6 +98,7 @@ AttractState::AttractState()
 	flshDra.move(0, COMN::resolution.y);
 	shftDra.move(0, COMN::resolution.y);
 }
+
 
 AttractState::~AttractState()
 {
@@ -100,6 +122,7 @@ bool AttractState::tick(double deltatime)
 			switch (stage)
 			{
 			case 0: // Williams
+
 				willPos++;
 				for (unsigned x = 0; x < willSteps.getSize().x; x++)
 					for (unsigned y = 0; y < willSteps.getSize().y; y++)
@@ -107,8 +130,8 @@ bool AttractState::tick(double deltatime)
 							willSteps.getPixel(x, y).toInteger())
 							willImg.setPixel(x, y, COMN::ShaderTarget);
 
-				willTex.update(willImg);
-				williams.setTexture(&willTex);
+				willTex->update(willImg);
+				williams.setTexture(willTex);
 
 				if (willPos > 110)
 				{

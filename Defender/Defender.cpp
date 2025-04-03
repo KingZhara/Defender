@@ -23,6 +23,8 @@ int main()
     UserInterface::initialize();
     DisplayManager::initialize();
 
+    AttractState::initialize();
+
     clock.restart();
     // Min game loop
     while (DisplayManager::getWindow()->isOpen())
@@ -68,6 +70,7 @@ int main()
 
     DisplayManager::clean();
     UserInterface::clean();
+    AttractState::clean();
 
     return 0;
 }
@@ -99,6 +102,7 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
 
     case Key::Right:	// CHANGE DIRECTION
         actions.flags.leftHS = pressed;
+        break;
 
     case Key::Space:    // FIRE
         actions.flags.fire = pressed;
