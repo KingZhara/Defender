@@ -16,6 +16,7 @@ int main()
     UserInterface::initialize();
     DisplayManager::initialize();
     AttractState::initialize();
+    HighscoreState::initialize();
 
     // The game itself
     Game game;
@@ -70,6 +71,7 @@ int main()
     DisplayManager::clean();
     UserInterface::clean();
     AttractState::clean();
+    HighscoreState::clean();
 
     return 0;
 }

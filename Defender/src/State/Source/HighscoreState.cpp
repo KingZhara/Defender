@@ -2,11 +2,53 @@
 #include "../../Utility/Timer.h"
 #include "../../Utility/common.h"
 
+HighscoreState::Score HighscoreState::today[8], HighscoreState::allTime[8];
+
+sf::Text HighscoreState::goatoday, HighscoreState::goatime, 
+HighscoreState::goatodayTitle, HighscoreState::goatimeTitle, 
+HighscoreState::hallOfFame;
+
+sf::RectangleShape HighscoreState::goatodayUnder, HighscoreState::goatimeUnder;
+
+sf::Texture* HighscoreState::defenderTex;
+sf::RectangleShape HighscoreState::defender;
+
+sf::RenderTexture* HighscoreState::shifting;
+
+sf::Sprite HighscoreState::shftDra;
+
+
 HighscoreState::HighscoreState()
 {
-	defenderTex.loadFromFile("res/defender.png");
-	defender.setSize(sf::Vector2f(defenderTex.getSize()) / 2.f);
-	defender.setTexture(&defenderTex);
+	shifting->clear();
+
+	goatoday.setString(makeScores(today));
+	goatime.setString(makeScores(allTime));
+
+	tick(0);
+}
+
+HighscoreState::~HighscoreState()
+{
+}
+
+bool HighscoreState::tick(double deltatime)
+{
+	static Timer<double> timeout{ 8 }; // 10 seconds
+
+	if (timeout.tick(deltatime))
+		return true;
+
+	return false;
+}
+
+void HighscoreState::initialize()
+{
+	defenderTex = new sf::Texture;
+
+	defenderTex->loadFromFile("res/defender.png");
+	defender.setSize(sf::Vector2f(defenderTex->getSize()) / 2.f);
+	defender.setTexture(defenderTex);
 	defender.setPosition(COMN::resolution.x / 2 - defender.getGlobalBounds().getSize().x / 2, 30);
 
 	hallOfFame.setFont(UserInterface::getFont());
@@ -36,18 +78,14 @@ HighscoreState::HighscoreState()
 	goatimeUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatoday.setFont(UserInterface::getFont());
-	goatoday.setString(makeScores(today));
 	goatoday.setCharacterSize(16);
 	goatoday.setPosition(COMN::resolution.x / 4 - (18 * 10.f / 4), 110);
 	goatoday.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatime.setFont(UserInterface::getFont());
-	goatime.setString(makeScores(allTime));
 	goatime.setCharacterSize(16);
 	goatime.setPosition(COMN::resolution.x / 4 * 3 - (18 * 10.f / 4), 110);
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
-
-	tick(0);
 
 	shifting = new sf::RenderTexture;
 	shifting->create(COMN::resolution.x, COMN::resolution.y);
@@ -56,20 +94,6 @@ HighscoreState::HighscoreState()
 	shftDra.setScale(1.f, -1.f);
 	shftDra.move(0, COMN::resolution.y);
 
-}
-
-HighscoreState::~HighscoreState()
-{
-}
-
-bool HighscoreState::tick(double deltatime)
-{
-	static Timer<double> timeout{ 8 }; // 10 seconds
-
-	if (timeout.tick(deltatime))
-		return true;
-
-	return false;
 }
 
 std::string HighscoreState::padNum(int num, int length)

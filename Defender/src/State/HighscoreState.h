@@ -36,6 +36,14 @@ public:
 		target.draw(shftDra, states);
 	}
 
+	static void clean()
+	{
+		delete defenderTex;
+		delete shifting;
+	}
+
+	static void initialize();
+
 private:
 
 	struct Score
@@ -44,23 +52,21 @@ private:
 		int score = 12345;
 	};
 
-	std::string padNum(int num, int length);
+	static std::string padNum(int num, int length);
 
-	std::string makeScores(Score scores[8]);
+	static std::string makeScores(Score scores[8]);
 
-	Score today[8], allTime[8];
+	static Score today[8], allTime[8];
 
-	sf::Text goatoday, goatime, goatodayTitle, goatimeTitle, hallOfFame;
+	static sf::Text goatoday, goatime, goatodayTitle, goatimeTitle, hallOfFame;
 
-	sf::RectangleShape goatodayUnder, goatimeUnder;
+	static sf::RectangleShape goatodayUnder, goatimeUnder;
 
-	sf::Texture defenderTex;
-	sf::RectangleShape defender;
+	static sf::Texture* defenderTex;
+	static sf::RectangleShape defender;
 
-	sf::Color lime = sf::Color(0x89FF00FF);
+	static sf::RenderTexture* shifting;
 
-	sf::RenderTexture* shifting;
-
-	sf::Sprite flshDra, shftDra;
+	static sf::Sprite shftDra;
 };
 
