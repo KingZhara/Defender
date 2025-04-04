@@ -11,12 +11,13 @@ void Baiter::tick(double deltaTime)
 	if (init) 
 	{
 		destinationX = (uint16_t)(playerPos->x + ((playerPos->x - pos.x) / 3));
+
 		destinationY = (uint16_t)(playerPos->y + ((playerPos->y - pos.y) / 3));
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
 
-		vel.x = (float)(300 * cos(rot) - 0 * sin(rot));
-		vel.y = (float)(300 * sin(rot) + 0 * cos(rot));
+		vel.x = (float)(300 * cos(rot));
+		vel.y = (float)(300 * sin(rot));
 
 		init = false;
 	}
@@ -29,8 +30,8 @@ void Baiter::tick(double deltaTime)
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
 
-		vel.x = (float)(300 * cos(rot) - 0 * sin(rot));
-		vel.y = (float)(300 * sin(rot) + 0 * cos(rot));
+		vel.x = (float)(300 * cos(rot));
+		vel.y = (float)(300 * sin(rot));
 	}
 
 	if (pos.y < 0)
@@ -40,6 +41,12 @@ void Baiter::tick(double deltaTime)
 		init = true;
 
 	if (vel.x < 0 && pos.x < destinationX)
+		init = true;
+
+	if (vel.y > 0 && pos.y > destinationY)
+		init = true;
+
+	if (vel.y < 0 && pos.y < destinationY)
 		init = true;
 
 	Entity::tick(deltaTime);
