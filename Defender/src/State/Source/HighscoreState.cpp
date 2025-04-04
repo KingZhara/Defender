@@ -136,6 +136,8 @@ void HighscoreState::addScore(const char initials[4], int score)
 			allTime[i].score = score;
 			for (int c = 0; c < 4; c++)
 				allTime[i].initials[c] = initials[c];
+
+			writeHighscores();
 			break;
 		}
 	}
