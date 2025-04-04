@@ -25,7 +25,7 @@ public:
 		if (actions.flags.thrust)
 			vel.x = (actions.flags.left ? -1 :1) * COMN::baseSpeed.x * COMN::playerSpeedFactor;
 		else
-			vel.x = vel.x * (1 - 0.99 * deltatime);
+			vel.x *= 0.9 * deltatime;
 		if (actions.flags.up)
 			vel.y = -COMN::baseSpeed.y * COMN::playerSpeedFactor;
 		if (actions.flags.down)
