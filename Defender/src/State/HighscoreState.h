@@ -44,19 +44,29 @@ public:
 
 	static void initialize();
 
+
+	static void addScore(char initials[4], int score);
+
 private:
+
+	static constexpr int HS_COUNT = 8;
 
 	struct Score
 	{
-		char initials[3] = { 'A', 'B', 'C' };
+		// I made initials 4 long so we can add a null char and use it as a cstring
+		char initials[4] = "ABC";
 		int score = 12345;
 	};
 
-	static std::string padNum(int num, int length);
+	static int getDate();
 
-	static std::string makeScores(Score scores[8]);
+	static void loadHighscores();
 
-	static Score today[8], allTime[8];
+	static void writeHighscores();
+
+	static std::string makeScores(Score scores[HS_COUNT]);
+
+	static Score today[HS_COUNT], allTime[HS_COUNT];
 
 	static sf::Text goatoday, goatime, goatodayTitle, goatimeTitle, hallOfFame;
 
@@ -68,5 +78,6 @@ private:
 	static sf::RenderTexture* shifting;
 
 	static sf::Sprite shftDra;
+
 };
 
