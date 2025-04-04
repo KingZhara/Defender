@@ -4,7 +4,6 @@ void Mutant::tick(double deltatime)
 {
     static Timer<double>      attackTimer{2};
     static bool               type  = true;
-    static const sf::Vector2f speed = {1.5, 1};
 
     // Bob up or down on even intervals
     if (bobStage % 2 == 0)
@@ -29,21 +28,21 @@ void Mutant::tick(double deltatime)
         4) // 2 = square radius on the x-axis around the player
     {
         if (pos.x - playerPos->x < -2)
-            vel.x = speed.x;
+            vel.x = COMN::baseSpeed.x;
         else if (pos.x - playerPos->x > 2)
-            vel.x = -speed.x;
+            vel.x = -COMN::baseSpeed.x;
 
         if (pos.y - playerPos->y < 0)
-            vel.y = speed.y;
+            vel.y = COMN::baseSpeed.y;
         else
-            vel.y = -speed.y;
+            vel.y = -COMN::baseSpeed.y;
     }
     else
     {
         if (pos.x - playerPos->x < 0)
-            vel.x = speed.x;
+            vel.x = COMN::baseSpeed.x;
         else
-            vel.x = -speed.x;
+            vel.x = -COMN::baseSpeed.x;
 
         // If we are out of the ideal range (screen height / 8 +- 5)
         if (pos.y - playerPos->y >  COMN::resolution.y / 8 + 5 || 
@@ -51,9 +50,9 @@ void Mutant::tick(double deltatime)
         {
             // If above the range, move down
             if (pos.y - playerPos->y > COMN::resolution.y / 8 + 5)
-                vel.y = -speed.y;
+                vel.y = -COMN::baseSpeed.y;
             else
-                vel.y = speed.y;
+                vel.y = COMN::baseSpeed.y;
         }
         else
             vel.y = 0;

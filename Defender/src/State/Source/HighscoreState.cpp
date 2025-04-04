@@ -92,7 +92,7 @@ void HighscoreState::initialize()
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	shifting = new sf::RenderTexture;
-	shifting->create(COMN::resolution.x, COMN::resolution.y);
+	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 	shifting->setView(DisplayManager::getView());
 	shftDra.setTexture(shifting->getTexture());
 	shftDra.setScale(1.f, -1.f);

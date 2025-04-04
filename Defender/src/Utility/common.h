@@ -21,7 +21,7 @@ struct Color
 
 	operator sf::Color() const
 	{
-		return sf::Color(r, g, b);
+		return sf::Color((uint8_t)r, (uint8_t)g, (uint8_t)b);
 	}
 
 	operator sf::Glsl::Vec3() const
@@ -42,6 +42,14 @@ struct COMN
 		73,
 		60
 	};
+
+	static constexpr Vec2f baseSpeed
+	{
+		150.f,
+		100.f
+	};
+
+	static constexpr float playerSpeedFactor = 1.5;
 
 	static constexpr uint16_t worldSize = static_cast<uint16_t>(9 * resolution.x);
 

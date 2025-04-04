@@ -13,8 +13,8 @@ sf::Vector2u DisplayManager::resolution = getMaxAspectResolution(
 );
 // The game window
 sf::RenderWindow* DisplayManager::window = nullptr;
-sf::RenderTexture* DisplayManager::currentFrame = nullptr;
-sf::RenderTexture* DisplayManager::previousFrame = nullptr;
+sf::RenderTexture* DisplayManager::frameA = nullptr;
+sf::RenderTexture* DisplayManager::frameB = nullptr;
 sf::Texture* DisplayManager::textures = nullptr; // In-game textures
 sf::Shader* DisplayManager::smoothShader = nullptr;
 sf::View DisplayManager::viewport = sf::View(sf::FloatRect(0, 0, COMN::resolution.x, COMN::resolution.y));
@@ -33,30 +33,30 @@ void DisplayManager::initialize()
     // Create the window at scaled resolution
     window = new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y),
         "Defender", sf::Style::Titlebar | sf::Style::Close);
-    currentFrame = new sf::RenderTexture;
-    previousFrame = new sf::RenderTexture;
+    frameA = new sf::RenderTexture;
+    frameB = new sf::RenderTexture;
     smoothShader = new sf::Shader;
 
     window->setView(viewport);
-    currentFrame->setView(viewport);
-    previousFrame->setView(viewport);
+    frameA->setView(viewport);
+    frameB->setView(viewport);
 
     // This is your brain on drugs pookie
     smoothShader->loadFromFile("./res/shaders/epilepsySmooth.frag",
         sf::Shader::Type::Fragment);
 
-    if (!currentFrame->create(resolution.x, resolution.y) ||
-        !previousFrame->create(resolution.x, resolution.y))
+    if (!frameA->create(resolution.x, resolution.y) ||
+        !frameB->create(resolution.x, resolution.y))
         std::cerr << "Failed to create render textures.\n";
 
     textures = textures = loadSpritesheet();
 
-    currentFrame->setSmooth(false);
-    previousFrame->setSmooth(false);
+    frameA->setSmooth(false);
+    frameB->setSmooth(false);
     textures->setSmooth(false);
 
-    previousFrame->clear(sf::Color::Black);
-    previousFrame->display();
+    frameB->clear(sf::Color::Black);
+    frameB->display();
 
     window->setFramerateLimit(60);
 }
@@ -65,34 +65,34 @@ void DisplayManager::clean()
 {
     delete textures;
     delete window;
-	delete currentFrame;
-	delete previousFrame;
+	delete frameA;
+	delete frameB;
 	delete smoothShader;
 }
 
 void DisplayManager::draw(sf::Drawable& all)
 {
     // Draw the current frame
-    (outputTexture ? currentFrame : previousFrame)->clear();
-	(outputTexture ? currentFrame : previousFrame)->draw(all);
+    (outputTexture ? frameA : frameB)->clear();
+	(outputTexture ? frameA : frameB)->draw(all);
 
     // I want to note that a compute shader calculating mean entropy between frames would be ideal, but this is the best I can do for now.
-    smoothShader->setUniform("currentFrame", (outputTexture ? currentFrame : previousFrame)->getTexture());
-    smoothShader->setUniform("lastFrame", (outputTexture ? previousFrame : currentFrame)->getTexture());
+    smoothShader->setUniform("frameA", (outputTexture ? frameA : frameB)->getTexture());
+    smoothShader->setUniform("lastFrame", (outputTexture ? frameB : frameA)->getTexture());
     smoothShader->setUniform("maxDelta", 1.f); // 0.3 is a safe-ish value
 
 	// Apply the shader after drawing the current frame
-	//(outputTexture ? currentFrame : previousFrame)->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+	//(outputTexture ? frameA : frameB)->draw(sf::Sprite((outputTexture ? frameA : frameB)->getTexture()), smoothShader);
 
     //std::cout << "VP: " << viewport.getSize().x << ' ' << viewport.getSize().y << '\n';
     //window->setView(viewport);
-    currentFrame->setView(viewport);
-    previousFrame->setView(viewport);
+    frameA->setView(viewport);
+    frameB->setView(viewport);
     // Assumes getRenderTarget() has been called, and the current frame has been drawn to
-    (outputTexture ? currentFrame : previousFrame)->display();
+    (outputTexture ? frameA : frameB)->display();
 
     window->clear();
-    window->draw(sf::Sprite((outputTexture ? currentFrame : previousFrame)->getTexture()), smoothShader);
+    window->draw(sf::Sprite((outputTexture ? frameA : frameB)->getTexture()), smoothShader);
     window->display();
 
 	outputTexture = !outputTexture;

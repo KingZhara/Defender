@@ -48,7 +48,7 @@ void AttractState::initialize()
 
 	willSteps.loadFromFile("res/williams.png");
 
-	williams.setSize(sf::Vector2f(willSteps.getSize().x, willSteps.getSize().y));
+	williams.setSize(sf::Vector2f((float)willSteps.getSize().x, (float)willSteps.getSize().y));
 	williams.setPosition(COMN::resolution.x / 2 - williams.getGlobalBounds().getSize().x / 2, 10);
 
 	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
@@ -86,8 +86,8 @@ void AttractState::initialize()
 	credits.setString("CREDITS: 00");
 	credits.setPosition(COMN::resolution.x / 4, 160);
 
-	flashing->create(COMN::resolution.x, COMN::resolution.y);
-	shifting->create(COMN::resolution.x, COMN::resolution.y);
+	flashing->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
+	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 
 	flashing->setView(DisplayManager::getView());
 	shifting->setView(DisplayManager::getView());
@@ -162,7 +162,7 @@ bool AttractState::tick(double deltatime)
 				copyright.setFillColor(COMN::ShaderTarget);
 				credits.setFillColor(COMN::ShaderTarget);
 				stage++;
-				stageTimer.addTime((1 / textTimer.getBase()) * 5);
+				stageTimer.addTime((int)(1. / textTimer.getBase() * 5.));
 				stageTimer.tick(1);
 				break;
 

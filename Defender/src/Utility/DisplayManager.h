@@ -15,21 +15,27 @@ namespace sf
 class DisplayManager
 {
 public:
-    static sf::View &  getView() { return viewport; };
-    static sf::RenderWindow *getWindow() { return window; };
-    static void        initialize();
-    static void        clean();
-    static void draw(sf::Drawable& all);
+    static sf::View &getView() { return viewport; }
+
+    static void resetViewPos()
+    {
+        viewport.setCenter(viewport.getSize().x / 2, viewport.getSize().y / 2);
+    }
+
+    static sf::RenderWindow *getWindow() { return window; }
+    static void              initialize();
+    static void              clean();
+    static void              draw(sf::Drawable &all);
 
 private:
-    static sf::Vector2u      resolution   ; // Window resolution
-    static sf::RenderWindow *window       ;
-    static sf::Texture *     textures     ; // In-game textures
-    static sf::RenderTexture* currentFrame ; // The current frame being drawn
-    static sf::RenderTexture* previousFrame;
-    static sf::Shader*        smoothShader ;
-    static sf::View          viewport     ;
-    static bool outputTexture;
+    static sf::Vector2u       resolution; // Window resolution
+    static sf::RenderWindow * window;
+    static sf::Texture *      textures; // In-game textures
+    static sf::RenderTexture *frameA;
+    static sf::RenderTexture *frameB;
+    static sf::Shader *       smoothShader;
+    static sf::View           viewport;
+    static bool               outputTexture;
 
     static sf::Texture *loadSpritesheet();
     static sf::Vector2u getMaxAspectResolution(int screenWidth,

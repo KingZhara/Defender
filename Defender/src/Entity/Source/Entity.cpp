@@ -60,19 +60,15 @@ sf::Vector2f* Entity::playerVel = nullptr;
 
 void Entity::tick(double deltatime)
 {
-	animation.tick(deltatime);
+	pos += {(float)std::round(vel.x * deltatime), (float)std::round(vel.y* deltatime)};
 
-
-	//std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ")," << " (" << (pos.x - DisplayManager::getView().getCenter().x) << ", " << (pos.x - DisplayManager::getView().getCenter().y) << ") ";
-
-	pos += vel;
-	// vel *= 0.9f; // Don't apply friction - Ricky
 	if (abs(vel.x) < 0.1f)
 		vel.x = 0;
 	if (abs(vel.y) < 0.1f)
 		vel.y = 0;
 
-	//std::cout << " (" << round(pos.x - DisplayManager::getView().getCenter().x) << ", " << round(pos.x - DisplayManager::getView().getCenter().y) << ") ";
+
+	animation.tick(deltatime);
 	animation.setPosition(pos);
 	//std::cout << '\n';
 }

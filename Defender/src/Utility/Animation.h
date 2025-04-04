@@ -41,16 +41,7 @@ private:
 	/**
 	 * Draw method provided by drawable
 	 */
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-	{
-		UserInterface::getFlashingShader()->setUniform("textureSize", sf::Glsl::Vec2{ frame.getGlobalBounds().getSize() });
-
-	    if (shader)
-			shader->setUniform("texture", sf::Shader::CurrentTexture);
-
-	    states.shader = shader;
-		target.draw(frame, states);
-	}
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
 	Animation() = delete;
@@ -75,45 +66,23 @@ public:
 	 *
 	 * @param texture
 	 */
-	static void setTexture(const sf::Texture* texture)
-	{
-		tex = texture;
-	}
+	static void setTexture(const sf::Texture* texture) { tex = texture; }
+
 	/**
 	 *
 	 * @param texture
 	 */
-	void setShader(sf::Shader* shader_)
-	{
-		shader = shader_;
-	}
+	void setShader(sf::Shader* shader_) { shader = shader_; }
 
 	/**
 	 * 
 	 * @param deltatime 
 	 */
-	void tick(double deltatime)
-	{
-		sf::IntRect newBounds = frame.getTextureRect();
-		if (frameTimer.tick(deltatime))
-		{
-			if (++currentFrame == LENGTH)
-				currentFrame = 0;
+	void tick(double deltatime);
 
-			newBounds.left = start + newBounds.width * currentFrame;
-			frame.setTextureRect(newBounds);
-		}
-	}
+	void setStart(uint16_t start_) { start = start_; }
 
-	void setStart(uint16_t start_)
-	{
-		start = start_;
-	}
-
-	void setPosition(sf::Vector2f pos) const
-    {
-		frame.setPosition(round(pos.x), round(pos.y));
-	}
+	void setPosition(sf::Vector2f pos) const;
 
 	// Used by the player for direction switching :D
 	sf::Sprite& getSprite() const
