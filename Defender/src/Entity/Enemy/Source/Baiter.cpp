@@ -19,10 +19,6 @@ void Baiter::tick(double deltaTime)
 		vel.x = (float)(300 * cos(rot));
 		vel.y = (float)(300 * sin(rot));
 
-
-
-		//entityQueue.emplace(QueuedEntity(pos, EntityID::BULLET));
-
 		init = false;
 	}
 
@@ -42,6 +38,12 @@ void Baiter::tick(double deltaTime)
 		pos.y = 0;
 
 	if (vel.x > 0 && pos.x > destinationX)
+		init = true;
+
+	if (vel.x < 0 && pos.x < destinationX)
+		init = true;
+
+	if (vel.y > 0 && pos.y > destinationY)
 		init = true;
 
 	if (vel.y < 0 && pos.y < destinationY)
