@@ -29,9 +29,9 @@ class EntityManager : public sf::Drawable
 		}
 
 		// For all non-entity specifications
-		template<typename E>
-		requires (!std::is_same_v<E, Entity> && std::is_base_of_v<T, E>)
-		uint16_t spawn(sf::Vector2f pos)
+		template<typename E, typename... Args>
+		requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
+		uint16_t spawn(Args&&... args)
 		{
 			uint16_t index = 0;
 
@@ -61,41 +61,7 @@ class EntityManager : public sf::Drawable
 
 			//std::cout << index << '\n';
 			// Place new entity
-			entities.at(index) = new E(pos);
-
-			return index;
-		}
-
-		// Specifically for the entity specification, used solely for particles
-		template<typename E>
-		requires (std::is_same_v<E, Entity>)
-		uint16_t spawn(sf::Vector2f pos, sf::IntRect bounds)
-		{
-			uint16_t index = 0;
-
-			// Generate index
-			if (count == 0)
-			{
-				std::cout << "ECOUT\n";
-				entities.emplace_back(nullptr);
-				index = static_cast<uint16_t>(entities.size() - 1);
-			}
-			else
-			{
-				std::cout << "N_ECOUT\n";
-				//std::cout << first << ' ' << last << ' ' << count << '\n';
-
-				if (count > 1)
-					getIndex(index);
-				else // count == 1
-					index = first;
-
-
-				--count;
-			}
-
-			// Place new entity
-			entities.at(index) = new E(pos, bounds);
+			entities.at(index) = new E(std::forward<Args>(args)...);
 
 			return index;
 		}
@@ -178,7 +144,7 @@ public:
 	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-    static void adjViewport(sf::View * view);
+    static void adjViewport(sf::View * view, double deltatime);
     /*
 	void test()
 	{

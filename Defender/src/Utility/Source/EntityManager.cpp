@@ -26,8 +26,36 @@ EntityManager::EntityManager(bool scripted_)
     player = nullptr;
 }
 
-void EntityManager::adjViewport(sf::View *view)
+void EntityManager::adjViewport(sf::View *view, double deltatime)
 {
+    static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
+	static constexpr double epsilon = 1; // Epsilon for the cutoff
+    const  double playfieldWidth = view->getSize().x * playfieldFactor; // Playfield width
+	const  double centeredPlayer = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.; // The players position centered to its hitbox
+	//const  double left = view->getCenter().x - playfieldWidth / 2.; // Left side of playfield
+
+
+    if (!player->getDir())
+    {
+        view->setCenter(std::round(view->getCenter().x + (COMN::baseSpeed.x + player->getVel().x) * deltatime), view->getCenter().y);
+
+        if (centeredPlayer - (view->getCenter().x - view->getSize().x * playfieldFactor) < epsilon)
+            view->setCenter(std::round(centeredPlayer + view->getSize().x * playfieldFactor), view->getCenter().y);
+    }
+    else
+    {
+        view->setCenter(std::round(view->getCenter().x - (COMN::baseSpeed.x  - player->getVel().x) * deltatime), view->getCenter().y);
+
+        if ((view->getCenter().x + view->getSize().x * playfieldFactor) - centeredPlayer < epsilon)
+            view->setCenter(std::round(centeredPlayer - view->getSize().x * playfieldFactor), view->getCenter().y);
+        
+    }
+
+
+
+	/*#################### VV The Fun Way VV ####################*/
+
+    /*
     static double playfieldFactor    = 2. / 4.;
     static double normalizationWidth = 50;
     const  double playfieldWidth     = view->getSize().x - (view->getSize().x * playfieldFactor)          ; // Playfield width
@@ -87,6 +115,7 @@ void EntityManager::adjViewport(sf::View *view)
             COMN::resolution.y / 2
             });
     }
+    */
 }
 
 bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
@@ -233,7 +262,7 @@ void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID)
         do
         {
             particles.entities.at(particles.spawn<Entity>(
-                    {
+                    sf::Vector2f{
                         pos.x + col,
                         pos.y + row
                     },

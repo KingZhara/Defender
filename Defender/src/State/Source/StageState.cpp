@@ -73,6 +73,7 @@ bool StageState::tick(Action& actions, double deltatime)
 				playerState.smart_bombs = 0;
 				playerDead = false;
 
+				DisplayManager::resetViewPos();
 				return true;
 			}
 
@@ -87,7 +88,7 @@ bool StageState::tick(Action& actions, double deltatime)
 		playerDead = false;
 	}
 	else
-		EntityManager::adjViewport(&DisplayManager::getView());
+		EntityManager::adjViewport(&DisplayManager::getView(), deltatime);
 
 	return false;
 }
