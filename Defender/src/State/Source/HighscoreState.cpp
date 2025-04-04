@@ -26,14 +26,8 @@ HighscoreState::HighscoreState()
 {
 	shifting->clear();
 
-	addScore("DUP", 1);
-	addScore("DUP", 1);
-	addScore("DUP", 1);
-	addScore("TST", 10);
-	addScore("DUP", 1);
-	addScore("TES", 20);
-	addScore("DUP", 1);
-	addScore("DUP", 1);
+	// Call something like this when stagestate is done
+	// addScore("TST", 1000);
 
 	goatoday.setString(makeScores(today));
 	goatime.setString(makeScores(allTime));
