@@ -54,11 +54,9 @@ private:
 	struct Score
 	{
 		// I made initials 4 long so we can add a null char and use it as a cstring
-		char initials[4] = "ABC";
-		int score = 12345;
+		char initials[4] = "   ";
+		int score = -1;
 	};
-
-	static int getDate();
 
 	static void loadHighscores();
 
