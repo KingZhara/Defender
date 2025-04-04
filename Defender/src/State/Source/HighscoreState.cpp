@@ -26,6 +26,15 @@ HighscoreState::HighscoreState()
 {
 	shifting->clear();
 
+	addScore("DUP", 1);
+	addScore("DUP", 1);
+	addScore("DUP", 1);
+	addScore("TST", 10);
+	addScore("DUP", 1);
+	addScore("TES", 20);
+	addScore("DUP", 1);
+	addScore("DUP", 1);
+
 	goatoday.setString(makeScores(today));
 	goatime.setString(makeScores(allTime));
 
@@ -101,8 +110,35 @@ void HighscoreState::initialize()
 	loadHighscores();
 }
 
-void HighscoreState::addScore(char initials[4], int score)
+void HighscoreState::addScore(const char initials[4], int score)
 {
+	for (int i = 0; i < HS_COUNT; i++)
+	{
+		if (score > today[i].score)
+		{
+			for (int ii = HS_COUNT - 1; ii > i; ii--)
+				today[ii] = today[ii - 1];
+			today[i].score = score;
+			for (int c = 0; c < 4; c++)
+				today[i].initials[c] = initials[c];
+			break;
+		}
+	}
+	// looks like this could be just one loop,
+	// but it does need to break out individually.
+	// That was the weird score not being counted bug
+	for (int i = 0; i < HS_COUNT; i++)
+	{
+		if (score > allTime[i].score)
+		{
+			for (int ii = HS_COUNT - 1; ii > i; ii--)
+				allTime[ii] = allTime[ii - 1];
+			allTime[i].score = score;
+			for (int c = 0; c < 4; c++)
+				allTime[i].initials[c] = initials[c];
+			break;
+		}
+	}
 }
 
 void HighscoreState::loadHighscores()
@@ -143,7 +179,7 @@ std::string HighscoreState::makeScores(Score scores[HS_COUNT])
 	std::string str(11 * HS_COUNT, ' ');
 	for (int i = 0; i < HS_COUNT; i++)
 	{
-		if (scores[i].score == -1) // NULL score
+		if (scores[i].score == 0) // NULL score
 			snprintf(&str[i * 11], 12, "%d         \n", (i + 1));
 
 		// Explaining this printf format:

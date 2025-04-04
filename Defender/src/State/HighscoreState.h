@@ -45,7 +45,7 @@ public:
 	static void initialize();
 
 
-	static void addScore(char initials[4], int score);
+	static void addScore(const char initials[4], int score);
 
 private:
 
@@ -55,7 +55,7 @@ private:
 	{
 		// I made initials 4 long so we can add a null char and use it as a cstring
 		char initials[4] = "   ";
-		int score = -1;
+		int score = 0;
 	};
 
 	static void loadHighscores();
