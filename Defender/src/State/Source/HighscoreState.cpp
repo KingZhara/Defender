@@ -83,12 +83,12 @@ void HighscoreState::initialize()
 
 	goatoday.setFont(UserInterface::getFont());
 	goatoday.setCharacterSize(16);
-	goatoday.setPosition(COMN::resolution.x / 4 - (18 * 10.f / 4), 110);
+	goatoday.setPosition(COMN::resolution.x * 0.25f - (18 * 10.f / 4), 110);
 	goatoday.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatime.setFont(UserInterface::getFont());
 	goatime.setCharacterSize(16);
-	goatime.setPosition(COMN::resolution.x / 4 * 3 - (18 * 10.f / 4), 110);
+	goatime.setPosition(COMN::resolution.x * 0.75f - (18 * 10.f / 4), 110);
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	shifting = new sf::RenderTexture;
@@ -105,90 +105,12 @@ void HighscoreState::addScore(char initials[4], int score)
 {
 }
 
-int HighscoreState::getDate()
-{
-	time_t now = time(NULL);
-	struct tm local = *std::localtime(&now);
-
-	int date = local.tm_year + 1900;		// [0000-9999]
-	date += local.tm_mday * 1'00'0000;		// [01-31]
-	date += (local.tm_mon + 1) * 1'0000;	// [01-12]
-	return date;
-}
-
 void HighscoreState::loadHighscores()
-{
-	/*
-		format of "highscores":
-		binary
-
-		score format:
-			initials score
-			(3xchar), (int)
-
-		first section:
-			todays date (DDMMYYYY) (int)
-		second section:
-			8 ordered scores (today) (high first)
-			score is -1 and initials are "   " if not set
-		third section:
-			8 ordered scores (all time) (high first)
-
-		example:
-
-		highscore--------------------------------------------------------------
-		03042025
-		QWE3000
-		RTY2500
-		UIO2000
-		PAS1500
-		___-1
-		___-1
-		___-1
-		___-1
-		QWE250000
-		RTY200000
-		UIO125000
-		PAS50000
-		DFG25000
-		HJK20000
-		LZX10000
-		CVB5000
-		end highscore----------------------------------------------------------
-
-		highscore binary-------------------------------------------------------
-		Date:        | 0x002E6AE9
-		1st today:   | 0x51 0x57 0x45 0x00 0x00000BB8
-		2nd today:   | 0x52 0x54 0x59 0x00 0x000009C4
-		3rd today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		4th today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		5th today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		6th today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		7th today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		8th today:   | 0x20 0x20 0x20 0x00 0xFFFFFFFF
-		1st all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		2nd all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		3rd all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		4th all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		5th all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		6th all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		7th all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		8th all time:| 0x51 0x57 0x45 0x00 0x0003D090
-		end highscore binary---------------------------------------------------
-	*/
-	
+{	
 	std::ifstream hs("highscores", std::ios::binary);
 
 	if (hs.is_open())
 	{
-		int date = getDate();
-		hs.read((char*)&date, sizeof(int));
-
-		for (int i = 0; i < HS_COUNT; i++)
-		{
-			hs.read(today[i].initials, sizeof(Score::initials));
-			hs.read((char*)&today[i].score, sizeof(Score::score));
-		}
 		for (int i = 0; i < HS_COUNT; i++)
 		{
 			hs.read(allTime[i].initials, sizeof(Score::initials));
@@ -206,14 +128,6 @@ void HighscoreState::writeHighscores()
 	std::ofstream hs("highscores", std::ios::binary);
 	if (hs.is_open())
 	{
-		int date = getDate();
-		hs.write((char*)&date, sizeof(int));
-
-		for (int i = 0; i < HS_COUNT; i++)
-		{
-			hs.write(today[i].initials, sizeof(Score::initials));
-			hs.write((char*)&today[i].score, sizeof(Score::score));
-		}
 		for (int i = 0; i < HS_COUNT; i++)
 		{
 			hs.write(allTime[i].initials, sizeof(Score::initials));
@@ -226,11 +140,11 @@ void HighscoreState::writeHighscores()
 
 std::string HighscoreState::makeScores(Score scores[HS_COUNT])
 {
-	std::string str(11 * 8, 0);
+	std::string str(11 * HS_COUNT, ' ');
 	for (int i = 0; i < HS_COUNT; i++)
 	{
 		if (scores[i].score == -1) // NULL score
-			break;
+			snprintf(&str[i * 11], 12, "%d         \n", (i + 1));
 
 		// Explaining this printf format:
 		// "Do not be afraid" there is much worse
@@ -247,10 +161,11 @@ std::string HighscoreState::makeScores(Score scores[HS_COUNT])
 		//     If it's the final loop it writes it to std::string's null char,
 		//     so it is the same and doesn't matter.
 
-		snprintf(&str[i * 11], 12, "%d%s%6d\n", 
-			(i + 1), // always gonna be 1 digit
-			scores[i].initials, // always 3 characters
-			scores[i].score % 1000000); // wrap around to keep 6 digits
+		else
+			snprintf(&str[i * 11], 12, "%d%s%6d\n", 
+				(i + 1), // always gonna be 1 digit
+				scores[i].initials, // always 3 characters
+				scores[i].score % 100000); // wrap around to keep 5 digits (+ 1 space padding)
 	}
 	return str;
 }
