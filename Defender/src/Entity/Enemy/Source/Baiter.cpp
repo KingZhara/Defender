@@ -12,14 +12,15 @@ void Baiter::tick(double deltaTime)
 
 	if (init) 
 	{
-			destinationX = (uint16_t)(playerPos->x + (playerPos->x - pos.x)/2);
-			destinationY = (uint16_t)(playerPos->y + (playerPos->y - pos.y)/2);
 
+
+		destinationX = (uint16_t)(playerPos->x + 10 + ((playerPos->x - pos.x)/8));
+		destinationY = (uint16_t)(playerPos->y + 10 + ((playerPos->y - pos.y)/8));
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
 
-		vel.x = (float)(3 * cos(rot) - 0 * sin(rot));
-		vel.y = (float)(3 * sin(rot) + 0 * cos(rot));
+		vel.x = (float)(180 * cos(rot) - 0 * sin(rot));
+		vel.y = (float)(180 * sin(rot) + 0 * cos(rot));
 
 		init = false;
 	}
