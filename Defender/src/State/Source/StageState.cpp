@@ -1,10 +1,11 @@
 #include "../StageState.h"
+#include "../HighscoreState.h"
 #include <iostream>
 
 EntityManager StageState::entityManager = EntityManager(false);
 Timer<double> StageState::hyperspaceCooldown = Timer<double>(5 /*@todo correct time in seconds*/, true);
 StageState::PlayerState StageState::playerState = PlayerState();
-char StageState::name[3] = { 0, 0, 0 };
+char StageState::name[4] = { 0, 0, 0, 0 };
 uint8_t StageState::namePos = 0;
 
 const char StageState::validChars[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -126,6 +127,11 @@ bool StageState::SaveHighscore(Action& actions)
 			namePos++;
 		else
 		{
+			HighscoreState::addScore(getInitials().data(), (rand() % 20 + 1) * 500);
+			// should work, but scores of 0 are rejected, so just make a random number
+			//HighscoreState::addScore(getInitials().data(), entityManager.getScore());
+			
+
 			// Reset ALL data before returning
 			leftPressed = false;
 			rightPressed = false;

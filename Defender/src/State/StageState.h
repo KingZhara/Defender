@@ -34,9 +34,8 @@ public:
 			target.draw(entityManager, states);
 		else
 		{
-			nameStr[0] = validChars[name[0]];
-			nameStr[1] = validChars[name[1]];
-			nameStr[2] = validChars[name[2]];
+			for (int i = 0; i < 3; i++)
+				nameStr[i] = validChars[name[i]];
 			nameStr[3] = '\0';
 
 			initials.setString(nameStr);
@@ -54,12 +53,11 @@ public:
 		}
 	}
 
-	std::string getInitials()
+	static std::string getInitials()
 	{
 		static char nameStr[4];
-		nameStr[0] = validChars[name[0]];
-		nameStr[1] = validChars[name[1]];
-		nameStr[2] = validChars[name[2]];
+		for (int i = 0; i < 3; i++)
+			nameStr[i] = validChars[name[i]];
 		nameStr[3] = '\0';
 		return std::string(nameStr);
 	}
@@ -71,7 +69,7 @@ private:
 	static EntityManager entityManager;
 	static Timer<double> hyperspaceCooldown;
 	static PlayerState playerState;
-	static char name[3];
+	static char name[4];
 	static uint8_t namePos;
 
 	static const char validChars[];
