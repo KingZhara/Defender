@@ -5,25 +5,36 @@ void Baiter::tick(double deltaTime)
 {
 	static int16_t destinationX = 0;
 	static int16_t destinationY = 0;
-	static double slopeX = 0;
-	static double slopeY = 0;
 	static bool init = true;
 	static double rot;
 
 	if (init) 
 	{
-
-
-		destinationX = (uint16_t)(playerPos->x + 10 + ((playerPos->x - pos.x)/8));
-		destinationY = (uint16_t)(playerPos->y + 10 + ((playerPos->y - pos.y)/8));
+		destinationX = (uint16_t)(playerPos->x + ((playerPos->x - pos.x) / 3));
+		destinationY = (uint16_t)(playerPos->y + ((playerPos->y - pos.y) / 3));
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
 
-		vel.x = (float)(180 * cos(rot) - 0 * sin(rot));
-		vel.y = (float)(180 * sin(rot) + 0 * cos(rot));
+		vel.x = (float)(300 * cos(rot) - 0 * sin(rot));
+		vel.y = (float)(300 * sin(rot) + 0 * cos(rot));
 
 		init = false;
 	}
+
+	//if too far from the player
+	if (abs(playerPos->x - pos.x) > 100 || abs(playerPos->y - pos.y) > 100)
+	{
+		destinationX = playerPos->x;
+		destinationY = playerPos->y;
+
+		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
+
+		vel.x = (float)(300 * cos(rot) - 0 * sin(rot));
+		vel.y = (float)(300 * sin(rot) + 0 * cos(rot));
+	}
+
+	if (pos.y < 0)
+		pos.y = 0;
 
 	if (vel.x > 0 && pos.x > destinationX)
 		init = true;
