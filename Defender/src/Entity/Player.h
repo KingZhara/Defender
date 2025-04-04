@@ -29,7 +29,7 @@ public:
 		if (actions.flags.up)
 			vel.y = -COMN::baseSpeed.y * COMN::playerSpeedFactor;
 		if (actions.flags.down)
-			vel.y += COMN::baseSpeed.y * COMN::playerSpeedFactor;
+			vel.y = COMN::baseSpeed.y * COMN::playerSpeedFactor;
 		if (actions.flags.fire)
 			entityQueue.emplace(pos, EntityID::LASER);
 
