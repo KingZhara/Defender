@@ -31,7 +31,7 @@ AttractState::AttractState()
 	copyright.setFillColor(sf::Color(0));
 	credits.setFillColor(sf::Color(0));
 
-	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+	willImg.create(willSteps.getSize().x + 1, willSteps.getSize().y, sf::Color(0));
 
 	shifting->clear(sf::Color(0));
 	flashing->clear(sf::Color(0));
@@ -51,8 +51,8 @@ void AttractState::initialize()
 	williams.setSize(sf::Vector2f((float)willSteps.getSize().x, (float)willSteps.getSize().y));
 	williams.setPosition(COMN::resolution.x / 2 - williams.getGlobalBounds().getSize().x / 2, 10);
 
-	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
-	willTex->create(willSteps.getSize().x, willSteps.getSize().y);
+	willImg.create(willSteps.getSize().x + 1, willSteps.getSize().y, sf::Color(0));
+	willTex->create(willSteps.getSize().x + 1, willSteps.getSize().y);
 
 	electronicsInc.setFont(UserInterface::getFont());
 	electronicsInc.setString("ELECTRONICS INC.");

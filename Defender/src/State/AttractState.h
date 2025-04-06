@@ -53,11 +53,9 @@ public:
 			[[fallthrough]];
 
 		case 0: // Williams
-			target.draw(williams, states); // Draws normally
-			// This below is off by 1 for width and doesn't clear for some reason.
-			// I thought I copied the other shaders in every use.
-			
-			//willFlashing->draw(williams, states); // Will require alternate shader
+			// Yes, this needs to be here otherwise it will be fully drawn after the first time thru
+			willFlashing->clear(sf::Color(0)); 
+			willFlashing->draw(williams, states); // Will require alternate shader
 		}
 
 		states.shader = UserInterface::getFlashingShader();
@@ -87,6 +85,8 @@ private:
 	static sf::Sprite flshDra, shftDra, willFlshDra;
 
 	// needs to be recreated each time
+	// The width of these is actually 1 less because the shader cut off the final pixels
+	// For width use willSteps
 	static sf::Image willImg;
 	static sf::Texture* willTex;
 	
