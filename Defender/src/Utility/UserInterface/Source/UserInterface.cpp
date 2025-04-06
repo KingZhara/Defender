@@ -13,6 +13,7 @@ sf::Text UserInterface::score;
 sf::Text UserInterface::credits; // @todo find out if this is necessary...
 sf::Shader* UserInterface::shiftingShader = nullptr;
 sf::Shader* UserInterface::flashingShader = nullptr;
+sf::Shader* UserInterface::williamsShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
@@ -186,14 +187,18 @@ void UserInterface::initialize()
     // Shaders
     shiftingShader = new sf::Shader;
     flashingShader = new sf::Shader;
+    williamsShader = new sf::Shader;
 
     shiftingShader->loadFromFile("res/shaders/replace.frag",
-                                 sf::Shader::Type::Fragment);
+        sf::Shader::Type::Fragment);
     flashingShader->loadFromFile("./res/shaders/replace.frag",
+        sf::Shader::Type::Fragment);
+    williamsShader->loadFromFile("./res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
 
     flashingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
+    williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
 
     // World
     //UserInterface::World::generate();
@@ -204,12 +209,15 @@ const sf::Font &UserInterface::getOtherFont() { return otherFont; }
 
 sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
 sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
+sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
 
 const void UserInterface::shaderTick(double deltatime)
 {
     static Timer<double>      replaceType{ 1 / 8. };
 	static bool               type = false;
     static HSV                shiftReplacement;
+    static Timer<double>      replaceWilliams{ 1 / 2. };
+	static bool               williamsType = false;
 
     if (replaceType.tick(deltatime))
     {
@@ -220,6 +228,13 @@ const void UserInterface::shaderTick(double deltatime)
                 brightColors[rand() % 8]);
         else
             flashingShader->setUniform("replaceColor", sf::Glsl::Vec3(0, 0, 0));
+    }
+
+    if (replaceWilliams.tick(deltatime))
+    {
+        williamsType = !williamsType;
+
+        williamsShader->setUniform("replaceColor", williamsType ? sf::Glsl::Vec3(1, 1, 0) : sf::Glsl::Vec3(1, 0, 0));
     }
 
     shiftReplacement.shift(6);

@@ -18,9 +18,9 @@ AttractState::copyright, AttractState::credits;
 sf::Texture* AttractState::defenderTex;
 sf::RectangleShape AttractState::defender;
 
-sf::RenderTexture* AttractState::flashing, * AttractState::shifting;
+sf::RenderTexture* AttractState::flashing, * AttractState::shifting, * AttractState::willFlashing;
 
-sf::Sprite AttractState::flshDra, AttractState::shftDra;
+sf::Sprite AttractState::flshDra, AttractState::shftDra, AttractState::willFlshDra;
 
 
 AttractState::AttractState()
@@ -35,6 +35,7 @@ AttractState::AttractState()
 
 	shifting->clear(sf::Color(0));
 	flashing->clear(sf::Color(0));
+	willFlashing->clear(sf::Color(0));
 }
 
 void AttractState::initialize()
@@ -43,6 +44,7 @@ void AttractState::initialize()
 	defenderTex = new sf::Texture;
 	flashing = new sf::RenderTexture;
 	shifting = new sf::RenderTexture;
+	willFlashing = new sf::RenderTexture;
 
 	willSteps.loadFromFile("res/williams.png");
 
@@ -81,18 +83,23 @@ void AttractState::initialize()
 
 	flashing->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
+	willFlashing->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 
 	flashing->setView(DisplayManager::getView());
 	shifting->setView(DisplayManager::getView());
+	willFlashing->setView(DisplayManager::getView());
 
 	flshDra.setTexture(flashing->getTexture());
 	shftDra.setTexture(shifting->getTexture());
+	willFlshDra.setTexture(willFlashing->getTexture());
 
 	flshDra.setScale(1.f, -1.f);
 	shftDra.setScale(1.f, -1.f);
+	willFlshDra.setScale(1.f, -1.f);
 
 	flshDra.move(0, COMN::resolution.y);
 	shftDra.move(0, COMN::resolution.y);
+	willFlshDra.move(0, COMN::resolution.y);
 }
 
 

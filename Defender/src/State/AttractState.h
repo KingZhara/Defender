@@ -19,6 +19,7 @@ public:
 		delete defenderTex;
 		delete flashing;
 		delete shifting;
+		delete willFlashing;
 	}
 
 	~AttractState();
@@ -33,6 +34,7 @@ public:
 		case 4:
 			UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 			UserInterface::getFlashingShader()->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getWilliamsShader()->setUniform("texture", sf::Shader::CurrentTexture);
 			[[fallthrough]];
 
 		case 3: // Copyright
@@ -41,6 +43,7 @@ public:
 			[[fallthrough]];
 
 		case 2: // Defender
+			UserInterface::getFlashingShader()->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
 			flashing->draw(defender, states);
 			[[fallthrough]];
 
@@ -50,10 +53,13 @@ public:
 			[[fallthrough]];
 
 		case 0: // Williams
-			target.draw(williams, states); // Will require alternate shader
+			target.draw(williams, states); // Draws normally
+			// This below is off by 1 for width and doesn't clear for some reason.
+			// I thought I copied the other shaders in every use.
+			
+			//willFlashing->draw(williams, states); // Will require alternate shader
 		}
 
-		UserInterface::getFlashingShader()->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
 		states.shader = UserInterface::getFlashingShader();
 		target.draw(flshDra, states);
 		UserInterface::getFlashingShader()->setUniform("targetColor", COMN::ShaderTarget);
@@ -61,6 +67,9 @@ public:
 
 		states.shader = UserInterface::getShiftingShader();
 		target.draw(shftDra, states);
+
+		states.shader = UserInterface::getWilliamsShader();
+		target.draw(willFlshDra, states);
 	}
 
 private:
@@ -73,9 +82,9 @@ private:
 	static sf::Texture *defenderTex;
 	static sf::RectangleShape defender;
 
-	static sf::RenderTexture *flashing, *shifting;
+	static sf::RenderTexture *flashing, *shifting, *willFlashing;
 
-	static sf::Sprite flshDra, shftDra;
+	static sf::Sprite flshDra, shftDra, willFlshDra;
 
 	// needs to be recreated each time
 	static sf::Image willImg;
