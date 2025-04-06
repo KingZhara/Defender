@@ -216,7 +216,7 @@ const void UserInterface::shaderTick(double deltatime)
     static Timer<double>      replaceType{ 1 / 8. };
 	static bool               type = false;
     static HSV                shiftReplacement;
-    static Timer<double>      replaceWilliams{ 1 / 2. };
+    static Timer<double>      replaceWilliams{ 1. };
 	static bool               williamsType = false;
 
     if (replaceType.tick(deltatime))

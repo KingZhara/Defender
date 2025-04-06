@@ -28,7 +28,6 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		sf::Texture& fontTex = const_cast<sf::Texture&>(UserInterface::getFont().getTexture(electronicsInc.getCharacterSize()));
 		switch (stage)
 		{
 		case 4:
