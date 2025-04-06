@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Utility/UserInterface/UserInterface.h"
+#include "../Utility/common.h"
 
 class AttractState : public sf::Drawable
 {
@@ -15,8 +16,7 @@ public:
 	static void clean()
 	{
 		delete willTex;
-		delete defenderFrontTex;
-		delete defenderSidesTex;
+		delete defenderTex;
 		delete flashing;
 		delete shifting;
 	}
@@ -41,8 +41,7 @@ public:
 			[[fallthrough]];
 
 		case 2: // Defender
-			target.draw(defenderSides, states); // Stays red
-			flashing->draw(defenderFront, states);
+			flashing->draw(defender, states);
 			[[fallthrough]];
 
 		case 1: // Electronics Inc
@@ -54,8 +53,10 @@ public:
 			target.draw(williams, states); // Will require alternate shader
 		}
 
+		UserInterface::getFlashingShader()->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
 		states.shader = UserInterface::getFlashingShader();
 		target.draw(flshDra, states);
+		UserInterface::getFlashingShader()->setUniform("targetColor", COMN::ShaderTarget);
 
 
 		states.shader = UserInterface::getShiftingShader();
@@ -69,8 +70,8 @@ private:
 
 	static sf::Text electronicsInc, presents, copyright, credits;
 
-	static sf::Texture *defenderFrontTex, *defenderSidesTex;
-	static sf::RectangleShape defenderFront, defenderSides;
+	static sf::Texture *defenderTex;
+	static sf::RectangleShape defender;
 
 	static sf::RenderTexture *flashing, *shifting;
 
