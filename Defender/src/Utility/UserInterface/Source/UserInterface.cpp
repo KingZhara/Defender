@@ -7,8 +7,8 @@
 UserInterface::World UserInterface::world;
 UserInterface::Stars UserInterface::stars;
 UserInterface::Minimap UserInterface::minimap;
-sf::Font UserInterface::font;
-sf::Font UserInterface::otherFont;
+sf::Font* UserInterface::font;
+sf::Font* UserInterface::otherFont;
 sf::Text UserInterface::score;
 sf::Text UserInterface::credits; // @todo find out if this is necessary...
 sf::Shader* UserInterface::shiftingShader = nullptr;
@@ -179,10 +179,13 @@ void UserInterface::Stars::draw(sf::RenderTarget &target,
 // ############### USER INTERFACE ###############
 void UserInterface::initialize()
 {
-    font.loadFromFile("res/defendermono.ttf");
-    font.setSmooth(false);
-    otherFont.loadFromFile("res/defendercr.ttf");
-    otherFont.setSmooth(false);
+    font = new sf::Font;
+    otherFont = new sf::Font;
+
+    font->loadFromFile("res/defendermono.ttf");
+    font->setSmooth(false);
+    otherFont->loadFromFile("res/defendercr.ttf");
+    otherFont->setSmooth(false);
 
     // Shaders
     shiftingShader = new sf::Shader;
@@ -204,8 +207,8 @@ void UserInterface::initialize()
     //UserInterface::World::generate();
 }
 
-const sf::Font &UserInterface::getFont() { return font; }
-const sf::Font &UserInterface::getOtherFont() { return otherFont; }
+const sf::Font &UserInterface::getFont() { return *font; }
+const sf::Font &UserInterface::getOtherFont() { return *otherFont; }
 
 sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
 sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
