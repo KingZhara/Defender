@@ -15,5 +15,12 @@ public:
     */
 
     void tick(double deltaTime);
+
+    int16_t destinationX = 0;
+    int16_t destinationY = 0;
+
+    bool init = true;
+
+    double rot;
 };
 

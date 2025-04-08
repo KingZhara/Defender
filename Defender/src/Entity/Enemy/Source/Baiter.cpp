@@ -1,17 +1,13 @@
 #include "../Baiter.h"
 #include<math.h>
 
-void Baiter::tick(double deltaTime)
+void Baiter::tick(double deltatime)
 {
-	static int16_t destinationX = 0;
-	static int16_t destinationY = 0;
-	static bool init = true;
-	static double rot;
+	static Timer<double>      attackTimer{ 0.6 };
 
 	if (init) 
 	{
 		destinationX = (uint16_t)(playerPos->x + ((playerPos->x - pos.x) / 3));
-
 		destinationY = (uint16_t)(playerPos->y + ((playerPos->y - pos.y) / 3));
 
 		rot = atan2(playerPos->y - pos.y, playerPos->x - pos.x);
@@ -49,5 +45,9 @@ void Baiter::tick(double deltaTime)
 	if (vel.y < 0 && pos.y < destinationY)
 		init = true;
 
-	Entity::tick(deltaTime);
+	// Attack
+	if (attackTimer.tick(deltatime))
+		entityQueue.emplace(QueuedEntity(pos, EntityID::BULLET));
+
+	Entity::tick(deltatime);
 }
