@@ -1,6 +1,6 @@
 #pragma once
 #include "EntityScript.h"
-#include "src/Utility/Timer.h"
+#include "../Timer.h"
 
 struct EntityWaitScript : EntityScript
 {
