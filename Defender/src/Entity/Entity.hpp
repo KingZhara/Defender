@@ -5,5 +5,6 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Projectile.h"
+#include "Particle.h"
 #include "Enemy/Enemy.hpp"
 #include "Projectile/Projectile.hpp"

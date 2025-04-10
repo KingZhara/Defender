@@ -1,13 +1,13 @@
 #pragma once
 #include <cstdint>
 
-namespace ShaderID
+struct ShaderID
 {
-	enum ShaderID : uint8_t
+	enum ID : uint8_t
 	{
 		NONE,
 		HUE_SHIFT,
 		STARS,
 		RAND_COL
 	};
-}
+};

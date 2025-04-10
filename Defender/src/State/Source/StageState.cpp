@@ -29,6 +29,15 @@ bool StageState::tick(Action& actions, double deltatime)
 	// Last cutoff multiple where rewards were given
 	static uint16_t lastReward = 1;
 
+
+	static Timer<double> spwn{ 1 };
+
+	if (spwn.tick(deltatime))
+	{
+		entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	}
+
+
 	if (!playerDead)
 	{
 		// @todo check if a cooldown was needed, I am just assuming it is - Ricky

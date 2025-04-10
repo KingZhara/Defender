@@ -14,8 +14,8 @@ public:
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::PLAYER, isScripted_, script_)
 	{
-		playerPos = &pos;
-		playerVel = &vel;
+		Entity::EntityData::PlayerRef::pos = &pos;
+		Entity::EntityData::PlayerRef::vel = &vel;
 	}
 
 

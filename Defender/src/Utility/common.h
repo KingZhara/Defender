@@ -5,11 +5,12 @@
 
 #include "SFML/System/Vector2.hpp"
 
-struct Vec2f
+template <typename T>
+struct Vec2
 {
-	float x, y;
+	T x, y;
 
-	constexpr Vec2f(float x_, float y_) : x(x_), y(y_) {}
+	constexpr Vec2(T x_, T y_) : x(x_), y(y_) {}
 };
 
 template <typename T>
@@ -30,20 +31,21 @@ struct Color
 	}
 };
 
+// @deprecated Move on to converted usages
 struct COMN
 {
-	static constexpr Vec2f resolution
+	static constexpr Vec2<float> resolution
 	{
 		292,
 		240
 	};
-	static constexpr Vec2f aspectRatio
+	static constexpr Vec2<float> aspectRatio
 	{
 		73,
 		60
 	};
 
-	static constexpr Vec2f baseSpeed
+	static constexpr Vec2<double> baseSpeed
 	{
 		150.f,
 		100.f

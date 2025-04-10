@@ -15,6 +15,24 @@ namespace sf
 class DisplayManager
 {
 public:
+    template <typename T>
+    struct Color
+    {
+        T r, g, b;
+
+        constexpr Color(T r_, T g_, T b_) : r(r_), g(g_), b(b_) {}
+
+        operator sf::Color() const
+        {
+            return sf::Color((uint8_t)r, (uint8_t)g, (uint8_t)b);
+        }
+
+        operator sf::Glsl::Vec3() const
+        {
+            return sf::Glsl::Vec3(r / 255.0f, g / 255.0f, b / 255.0f);
+        }
+    };
+
     static sf::View &getView() { return viewport; }
 
     static void resetViewPos()

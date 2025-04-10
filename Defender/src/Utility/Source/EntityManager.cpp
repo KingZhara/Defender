@@ -7,7 +7,7 @@ bool EntityManager::scripted = true;
 EntityManager::EntityHolder<Projectile> EntityManager::projectiles;
 EntityManager::EntityHolder<Enemy> EntityManager::enemies;
 EntityManager::EntityHolder<Astronaut> EntityManager::astronauts;
-EntityManager::EntityHolder<Entity> EntityManager::particles; // Always scripted
+EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
 
 // @todo Make score update
@@ -28,13 +28,14 @@ EntityManager::EntityManager(bool scripted_)
 
 void EntityManager::adjViewport(sf::View *view, double deltatime)
 {
+    // @todo Add starting movement freedom... Refactor to be better as well
+
     static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
 	static constexpr double epsilon = 1; // Epsilon for the cutoff
-    const  double playfieldWidth = view->getSize().x * playfieldFactor; // Playfield width
 	const  double centeredPlayer = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.; // The players position centered to its hitbox
 	//const  double left = view->getCenter().x - playfieldWidth / 2.; // Left side of playfield
 
-
+    // Handling is based on the side
     if (!player->getDir())
     {
         view->setCenter(std::round(view->getCenter().x + (COMN::baseSpeed.x + player->getVel().x) * deltatime), view->getCenter().y);
@@ -254,38 +255,7 @@ void EntityManager::draw(sf::RenderTarget &target,
 // @todo make death behavior
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID)
 {
-    sf::IntRect bounds = Entity::getBounds(ID);
-    int8_t      row    = 0, col = 0;
-
-    do
-    {
-        do
-        {
-            particles.entities.at(particles.spawn<Entity>(
-                    sf::Vector2f{
-                        pos.x + col,
-                        pos.y + row
-                    },
-                    sf::IntRect{
-                        bounds.left + col,
-                        bounds.top + row,
-                        2 % (bounds.width - col + 1),
-                        2 % (bounds.height - row + 1)
-                    }))->setVel(
-            {
-                static_cast<float>(col - bounds.width / 2.),
-                static_cast<float>(row - bounds.height / 2.),
-            });
-
-
-            row += 2;
-        }
-        while (col <= bounds.height);
-
-        col = 0;
-        row += 2;
-    }
-    while (row <= bounds.width);
+    particles.spawn<Particle>(pos, ID, spawn);
 }
 
 void EntityManager::killArea(sf::FloatRect viewport)
@@ -371,6 +341,14 @@ void EntityManager::spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID)
         player = new Player(pos);
         break;
     }
+
+    // @todo complete
+    //particleize(false, pos, ID);
+}
+
+ScoreType EntityManager::getScore()
+{
+    return score;
 }
 
 void EntityManager::clearQueue()

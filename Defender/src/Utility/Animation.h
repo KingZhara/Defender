@@ -13,6 +13,7 @@
 class Animation : public sf::Drawable
 {
 private:
+	// @todo consider moving to heap; Entities are relatively massive, these are not always necessary
 	// The frame being displayed
 	mutable sf::Sprite frame;
 

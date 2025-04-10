@@ -16,7 +16,7 @@ void Mutant::tick(double deltatime)
 
     // Update
     bobStage = (bobStage + 1) % 8;
-
+    /*
     // Attack
     if (attackTimer.tick(deltatime))
         entityQueue.emplace(QueuedEntity( pos, EntityID::BULLET ));
@@ -56,7 +56,7 @@ void Mutant::tick(double deltatime)
         }
         else
             vel.y = 0;
-    }
+    }*/
 
     Entity::tick(deltatime);
 }

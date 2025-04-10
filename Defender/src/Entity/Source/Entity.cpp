@@ -4,63 +4,167 @@
 
 std::queue<Entity::QueuedEntity> Entity::entityQueue;
 
-const Entity::SpriteData Entity::SPRITE_TABLE[EntityID::LENGTH] =
-{
-	{ // Player
-		{0,16,15,6}, // Sprite IntRect
-		2, // Sprite frame count
-		// Shader type
-		// Custom frame length
-	},
-	{ // Astronaut
-		{43, 0, 3, 8},
-		1
-	},
-	{ // Bullet
-		{8,8,3,3},
-		1
-	},
-	{ // Laser
-		// @todo Replace later; blank data, will not use a sprite for drawing, custom image
-		{19,0,8,8},
-		2
-	},
-	{ // Bomb
-		{19,0,8,8},
-		2
-	},
-	{ // Lander
-		{19,8,9,8},
-		3
-	},
-	{ // Mutant
-		{0,0,10,8},
-		1
-	},
-	{ // Baiter
-		{55,8,11,4},
-		2
-	},
-	{ // Bomber
-		{45,0,6,7},
-		3
-	},
-	{ // Pod
-		{35,0,7,7},
-		1
-	},
-	{ // Swarmer
-		{14,8,5,4},
-		1
-	}
-};
+sf::Vector2f* Entity::EntityData::PlayerRef::pos = nullptr;
+sf::Vector2f* Entity::EntityData::PlayerRef::vel = nullptr;
 
-sf::Vector2f* Entity::playerPos = nullptr;
-sf::Vector2f* Entity::playerVel = nullptr;
+constexpr Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
+{
+	// Player
+	EntityData{
+		// Sprite Data
+		EntityData::SpriteData{
+		    {0,16,15,6}, // Sprite IntRect
+			2, // Sprite frame count
+			// Shader type
+			// Custom frame length
+		},
+		// Velocity factor
+		Vec2<double>{
+			1.5f,
+			1.0f
+		},
+	    // XP
+		0
+	},
+	// Astronaut
+	EntityData{
+	    EntityData::SpriteData{
+			{43, 0, 3, 8},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		250
+	},
+	// Bullet
+	EntityData{
+		EntityData::SpriteData{
+			{8,8,3,3},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		0
+	},
+	// Laser
+    // @todo Replace later; blank data, will not use a sprite for drawing, custom image
+	EntityData{
+		EntityData::SpriteData{
+			{19,0,8,8},
+			2
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		0
+	},
+	// Bomb
+	EntityData{
+		EntityData::SpriteData{
+			{19,0,8,8},
+			2
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		0
+	},
+	// Lander
+	EntityData{
+		EntityData::SpriteData{
+			{19,8,9,8},
+			3
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		150
+	},
+	// Mutant
+	EntityData{
+		EntityData::SpriteData{
+			{0,0,10,8},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		150
+	},
+	// Baiter
+	EntityData{
+		EntityData::SpriteData{
+			{55,8,11,4},
+			2
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		200
+	},
+	// Bomber
+	EntityData{
+		EntityData::SpriteData{
+			{45,0,6,7},
+			3
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		250
+	},
+	// Pod
+	EntityData{
+		EntityData::SpriteData{
+			{35,0,7,7},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		1000
+	},
+	// Swarmer
+	EntityData{
+		EntityData::SpriteData{
+			{14,8,5,4},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		150
+	},
+	// Particle
+	EntityData{
+		EntityData::SpriteData{
+			{0,0,0,0},
+			1
+		},
+		Vec2<double>{
+			1.0f,
+			1.0f
+		},
+		0
+
+	},
+};
 
 void Entity::tick(double deltatime)
 {
-	pos += {(float)std::round(vel.x * deltatime), (float)std::round(vel.y* deltatime)};
+	pos += {(float)(vel.x * deltatime), (float)(vel.y* deltatime)};
 
 	if (abs(vel.x) < 0.1f)
 		vel.x = 0;
@@ -80,7 +184,7 @@ bool Entity::collide(Entity* other)
 
 sf::IntRect const & Entity::getBounds(const EntityID::ID ID)
 {
-	return SPRITE_TABLE[ID].bounds;
+	return DATA_TABLE[ID].SPRITE_DATA.bounds;
 }
 
 void Entity::setPos(sf::Vector2f newPos)
@@ -94,19 +198,3 @@ void Entity::setVel(sf::Vector2f newVel)
 
 	vel = newVel;
 }
-
-
-const uint16_t Entity::XP_TABLE[EntityID::LENGTH] =
-{
-	0,    // PLAYER
-	250,  // ASTRONAUT
-	0,    // BULLET
-	0,    // LASER
-	0,    // BOMB
-	150,  // LANDER
-	150,  // MUTANT
-	200,  // BAITER
-	250,  // BOMBER
-	1000, // POD
-	150   // SWARMER
-};

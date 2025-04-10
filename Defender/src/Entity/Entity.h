@@ -30,11 +30,11 @@ public:
            sf::Shader   *shader = nullptr) : pos(pos_), isScripted(isScripted_),
                                              script(script_),
                                              animation(
-                                                     SPRITE_TABLE[ID_].
+                                                     DATA_TABLE[ID_].SPRITE_DATA.
                                                      frameCount,
-                                                     SPRITE_TABLE[ID_].bounds,
+                                                     DATA_TABLE[ID_].SPRITE_DATA.bounds,
                                                      ID_,
-                                                     SPRITE_TABLE[ID_].
+                                                     DATA_TABLE[ID_].SPRITE_DATA.
                                                      frameLength
                                                      /*SPRITE_TABLE[ID].shader*/,
                                                      shader),
@@ -43,7 +43,7 @@ public:
         //std::cout << pos.x << ' ' << pos.y << '\n';
     }
 
-    Entity(sf::Vector2f pos_, sf::IntRect bounds) : pos(pos_),
+    Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
                                                     isScripted(false),
                                                     script(nullptr),
                                                     animation({1, bounds, EntityID::PARTICLE}),
@@ -58,7 +58,7 @@ public:
     sf::Vector2f                     getPos() { return pos; }
     sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
-    const uint16_t                   getXP() { return XP_TABLE[ID]; }
+    const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
 
 protected:
     virtual void
@@ -71,20 +71,56 @@ protected:
     {
         animation.setShader(shader_);
     }
-
-    struct SpriteData
+    struct EntityData
     {
-        sf::IntRect        bounds;
-        uint8_t            frameCount;
-        ShaderID::ShaderID shader      = ShaderID::NONE;
-        double             frameLength = 1. / 2.;
+        struct SpriteData
+        {
+            sf::IntRect        bounds;
+            uint8_t            frameCount;
+            ShaderID::ID shader = ShaderID::NONE;
+            double             frameLength = 1. / 2.;
+
+			SpriteData(sf::IntRect bounds_, uint8_t frameCount_,
+				ShaderID::ID shader_ = ShaderID::NONE,
+				double frameLength_ = 1. / 2.) :
+				bounds(bounds_), frameCount(frameCount_), shader(shader_),
+				frameLength(frameLength_)
+			{
+			}
+        };
+
+		struct PlayerRef
+		{
+			static sf::Vector2f* pos;
+			static sf::Vector2f* vel;
+		};
+
+        static constexpr Vec2<double> BASE_VELOCITY
+        {
+            150.f,
+            100.f
+        };
+
+        static const PlayerRef PLAYER_REF;
+		SpriteData SPRITE_DATA;
+        Vec2<double> VELOCITY_FACTOR;
+        uint16_t XP;
+
+		EntityData(SpriteData spriteData, Vec2<double> velocityFactor, uint16_t xp) :
+			SPRITE_DATA(spriteData), VELOCITY_FACTOR(velocityFactor), XP(xp)
+		{
+		    
+		}
+        EntityData() :
+            SPRITE_DATA({ 0,0,0,0 }, 0),
+            VELOCITY_FACTOR(0.0, 0.0),
+            XP(0)
+        {}
     };
 
+
     // The data table used for generating a given sprite
-    static const SpriteData         SPRITE_TABLE[EntityID::LENGTH];
-    static const uint16_t           XP_TABLE[EntityID::LENGTH];
-    static sf::Vector2f* playerPos;
-    static sf::Vector2f* playerVel;
+    static const EntityData DATA_TABLE[EntityID::LENGTH]; // i REALLY tried to make this constexpr
     static std::queue<QueuedEntity> entityQueue;
 
     sf::Vector2f       pos, vel;

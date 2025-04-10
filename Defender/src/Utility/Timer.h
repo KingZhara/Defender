@@ -37,7 +37,7 @@ public:
 	 * 
 	 * @return If the timer has completed
 	 */
-	bool isComplete()
+	bool isComplete() const
 	{
 		return time >= BASE;
 	}
