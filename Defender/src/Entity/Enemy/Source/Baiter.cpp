@@ -7,10 +7,10 @@ void Baiter::tick(double deltatime)
 
 	if (init) 
 	{
-		destinationX = (uint16_t)(playerPos->x + ((playerPos->x - pos.x) / 3));
-		destinationY = (uint16_t)(playerPos->y + ((playerPos->y - pos.y) / 3));
+		destinationX = (uint16_t)(EntityData::PlayerRef::pos->x + ((EntityData::PlayerRef::pos->x - pos.x) / 3));
+		destinationY = (uint16_t)(EntityData::PlayerRef::pos->y + ((EntityData::PlayerRef::pos->y - pos.y) / 3));
 
-		rot = atan2(playerPos.y - pos.y, playerPos.x - pos.x);
+		rot = atan2(EntityData::PlayerRef::pos->y - pos.y, EntityData::PlayerRef::pos->x - pos.x);
 
 		vel.x = (float)(300 * cos(rot));
 		vel.y = (float)(300 * sin(rot));
@@ -19,12 +19,12 @@ void Baiter::tick(double deltatime)
 	}
 
 	//if too far from the player
-	if (abs(playerPos.x - pos.x) > 100 || abs(playerPos.y - pos.y) > 100)
+	if (abs(EntityData::PlayerRef::pos->x - pos.x) > 100 || abs(EntityData::PlayerRef::pos->y - pos.y) > 100)
 	{
-		destinationX = playerPos.x;
-		destinationY = playerPos.y;
+		destinationX = EntityData::PlayerRef::pos->x;
+		destinationY = EntityData::PlayerRef::pos->y;
 
-		rot = atan2(playerPos.y - pos.y, playerPos.x - pos.x);
+		rot = atan2(EntityData::PlayerRef::pos->y - pos.y, EntityData::PlayerRef::pos->x - pos.x);
 
 		vel.x = (float)(300 * cos(rot));
 		vel.y = (float)(300 * sin(rot));
