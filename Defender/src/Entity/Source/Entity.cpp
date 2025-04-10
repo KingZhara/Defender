@@ -60,7 +60,7 @@ sf::Vector2f* Entity::playerVel = nullptr;
 
 void Entity::tick(double deltatime)
 {
-	pos += {(float)std::round(vel.x * deltatime), (float)std::round(vel.y* deltatime)};
+	pos += {(float)(vel.x * deltatime), (float)(vel.y* deltatime)};
 
 	if (abs(vel.x) < 0.1f)
 		vel.x = 0;

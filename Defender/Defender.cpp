@@ -18,6 +18,8 @@ int main()
     AttractState::initialize();
     HighscoreState::initialize();
 
+    srand(time(NULL));
+
     // The game itself
     Game game;
     // Player actions; passed throughout the tick pipeline as special handling is included in AttractState
