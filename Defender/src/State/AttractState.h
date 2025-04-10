@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Utility/UserInterface/UserInterface.h"
+#include "../Utility/common.h"
 
 class AttractState : public sf::Drawable
 {
@@ -15,10 +16,10 @@ public:
 	static void clean()
 	{
 		delete willTex;
-		delete defenderFrontTex;
-		delete defenderSidesTex;
+		delete defenderTex;
 		delete flashing;
 		delete shifting;
+		delete willFlashing;
 	}
 
 	~AttractState();
@@ -27,12 +28,12 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		sf::Texture& fontTex = const_cast<sf::Texture&>(UserInterface::getFont().getTexture(electronicsInc.getCharacterSize()));
 		switch (stage)
 		{
 		case 4:
 			UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 			UserInterface::getFlashingShader()->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getWilliamsShader()->setUniform("texture", sf::Shader::CurrentTexture);
 			[[fallthrough]];
 
 		case 3: // Copyright
@@ -41,8 +42,8 @@ public:
 			[[fallthrough]];
 
 		case 2: // Defender
-			target.draw(defenderSides, states); // Stays red
-			flashing->draw(defenderFront, states);
+			UserInterface::getFlashingShader()->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
+			flashing->draw(defender, states);
 			[[fallthrough]];
 
 		case 1: // Electronics Inc
@@ -51,15 +52,21 @@ public:
 			[[fallthrough]];
 
 		case 0: // Williams
-			target.draw(williams, states); // Will require alternate shader
+			// Yes, this needs to be here otherwise it will be fully drawn after the first time thru
+			willFlashing->clear(sf::Color(0)); 
+			willFlashing->draw(williams, states); // Will require alternate shader
 		}
 
 		states.shader = UserInterface::getFlashingShader();
 		target.draw(flshDra, states);
+		UserInterface::getFlashingShader()->setUniform("targetColor", COMN::ShaderTarget);
 
 
 		states.shader = UserInterface::getShiftingShader();
 		target.draw(shftDra, states);
+
+		states.shader = UserInterface::getWilliamsShader();
+		target.draw(willFlshDra, states);
 	}
 
 private:
@@ -69,14 +76,16 @@ private:
 
 	static sf::Text electronicsInc, presents, copyright, credits;
 
-	static sf::Texture *defenderFrontTex, *defenderSidesTex;
-	static sf::RectangleShape defenderFront, defenderSides;
+	static sf::Texture *defenderTex;
+	static sf::RectangleShape defender;
 
-	static sf::RenderTexture *flashing, *shifting;
+	static sf::RenderTexture *flashing, *shifting, *willFlashing;
 
-	static sf::Sprite flshDra, shftDra;
+	static sf::Sprite flshDra, shftDra, willFlshDra;
 
 	// needs to be recreated each time
+	// The width of these is actually 1 less because the shader cut off the final pixels
+	// For width use willSteps
 	static sf::Image willImg;
 	static sf::Texture* willTex;
 	

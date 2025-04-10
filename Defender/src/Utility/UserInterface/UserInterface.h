@@ -62,6 +62,10 @@ public:
 	{
 		delete shiftingShader;
 		delete flashingShader;
+		delete williamsShader;
+
+		delete font;
+		delete otherFont;
 	}
 
 	// @todo complete shader conversion...
@@ -69,6 +73,7 @@ public:
 	static const sf::Font& getOtherFont();
 	static       sf::Shader* getShiftingShader();
 	static       sf::Shader* getFlashingShader();
+	static       sf::Shader* getWilliamsShader();
 	static const void shaderTick(double deltatime);
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
@@ -78,12 +83,13 @@ private:
 	static      World     world         ;
 	static      Stars     stars         ;
 	static      Minimap   minimap       ;
-	static sf ::Font      font          ;
+	static sf ::Font*     font          ;
 	static sf ::Text      score         ;
 	static sf ::Text      credits       ; // @todo find out if this is necessary...
 	static sf::Shader*    shiftingShader;
 	static sf::Shader*    flashingShader;
+	static sf::Shader*    williamsShader;
 	static sf::Glsl::Vec3 brightColors[];
-	static sf ::Font    otherFont     ;
+	static sf ::Font*     otherFont     ;
 };
 

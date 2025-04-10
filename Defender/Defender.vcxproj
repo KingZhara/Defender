@@ -212,9 +212,7 @@
     <ClInclude Include="src\Utility\UserInterface\UserInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\defendersprites.jpg" />
     <Image Include="res\Spritesheet.png" />
-    <Image Include="res\Windows_16colors_palette_color_test_chart.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\epilepsySmooth.frag" />

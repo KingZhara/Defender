@@ -15,44 +15,44 @@ sf::RectangleShape AttractState::williams;
 sf::Text AttractState::electronicsInc, AttractState::presents, 
 AttractState::copyright, AttractState::credits;
 
-sf::Texture* AttractState::defenderFrontTex, * AttractState::defenderSidesTex;
-sf::RectangleShape AttractState::defenderFront, AttractState::defenderSides;
+sf::Texture* AttractState::defenderTex;
+sf::RectangleShape AttractState::defender;
 
-sf::RenderTexture* AttractState::flashing, * AttractState::shifting;
+sf::RenderTexture* AttractState::flashing, * AttractState::shifting, * AttractState::willFlashing;
 
-sf::Sprite AttractState::flshDra, AttractState::shftDra;
+sf::Sprite AttractState::flshDra, AttractState::shftDra, AttractState::willFlshDra;
 
 
 AttractState::AttractState()
 {
 	electronicsInc.setFillColor(sf::Color(0));
 	presents.setFillColor(sf::Color(0));
-	defenderFront.setFillColor(sf::Color(0));
-	defenderSides.setFillColor(sf::Color(0));
+	defender.setFillColor(sf::Color(0));
 	copyright.setFillColor(sf::Color(0));
 	credits.setFillColor(sf::Color(0));
 
-	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
+	willImg.create(willSteps.getSize().x + 1, willSteps.getSize().y, sf::Color(0));
 
 	shifting->clear(sf::Color(0));
 	flashing->clear(sf::Color(0));
+	willFlashing->clear(sf::Color(0));
 }
 
 void AttractState::initialize()
 {
 	willTex = new sf::Texture;
-	defenderFrontTex = new sf::Texture;
-	defenderSidesTex = new sf::Texture;
+	defenderTex = new sf::Texture;
 	flashing = new sf::RenderTexture;
 	shifting = new sf::RenderTexture;
+	willFlashing = new sf::RenderTexture;
 
 	willSteps.loadFromFile("res/williams.png");
 
 	williams.setSize(sf::Vector2f((float)willSteps.getSize().x, (float)willSteps.getSize().y));
 	williams.setPosition(COMN::resolution.x / 2 - williams.getGlobalBounds().getSize().x / 2, 10);
 
-	willImg.create(willSteps.getSize().x, willSteps.getSize().y, sf::Color(0));
-	willTex->create(willSteps.getSize().x, willSteps.getSize().y);
+	willImg.create(willSteps.getSize().x + 1, willSteps.getSize().y, sf::Color(0));
+	willTex->create(willSteps.getSize().x + 1, willSteps.getSize().y);
 
 	electronicsInc.setFont(UserInterface::getFont());
 	electronicsInc.setString("ELECTRONICS INC.");
@@ -65,15 +65,10 @@ void AttractState::initialize()
 	presents.setPosition(COMN::resolution.x / 2 - (18 * 8 / 4), 60);
 
 
-	defenderFrontTex->loadFromFile("res/defenderFront.png");
-	defenderFront.setSize(sf::Vector2f(defenderFrontTex->getSize()) / 2.f);
-	defenderFront.setTexture(defenderFrontTex);
-	defenderFront.setPosition(COMN::resolution.x / 2 - defenderFront.getGlobalBounds().getSize().x / 2, 90);
-
-	defenderSidesTex->loadFromFile("res/defenderSides.png");
-	defenderSides.setSize(sf::Vector2f(defenderSidesTex->getSize()) / 2.f);
-	defenderSides.setTexture(defenderSidesTex);
-	defenderSides.setPosition(COMN::resolution.x / 2 - defenderSides.getGlobalBounds().getSize().x / 2, 90);
+	defenderTex->loadFromFile("res/defender.png");
+	defender.setSize(sf::Vector2f(defenderTex->getSize()) / 2.f);
+	defender.setTexture(defenderTex);
+	defender.setPosition(COMN::resolution.x / 2 - defender.getGlobalBounds().getSize().x / 2, 90);
 
 
 	copyright.setFont(UserInterface::getOtherFont());
@@ -88,18 +83,23 @@ void AttractState::initialize()
 
 	flashing->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
+	willFlashing->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 
 	flashing->setView(DisplayManager::getView());
 	shifting->setView(DisplayManager::getView());
+	willFlashing->setView(DisplayManager::getView());
 
 	flshDra.setTexture(flashing->getTexture());
 	shftDra.setTexture(shifting->getTexture());
+	willFlshDra.setTexture(willFlashing->getTexture());
 
 	flshDra.setScale(1.f, -1.f);
 	shftDra.setScale(1.f, -1.f);
+	willFlshDra.setScale(1.f, -1.f);
 
 	flshDra.move(0, COMN::resolution.y);
 	shftDra.move(0, COMN::resolution.y);
+	willFlshDra.move(0, COMN::resolution.y);
 }
 
 
@@ -152,8 +152,7 @@ bool AttractState::tick(double deltatime)
 				break;
 
 			case 2: // Defender
-				defenderFront.setFillColor(COMN::ShaderTarget);
-				defenderSides.setFillColor(sf::Color(255, 0, 0));
+				defender.setFillColor(sf::Color::White);
 				stage++;
 				stageTimer.tick(1);
 				break;

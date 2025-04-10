@@ -1,3 +1,5 @@
+#version 130
+
 uniform sampler2D currentFrame;
 uniform sampler2D lastFrame;
 uniform float maxDelta;
@@ -13,3 +15,4 @@ void main() {
 
     gl_FragColor = vec4(outputColor, 1.0);
 }
+    
