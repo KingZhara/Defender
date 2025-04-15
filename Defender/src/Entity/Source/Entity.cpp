@@ -7,7 +7,7 @@ std::queue<Entity::QueuedEntity> Entity::entityQueue;
 sf::Vector2f* Entity::EntityData::PlayerRef::pos = nullptr;
 sf::Vector2f* Entity::EntityData::PlayerRef::vel = nullptr;
 
-constexpr Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
+const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 {
 	// Player
 	EntityData{
@@ -126,7 +126,7 @@ constexpr Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Pod
 	EntityData{
 		EntityData::SpriteData{
-			{35,0,7,7},
+			{36,0,7,7},
 			1
 		},
 		Vec2<double>{
@@ -150,7 +150,7 @@ constexpr Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Particle
 	EntityData{
 		EntityData::SpriteData{
-			{0,0,0,0},
+			{0,0,1,0},
 			1
 		},
 		Vec2<double>{

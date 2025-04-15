@@ -61,6 +61,7 @@ public:
 		  shader(shader_), frameTimer(Timer<double>(framelength)),
 		  LENGTH(length_), start(frame.getTextureRect().left), ID(id_)
 	{
+		std::cout << "BOUNDS: " << bounds.getPosition().x << ", " << bounds.getPosition().y << ", " << bounds.getSize().x << ", " << bounds.getSize().y << '\n';
 	}
 
 	/**
