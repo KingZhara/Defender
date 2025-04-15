@@ -182,5 +182,5 @@ bool AttractState::tick(double deltatime)
 
 void AttractState::loadEntityScript()
 {
-	std::ifstream file;
+	//std::ifstream file;
 }
