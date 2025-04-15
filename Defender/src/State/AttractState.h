@@ -4,6 +4,7 @@
 
 #include "../Utility/UserInterface/UserInterface.h"
 #include "../Utility/common.h"
+#include "../Utility/EntityManager.h"
 
 class AttractState : public sf::Drawable
 {
@@ -71,6 +72,8 @@ public:
 
 private:
 
+	static void loadEntityScript();
+
 	static sf::Image willSteps;
 	static sf::RectangleShape williams;
 
@@ -89,6 +92,8 @@ private:
 	static sf::Image willImg;
 	static sf::Texture* willTex;
 	
+	static EntityManager entityMgr;
+
 	unsigned willPos = 0;
 
 	int stage = 0;

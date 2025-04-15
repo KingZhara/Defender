@@ -11,7 +11,8 @@ struct EntityScript
 		DONE, // Should probs be changed to a next == nullptr check IR no EntityScript::DONE val.
 		FIRE,
 		WAIT,
-		MOVE
+		MOVE,
+		SPAWN
 	};
 
 	// The next component of the script
