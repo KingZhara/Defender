@@ -41,6 +41,8 @@ public:
                                              ID(ID_)
     {
         //std::cout << pos.x << ' ' << pos.y << '\n';
+
+        std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
     }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
