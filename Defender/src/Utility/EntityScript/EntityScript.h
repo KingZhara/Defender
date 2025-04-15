@@ -17,8 +17,26 @@ struct EntityScript
 
 	// The next component of the script
 	EntityScript* next = nullptr;
+	EntityScript* loop = nullptr;
 	// The type of script
 	ScriptType type;
+
+	union
+	{
+		struct
+		{
+			int x;
+			int y;
+			int entity;
+			int script;
+		} spawn;
+		struct
+		{
+			int x;
+			int y;
+		} move;
+		double wait;
+	} param;
 
 	EntityScript(ScriptType type_, EntityScript* next_ = nullptr)
 		: type(type_), next(next_) {}

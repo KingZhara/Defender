@@ -74,6 +74,10 @@ private:
 
 	static void loadEntityScript();
 
+	static std::string formatEntityScriptLine(const std::string& line);
+	static std::vector<std::string> tokenizeEntityScript(std::string line);
+
+
 	static sf::Image willSteps;
 	static sf::RectangleShape williams;
 
