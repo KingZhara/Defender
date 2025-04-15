@@ -1,0 +1,47 @@
+Entity Script
+Types:
+
+Fire
+Wait
+Move
+Spawn
+Dir
+Loop
+
+
+Enum (F, M, W, S, L, D), Data (
+    fire {null}, 
+    move {uint8_t x, uint8_t y, [opt][def=0]uint8_t relative}, // absolute position otherwise
+    wait {double time},
+    spwn {uint8_t EntityID, uint8_t x, uint8_t y, uint8_t SCRIPT_ID}
+    loop {[opt][def=-1]uint16_t count} // infinite loop if no param
+    dirc {char[Ll or Rr]}
+    )
+
+F
+M 8 23
+W 1.5
+L -1 // loops everthing after
+S 1 200 100 2 // Player with player script (1 & 2)
+
+Script loaded in AttractState::initialize(), passed on spawning
+Multiple scripts in one file
+
+
+passes pointer to script to entity
+EntityManager::spawn(..., scriptPtr)
+
+held by entity
+wraps entityscript
+Entity::Script
+{
+    readHead // current position in script
+    loopPtr // null if loop not found, only 1 loop allowed in script
+}
+
+
+Scripts
+Bubble: move up
+Freeze: wait -1
+Player: spawn, move, loop {fire, wait}
+Spawn: spawn
