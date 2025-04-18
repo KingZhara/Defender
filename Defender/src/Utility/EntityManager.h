@@ -59,7 +59,8 @@ public:
 	static void      particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID);
 	static void      killArea(sf::FloatRect viewport);
 	static void      hyperspace(sf::Vector2f size, float left);
-	static void      spawn(SpawnType type, sf::Vector2f pos, EntityID::ID ID);
+	template <typename... Args>
+	static void      spawn(SpawnType type, EntityID::ID ID, Args);
 	static ScoreType getScore();
 
 private:
@@ -233,4 +234,78 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 	}
 
 	return died;
+}
+
+
+template<typename ... Args>
+void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
+{
+	switch (type)
+	{
+	case SpawnType::PROJECTILE:
+		switch (ID)
+		{
+		case EntityID::BULLET:
+			projectiles.spawn<Bullet>(args);
+			break;
+
+		case EntityID::LASER:
+			projectiles.spawn<Laser>(args);
+			break;
+
+		case EntityID::BOMB:
+			projectiles.spawn<Bomb>(args);
+			break;
+
+		default:
+			throw std::runtime_error(
+				"Invalid Type : EntityManager::spawn;PROJ(sw)");
+		}
+		break;
+	case SpawnType::ENEMY:
+		switch (ID)
+		{
+		case EntityID::LANDER:
+			enemies.spawn<Lander>(args);
+			break;
+
+		case EntityID::MUTANT:
+			enemies.spawn<Mutant>(args);
+			break;
+
+		case EntityID::BAITER:
+			enemies.spawn<Baiter>(args);
+			break;
+
+		case EntityID::BOMBER:
+			enemies.spawn<Bomber>(args);
+			break;
+
+		case EntityID::POD:
+			enemies.spawn<Pod>(args);
+			break;
+
+		case EntityID::SWARMER:
+			enemies.spawn<Swarmer>(args);
+			break;
+
+		default:
+			throw std::runtime_error(
+				"Invalid Type : EntityManager::spawn;ENEM(sw)");
+		}
+		break;
+	case SpawnType::ASTRONAUT:
+		astronauts.spawn<Astronaut>(args);
+		break;
+	case SpawnType::PLAYER:
+		player = new Player(args);
+		break;
+
+	default:
+		throw std::runtime_error(
+			"Invalid SpawnType : EntityManager::spawn(sw)");
+	}
+
+	// @todo complete
+	//particleize(false, pos, ID);
 }
