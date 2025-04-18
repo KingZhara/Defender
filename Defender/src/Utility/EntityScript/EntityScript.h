@@ -11,13 +11,32 @@ struct EntityScript
 		DONE, // Should probs be changed to a next == nullptr check IR no EntityScript::DONE val.
 		FIRE,
 		WAIT,
-		MOVE
+		MOVE,
+		SPAWN
 	};
 
 	// The next component of the script
 	EntityScript* next = nullptr;
+	EntityScript* loop = nullptr;
 	// The type of script
 	ScriptType type;
+
+	union
+	{
+		struct
+		{
+			int x;
+			int y;
+			int entity;
+			int script;
+		} spawn;
+		struct
+		{
+			int x;
+			int y;
+		} move;
+		double wait;
+	} param;
 
 	EntityScript(ScriptType type_, EntityScript* next_ = nullptr)
 		: type(type_), next(next_) {}

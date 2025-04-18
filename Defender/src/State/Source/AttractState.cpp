@@ -8,6 +8,8 @@
 #include "../../Utility/DisplayManager.h"
 
 
+EntityManager AttractState::entityMgr;
+
 sf::Image AttractState::willSteps, AttractState::willImg;
 sf::Texture* AttractState::willTex;
 sf::RectangleShape AttractState::williams;
@@ -25,6 +27,8 @@ sf::Sprite AttractState::flshDra, AttractState::shftDra, AttractState::willFlshD
 
 AttractState::AttractState()
 {
+	entityMgr = EntityManager(true);
+
 	electronicsInc.setFillColor(sf::Color(0));
 	presents.setFillColor(sf::Color(0));
 	defender.setFillColor(sf::Color(0));
@@ -100,6 +104,8 @@ void AttractState::initialize()
 	flshDra.move(0, COMN::resolution.y);
 	shftDra.move(0, COMN::resolution.y);
 	willFlshDra.move(0, COMN::resolution.y);
+
+	loadEntityScript();
 }
 
 
@@ -172,4 +178,9 @@ bool AttractState::tick(double deltatime)
 		deltatime = 0;
 	}
 	return false;
+}
+
+void AttractState::loadEntityScript()
+{
+	//std::ifstream file;
 }
