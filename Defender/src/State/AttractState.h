@@ -84,6 +84,9 @@ private:
 	// This makes a list of substrings from a line after it went thru the format method (seperated by commas).
 	static std::vector<std::string> tokenizeEntityScript(const std::string line);
 
+	// Called for each line in a script file
+	// It is its own function, but I needed to know if a node was a loop or end instruction without testing that again
+	// This fills in entityScript parameters
 	static EntityScript* makeEntityScriptParams(const std::vector<std::string>& tokens, bool& setLoop, bool& endScript);
 
 	static std::vector<EntityScript*> entityScripts;
