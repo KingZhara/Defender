@@ -27,7 +27,7 @@ struct Color
 
 	operator sf::Glsl::Vec3() const
 	{
-		return sf::Glsl::Vec3(r / 255.0f, g / 255.0f, b / 255.0f);
+		return sf::Glsl::Vec3((float)(r / 255.0f), (float)(g / 255.0f), (float)(b / 255.0f));
 	}
 };
 

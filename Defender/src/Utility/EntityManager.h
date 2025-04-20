@@ -60,7 +60,7 @@ public:
 	static void      killArea(sf::FloatRect viewport);
 	static void      hyperspace(sf::Vector2f size, float left);
 	template <typename... Args>
-	static void      spawn(SpawnType type, EntityID::ID ID, Args);
+	static void      spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Args&&... args);
 	static ScoreType getScore();
 
 private:
@@ -238,7 +238,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 
 
 template<typename ... Args>
-void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
+void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
 	switch (type)
 	{
@@ -246,15 +246,15 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
 		switch (ID)
 		{
 		case EntityID::BULLET:
-			projectiles.spawn<Bullet>(args);
+			projectiles.spawn<Bullet>(pos, args...);
 			break;
 
 		case EntityID::LASER:
-			projectiles.spawn<Laser>(args);
+			projectiles.spawn<Laser>(pos, args...);
 			break;
 
 		case EntityID::BOMB:
-			projectiles.spawn<Bomb>(args);
+			projectiles.spawn<Bomb>(pos, args...);
 			break;
 
 		default:
@@ -266,27 +266,27 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
 		switch (ID)
 		{
 		case EntityID::LANDER:
-			enemies.spawn<Lander>(args);
+			enemies.spawn<Lander>(pos, args...);
 			break;
 
 		case EntityID::MUTANT:
-			enemies.spawn<Mutant>(args);
+			enemies.spawn<Mutant>(pos, args...);
 			break;
 
 		case EntityID::BAITER:
-			enemies.spawn<Baiter>(args);
+			enemies.spawn<Baiter>(pos, args...);
 			break;
 
 		case EntityID::BOMBER:
-			enemies.spawn<Bomber>(args);
+			enemies.spawn<Bomber>(pos, args...);
 			break;
 
 		case EntityID::POD:
-			enemies.spawn<Pod>(args);
+			enemies.spawn<Pod>(pos, args...);
 			break;
 
 		case EntityID::SWARMER:
-			enemies.spawn<Swarmer>(args);
+			enemies.spawn<Swarmer>(pos, args...);
 			break;
 
 		default:
@@ -295,10 +295,11 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
 		}
 		break;
 	case SpawnType::ASTRONAUT:
-		astronauts.spawn<Astronaut>(args);
+		astronauts.spawn<Astronaut>(pos, args...);
 		break;
 	case SpawnType::PLAYER:
-		player = new Player(args);
+		delete player;
+		player = new Player(pos, args...);
 		break;
 
 	default:
@@ -307,5 +308,5 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, Args args)
 	}
 
 	// @todo complete
-	//particleize(false, pos, ID);
+	particleize(false, pos, ID);
 }

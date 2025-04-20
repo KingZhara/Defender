@@ -21,8 +21,8 @@ void Baiter::tick(double deltatime)
 	//if too far from the player
 	if (abs(EntityData::PlayerRef::pos->x - pos.x) > 100 || abs(EntityData::PlayerRef::pos->y - pos.y) > 100)
 	{
-		destinationX = EntityData::PlayerRef::pos->x;
-		destinationY = EntityData::PlayerRef::pos->y;
+		destinationX = (uint16_t)EntityData::PlayerRef::pos->x;
+		destinationY = (uint16_t)EntityData::PlayerRef::pos->y;
 
 		rot = atan2(EntityData::PlayerRef::pos->y - pos.y, EntityData::PlayerRef::pos->x - pos.x);
 

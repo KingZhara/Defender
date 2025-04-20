@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../ShaderID.h"
 
 
 class UserInterface
@@ -74,6 +75,7 @@ public:
 	static       sf::Shader* getShiftingShader();
 	static       sf::Shader* getFlashingShader();
 	static       sf::Shader* getWilliamsShader();
+	static sf::Shader* getShader(ShaderID::ID ID);
 	static const void shaderTick(double deltatime);
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);

@@ -18,7 +18,7 @@ int main()
     AttractState::initialize();
     HighscoreState::initialize();
 
-    srand(time(NULL));
+    srand((uint32_t)time(nullptr));
 
     // The game itself
     Game game;

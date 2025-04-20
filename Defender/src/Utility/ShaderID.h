@@ -8,6 +8,7 @@ struct ShaderID
 		NONE,
 		HUE_SHIFT,
 		STARS,
-		RAND_COL
+		RAND_COL,
+		WILLIAMS
 	};
 };

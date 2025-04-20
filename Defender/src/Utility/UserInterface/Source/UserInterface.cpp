@@ -214,6 +214,28 @@ sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
 sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
 sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
 
+sf::Shader * UserInterface::getShader(ShaderID::ID ID)
+{
+    switch (ID)
+    {
+    case ShaderID::NONE:
+        return nullptr;
+
+    case ShaderID::HUE_SHIFT:
+		return shiftingShader;
+
+    case ShaderID::RAND_COL:
+        return flashingShader;
+
+    case ShaderID::STARS:
+        return nullptr;//starsShader; @todo add star shader?
+
+    case ShaderID::WILLIAMS:
+        return williamsShader;
+    }
+
+}
+
 const void UserInterface::shaderTick(double deltatime)
 {
     static Timer<double>      replaceType{ 1 / 8. };
