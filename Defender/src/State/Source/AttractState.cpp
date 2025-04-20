@@ -4,11 +4,14 @@
 #include "../../Utility/Timer.h"
 
 #include <iostream>
+#include <fstream>
 
 #include "../../Utility/DisplayManager.h"
 
 
 EntityManager AttractState::entityMgr;
+
+std::vector<EntityScript*> AttractState::entityScripts;
 
 sf::Image AttractState::willSteps, AttractState::willImg;
 sf::Texture* AttractState::willTex;
@@ -105,7 +108,7 @@ void AttractState::initialize()
 	shftDra.move(0, COMN::resolution.y);
 	willFlshDra.move(0, COMN::resolution.y);
 
-	loadEntityScript();
+	loadEntityScripts();
 }
 
 
@@ -180,7 +183,213 @@ bool AttractState::tick(double deltatime)
 	return false;
 }
 
-void AttractState::loadEntityScript()
+void AttractState::loadEntityScripts()
 {
-	//std::ifstream file;
+	// Change name later probably
+	std::ifstream file("test.dscr");
+	if (file)
+	{
+		std::string temp;
+
+		//         |list of tokens in a line|
+		std::vector<std::vector<std::string>> tokenLines;
+		
+		// Read in all lines and tokenize them.
+		// Put the line's tokens into a vector
+		while (std::getline(file, temp))
+		{
+			tokenLines.push_back(
+				tokenizeEntityScript(
+					formatEntityScriptLine(temp)));
+		}
+
+		EntityScript* lastPtr = nullptr;
+		EntityScript* loopPtr = nullptr;
+		bool firstNode = true;
+
+		// For each line, try to add a script node
+		for (int i = 0; i < tokenLines.size(); i++)
+		{
+			// Need to get these from makeEntityScriptParams
+			bool endScript = false;
+			bool setLoop = false;
+			EntityScript* script = makeEntityScriptParams(
+				tokenLines[i], setLoop, endScript);
+
+			// If script has a valid node to add
+			if (script)
+			{
+				// Only add head node to scripts vector
+				if (firstNode)
+				{
+					firstNode = false;
+					entityScripts.push_back(script);
+					lastPtr = entityScripts.back();
+				}
+				else
+				{
+					// Move lastPtr to next
+					lastPtr->next = script;
+					lastPtr = lastPtr->next;
+				}
+			}
+			else
+			{
+				// Change loop pointer later
+				// Thing this points to doesn't exist yet
+				if (setLoop)
+					loopPtr = lastPtr;
+
+				if (endScript)
+				{
+					// Reset and set final node's next to loopPtr's next
+
+					if (loopPtr)
+						lastPtr->next = loopPtr->next;
+
+					loopPtr = nullptr;
+					lastPtr = nullptr;
+					firstNode = true;
+				}
+			}
+
+		}
+	}
+	else
+		std::cout << "Failed to open \"test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
+}
+
+std::string AttractState::formatEntityScriptLine(const std::string& line)
+{
+	std::string ret;
+
+	for (int i = 0; i < line.length(); i++)
+	{
+		switch (line[i])
+		{
+			// Remove whitespace
+		case ' ':
+		case '\t':
+			break;
+
+			// Ignore comments, line done
+		case '/':
+			return ret;
+
+		default:
+			// Only adds char to new string if its not whitespace
+			// Lowercase to help with comparing later
+			ret.push_back(tolower(line[i]));
+		}
+	}
+
+	return ret;
+}
+
+std::vector<std::string> AttractState::tokenizeEntityScript(const std::string line)
+{
+	// There could be a bug with making an extra token if theres only a comma in the line
+	// This is only a temporary vector anyways and it is ignored later
+	// If its not broke, don't fix it
+	std::vector<std::string> tokens;
+	tokens.push_back(std::string());
+	for (int i = 0; i < line.length(); i++)
+	{
+		if (line[i] == ',')
+		{
+			if (tokens[tokens.size() - 1].size() > 0)
+				tokens.push_back(std::string());
+		}
+		else
+			tokens[tokens.size() - 1].push_back(line[i]);
+	}
+
+	return tokens;
+}
+
+EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string>& tokens, bool& setLoop, bool& endScript)
+{
+	EntityScript* script = new EntityScript(EntityScript::ScriptType::NONE, NULL);
+
+	if (tokens.size() > 0)
+	{
+		// Basically a string switch
+		// Switch on first token (the instruction)
+
+		// Params:
+		// int entityID
+		// int x
+		// int y
+		// int scriptID
+		if (tokens[0] == "spawn")
+		{
+			script->type = EntityScript::ScriptType::SPAWN;
+			if (tokens.size() > 4)
+			{
+				script->param.spawn.entity = stoi(tokens[1]);
+				script->param.spawn.x      = stoi(tokens[2]);
+				script->param.spawn.y      = stoi(tokens[3]);
+				script->param.spawn.script = stoi(tokens[4]);
+			}
+			else
+				std::cout << "Not enough parameters in entity script: spawn\n";
+		}
+		// Params:
+		// int x
+		// int y
+		else if (tokens[0] == "move")
+		{
+			script->type = EntityScript::ScriptType::MOVE;
+			if (tokens.size() > 2)
+			{
+				script->param.spawn.x = stoi(tokens[1]);
+				script->param.spawn.y = stoi(tokens[2]);
+			}
+			else
+				std::cout << "Not enough parameters in entity script: move\n";
+		}
+		// Params: NONE
+		else if (tokens[0] == "fire")
+		{
+			script->type = EntityScript::ScriptType::FIRE;
+		}
+		// Params:
+		// double time
+		else if (tokens[0] == "wait")
+		{
+			script->type = EntityScript::ScriptType::WAIT;
+			if (tokens.size() > 1)
+			{
+				script->param.wait = stod(tokens[1]);
+			}
+			else
+				std::cout << "Not enough parameters in entity script: wait\n";
+		}
+		// Params: NONE
+		// Set loopPtr to next entityScript. Unknown for now, so set to current.
+		// After this is done making ths linked list, move the loop pointer down one
+		else if (tokens[0] == "loop")
+		{
+			setLoop = true;
+			delete script;
+			return nullptr;
+		}
+		// Params: NONE
+		// Script is done.
+		// Set last entityScript next ptr to loopPtr
+		else if (tokens[0] == "end")
+		{
+			endScript = true;
+			delete script;
+			return nullptr;
+		}
+		else
+		{
+			std::cout << "Invalid operator in entity script: \"" << tokens[0] << "\"";
+			delete script;
+			return nullptr;
+		}
+	}
+
+	return script;
 }

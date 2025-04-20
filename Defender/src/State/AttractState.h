@@ -72,11 +72,21 @@ public:
 
 private:
 
-	static void loadEntityScript();
+	// This method calls all the other entity script loading methods
+	// Only call this one, not the other entity script methods
+	static void loadEntityScripts();
 
+	// First step of loading an entity script.
+	// It removes single line comments and whitespace from the source file.
 	static std::string formatEntityScriptLine(const std::string& line);
-	static std::vector<std::string> tokenizeEntityScript(std::string line);
 
+	// Second step of loading an entity script.
+	// This makes a list of substrings from a line after it went thru the format method (seperated by commas).
+	static std::vector<std::string> tokenizeEntityScript(const std::string line);
+
+	static EntityScript* makeEntityScriptParams(const std::vector<std::string>& tokens, bool& setLoop, bool& endScript);
+
+	static std::vector<EntityScript*> entityScripts;
 
 	static sf::Image willSteps;
 	static sf::RectangleShape williams;
