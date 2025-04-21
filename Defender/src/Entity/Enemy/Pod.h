@@ -17,7 +17,7 @@ public:
 
     void tick(double deltaTime);
     //in degrees
-    int16_t rot = (rand()%30);
+    int16_t rot = ((rand()%120)-60)+(180*(rand() % 2));
 
     //int16_t rot = 45;
 };
