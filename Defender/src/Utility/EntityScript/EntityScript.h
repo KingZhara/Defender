@@ -8,7 +8,7 @@ struct EntityScript
 {
 	enum class ScriptType : uint8_t
 	{
-		DONE, // Should probs be changed to a next == nullptr check IR no EntityScript::DONE val.
+		NONE,
 		FIRE,
 		WAIT,
 		MOVE,
@@ -17,7 +17,6 @@ struct EntityScript
 
 	// The next component of the script
 	EntityScript* next = nullptr;
-	EntityScript* loop = nullptr;
 	// The type of script
 	ScriptType type;
 
@@ -47,7 +46,7 @@ struct EntityScript
 	{
 		switch (type)
 		{
-		case ScriptType::DONE:
+		case ScriptType::NONE:
 		case ScriptType::FIRE:
 			return true;
 		default:

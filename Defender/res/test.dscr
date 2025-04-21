@@ -1,7 +1,6 @@
 // player script
 spawn,  1, 150, 150, 2
 move, 20,  20
-dir, r
 loop
   fire
   wait, 5.0
