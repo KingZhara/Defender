@@ -26,18 +26,9 @@ public:
     Entity(sf::Vector2f  pos_,
            EntityID::ID  ID_,
            bool          isScripted_ = false,
-           EntityScript *script_ = nullptr,
-           sf::Shader   *shader = nullptr) : pos(pos_), isScripted(isScripted_),
+           EntityScript *script_ = nullptr) : pos(pos_), isScripted(isScripted_),
                                              script(script_),
-                                             animation(
-                                                     DATA_TABLE[ID_].SPRITE_DATA.
-                                                     frameCount,
-                                                     DATA_TABLE[ID_].SPRITE_DATA.bounds,
-                                                     ID_,
-                                                     DATA_TABLE[ID_].SPRITE_DATA.
-                                                     frameLength
-                                                     /*SPRITE_TABLE[ID].shader*/,
-                                                     shader),
+                                             animation(DATA_TABLE[ID_].SPRITE_DATA),
                                              ID(ID_)
     {
         //std::cout << pos.x << ' ' << pos.y << '\n';
@@ -48,7 +39,7 @@ public:
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
                                                     isScripted(false),
                                                     script(nullptr),
-                                                    animation({1, bounds, EntityID::PARTICLE}),
+                                                    animation(SpriteData{bounds, 1}),
                                                     ID(EntityID::PARTICLE) {}
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }

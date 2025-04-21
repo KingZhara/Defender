@@ -308,5 +308,5 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 	}
 
 	// @todo complete
-	particleize(false, pos, ID);
+	//particleize(false, pos, ID);
 }

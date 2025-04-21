@@ -180,7 +180,7 @@ void Entity::tick(double deltatime)
 
 bool Entity::collide(Entity* other)
 {
-	return animation.getBounds().intersects(other->animation.getBounds());
+	return animation.intersects(other->animation);
 }
 
 sf::IntRect const & Entity::getBounds(const EntityID::ID ID)

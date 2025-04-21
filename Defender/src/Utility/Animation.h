@@ -31,15 +31,15 @@ struct SpriteData
 class Animation : public sf::Drawable
 {
 public:
-	Animation(SpriteData& SPRITE_DATA_, sf::Texture* customTex = tex);
+	Animation(const SpriteData& SPRITE_DATA_, sf::Texture* customTex = tex);
 
 	void tick(double deltatime);
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-	void setPosition(sf::Vector2f pos)
-	{
-		frame.setPosition(round(pos.x), round(pos.y));
-	}
+	static void setTexture(sf::Texture* tex_);
+	void setTexturePos(sf::Vector2i pos);
+	void setPosition(sf::Vector2f pos);
+	bool intersects(Animation& other);
 
 private:
 	static sf::Texture* tex;
@@ -50,6 +50,11 @@ private:
 	uint8_t frameIndex;
 	Timer<double> fTimer;
 };
+
+inline bool Animation::intersects(Animation &other)
+{
+    return frame.getGlobalBounds().intersects(other.frame.getGlobalBounds());
+}
 
 /*class Animation : public sf::Drawable
 {
