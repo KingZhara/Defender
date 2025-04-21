@@ -17,5 +17,8 @@ public:
     */
 
     void tick(double deltaTime);
+
+    bool init = true;
+    double rot;
 };
 
