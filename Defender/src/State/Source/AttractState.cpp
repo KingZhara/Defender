@@ -186,7 +186,7 @@ bool AttractState::tick(double deltatime)
 void AttractState::loadEntityScripts()
 {
 	// Change name later probably
-	std::ifstream file("test.dscr");
+	std::ifstream file("res/test.dscr");
 	if (file)
 	{
 		std::string temp;
@@ -198,9 +198,11 @@ void AttractState::loadEntityScripts()
 		// Put the line's tokens into a vector
 		while (std::getline(file, temp))
 		{
-			tokenLines.push_back(
-				tokenizeEntityScript(
-					formatEntityScriptLine(temp)));
+			std::vector<std::string> tokens = tokenizeEntityScript(
+				formatEntityScriptLine(temp));
+			if (tokens.size() > 0)
+				if (tokens[0].size() > 0)
+					tokenLines.push_back(tokens);
 		}
 
 		EntityScript* lastPtr = nullptr;
@@ -256,7 +258,7 @@ void AttractState::loadEntityScripts()
 		}
 	}
 	else
-		std::cout << "Failed to open \"test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
+		std::cout << "Failed to open \"res/test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
 }
 
 std::string AttractState::formatEntityScriptLine(const std::string& line)

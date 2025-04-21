@@ -21,6 +21,15 @@ public:
 		delete flashing;
 		delete shifting;
 		delete willFlashing;
+
+		EntityScript* script = nullptr;
+		for (int i = 0; i < entityScripts.size(); i++)
+		{
+			// I made a mistake
+			// Following next pointers doesn't work with looping scripts
+			// The ending node's next pointer is the loop start
+			// I have no way of knowing when a script ends
+		}
 	}
 
 	~AttractState();
