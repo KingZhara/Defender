@@ -9,7 +9,7 @@ class Mutant :
 public:
     explicit Mutant(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
-        : Enemy(pos_, EntityID::MUTANT, isScripted_, script_, UserInterface::getShiftingShader())
+        : Enemy(pos_, EntityID::MUTANT, isScripted_, script_)
     {
     }
 

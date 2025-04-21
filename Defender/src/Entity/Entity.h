@@ -26,18 +26,9 @@ public:
     Entity(sf::Vector2f  pos_,
            EntityID::ID  ID_,
            bool          isScripted_ = false,
-           EntityScript *script_ = nullptr,
-           sf::Shader   *shader = nullptr) : pos(pos_), isScripted(isScripted_),
+           EntityScript *script_ = nullptr) : pos(pos_), isScripted(isScripted_),
                                              script(script_),
-                                             animation(
-                                                     DATA_TABLE[ID_].SPRITE_DATA.
-                                                     frameCount,
-                                                     DATA_TABLE[ID_].SPRITE_DATA.bounds,
-                                                     ID_,
-                                                     DATA_TABLE[ID_].SPRITE_DATA.
-                                                     frameLength
-                                                     /*SPRITE_TABLE[ID].shader*/,
-                                                     shader),
+                                             animation(DATA_TABLE[ID_].SPRITE_DATA),
                                              ID(ID_)
     {
         //std::cout << pos.x << ' ' << pos.y << '\n';
@@ -48,7 +39,7 @@ public:
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
                                                     isScripted(false),
                                                     script(nullptr),
-                                                    animation({1, bounds, EntityID::PARTICLE}),
+                                                    animation(SpriteData{bounds, 1}),
                                                     ID(EntityID::PARTICLE) {}
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
@@ -68,29 +59,8 @@ protected:
     {
         target.draw(animation, states);
     }
-
-    void setShader(sf::Shader* shader_)
-    {
-        animation.setShader(shader_);
-    }
     struct EntityData
     {
-        struct SpriteData
-        {
-            sf::IntRect        bounds;
-            uint8_t            frameCount;
-            ShaderID::ID shader = ShaderID::NONE;
-            double             frameLength = 1. / 2.;
-
-			SpriteData(sf::IntRect bounds_, uint8_t frameCount_,
-				ShaderID::ID shader_ = ShaderID::NONE,
-				double frameLength_ = 1. / 2.) :
-				bounds(bounds_), frameCount(frameCount_), shader(shader_),
-				frameLength(frameLength_)
-			{
-			}
-        };
-
 		struct PlayerRef
 		{
 			static sf::Vector2f* pos;

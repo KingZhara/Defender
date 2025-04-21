@@ -23,16 +23,16 @@ public:
     {
 		// Horizontal Movement
 		if (actions.flags.thrust)
-			vel.x = (actions.flags.left ? -1 :1) * COMN::baseSpeed.x * COMN::playerSpeedFactor;
+			vel.x = (float)((actions.flags.left ? -1 :1) * COMN::baseSpeed.x * COMN::playerSpeedFactor);
 		else
-			vel.x *= 0.9 * deltatime;
+			vel.x *= (float)(0.9 * deltatime);
 		if (actions.flags.up)
-			vel.y = -COMN::baseSpeed.y * COMN::playerSpeedFactor;
+			vel.y = (float)(-COMN::baseSpeed.y * COMN::playerSpeedFactor);
 		if (actions.flags.down)
-			vel.y = COMN::baseSpeed.y * COMN::playerSpeedFactor;
+			vel.y = (float)(COMN::baseSpeed.y * COMN::playerSpeedFactor);
 
 		if (!actions.flags.up || !actions.flags.down)
-			vel.y *= 1 - 0.9 * deltatime;
+			vel.y *= (float)(1 - 0.9 * deltatime);
 
 		if (actions.flags.fire)
 			entityQueue.emplace(pos, EntityID::LASER);

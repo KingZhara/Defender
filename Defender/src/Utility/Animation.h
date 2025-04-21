@@ -6,11 +6,57 @@
 
 #include "DisplayManager.h"
 #include "EntityID.h"
+#include "ShaderID.h"
 #include "Timer.h"
 
 #include "UserInterface/UserInterface.h"
 
+
+struct SpriteData
+{
+	sf::IntRect        bounds;
+	uint8_t            frameCount;
+	ShaderID::ID shader = ShaderID::NONE;
+	double             frameLength = 1. / 2.;
+
+	SpriteData(sf::IntRect bounds_, uint8_t frameCount_,
+		ShaderID::ID shader_ = ShaderID::NONE,
+		double frameLength_ = 1. / 2.) :
+		bounds(bounds_), frameCount(frameCount_), shader(shader_),
+		frameLength(frameLength_)
+	{
+	}
+};
+
 class Animation : public sf::Drawable
+{
+public:
+	Animation(const SpriteData& SPRITE_DATA_, sf::Texture* customTex = tex);
+
+	void tick(double deltatime);
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+	static void setTexture(sf::Texture* tex_);
+	void setTexturePos(sf::Vector2i pos);
+	void setPosition(sf::Vector2f pos);
+	bool intersects(Animation& other);
+
+private:
+	static sf::Texture* tex;
+
+	const SpriteData& SPRITE_DATA;
+	sf::Texture* texture = nullptr;
+	sf::Sprite frame;
+	uint8_t frameIndex;
+	Timer<double> fTimer;
+};
+
+inline bool Animation::intersects(Animation &other)
+{
+    return frame.getGlobalBounds().intersects(other.frame.getGlobalBounds());
+}
+
+/*class Animation : public sf::Drawable
 {
 private:
 	// @todo consider moving to heap; Entities are relatively massive, these are not always necessary
@@ -36,12 +82,12 @@ private:
 
 	/**
 	 * The sprite sheet used for all sprites
-	 */
+	 *//*
 	static const sf::Texture* tex;
 
 	/**
 	 * Draw method provided by drawable
-	 */
+	 *//*
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
@@ -54,7 +100,7 @@ public:
 	 * @param framelength The length of time (in seconds) of each frame
 	 * @param length_ The length of the sprite
 	 * @param bounds  The texture bounds of the sprite
-	 */
+	 *//*
 	Animation(uint8_t length_,               sf::IntRect bounds, EntityID::ID id_,
 			  double framelength = 1. / 15., sf::Shader* shader_ = nullptr)
 		: frame(sf::Sprite(*tex, bounds)),
@@ -67,19 +113,19 @@ public:
 	/**
 	 *
 	 * @param texture
-	 */
+	 *//*
 	static void setTexture(const sf::Texture* texture) { tex = texture; }
 
 	/**
 	 *
 	 * @param texture
-	 */
+	 *//*
 	void setShader(sf::Shader* shader_) { shader = shader_; }
 
 	/**
 	 * 
 	 * @param deltatime 
-	 */
+	 *//*
 	void tick(double deltatime);
 
 	void setStart(uint16_t start_) { start = start_; }
@@ -104,3 +150,4 @@ public:
 	}
 };
 
+*/

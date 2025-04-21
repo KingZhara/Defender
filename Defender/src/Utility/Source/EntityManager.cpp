@@ -38,17 +38,17 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
     // Handling is based on the side
     if (!player->getDir())
     {
-        view->setCenter(std::round(view->getCenter().x + (COMN::baseSpeed.x + player->getVel().x) * deltatime), view->getCenter().y);
+        view->setCenter((float)std::round(view->getCenter().x + (COMN::baseSpeed.x + player->getVel().x) * deltatime), view->getCenter().y);
 
         if (centeredPlayer - (view->getCenter().x - view->getSize().x * playfieldFactor) < epsilon)
-            view->setCenter(std::round(centeredPlayer + view->getSize().x * playfieldFactor), view->getCenter().y);
+            view->setCenter((float)std::round(centeredPlayer + view->getSize().x * playfieldFactor), view->getCenter().y);
     }
     else
     {
-        view->setCenter(std::round(view->getCenter().x - (COMN::baseSpeed.x  - player->getVel().x) * deltatime), view->getCenter().y);
+        view->setCenter((float)std::round(view->getCenter().x - (COMN::baseSpeed.x  - player->getVel().x) * deltatime), view->getCenter().y);
 
         if ((view->getCenter().x + view->getSize().x * playfieldFactor) - centeredPlayer < epsilon)
-            view->setCenter(std::round(centeredPlayer - view->getSize().x * playfieldFactor), view->getCenter().y);
+            view->setCenter((float)std::round(centeredPlayer - view->getSize().x * playfieldFactor), view->getCenter().y);
         
     }
 
