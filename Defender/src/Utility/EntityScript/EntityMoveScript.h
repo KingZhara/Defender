@@ -7,7 +7,7 @@ struct EntityMoveScript : EntityScript
 	sf::Vector2f target;
 	const float INIT_X;
 
-	EntityMoveScript(sf::Vector2f target_ = {}, float INIT_X_, EntityScript* next_ = nullptr)
+	EntityMoveScript(sf::Vector2f target_ = {}, EntityScript* next_ = nullptr)
 		: EntityScript(EntityScript::ScriptType::MOVE, next_), target(target_), INIT_X(INIT_X_) {}
 
 	virtual bool tick(sf::Vector2f& pos, double deltatime = 0.)
