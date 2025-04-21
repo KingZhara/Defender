@@ -7,6 +7,12 @@
 #include "../Utility/common.h"
 #include "../Utility/EntityManager.h"
 
+#include "../Utility/EntityScript/EntityMoveScript.h"
+#include "../Utility/EntityScript/EntityWaitScript.h"
+#include "../Utility/EntityScript/EntitySpawnScript.h"
+#include "../Utility/EntityScript/EntityFireScript.h"
+#include "../Utility/EntityScript/EntityScript.h"
+
 class AttractState : public sf::Drawable
 {
 public:

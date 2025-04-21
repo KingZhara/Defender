@@ -257,74 +257,6 @@ void AttractState::loadEntityScripts()
 
 		}
 		file.close();
-
-		//std::unordered_set<void*> visited;
-		//EntityScript* script = nullptr;
-		//for (int i = 0; i < entityScripts.size(); i++)
-		//{
-		//	std::cout << "Script[" << i << "]:\n";
-
-		//	visited.clear();
-		//	script = entityScripts[i];
-		//	while (!visited.contains((void*)script) && script)
-		//	{
-		//		visited.insert((void*)script);
-
-		//		switch (script->type)
-		//		{
-		//		case EntityScript::ScriptType::SPAWN:
-		//			std::cout << "Spawn(" << 
-		//				script->param.spawn.entity << ", " << 
-		//				script->param.spawn.x << ", " << 
-		//				script->param.spawn.y << ", " << 
-		//				script->param.spawn.script << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::MOVE:
-		//			std::cout << "Move(" <<
-		//				script->param.move.x << ", " <<
-		//				script->param.move.y << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::WAIT:
-		//			std::cout << "Wait(" <<
-		//				script->param.wait << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::FIRE:
-		//			std::cout << "Fire()\n";
-		//			break;
-		//		}
-
-		//		script = script->next;
-		//	}
-
-		//	if (script == nullptr)
-		//		std::cout << "Done\n";
-		//	else // has to be a loop, only other exit condition
-		//	{
-		//		std::cout << "-> ";
-		//		switch (script->type)
-		//		{
-		//		case EntityScript::ScriptType::SPAWN:
-		//			std::cout << "Spawn(" <<
-		//				script->param.spawn.entity << ", " <<
-		//				script->param.spawn.x << ", " <<
-		//				script->param.spawn.y << ", " <<
-		//				script->param.spawn.script << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::MOVE:
-		//			std::cout << "Move(" <<
-		//				script->param.move.x << ", " <<
-		//				script->param.move.y << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::WAIT:
-		//			std::cout << "Wait(" <<
-		//				script->param.wait << ")\n";
-		//			break;
-		//		case EntityScript::ScriptType::FIRE:
-		//			std::cout << "Fire()\n";
-		//			break;
-		//		}
-		//	}
-		//}
 	}
 	else
 		std::cout << "Failed to open \"res/test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
@@ -380,13 +312,12 @@ std::vector<std::string> AttractState::tokenizeEntityScript(const std::string li
 
 EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string>& tokens, bool& setLoop, bool& endScript)
 {
-	EntityScript* script = new EntityScript(EntityScript::ScriptType::NONE, NULL);
-
 	if (tokens.size() > 0)
 	{
 		// Basically a string switch
 		// Switch on first token (the instruction)
 
+		// Tokens after index 0 are params
 		// Params:
 		// int entityID
 		// int x
@@ -394,13 +325,14 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 		// int scriptID
 		if (tokens[0] == "spawn")
 		{
-			script->type = EntityScript::ScriptType::SPAWN;
 			if (tokens.size() > 4)
 			{
-				script->param.spawn.entity = stoi(tokens[1]);
-				script->param.spawn.x      = stoi(tokens[2]);
-				script->param.spawn.y      = stoi(tokens[3]);
-				script->param.spawn.script = stoi(tokens[4]);
+				return new EntitySpawnScript(
+					stoi(tokens[1]),
+					sf::Vector2f(
+						stoi(tokens[2]),
+						stoi(tokens[3])),
+					stoi(tokens[4]));
 			}
 			else
 				std::cout << "Not enough parameters in entity script: spawn\n";
@@ -410,11 +342,12 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 		// int y
 		else if (tokens[0] == "move")
 		{
-			script->type = EntityScript::ScriptType::MOVE;
 			if (tokens.size() > 2)
 			{
-				script->param.spawn.x = stoi(tokens[1]);
-				script->param.spawn.y = stoi(tokens[2]);
+				return new EntityMoveScript(
+					sf::Vector2f(
+						stoi(tokens[1]), 
+						stoi(tokens[2])));
 			}
 			else
 				std::cout << "Not enough parameters in entity script: move\n";
@@ -422,16 +355,15 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 		// Params: NONE
 		else if (tokens[0] == "fire")
 		{
-			script->type = EntityScript::ScriptType::FIRE;
+			return new EntityFireScript();
 		}
 		// Params:
 		// double time
 		else if (tokens[0] == "wait")
 		{
-			script->type = EntityScript::ScriptType::WAIT;
 			if (tokens.size() > 1)
 			{
-				script->param.wait = stod(tokens[1]);
+				return new EntityWaitScript(stod(tokens[1]));
 			}
 			else
 				std::cout << "Not enough parameters in entity script: wait\n";
@@ -442,8 +374,6 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 		else if (tokens[0] == "loop")
 		{
 			setLoop = true;
-			delete script;
-			return nullptr;
 		}
 		// Params: NONE
 		// Script is done.
@@ -451,16 +381,12 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 		else if (tokens[0] == "end")
 		{
 			endScript = true;
-			delete script;
-			return nullptr;
 		}
 		else
 		{
 			std::cout << "Invalid operator in entity script: \"" << tokens[0] << "\"";
-			delete script;
-			return nullptr;
 		}
 	}
 
-	return script;
+	return nullptr;
 }

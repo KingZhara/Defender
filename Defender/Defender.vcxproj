@@ -172,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Particle.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntityFireScript.h" />
+    <ClInclude Include="src\Utility\EntityScript\EntitySpawnScript.h" />
     <ClInclude Include="src\Utility\UserInterface\HSV.h" />
     <ClInclude Include="src\Utility\DisplayManager.h" />
     <ClInclude Include="src\Utility\common.h" />
