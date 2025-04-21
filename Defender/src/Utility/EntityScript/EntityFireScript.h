@@ -11,7 +11,7 @@ struct EntityFireScript : EntityScript
 
 	virtual bool tick(sf::Vector2f pos = {}, double deltatime = 0.)
 	{
-		
+		return true;
 	}
 };
 
