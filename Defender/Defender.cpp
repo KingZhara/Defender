@@ -128,3 +128,11 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
 //   \_____/ \___/ \___/ \____)
 //
 //           Inch Cat
+
+// TODO
+// 1. Map wrapping (EntityManager)
+// 2. Identify Swarmer direction switching logic
+// 3. Particalization (URGENT)
+// 4. Stars (Literally anything)
+// 5. Scores (Entity Manager -> Stage State somehow)
+// 6. UI Elements (User Interface)

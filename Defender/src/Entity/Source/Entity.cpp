@@ -107,8 +107,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 			2
 		},
 		Vec2<double>{
-			1.0f,
-			1.0f
+			2.0f,
+			3.0f
 		},
 		200
 	},
@@ -198,4 +198,13 @@ void Entity::setVel(sf::Vector2f newVel)
 {
 
 	vel = newVel;
+}
+
+const sf::Vector2f Entity::makePlayerTargetedVec(sf::Vector2f pos, uint8_t scale = 2)
+{
+	double                rot = atan2(EntityData::PLAYER_REF.pos->y - pos.y, EntityData::PLAYER_REF.pos->x - pos.x);
+	return{
+		(float)cos(rot) * scale + EntityData::PLAYER_REF.vel->x,
+		(float)sin(rot) * scale + EntityData::PLAYER_REF.vel->y
+	};
 }
