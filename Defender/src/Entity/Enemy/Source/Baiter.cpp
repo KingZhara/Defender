@@ -5,6 +5,8 @@ void Baiter::tick(double deltatime)
 {
 	static Timer<double>      attackTimer{ 0.6 };
 
+	//@todo change baiter targeting
+
 	if (init) 
 	{
 		destinationX = (uint16_t)(EntityData::PlayerRef::pos->x + ((EntityData::PlayerRef::pos->x - pos.x) / 3));
