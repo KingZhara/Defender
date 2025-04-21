@@ -5,7 +5,6 @@
 struct EntityMoveScript : EntityScript
 {
 	sf::Vector2f target;
-	const float INIT_X;
 
 	EntityMoveScript(sf::Vector2f target_ = {}, EntityScript* next_ = nullptr)
 		: EntityScript(EntityScript::ScriptType::MOVE, next_), target(target_) {}
