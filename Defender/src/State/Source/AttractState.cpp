@@ -257,6 +257,74 @@ void AttractState::loadEntityScripts()
 
 		}
 		file.close();
+
+		//std::unordered_set<void*> visited;
+		//EntityScript* script = nullptr;
+		//for (int i = 0; i < entityScripts.size(); i++)
+		//{
+		//	std::cout << "Script[" << i << "]:\n";
+
+		//	visited.clear();
+		//	script = entityScripts[i];
+		//	while (!visited.contains((void*)script) && script)
+		//	{
+		//		visited.insert((void*)script);
+
+		//		switch (script->type)
+		//		{
+		//		case EntityScript::ScriptType::SPAWN:
+		//			std::cout << "Spawn(" << 
+		//				script->param.spawn.entity << ", " << 
+		//				script->param.spawn.x << ", " << 
+		//				script->param.spawn.y << ", " << 
+		//				script->param.spawn.script << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::MOVE:
+		//			std::cout << "Move(" <<
+		//				script->param.move.x << ", " <<
+		//				script->param.move.y << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::WAIT:
+		//			std::cout << "Wait(" <<
+		//				script->param.wait << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::FIRE:
+		//			std::cout << "Fire()\n";
+		//			break;
+		//		}
+
+		//		script = script->next;
+		//	}
+
+		//	if (script == nullptr)
+		//		std::cout << "Done\n";
+		//	else // has to be a loop, only other exit condition
+		//	{
+		//		std::cout << "-> ";
+		//		switch (script->type)
+		//		{
+		//		case EntityScript::ScriptType::SPAWN:
+		//			std::cout << "Spawn(" <<
+		//				script->param.spawn.entity << ", " <<
+		//				script->param.spawn.x << ", " <<
+		//				script->param.spawn.y << ", " <<
+		//				script->param.spawn.script << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::MOVE:
+		//			std::cout << "Move(" <<
+		//				script->param.move.x << ", " <<
+		//				script->param.move.y << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::WAIT:
+		//			std::cout << "Wait(" <<
+		//				script->param.wait << ")\n";
+		//			break;
+		//		case EntityScript::ScriptType::FIRE:
+		//			std::cout << "Fire()\n";
+		//			break;
+		//		}
+		//	}
+		//}
 	}
 	else
 		std::cout << "Failed to open \"res/test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
