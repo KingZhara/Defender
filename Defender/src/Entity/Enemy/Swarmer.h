@@ -20,5 +20,7 @@ public:
 
     bool init = true;
     double rot;
+
+    sf::Vector2f delta;
 };
 

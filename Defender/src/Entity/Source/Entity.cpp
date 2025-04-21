@@ -107,8 +107,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 			2
 		},
 		Vec2<double>{
-			1.0f,
-			1.0f
+			2.0f,
+			3.0f
 		},
 		200
 	},
