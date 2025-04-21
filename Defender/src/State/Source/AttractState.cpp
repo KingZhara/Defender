@@ -256,6 +256,7 @@ void AttractState::loadEntityScripts()
 			}
 
 		}
+		file.close();
 	}
 	else
 		std::cout << "Failed to open \"res/test.dscr\"! AttractState.cpp loadEntityScripts() line:189\n";
