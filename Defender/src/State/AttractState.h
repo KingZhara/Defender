@@ -27,9 +27,8 @@ public:
 		// The ending node's next pointer is the loop start
 		// Have to make a list of pointers its already visited
 		// If it visits a pointer its already been to, then its finished
-		;
-		std::unordered_set<void*> visited;;
-		//std::vector<EntityScript*> visited;
+		
+		std::unordered_set<void*> visited;
 		EntityScript* script = nullptr; 
 		for (int i = 0; i < entityScripts.size(); i++)
 		{
