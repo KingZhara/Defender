@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
 
 #include "../Utility/UserInterface/UserInterface.h"
 #include "../Utility/common.h"
@@ -22,13 +23,24 @@ public:
 		delete shifting;
 		delete willFlashing;
 
-		EntityScript* script = nullptr;
+		// Following next pointers doesn't work with looping scripts
+		// The ending node's next pointer is the loop start
+		// Have to make a list of pointers its already visited
+		// If it visits a pointer its already been to, then its finished
+		
+		std::unordered_set<void*> visited;
+		EntityScript* script = nullptr; 
 		for (int i = 0; i < entityScripts.size(); i++)
 		{
-			// I made a mistake
-			// Following next pointers doesn't work with looping scripts
-			// The ending node's next pointer is the loop start
-			// I have no way of knowing when a script ends
+			visited.clear();
+			script = entityScripts[i];
+			while (!visited.contains((void*)script) && script)
+			{
+				visited.insert((void*)script);
+				EntityScript* temp = script->next;
+				delete script;
+				script = temp;
+			}
 		}
 	}
 

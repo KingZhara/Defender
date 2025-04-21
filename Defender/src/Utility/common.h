@@ -59,5 +59,7 @@ struct COMN
 	static constexpr uint8_t world_startY = 20;
 	static constexpr Color<double> ShaderTarget{ 136, 0, 255 };
 
+
+
 	COMN() = delete;
 };

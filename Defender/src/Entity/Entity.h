@@ -34,6 +34,10 @@ public:
         //std::cout << pos.x << ' ' << pos.y << '\n';
 
         std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
+
+        vel = { EntityData::BASE_VELOCITY.x, EntityData::BASE_VELOCITY.y };
+        vel.x *= DATA_TABLE[ID_].VELOCITY_FACTOR.x;
+    	vel.y *= DATA_TABLE[ID_].VELOCITY_FACTOR.y;
     }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
@@ -52,6 +56,7 @@ public:
     sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
+    static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, uint8_t scale);
 
 protected:
     virtual void
