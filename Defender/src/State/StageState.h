@@ -30,8 +30,13 @@ public:
 		static sf::RectangleShape underline;
 
 		// TODO add timer for death animation
-		if (playerState.lives > 0) 
+		if (playerState.lives > 0)
+		{
 			target.draw(entityManager, states);
+
+			UserInterface::drawBackground(target, DisplayManager::getView());
+			UserInterface::drawForeground(target, DisplayManager::getView());
+		}
 		else
 		{
 			for (int i = 0; i < 3; i++)

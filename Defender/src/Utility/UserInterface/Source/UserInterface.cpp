@@ -272,4 +272,29 @@ void UserInterface::drawBackground(sf::RenderTarget& rnd, sf::View& viewport)
 	rnd.draw(world);
 }
 
-void UserInterface::drawForeground(sf::RenderTarget &, sf::View &) {}
+void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view) 
+{
+    // Needs to reset view to highscore
+    sf::View oldView = target.getView();
+
+    sf::View defView = oldView;
+    defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
+    target.setView(defView);
+
+
+    sf::RectangleShape uiDivider;
+    uiDivider.setPosition(0, COMN::uiHeight);
+    uiDivider.setSize(sf::Vector2f(COMN::resolution.x, 2));
+    uiDivider.setFillColor(sf::Color::Blue);
+    target.draw(uiDivider);
+
+    sf::RectangleShape minimapDivider;
+    minimapDivider.setPosition(COMN::resolution.x / 3.f, 1);
+    minimapDivider.setSize(sf::Vector2f(COMN::resolution.x / 3.f, COMN::uiHeight - 1));
+    minimapDivider.setFillColor(sf::Color::Transparent);
+    minimapDivider.setOutlineColor(sf::Color::Blue);
+    minimapDivider.setOutlineThickness(2);
+    target.draw(minimapDivider);
+
+    target.setView(oldView);
+}

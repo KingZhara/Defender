@@ -92,6 +92,6 @@ private:
 	static sf::Shader*    flashingShader;
 	static sf::Shader*    williamsShader;
 	static sf::Glsl::Vec3 brightColors[];
-	static sf ::Font*     otherFont     ;
+	static sf::Font*      otherFont     ;
 };
 

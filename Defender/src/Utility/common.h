@@ -39,6 +39,7 @@ struct COMN
 		292,
 		240
 	};
+	static constexpr float uiHeight = 34;
 	static constexpr Vec2<float> aspectRatio
 	{
 		73,

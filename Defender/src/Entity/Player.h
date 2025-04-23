@@ -36,7 +36,7 @@ public:
 		if (actions.flags.fire)
 			entityQueue.emplace(pos, EntityID::LASER);
 
-        pos.y = std::max<float>(pos.y, 0);
+        pos.y = std::max<float>(pos.y, COMN::uiHeight);
 
         pos.y = std::min(pos.y, COMN::resolution.y - getBounds(EntityID::PLAYER).height);
 
