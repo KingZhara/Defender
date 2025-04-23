@@ -316,13 +316,14 @@ void EntityManager::clearQueue()
         Entity::QueuedEntity &e   = Entity::getQueue().front();
         double                rot = atan2(player->getPos().y - e.pos.y,
                                           player->getPos().x - e.pos.x);
+        sf::Vector2f entityVel = Entity::getEVel(e.id);
 
         switch (e.id)
         {
         case EntityID::BULLET:
             projectiles.entities.at(projectiles.spawn<Bullet>(e.pos))->setVel({
-                static_cast<float>(cos(rot)) * 2 + player->getVel().x,
-                static_cast<float>(sin(rot)) * 2 + player->getVel().y
+                entityVel.x * static_cast<float>(cos(rot)) + player->getVel().x,
+                entityVel.y * static_cast<float>(sin(rot)) + player->getVel().y
             });
             break;
 

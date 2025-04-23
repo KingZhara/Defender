@@ -275,16 +275,16 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 		switch (ID)
 		{
 		case EntityID::BULLET:
-			entity = new Bullet(pos, args...);
-			break;
+			projectiles.push<Bullet>(new Bullet(pos, args...));
+			return;
 
 		case EntityID::LASER:
-			entity = new Laser(pos, args...);
-			break;
+			projectiles.push<Laser>(new Laser(pos, args...));
+			return;
 
 		case EntityID::BOMB:
-			entity = new Bomb(pos, args...);
-			break;
+			projectiles.push<Bomb>(new Bomb(pos, args...));
+			return;
 
 		default:
 			throw std::runtime_error(

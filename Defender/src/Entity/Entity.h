@@ -35,9 +35,9 @@ public:
 
         //std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
 
-        vel = { (float)EntityData::BASE_VELOCITY.x, (float)EntityData::BASE_VELOCITY.y };
-        vel.x *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.x;
-    	vel.y *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.y;
+        //vel = { (float)EntityData::BASE_VELOCITY.x, (float)EntityData::BASE_VELOCITY.y };
+        //vel.x *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.x;
+    	//vel.y *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.y;
     }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),
@@ -61,6 +61,19 @@ public:
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
     static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
     static const sf::Vector2f makeCenteredTL(sf::Vector2f pos, EntityID::ID);
+    static const sf::Vector2f getEVel(EntityID::ID ID_)
+    {
+        sf::Vector2f ret = {
+            (float)EntityData::BASE_VELOCITY.x,
+            (float)EntityData::BASE_VELOCITY.y
+        };
+
+
+        ret.x *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.x;
+        ret.y *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.y;
+
+        return ret;
+    }
 
 protected:
     virtual void
