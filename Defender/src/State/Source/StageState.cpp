@@ -14,9 +14,10 @@ StageState::StageState()
 {
 	entityManager = EntityManager();
 	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::POD, sf::Vector2f{ 100, 100 });
+	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::POD, sf::Vector2f{ 100, 100 });
 	entityManager.spawn(EntityManager::SpawnType::PLAYER, EntityID::PLAYER, sf::Vector2f{ 250, 150 });
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::BOMBER, sf::Vector2f{ 100, 100 });
+	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 }
@@ -34,7 +35,7 @@ bool StageState::tick(Action& actions, double deltatime)
 
 	if (spwn.tick(deltatime))
 	{
-		entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, sf::Vector2f{ 50, 50 });
+		//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, sf::Vector2f{ 50, 50 });
 	}
 
 

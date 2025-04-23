@@ -16,5 +16,7 @@ public:
 	stationary bombs.
 	*/
 	void tick(double deltaTime);
+
+	uint8_t yMovTim = 20;
 };
 
