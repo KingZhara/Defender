@@ -22,13 +22,13 @@ class EntityManager : public sf::Drawable
 
 		~EntityHolder();
 
+		uint16_t first = 0, last = 0, count = 0;
 	private:
 
 		void getIndex(uint16_t& index);
 		uint16_t getNextIndex(uint16_t start, uint16_t extrema, int8_t diff);
 
 		// Dead entity search information
-		uint16_t first = 0, last = 0, count = 0;
 		bool insertionSide = false;
 	};
 
@@ -308,5 +308,5 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 	}
 
 	// @todo complete
-	//particleize(false, pos, ID);
+	particleize(false, pos, ID);
 }

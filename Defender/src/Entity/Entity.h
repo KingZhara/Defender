@@ -33,7 +33,7 @@ public:
     {
         //std::cout << pos.x << ' ' << pos.y << '\n';
 
-        std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
+        //std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
 
         vel = { EntityData::BASE_VELOCITY.x, EntityData::BASE_VELOCITY.y };
         vel.x *= DATA_TABLE[ID_].VELOCITY_FACTOR.x;
@@ -44,7 +44,10 @@ public:
                                                     isScripted(false),
                                                     script(nullptr),
                                                     animation(SpriteData{bounds, 1}),
-                                                    ID(EntityID::PARTICLE) {}
+                                                    ID(EntityID::PARTICLE)
+    {
+        //std::cout << "construct bounds: " << bounds.left << ", " << bounds.top << ", " << bounds.width << ", " << bounds.height << '\n';
+    }
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     virtual void                     tick(double deltatime);
@@ -56,7 +59,7 @@ public:
     sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
-    static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, uint8_t scale);
+    static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
 
 protected:
     virtual void

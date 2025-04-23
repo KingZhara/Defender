@@ -8,19 +8,20 @@ public:
 
 	virtual ~Particle() override
 	{
-		free(pieces);
+		_aligned_free(pieces);
 		pieces = nullptr;
 	};
 
 	virtual void tick(double deltatime) override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	bool isComplete() const { return lifetime.isComplete(); }
 
 private:
 	static constexpr uint8_t PARTICLE_SIZE = 2;
 	sf::Vector2<uint8_t> size;
 	Timer<double> lifetime{ 1, false};
 	Entity* pieces = nullptr;
-
+	bool skipCenter = false;
 
 };
 

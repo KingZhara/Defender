@@ -26,8 +26,6 @@ int main()
     Action actions;
     // The Clock used for deltatime
     sf::Clock clock;
-
-    clock.restart();
     // Min game loop
     while (DisplayManager::getWindow()->isOpen())
     {
@@ -136,3 +134,4 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
 // 4. Stars (Literally anything)
 // 5. Scores (Entity Manager -> Stage State somehow)
 // 6. UI Elements (User Interface)
+// 7. Spawn Logic

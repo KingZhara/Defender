@@ -40,7 +40,8 @@ Animation::Animation(const SpriteData &SPRITE_DATA_, sf::Texture* customTex)
 	fTimer(SPRITE_DATA_.frameLength),
 	texture(customTex)
 {
-	std::cout << "ANIM MAKE BOUNDS: " << SPRITE_DATA.bounds.left << ", " << SPRITE_DATA.bounds.top << ", " << SPRITE_DATA.bounds.width << ", " << SPRITE_DATA.bounds.height << '\n';
+	//std::cout << "ANIM MAKE BOUNDS: " << SPRITE_DATA.bounds.left << ", " << SPRITE_DATA.bounds.top << ", " << SPRITE_DATA.bounds.width << ", " << SPRITE_DATA.bounds.height << '\n';
+	//printDebugInfo();
 }
 
 void Animation::tick(double deltatime)
@@ -56,14 +57,14 @@ void Animation::tick(double deltatime)
 		if (++frameIndex == SPRITE_DATA.frameCount)
 		{
 			frameIndex = 0;
-			std::cout << "Old Left: " << newBounds.left << " New Left: ";
+			//std::cout << "Old Left: " << newBounds.left << " New Left: ";
 			newBounds.left -= newBounds.width * (SPRITE_DATA.frameCount - 1) + SPRITE_DATA.frameCount - 1;
-			std::cout << newBounds.left << '\n';
+			//std::cout << newBounds.left << '\n';
 		}
 		else
 		{
 			newBounds.left += newBounds.width + 1;
-			std::cout << "ANIM BOUNDS: " << newBounds.left << ", " << newBounds.top << ", " << newBounds.width << ", " << newBounds.height << '\n';
+			//std::cout << "ANIM BOUNDS: " << newBounds.left << ", " << newBounds.top << ", " << newBounds.width << ", " << newBounds.height << '\n';
 		}
 
 		frame.setTextureRect(newBounds);

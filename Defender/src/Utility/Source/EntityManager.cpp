@@ -124,6 +124,8 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
     bool     playerDeath = false;
     uint16_t enemyIndex  = 0;
 
+    std::cout << "There are " << particles.entities.size() - particles.count << " particles\n";
+
     // Tick player first
     player->setActions(actions);
     player->tick(deltatime);
@@ -158,6 +160,20 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
     {
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
+    }
+
+    // Tick Particles
+    for (uint16_t i = 0; i < particles.entities.size(); i++)
+    {
+        Particle*& particle = particles.entities[i];
+
+        if (particle != nullptr)
+        {
+            particle->tick(deltatime);
+
+            if (particle->isComplete())
+                particles.kill(i);
+        }
     }
 
     // Tick projectiles

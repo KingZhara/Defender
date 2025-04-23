@@ -40,11 +40,17 @@ public:
 	void setTexturePos(sf::Vector2i pos);
 	void setPosition(sf::Vector2f pos);
 	bool intersects(Animation& other);
+	void printDebugInfo()
+	{
+		std::cout << "AN_DBG_INF{ TEX_STATIC: " << tex << ", Sprite Data{ frameCount: " << SPRITE_DATA.frameCount
+			<< ", Bounds{ T: " << SPRITE_DATA.bounds.top << ", L: " << SPRITE_DATA.bounds.left << ", H: " << SPRITE_DATA.bounds.height << ", W: " << SPRITE_DATA.bounds.width << " }, Shader: "
+			<< (uint16_t)SPRITE_DATA.shader << " }, Texture: " << texture << ", FrameIndex: " << frameIndex << " }\n";
+	}
 
 private:
 	static sf::Texture* tex;
 
-	const SpriteData& SPRITE_DATA;
+	const SpriteData SPRITE_DATA;
 	sf::Texture* texture = nullptr;
 	sf::Sprite frame;
 	uint8_t frameIndex;

@@ -28,11 +28,10 @@ public:
 			vel.x *= (float)(0.9 * deltatime);
 		if (actions.flags.up)
 			vel.y = (float)(-COMN::baseSpeed.y * COMN::playerSpeedFactor);
-		if (actions.flags.down)
+		else if (actions.flags.down)
 			vel.y = (float)(COMN::baseSpeed.y * COMN::playerSpeedFactor);
-
-		if (!actions.flags.up || !actions.flags.down)
-			vel.y *= (float)(1 - 0.9 * deltatime);
+		else
+			vel.y *= (float)(0.9 * deltatime);
 
 		if (actions.flags.fire)
 			entityQueue.emplace(pos, EntityID::LASER);

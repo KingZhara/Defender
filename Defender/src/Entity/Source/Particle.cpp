@@ -22,9 +22,11 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		center.x = (size.x + 1) / 2;
 	    center.y = (size.y + 1) / 2;
+
+		skipCenter = true;
 	}
 	// Create the array pointer, size.x * size.y - 1 (center), if spawning
-	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - 1), alignof(Entity)));
+	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0)), alignof(Entity)));
 	if (!pieces) throw std::bad_alloc();
 
 	// For each piece, create a new particle
@@ -99,15 +101,20 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			++index;
 		}
 	}
+	lifetime.tick(0);
+	if (lifetime.isComplete())
+		throw std::runtime_error("Particle issue...");
 }
 
 void Particle::tick(double deltatime)
 {
+	//std::cout << "Tick Particle\n";
 	if (!lifetime.isComplete())
 	{
 		for (int8_t x = 0; x < size.x; x++)
 			for (int8_t y = 0; y < size.y; y++)
-				pieces[x * size.y + y].tick(deltatime);
+				if (!skipCenter || (skipCenter && x * size.y + y < size.x * size.y - 1))
+				    pieces[x * size.y + y].tick(deltatime);
 
 		lifetime.tick(deltatime);
 	}
@@ -115,9 +122,11 @@ void Particle::tick(double deltatime)
 
 void Particle::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+	//std::cout << "Draw Particle\n";
 	// Draw all pieces
 	if (!lifetime.isComplete())
     	for (int8_t x = 0; x < size.x; x++)
 	    	for (int8_t y = 0; y < size.y; y++)
-    			target.draw(pieces[x * size.y + y], states);
+				if (!skipCenter || (skipCenter && x * size.y + y < size.x * size.y - 1))
+    			    target.draw(pieces[x * size.y + y], states);
 }

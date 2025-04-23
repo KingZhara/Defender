@@ -34,7 +34,7 @@ bool StageState::tick(Action& actions, double deltatime)
 
 	if (spwn.tick(deltatime))
 	{
-		//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, sf::Vector2f{ 50, 50 });
+		entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, sf::Vector2f{ 50, 50 });
 	}
 
 
