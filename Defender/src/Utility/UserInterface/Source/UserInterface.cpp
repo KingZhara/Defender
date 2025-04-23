@@ -234,6 +234,7 @@ sf::Shader * UserInterface::getShader(ShaderID::ID ID)
         return williamsShader;
     }
 
+	return nullptr;
 }
 
 const void UserInterface::shaderTick(double deltatime)

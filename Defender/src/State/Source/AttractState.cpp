@@ -330,8 +330,8 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 				return new EntitySpawnScript(
 					stoi(tokens[1]),
 					sf::Vector2f(
-						stoi(tokens[2]),
-						stoi(tokens[3])),
+						(float)stoi(tokens[2]),
+						(float)stoi(tokens[3])),
 					stoi(tokens[4]));
 			}
 			else
@@ -346,8 +346,8 @@ EntityScript* AttractState::makeEntityScriptParams(const std::vector<std::string
 			{
 				return new EntityMoveScript(
 					sf::Vector2f(
-						stoi(tokens[1]), 
-						stoi(tokens[2])));
+						(float)stoi(tokens[1]),
+						(float)stoi(tokens[2])));
 			}
 			else
 				std::cout << "Not enough parameters in entity script: move\n";

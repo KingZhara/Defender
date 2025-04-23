@@ -17,6 +17,9 @@ class EntityManager : public sf::Drawable
 		template<typename E, typename... Args>
 			requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 		uint16_t spawn(Args&&... args);
+		template<typename E>
+			requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
+		uint16_t push(Entity* entity);
 		void kill(uint16_t index);
 		void reset();
 
@@ -27,6 +30,7 @@ class EntityManager : public sf::Drawable
 
 		void getIndex(uint16_t& index);
 		uint16_t getNextIndex(uint16_t start, uint16_t extrema, int8_t diff);
+		uint16_t findIndex_last_internal();
 
 		// Dead entity search information
 		bool insertionSide = false;
@@ -69,6 +73,7 @@ private:
 	static bool collisionWrapper(uint16_t entity, EntityHolder<T>& entities);
 
 	static void clearQueue();
+	static void spawn_typeWrapper(Entity* entity);
 
 
 	static EntityHolder<Projectile> projectiles;
@@ -108,25 +113,49 @@ void EntityManager::EntityHolder<T>::kill(uint16_t index)
 
 template<typename T>
 template<typename E, typename ... Args>
-requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
+	requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 uint16_t EntityManager::EntityHolder<T>::spawn(Args &&...args)
+{
+	uint16_t index = findIndex_last_internal();
+
+	// Place new entity
+	entities.at(index) = new E(std::forward<Args>(args)...);
+
+	return index;
+}
+
+template<typename T>
+template<typename E>
+requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
+uint16_t EntityManager::EntityHolder<T>::push(Entity* entity)
+{
+	uint16_t index = findIndex_last_internal();
+
+	// Place new entity
+	entities.at(index) = dynamic_cast<E*>(entity);
+
+	return index;
+}
+
+template<typename T>
+uint16_t EntityManager::EntityHolder<T>::findIndex_last_internal()
 {
 	uint16_t index = 0;
 
 	//std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
 
-	std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << "\n";
+	//std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << "\n";
 	// Generate index
 	if (count == 0)
 	{
-		std::cout << "ECOUT\n";
+		//std::cout << "ECOUT\n";
 		entities.emplace_back(nullptr);
 		index = static_cast<uint16_t>(entities.size() - 1);
 	}
 	else
 	{
 
-		std::cout << "N_ECOUT\n";
+		//std::cout << "N_ECOUT\n";
 		if (count > 1)
 			getIndex(index);
 		else // count == 1
@@ -135,12 +164,10 @@ uint16_t EntityManager::EntityHolder<T>::spawn(Args &&...args)
 
 		--count;
 	}
-	std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << " END\n";
+	//std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << " END\n";
 
 	//std::cout << index << '\n';
 	// Place new entity
-	entities.at(index) = new E(std::forward<Args>(args)...);
-
 	return index;
 }
 

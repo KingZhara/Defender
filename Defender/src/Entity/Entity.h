@@ -35,9 +35,9 @@ public:
 
         //std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
 
-        vel = { EntityData::BASE_VELOCITY.x, EntityData::BASE_VELOCITY.y };
-        vel.x *= DATA_TABLE[ID_].VELOCITY_FACTOR.x;
-    	vel.y *= DATA_TABLE[ID_].VELOCITY_FACTOR.y;
+        vel = { (float)EntityData::BASE_VELOCITY.x, (float)EntityData::BASE_VELOCITY.y };
+        vel.x *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.x;
+    	vel.y *= (float)DATA_TABLE[ID_].VELOCITY_FACTOR.y;
     }
 
     Entity(sf::Vector2f pos_, sf::IntRect bounds = {}) : pos(pos_),

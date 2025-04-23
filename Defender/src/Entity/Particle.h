@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 
+
 class Particle : public Entity
 {
 public:
@@ -10,6 +11,7 @@ public:
 	{
 		_aligned_free(pieces);
 		pieces = nullptr;
+		delete entity;
 	};
 
 	virtual void tick(double deltatime) override;
@@ -18,6 +20,13 @@ public:
 	static sf::Vector2<int8_t> defCent()
 	{
 		return { -1, -1 };
+	}
+	Entity* getEntity()
+	{
+		Entity* tmp = entity;
+		entity = nullptr;
+
+		return tmp;
 	}
 
 private:
