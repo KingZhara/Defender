@@ -155,8 +155,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 			1
 		},
 		Vec2<double>{
-			0.001f,
-			0.001f,
+			1.0f,
+			1.5f,
 		},
 		0
 
@@ -215,4 +215,12 @@ const sf::Vector2f Entity::makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID 
 	};
 
     return vel;
+}
+
+const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID)
+{
+	return {
+		pos.x + DATA_TABLE[EntityID::PARTICLE].SPRITE_DATA.bounds.left / 2,
+		pos.y + DATA_TABLE[EntityID::PARTICLE].SPRITE_DATA.bounds.top / 2
+	};
 }

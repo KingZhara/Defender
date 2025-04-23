@@ -4,7 +4,9 @@
 #include "../Entity.h"
 #include <cstdlib>
 
-Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector2<int8_t> center) : Entity(pos)
+#include "../Entity.h"
+
+Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector2<int8_t> collision, Entity* entity_) : Entity(pos), entity(entity_)
 {
 	const sf::IntRect& bounds = DATA_TABLE[ID_].SPRITE_DATA.bounds;
 	// Make sure we round up
@@ -17,15 +19,15 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		throw std::overflow_error("Privided Glyph is too large for this type");
 	}
-	// If center = {-1, -1}, reset
-	if (center.x == -1 || center.y == -1)
+	// If collision = {-1, -1}, reset
+	if (collision.x == -1 || collision.y == -1)
 	{
-		center.x = (size.x + 1) / 2;
-	    center.y = (size.y + 1) / 2;
+		collision.x = (size.x + 1) / 2;
+	    collision.y = (size.y + 1) / 2;
 
 		skipCenter = true;
 	}
-	// Create the array pointer, size.x * size.y - 1 (center), if spawning
+	// Create the array pointer, size.x * size.y - 1 (collision), if spawning
 	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0)), alignof(Entity)));
 	if (!pieces) throw std::bad_alloc();
 
@@ -34,7 +36,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
      *
      * /* // For y; +=2
         *
-        * Grid Pos = {x / PARTICLE_SIZE, y / PARTICLE_SIZE} - center
+        * Grid Pos = {x / PARTICLE_SIZE, y / PARTICLE_SIZE} - collision
         *
         * // Pos is (pos + {x, y})
         * // Vel is Grid Pos
@@ -51,11 +53,11 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		for (int8_t x = 0; x < bounds.width; x += 2)
 		{
-			// Get the grid position based on the center as the origin
+			// Get the grid position based on the collision as the origin
 			sf::Vector2<int8_t> gridPos = { (int8_t)(x / PARTICLE_SIZE), (int8_t)(y / PARTICLE_SIZE) };
-			gridPos -= center;
+			gridPos -= collision;
 
-			// Skip the center piece; Only triggered when center piece is within bounds
+			// Skip the collision piece; Only triggered when collision piece is within bounds
 			if (gridPos.x == 0 && gridPos.y == 0)
 				continue;
 
@@ -64,17 +66,20 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			nPos += {(float)x, (float)y};
 
 			// Velocity is the grid pos
-			sf::Vector2f nVel = { (float)gridPos.x, (float)gridPos.y };
+			sf::Vector2f nVel = {
+				(float)(gridPos.x * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.x * EntityData::BASE_VELOCITY.x),
+				(float)(gridPos.y * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.y * EntityData::BASE_VELOCITY.y)
+			};
 
 			// Modify position if spawning
 			if (spawning)
 			{
-				// Velocity is based around the center;
+				// Velocity is based around the collision;
 				// the offset is based around the velocity as an initial scale,
 				// then the lifetime in seconds as a multiplier for length,
 				// and lastly the speed factor for pixel accuracy.
-				nPos.x += (float)(nVel.x * lifetime.getBase() * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.x);
-				nPos.y += (float)(nVel.y * lifetime.getBase() * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.y);
+				nPos.x += (float)(nVel.x * lifetime.getBase());// +gridPos.x;
+				nPos.y += (float)(nVel.y * lifetime.getBase());// +gridPos.y;
 
 				// Flip the velocity of the pieces to move inwards
 				nVel = -nVel;
@@ -83,14 +88,15 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			// The texture bounds of this particle
 			sf::IntRect nBounds = {
 				sf::Vector2i{ // Pos
-					bounds.getSize().x + x,
-					bounds.getSize().y + y
+					bounds.getPosition().x + x,
+					bounds.getPosition().y + y
 				},
 				sf::Vector2i{ // Size
 					std::min<uint8_t>(PARTICLE_SIZE, std::max(0, (int)(pos.x + x - bounds.getSize().x))),
 					std::min<uint8_t>(PARTICLE_SIZE, std::max(0, (int)(pos.y + y - bounds.getSize().y))),
 				}
 			};
+
 
 			// Create the piece
 			new (&pieces[index]) Entity(nPos,nBounds);

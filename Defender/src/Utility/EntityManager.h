@@ -56,7 +56,7 @@ public:
 	static void adjViewport(sf::View* view, double deltatime);
     static bool      tick(Action& actions, double deltatime, float );
     virtual void     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	static void      particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID);
+	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity);
 	static void      killArea(sf::FloatRect viewport);
 	static void      hyperspace(sf::Vector2f size, float left);
 	template <typename... Args>
@@ -240,21 +240,23 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 template<typename ... Args>
 void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
+	Entity* entity = nullptr;
+
 	switch (type)
 	{
 	case SpawnType::PROJECTILE:
 		switch (ID)
 		{
 		case EntityID::BULLET:
-			projectiles.spawn<Bullet>(pos, args...);
+			entity = new Bullet(pos, args...);
 			break;
 
 		case EntityID::LASER:
-			projectiles.spawn<Laser>(pos, args...);
+			entity = new Laser(pos, args...);
 			break;
 
 		case EntityID::BOMB:
-			projectiles.spawn<Bomb>(pos, args...);
+			entity = new Bomb(pos, args...);
 			break;
 
 		default:
@@ -266,27 +268,27 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 		switch (ID)
 		{
 		case EntityID::LANDER:
-			enemies.spawn<Lander>(pos, args...);
+			entity = new Lander(pos, args...);
 			break;
 
 		case EntityID::MUTANT:
-			enemies.spawn<Mutant>(pos, args...);
+			entity = new Mutant(pos, args...);
 			break;
 
 		case EntityID::BAITER:
-			enemies.spawn<Baiter>(pos, args...);
+			entity = new Baiter(pos, args...);
 			break;
 
 		case EntityID::BOMBER:
-			enemies.spawn<Bomber>(pos, args...);
+			entity = new Bomber(pos, args...);
 			break;
 
 		case EntityID::POD:
-			enemies.spawn<Pod>(pos, args...);
+			entity = new Pod(pos, args...);
 			break;
 
 		case EntityID::SWARMER:
-			enemies.spawn<Swarmer>(pos, args...);
+			entity = new Swarmer(pos, args...);
 			break;
 
 		default:
@@ -295,11 +297,11 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 		}
 		break;
 	case SpawnType::ASTRONAUT:
-		astronauts.spawn<Astronaut>(pos, args...);
+		entity = new Astronaut(pos, args...);
 		break;
 	case SpawnType::PLAYER:
-		delete player;
-		player = new Player(pos, args...);
+		//delete player;
+		entity = new Player(pos, args...);
 		break;
 
 	default:
@@ -308,5 +310,5 @@ void EntityManager::spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Arg
 	}
 
 	// @todo complete
-	particleize(false, pos, ID);
+	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
 }

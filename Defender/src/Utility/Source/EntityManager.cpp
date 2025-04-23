@@ -127,8 +127,11 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
     std::cout << "There are " << particles.entities.size() - particles.count << " particles\n";
 
     // Tick player first
-    player->setActions(actions);
-    player->tick(deltatime);
+    if (player)
+    {
+        player->setActions(actions);
+        player->tick(deltatime);
+    }
 
     // Tick enemies
     for (auto &enemy : enemies.entities)
@@ -269,9 +272,9 @@ void EntityManager::draw(sf::RenderTarget &target,
 // Use for spawning entity or for death
 // @todo test
 // @todo make death behavior
-void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID)
+void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity)
 {
-    particles.spawn<Particle>(pos, ID, spawn);
+    particles.spawn<Particle>(pos, ID, spawn, collision, entity);
 }
 
 void EntityManager::killArea(sf::FloatRect viewport)
@@ -337,4 +340,78 @@ void EntityManager::clearQueue()
 
         Entity::getQueue().pop();
     }
+}
+
+template<typename ... Args>
+void EntityManager::spawn_typeWrapper(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Args&&... args)
+{
+    switch (type)
+    {
+    case SpawnType::PROJECTILE:
+        switch (ID)
+        {
+        case EntityID::BULLET:
+            projectiles.spawn<Bullet>(pos, args...);
+            break;
+
+        case EntityID::LASER:
+            projectiles.spawn<Laser>(pos, args...);
+            break;
+
+        case EntityID::BOMB:
+            projectiles.spawn<Bomb>(pos, args...);
+            break;
+
+        default:
+            throw std::runtime_error(
+                "Invalid Type : EntityManager::spawn;PROJ(sw)");
+        }
+        break;
+    case SpawnType::ENEMY:
+        switch (ID)
+        {
+        case EntityID::LANDER:
+            enemies.spawn<Lander>(pos, args...);
+            break;
+
+        case EntityID::MUTANT:
+            enemies.spawn<Mutant>(pos, args...);
+            break;
+
+        case EntityID::BAITER:
+            enemies.spawn<Baiter>(pos, args...);
+            break;
+
+        case EntityID::BOMBER:
+            enemies.spawn<Bomber>(pos, args...);
+            break;
+
+        case EntityID::POD:
+            enemies.spawn<Pod>(pos, args...);
+            break;
+
+        case EntityID::SWARMER:
+            enemies.spawn<Swarmer>(pos, args...);
+            break;
+
+        default:
+            throw std::runtime_error(
+                "Invalid Type : EntityManager::spawn;ENEM(sw)");
+        }
+        break;
+    case SpawnType::ASTRONAUT:
+        astronauts.spawn<Astronaut>(pos, args...);
+        break;
+    case SpawnType::PLAYER:
+        delete player;
+        player = new Player(pos, args...);
+        break;
+
+    default:
+        throw std::runtime_error(
+            "Invalid SpawnType : EntityManager::spawn(sw)");
+    }
+
+    // @todo complete
+    particleize(false, Entity::makeCenteredTL(pos, ID), ID, pos, args...);
 }

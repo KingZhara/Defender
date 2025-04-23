@@ -60,6 +60,7 @@ public:
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
     static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
+    static const sf::Vector2f makeCenteredTL(sf::Vector2f pos, EntityID::ID);
 
 protected:
     virtual void
