@@ -10,7 +10,7 @@ HighscoreState::Score HighscoreState::today[HS_COUNT], HighscoreState::allTime[H
 
 sf::Text HighscoreState::goatoday, HighscoreState::goatime, 
 HighscoreState::goatodayTitle, HighscoreState::goatimeTitle, 
-HighscoreState::hallOfFame;
+HighscoreState::hallOfFame, HighscoreState::scoreTxt;
 
 sf::RectangleShape HighscoreState::goatodayUnder, HighscoreState::goatimeUnder;
 
@@ -37,14 +37,14 @@ HighscoreState::HighscoreState()
 
 HighscoreState::~HighscoreState()
 {
+	scoreTxt.setString("");
 }
 
 bool HighscoreState::tick(double deltatime)
 {
-	static Timer<double> timeout{ 8 }; // 10 seconds
-
+	static Timer<double> timeout{ 8, true }; // 10 seconds
 	if (timeout.tick(deltatime))
-		return true;
+		return !true;
 
 	return false;
 }
@@ -94,6 +94,10 @@ void HighscoreState::initialize()
 	goatime.setPosition(COMN::resolution.x * 0.75f - (18 * 10.f / 4), 110);
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
+	scoreTxt.setFont(UserInterface::getFont());
+	scoreTxt.setCharacterSize(16);
+	scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
+
 	shifting = new sf::RenderTexture;
 	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 	shifting->setView(DisplayManager::getView());
@@ -135,6 +139,14 @@ void HighscoreState::addScore(const char initials[4], int score)
 			break;
 		}
 	}
+
+	if (score > 0)
+	{
+		scoreTxt.setString(std::to_string(score));
+		scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+		scoreTxt.setPosition(63, 14);
+	}
+
 }
 
 void HighscoreState::loadHighscores()

@@ -19,7 +19,7 @@ StageState::StageState()
 	entityManager.spawn(EntityManager::SpawnType::PLAYER, EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
 	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::BOMBER, sf::Vector2f{ 100, 100 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
-	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
+	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 100, 150 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, { 50, 50 }, EntityID::MUTANT);
 }
 
@@ -138,9 +138,7 @@ bool StageState::SaveHighscore(Action& actions)
 			namePos++;
 		else
 		{
-			HighscoreState::addScore(getInitials().data(), (rand() % 20 + 1) * 500);
-			// should work, but scores of 0 are rejected, so just make a random number
-			//HighscoreState::addScore(getInitials().data(), entityManager.getScore());
+			HighscoreState::addScore(getInitials().data(), entityManager.getScore());
 			
 
 			// Reset ALL data before returning

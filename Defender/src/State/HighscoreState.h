@@ -19,6 +19,8 @@ public:
 	{
 		UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
 
+		shifting->draw(scoreTxt, states);
+
 		shifting->draw(defender, states);
 
 		shifting->draw(hallOfFame, states);
@@ -66,7 +68,7 @@ private:
 
 	static Score today[HS_COUNT], allTime[HS_COUNT];
 
-	static sf::Text goatoday, goatime, goatodayTitle, goatimeTitle, hallOfFame;
+	static sf::Text goatoday, goatime, goatodayTitle, goatimeTitle, hallOfFame, scoreTxt;
 
 	static sf::RectangleShape goatodayUnder, goatimeUnder;
 

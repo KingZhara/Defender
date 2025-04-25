@@ -40,10 +40,12 @@ public:
         viewport.setCenter(viewport.getSize().x / 2, viewport.getSize().y / 2);
     }
 
-    static sf::RenderWindow *getWindow() { return window; }
-    static void              initialize();
-    static void              clean();
-    static void              draw(sf::Drawable &all);
+    static sf::RenderWindow * getWindow() { return window; }
+    static void               initialize();
+    static void               clean();
+    static void               draw(sf::Drawable &all);
+
+    static sf::Texture*       getTexture() { return textures; }
 
 private:
     static sf::Vector2u       resolution; // Window resolution

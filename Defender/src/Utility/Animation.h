@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "DisplayManager.h"
+#include "common.h"
 #include "EntityID.h"
 #include "ShaderID.h"
 #include "Timer.h"
@@ -59,7 +60,10 @@ private:
 
 inline bool Animation::intersects(Animation &other)
 {
-    return frame.getGlobalBounds().intersects(other.frame.getGlobalBounds());
+	sf::FloatRect otherBounds = other.frame.getGlobalBounds();
+	otherBounds.left = fmod(abs(otherBounds.left) + otherBounds.width, (float)COMN::worldSize) - otherBounds.width;
+
+    return frame.getGlobalBounds().intersects(otherBounds);
 }
 
 /*class Animation : public sf::Drawable
