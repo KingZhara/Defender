@@ -46,31 +46,38 @@ public:
 
 
 			// Draw player lives
+			sf::IntRect playerUI = { 64, 18, 10, 4 };
+			sf::Vector2i playerUIPos = { 18, 12 };
+
 			sf::RectangleShape lifeDisplay;
 			lifeDisplay.setTexture(DisplayManager::getTexture());
-			lifeDisplay.setTextureRect(Entity::getBounds(EntityID::PLAYER));
-			lifeDisplay.setSize(sf::Vector2f(Entity::getBounds(EntityID::PLAYER).getSize()));
+			lifeDisplay.setTextureRect(playerUI);
+			lifeDisplay.setSize(sf::Vector2f(playerUI.getSize()));
 
 			for (int i = 0; i < playerState.lives - 1; i++)
 			{
-				// Magic numbers are offsets measured by screenshot
-				lifeDisplay.setPosition(18 + (Entity::getBounds(EntityID::PLAYER).width + 2) * i, 12);
+				lifeDisplay.setPosition(playerUIPos.x + (playerUI.width + 2) * i, playerUIPos.y);
 				target.draw(lifeDisplay);
 			}
 
 			// Draw bomb count
+			sf::IntRect bombUI = { 75, 18, 6, 4 };
+			sf::Vector2i bombUIPos = { 70, 19 };
+
 			sf::RectangleShape bombDisplay;
 			bombDisplay.setTexture(DisplayManager::getTexture());
-			bombDisplay.setTextureRect(Entity::getBounds(EntityID::PLAYER));
-			bombDisplay.setSize(sf::Vector2f(6, 3)); // size in spritesheet
+			bombDisplay.setTextureRect(bombUI);
+			bombDisplay.setSize(sf::Vector2f(bombUI.getSize()));
 
 			for (int i = 0; i < playerState.smart_bombs; i++)
 			{
-				// Magic numbers are offsets measured by screenshot
-				bombDisplay.setPosition(70, 19 + (3 + 1) * i);
+				bombDisplay.setPosition(bombUIPos.x, bombUIPos.y + (bombUI.height + 1) * i);
 				target.draw(bombDisplay);
 			}
 
+
+			// draw screen view markers
+			int screenMarkerWidth = 15;
 
 			// Undo reset view
 			target.setView(oldView);
