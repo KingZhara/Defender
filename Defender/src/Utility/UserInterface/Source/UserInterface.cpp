@@ -290,8 +290,8 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
     target.draw(uiDivider);
 
     sf::RectangleShape minimapDivider;
-    minimapDivider.setPosition(COMN::resolution.x / 3.f, 1);
-    minimapDivider.setSize(sf::Vector2f(COMN::resolution.x / 3.f, COMN::uiHeight - 1));
+    minimapDivider.setPosition(82, 1);
+    minimapDivider.setSize(sf::Vector2f((COMN::resolution.x / 2.f - 82) * 2, COMN::uiHeight - 1));
     minimapDivider.setFillColor(sf::Color::Transparent);
     minimapDivider.setOutlineColor(sf::Color::Blue);
     minimapDivider.setOutlineThickness(2);

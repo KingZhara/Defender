@@ -12,7 +12,7 @@ class StageState : public sf::Drawable
 	struct PlayerState
 	{
 		uint8_t lives : 2 = 3;
-		uint8_t smart_bombs : 2 = 0;
+		uint8_t smart_bombs : 2 = 3;
 		uint8_t padding : 4 = 0;
 	};
 
@@ -34,8 +34,46 @@ public:
 		{
 			target.draw(entityManager, states);
 
+			// Needs to reset view to highscore
+			sf::View oldView = target.getView();
+
+			sf::View defView = oldView;
+			defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
+			target.setView(defView);
+
 			UserInterface::drawBackground(target, DisplayManager::getView());
 			UserInterface::drawForeground(target, DisplayManager::getView());
+
+
+			// Draw player lives
+			sf::RectangleShape lifeDisplay;
+			lifeDisplay.setTexture(DisplayManager::getTexture());
+			lifeDisplay.setTextureRect(Entity::getBounds(EntityID::PLAYER));
+			lifeDisplay.setSize(sf::Vector2f(Entity::getBounds(EntityID::PLAYER).getSize()));
+
+			for (int i = 0; i < playerState.lives - 1; i++)
+			{
+				// Magic numbers are offsets measured by screenshot
+				lifeDisplay.setPosition(18 + (Entity::getBounds(EntityID::PLAYER).width + 2) * i, 12);
+				target.draw(lifeDisplay);
+			}
+
+			// Draw bomb count
+			sf::RectangleShape bombDisplay;
+			bombDisplay.setTexture(DisplayManager::getTexture());
+			bombDisplay.setTextureRect(Entity::getBounds(EntityID::PLAYER));
+			bombDisplay.setSize(sf::Vector2f(6, 3)); // size in spritesheet
+
+			for (int i = 0; i < playerState.smart_bombs; i++)
+			{
+				// Magic numbers are offsets measured by screenshot
+				bombDisplay.setPosition(70, 19 + (3 + 1) * i);
+				target.draw(bombDisplay);
+			}
+
+
+			// Undo reset view
+			target.setView(oldView);
 		}
 		else
 		{
