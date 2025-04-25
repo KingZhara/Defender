@@ -151,6 +151,8 @@ bool StageState::SaveHighscore(Action& actions)
 			name[2] = 0;
 			namePos = 0;
 
+			actions.flags.left = false;
+
 			return true;
 		}
 	}
