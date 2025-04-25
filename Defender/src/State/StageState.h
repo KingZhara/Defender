@@ -97,7 +97,8 @@ public:
 
 			// top marker
 			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
-				COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+				COMN::resolution.x / 2 - screenMarkerWidth / 2.f
+				, 0);
 			target.draw(screenMarkerMain, states);
 
 			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, 0);
@@ -109,7 +110,7 @@ public:
 
 			// bottom marker
 			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
-				COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 
+				screenMarkerMain.getPosition().x,
 				COMN::uiHeight);
 			target.draw(screenMarkerMain, states);
 
@@ -126,7 +127,7 @@ public:
 			scoreTxt.setFont(UserInterface::getFont());
 			scoreTxt.setCharacterSize(16);
 			scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
-			scoreTxt.setString(std::to_string(score));
+			scoreTxt.setString(std::to_string(entityManager.getScore()));
 			scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
 			scoreTxt.setPosition(63, 21);
 			target.draw(scoreTxt, states);
@@ -167,8 +168,6 @@ public:
 
 private:
 	static bool SaveHighscore(Action& actions);
-
-	int score = 0;
 
 	static EntityManager entityManager;
 	static Timer<double> hyperspaceCooldown;

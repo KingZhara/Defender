@@ -138,7 +138,7 @@ bool StageState::SaveHighscore(Action& actions)
 			namePos++;
 		else
 		{
-			HighscoreState::addScore(getInitials().data(), (rand() % 20 + 1) * 500);
+			HighscoreState::addScore(getInitials().data(), entityManager.getScore());
 			// should work, but scores of 0 are rejected, so just make a random number
 			//HighscoreState::addScore(getInitials().data(), entityManager.getScore());
 			
