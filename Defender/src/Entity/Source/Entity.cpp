@@ -13,7 +13,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	EntityData{
 		// Sprite Data
 		SpriteData{
-		    {0,16,15,6}, // Sprite IntRect
+		    {0,0,15,6}, // Sprite IntRect
 			2, // Sprite frame count
 			// Shader type
 			// Custom frame length
@@ -29,7 +29,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Astronaut
 	EntityData{
 	    SpriteData{
-			{43, 0, 3, 8},
+			{48, 0, 3, 8},
 			1
 		},
 		Vec2<double>{
@@ -41,7 +41,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Bullet
 	EntityData{
 		SpriteData{
-			{8,8,3,3},
+			{13,9,3,3},
 			1
 		},
 		Vec2<double>{
@@ -66,7 +66,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Bomb
 	EntityData{
 		SpriteData{
-			{19,0,8,8},
+			{9,9,8,8},
 			2
 		},
 		Vec2<double>{
@@ -78,8 +78,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Lander
 	EntityData{
 		SpriteData{
-			{19,8,9,8},
-			3
+			{23,9,9,8},
+			4
 		},
 		Vec2<double>{
 			1.0f,
@@ -103,7 +103,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Baiter
 	EntityData{
 		SpriteData{
-			{55,8,11,4},
+			{63,9,11,4},
 			2
 		},
 		Vec2<double>{
@@ -115,8 +115,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Bomber
 	EntityData{
 		SpriteData{
-			{45,0,6,7},
-			3
+			{52,0,6,7},
+			4
 		},
 		Vec2<double>{
 			0,
@@ -127,7 +127,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Pod
 	EntityData{
 		SpriteData{
-			{36,0,7,7},
+			{40,0,7,7},
 			1
 		},
 		Vec2<double>{
@@ -139,7 +139,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	// Swarmer
 	EntityData{
 		SpriteData{
-			{14,8,5,4},
+			{17,9,5,4},
 			1
 		},
 		Vec2<double>{

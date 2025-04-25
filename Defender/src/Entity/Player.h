@@ -6,6 +6,8 @@
 #include "../Utility/DisplayManager.h"
 #include "../Utility/common.h"
 
+//@todo fix player sprite
+
 class Player :
     public Entity
 {
