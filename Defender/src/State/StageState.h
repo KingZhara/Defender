@@ -128,8 +128,8 @@ public:
 			scoreTxt.setCharacterSize(16);
 			scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
 			scoreTxt.setString(std::to_string(entityManager.getScore()));
-			scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
-			scoreTxt.setPosition(63, 21);
+			scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+			scoreTxt.setPosition(63, 14);
 			target.draw(scoreTxt, states);
 
 

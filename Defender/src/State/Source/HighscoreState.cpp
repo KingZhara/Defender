@@ -32,20 +32,19 @@ HighscoreState::HighscoreState()
 	goatoday.setString(makeScores(today));
 	goatime.setString(makeScores(allTime));
 
-	scoreTxt.setString("");
-
 	tick(0);
 }
 
 HighscoreState::~HighscoreState()
 {
+	scoreTxt.setString("");
 }
 
 bool HighscoreState::tick(double deltatime)
 {
 	static Timer<double> timeout{ 8, true }; // 10 seconds
 	if (timeout.tick(deltatime))
-		return true;
+		return !true;
 
 	return false;
 }
@@ -144,8 +143,8 @@ void HighscoreState::addScore(const char initials[4], int score)
 	if (score > 0)
 	{
 		scoreTxt.setString(std::to_string(score));
-		scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
-		scoreTxt.setPosition(63, 21);
+		scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+		scoreTxt.setPosition(63, 14);
 	}
 
 }
