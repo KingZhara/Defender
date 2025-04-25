@@ -173,6 +173,7 @@ void Entity::tick(double deltatime)
 		vel.y = 0;
 
 	//animation.printDebugInfo();
+	wrap(); // Overridden in player
 
 	animation.tick(deltatime);
 	animation.setPosition(pos);
@@ -182,6 +183,14 @@ void Entity::tick(double deltatime)
 bool Entity::collide(Entity* other)
 {
 	return animation.intersects(other->animation);
+}
+
+void Entity::wrap()
+{
+	if (pos.x < 0)
+		pos.x += COMN::worldSize;
+	else if (pos.x > COMN::worldSize)
+		pos.x -= COMN::worldSize;
 }
 
 sf::IntRect const & Entity::getBounds(const EntityID::ID ID)
