@@ -12,7 +12,7 @@ class StageState : public sf::Drawable
 	struct PlayerState
 	{
 		uint8_t lives : 2 = 3;
-		uint8_t smart_bombs : 2 = 0;
+		uint8_t smart_bombs : 2 = 3;
 		uint8_t padding : 4 = 0;
 	};
 
@@ -34,8 +34,53 @@ public:
 		{
 			target.draw(entityManager, states);
 
+			// Needs to reset view to highscore
+			sf::View oldView = target.getView();
+
+			sf::View defView = oldView;
+			defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
+			target.setView(defView);
+
 			UserInterface::drawBackground(target, DisplayManager::getView());
 			UserInterface::drawForeground(target, DisplayManager::getView());
+
+
+			// Draw player lives
+			sf::IntRect playerUI = { 64, 18, 10, 4 };
+			sf::Vector2i playerUIPos = { 18, 12 };
+
+			sf::RectangleShape lifeDisplay;
+			lifeDisplay.setTexture(DisplayManager::getTexture());
+			lifeDisplay.setTextureRect(playerUI);
+			lifeDisplay.setSize(sf::Vector2f(playerUI.getSize()));
+
+			for (int i = 0; i < playerState.lives - 1; i++)
+			{
+				lifeDisplay.setPosition(playerUIPos.x + (playerUI.width + 2) * i, playerUIPos.y);
+				target.draw(lifeDisplay);
+			}
+
+			// Draw bomb count
+			sf::IntRect bombUI = { 75, 18, 6, 4 };
+			sf::Vector2i bombUIPos = { 70, 19 };
+
+			sf::RectangleShape bombDisplay;
+			bombDisplay.setTexture(DisplayManager::getTexture());
+			bombDisplay.setTextureRect(bombUI);
+			bombDisplay.setSize(sf::Vector2f(bombUI.getSize()));
+
+			for (int i = 0; i < playerState.smart_bombs; i++)
+			{
+				bombDisplay.setPosition(bombUIPos.x, bombUIPos.y + (bombUI.height + 1) * i);
+				target.draw(bombDisplay);
+			}
+
+
+			// draw screen view markers
+			int screenMarkerWidth = 15;
+
+			// Undo reset view
+			target.setView(oldView);
 		}
 		else
 		{
