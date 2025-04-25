@@ -24,6 +24,8 @@ EntityManager::EntityManager(bool scripted_)
 
     delete player;
     player = nullptr;
+
+    score = rand() % 20 * 500;
 }
 
 void EntityManager::adjViewport(sf::View *view, double deltatime)

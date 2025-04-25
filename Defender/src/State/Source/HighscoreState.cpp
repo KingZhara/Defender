@@ -44,11 +44,8 @@ HighscoreState::~HighscoreState()
 bool HighscoreState::tick(double deltatime)
 {
 	static Timer<double> timeout{ 8, true }; // 10 seconds
-	if (deltatime == 0)
-		timeout.time = 0;
-	else
-		if (timeout.tick(deltatime))
-			return true;
+	if (timeout.tick(deltatime))
+		return true;
 
 	return false;
 }
