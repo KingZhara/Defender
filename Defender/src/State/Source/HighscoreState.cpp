@@ -43,10 +43,12 @@ HighscoreState::~HighscoreState()
 
 bool HighscoreState::tick(double deltatime)
 {
-	static Timer<double> timeout{ 8 }; // 10 seconds
-
-	if (timeout.tick(deltatime))
-		return true;
+	static Timer<double> timeout{ 8, true }; // 10 seconds
+	if (deltatime == 0)
+		timeout.time = 0;
+	else
+		if (timeout.tick(deltatime))
+			return true;
 
 	return false;
 }
@@ -98,7 +100,6 @@ void HighscoreState::initialize()
 
 	scoreTxt.setFont(UserInterface::getFont());
 	scoreTxt.setCharacterSize(16);
-	scoreTxt.setPosition(63, 21);
 	scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	shifting = new sf::RenderTexture;
@@ -148,10 +149,6 @@ void HighscoreState::addScore(const char initials[4], int score)
 		scoreTxt.setString(std::to_string(score));
 		scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
 		scoreTxt.setPosition(63, 21);
-	}
-	else
-	{
-		scoreTxt.setString("");
 	}
 
 }

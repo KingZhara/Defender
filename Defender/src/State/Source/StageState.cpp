@@ -120,27 +120,25 @@ bool StageState::SaveHighscore(Action& actions)
 	static bool upPressed = false;
 	static bool downPressed = false;
 
-	if (actions.flags.down && !downPressed)
+	if (!actions.flags.down && downPressed)
 	{
 		if (validChars[++name[namePos]] == '\0')
 			name[namePos] = 0;
 	}
-	else if (actions.flags.up && !upPressed)
+	else if (!actions.flags.up && upPressed)
 	{
 		if (validChars[name[namePos]] == ' ')
 			name[namePos] = sizeof(validChars) - 2;
 		else
 			name[namePos]--;
 	}
-	else if (actions.flags.leftHS && !leftPressed)
+	else if (!actions.flags.leftHS && leftPressed)
 	{
 		if (namePos < 2)
 			namePos++;
 		else
 		{
 			HighscoreState::addScore(getInitials().data(), entityManager.getScore());
-			// should work, but scores of 0 are rejected, so just make a random number
-			//HighscoreState::addScore(getInitials().data(), entityManager.getScore());
 			
 
 			// Reset ALL data before returning
@@ -156,7 +154,7 @@ bool StageState::SaveHighscore(Action& actions)
 			return true;
 		}
 	}
-	else if (actions.flags.thrust && !rightPressed)
+	else if (!actions.flags.thrust && rightPressed)
 	{
 		if (namePos > 0)
 			namePos--;
