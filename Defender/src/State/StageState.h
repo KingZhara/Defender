@@ -41,11 +41,18 @@ public:
 			defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
 			target.setView(defView);
 
+
+			// Need to cover stuff from gameplay like projectiles ---------------------------------------------
+			sf::RectangleShape clearUI;
+			clearUI.setFillColor(sf::Color::Black);
+			clearUI.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
+			target.draw(clearUI, states);
+
+
 			UserInterface::drawBackground(target, DisplayManager::getView());
 			UserInterface::drawForeground(target, DisplayManager::getView());
 
-
-			// Draw player lives
+			// Draw player lives ---------------------------------------------------------------------
 			sf::IntRect playerUI = { 64, 18, 10, 4 };
 			sf::Vector2i playerUIPos = { 18, 12 };
 
@@ -60,7 +67,7 @@ public:
 				target.draw(lifeDisplay);
 			}
 
-			// Draw bomb count
+			// Draw bomb count ---------------------------------------------------------------------
 			sf::IntRect bombUI = { 75, 18, 6, 4 };
 			sf::Vector2i bombUIPos = { 70, 19 };
 
@@ -76,13 +83,59 @@ public:
 			}
 
 
-			// draw screen view markers
+			// draw screen view markers -------------------------------------------------
 			int screenMarkerWidth = 15;
+
+			sf::RectangleShape screenMarkerMain;
+			screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
+			screenMarkerMain.setFillColor(sf::Color(0xBFBFBFFF));
+
+
+			sf::RectangleShape screenMarkerSide;
+			screenMarkerSide.setSize(sf::Vector2f(1, 4));
+			screenMarkerSide.setFillColor(sf::Color(0xBFBFBFFF));
+
+			// top marker
+			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
+				COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+			target.draw(screenMarkerMain, states);
+
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, 0);
+			target.draw(screenMarkerSide, states);
+
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + 
+				screenMarkerWidth, 0);
+			target.draw(screenMarkerSide, states);
+
+			// bottom marker
+			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
+				COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 
+				COMN::uiHeight);
+			target.draw(screenMarkerMain, states);
+
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight - 2);
+			target.draw(screenMarkerSide, states);
+
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + 
+				screenMarkerWidth, COMN::uiHeight - 2);
+			target.draw(screenMarkerSide, states);
+
+			// Show right aligned score ------------------------------------------------------------
+			// Same position as in highscore
+			sf::Text scoreTxt;
+			scoreTxt.setFont(UserInterface::getFont());
+			scoreTxt.setCharacterSize(16);
+			scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
+			scoreTxt.setString(std::to_string(score));
+			scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
+			scoreTxt.setPosition(63, 21);
+			target.draw(scoreTxt, states);
+
 
 			// Undo reset view
 			target.setView(oldView);
 		}
-		else
+		else // Enter initials =------------------------------------------------------------------
 		{
 			for (int i = 0; i < 3; i++)
 				nameStr[i] = validChars[name[i]];
@@ -115,6 +168,7 @@ public:
 private:
 	static bool SaveHighscore(Action& actions);
 
+	int score = 0;
 
 	static EntityManager entityManager;
 	static Timer<double> hyperspaceCooldown;

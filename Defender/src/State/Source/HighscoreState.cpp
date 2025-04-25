@@ -96,7 +96,7 @@ void HighscoreState::initialize()
 
 	scoreTxt.setFont(UserInterface::getFont());
 	scoreTxt.setCharacterSize(16);
-	scoreTxt.setPosition(COMN::resolution.x * 0.25f - (18 * 10.f / 4), 10);
+	scoreTxt.setPosition(63, 21);
 	scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	shifting = new sf::RenderTexture;
@@ -141,8 +141,16 @@ void HighscoreState::addScore(const char initials[4], int score)
 		}
 	}
 
-	scoreTxt.setString(std::to_string(score));
-	scoreTxt.setOrigin(scoreTxt.getLocalBounds().width, 0);
+	if (score > 0)
+	{
+		scoreTxt.setString(std::to_string(score));
+		scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, scoreTxt.getGlobalBounds().top);
+		scoreTxt.setPosition(63, 21);
+	}
+	else
+	{
+		scoreTxt.setString("");
+	}
 
 }
 
