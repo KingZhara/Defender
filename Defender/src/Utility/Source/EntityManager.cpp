@@ -210,8 +210,8 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
     {
         if (projectiles.entities.at(i) != nullptr)
         {
-            if (!playerDeath)
-                playerDeath = player->collide(projectiles.entities.at(i));
+            //if (!playerDeath)
+            //    playerDeath = player->collide(projectiles.entities.at(i));
 
 
             if (!playerDeath && !collisionWrapper<Enemy>(i, enemies))

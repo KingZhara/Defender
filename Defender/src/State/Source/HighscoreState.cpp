@@ -10,7 +10,7 @@ HighscoreState::Score HighscoreState::today[HS_COUNT], HighscoreState::allTime[H
 
 sf::Text HighscoreState::goatoday, HighscoreState::goatime, 
 HighscoreState::goatodayTitle, HighscoreState::goatimeTitle, 
-HighscoreState::hallOfFame;
+HighscoreState::hallOfFame, HighscoreState::scoreTxt;
 
 sf::RectangleShape HighscoreState::goatodayUnder, HighscoreState::goatimeUnder;
 
@@ -94,6 +94,11 @@ void HighscoreState::initialize()
 	goatime.setPosition(COMN::resolution.x * 0.75f - (18 * 10.f / 4), 110);
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
+	scoreTxt.setFont(UserInterface::getFont());
+	scoreTxt.setCharacterSize(16);
+	scoreTxt.setPosition(COMN::resolution.x * 0.25f - (18 * 10.f / 4), 10);
+	scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
+
 	shifting = new sf::RenderTexture;
 	shifting->create((unsigned)COMN::resolution.x, (unsigned)COMN::resolution.y);
 	shifting->setView(DisplayManager::getView());
@@ -135,6 +140,10 @@ void HighscoreState::addScore(const char initials[4], int score)
 			break;
 		}
 	}
+
+	scoreTxt.setString(std::to_string(score));
+	scoreTxt.setOrigin(scoreTxt.getLocalBounds().width, 0);
+
 }
 
 void HighscoreState::loadHighscores()
