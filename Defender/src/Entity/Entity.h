@@ -52,6 +52,7 @@ public:
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     virtual void                     tick(double deltatime);
     virtual bool                     collide(Entity* other);
+    virtual void wrap();
     static const sf::IntRect &       getBounds(EntityID::ID ID);
     void                             setPos(sf::Vector2f newPos);
     void                             setVel(sf::Vector2f newPos);
