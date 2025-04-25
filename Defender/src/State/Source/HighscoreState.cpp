@@ -32,6 +32,8 @@ HighscoreState::HighscoreState()
 	goatoday.setString(makeScores(today));
 	goatime.setString(makeScores(allTime));
 
+	scoreTxt.setString("");
+
 	tick(0);
 }
 
