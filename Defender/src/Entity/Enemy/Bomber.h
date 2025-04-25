@@ -17,6 +17,6 @@ public:
 	*/
 	void tick(double deltaTime);
 
-	uint8_t yMovTim = 20;
+	uint8_t yMovTim = 10;
 };
 

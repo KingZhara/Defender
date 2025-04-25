@@ -125,7 +125,7 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
 {
     bool     playerDeath = false;
-    uint16_t enemyIndex  = 0;
+    //uint16_t enemyIndex  = 0;
 
     //std::cout << "There are " << particles.entities.size() - particles.count << " particles\n";
 
@@ -217,24 +217,25 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
             if (!playerDeath && !collisionWrapper<Enemy>(i, enemies))
                 collisionWrapper<Astronaut>(i, astronauts);
         }
+
+        if (playerDeath)
+            break;
     }
 
-    /*
-    // Handles player collision with enemies
-    if (!playerDeath)
+    for (uint16_t i = 0; i < enemies.entities.size(); ++i)
     {
-        while (!playerDeath && enemyIndex < enemies.entities.size())
+        if (playerDeath)
+            break;
+
+        if (enemies.entities.at(i))
         {
-            if (enemies.entities.at(enemyIndex) != nullptr)
-            {
-                playerDeath = player->collide(enemies.entities.at(enemyIndex));
-                if (playerDeath)
-                    enemies.kill(enemyIndex);
-            }
-            ++enemyIndex;
+            playerDeath = player->collide(enemies.entities.at(i));
+            if (playerDeath)
+                enemies.kill(i);
         }
     }
-    */
+
+
     return playerDeath;
 }
 
