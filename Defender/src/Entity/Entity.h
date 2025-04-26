@@ -80,8 +80,26 @@ protected:
     virtual void
         draw(sf::RenderTarget &target, sf::RenderStates states) const override
     {
+        sf::Vector2f bound = {
+            DisplayManager::getView().getCenter().x - DisplayManager::getView().getSize().x / 2 - COMN::worldSize,
+            DisplayManager::getView().getCenter().x + DisplayManager::getView().getSize().x / 2 - COMN::worldSize
+        };
+
+        float specialX = 0;
+        if (pos.x < 0 + bound.y)
+			specialX = pos.x + COMN::worldSize;
+		else if (pos.x + DATA_TABLE[ID].SPRITE_DATA.bounds.width > COMN::worldSize + bound.x)
+			specialX = pos.x - COMN::worldSize;
+
         target.draw(animation, states);
+		if (specialX != 0)
+		{
+			animation.setPosition({ specialX, pos.y });
+			target.draw(animation, states);
+			// animation.setPosition(pos); // Should not be needed; is reset by tick
+		}
     }
+    bool isOnScreen();
     struct EntityData
     {
 		struct PlayerRef

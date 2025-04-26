@@ -88,7 +88,7 @@ void Animation::setTexturePos(sf::Vector2i pos)
 	frame.setTextureRect(sf::IntRect(pos.x, pos.y, SPRITE_DATA.bounds.width, SPRITE_DATA.bounds.height));
 }
 
-void Animation::setPosition(sf::Vector2f pos)
+void Animation::setPosition(sf::Vector2f pos) const
 {
 	frame.setPosition(round(pos.x), round(pos.y));
 }

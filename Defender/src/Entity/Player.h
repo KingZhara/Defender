@@ -37,7 +37,7 @@ public:
 		else
 			vel.y *= (float)(0.9 * deltatime);
 
-		std::cout << "PLAYER FLAGS: F: " << (short)actions->flags.fire << '\n';
+		//std::cout << "PLAYER FLAGS: F: " << (short)actions->flags.fire << '\n';
 
 		if (actions->flags.fire)
 		{
@@ -67,18 +67,12 @@ public:
 private:
 	void processActions()
 	{
-		static bool wait = false;
-
-		//animation.setTexturePos(sf::Vector2i(
-		//	DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.width * 2 * actions.flags.left, 16));
-
 		if (actions->flags.left)
 		{
 			actions->flags.left = false;
 			left = !left;
 
 			uint8_t index = animation.getFrameIndex() + (left ? 2 : 0);
-			wait = true;
 
 			animation.setTexturePos({
 				DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.left + DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.width * index + index,
@@ -88,14 +82,14 @@ private:
 	}
 	virtual void wrap() override
 	{
-		double diff = pos.x - DisplayManager::getView().getCenter().x;
-		uint16_t x = (uint16_t)pos.x;
+		float diff = pos.x - DisplayManager::getView().getCenter().x;
+		float x = pos.x;
 
 		Entity::wrap();
 
-		if (x != (uint16_t)pos.x)
+		if (x != pos.x)
     		DisplayManager::getView().setCenter(
-	    		DisplayManager::getView().getCenter().x + (pos.x - diff),
+	    		pos.x - diff,
 		    	DisplayManager::getView().getCenter().y);
 
 		//std::cout << "PLAYER POS: " << pos.x << '\n';

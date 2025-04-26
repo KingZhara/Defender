@@ -40,7 +40,7 @@ public:
 
 	static void setTexture(sf::Texture* tex_);
 	void setTexturePos(sf::Vector2i pos);
-	void setPosition(sf::Vector2f pos);
+	void setPosition(sf::Vector2f pos) const;
 	bool intersects(Animation& other);
 	void printDebugInfo()
 	{
@@ -55,7 +55,7 @@ private:
 
 	const SpriteData SPRITE_DATA;
 	sf::Texture* texture = nullptr;
-	sf::Sprite frame;
+	mutable sf::Sprite frame;
 	uint8_t frameIndex;
 	Timer<double> fTimer;
 };
