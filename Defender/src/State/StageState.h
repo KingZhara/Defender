@@ -84,7 +84,7 @@ public:
 
 
 			// draw screen view markers -------------------------------------------------
-			int screenMarkerWidth = 15;
+			constexpr int screenMarkerWidth = 15;
 
 			sf::RectangleShape screenMarkerMain;
 			screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
@@ -95,30 +95,35 @@ public:
 			screenMarkerSide.setSize(sf::Vector2f(1, 4));
 			screenMarkerSide.setFillColor(sf::Color(0xBFBFBFFF));
 
-			// top marker
-			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
-				COMN::resolution.x / 2 - screenMarkerWidth / 2.f
-				, 0);
-			target.draw(screenMarkerMain, states);
 
+			constexpr float minimapScale = 0.05;
+
+			// top marker
+			screenMarkerMain.setPosition(
+				// Recentering player position
+				// where the player spawns is 0
+				(entityManager.getPlayerPos().x -
+				// copied this mess from the player spawn line
+				(float)(DisplayManager::getView().getCenter().x * 1.5) + 
+				Entity::makeCenteredTL({ 0, 0 }, EntityID::PLAYER).x) * 
+				minimapScale + COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+
+			target.draw(screenMarkerMain, states);
+			
 			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, 0);
 			target.draw(screenMarkerSide, states);
-
-			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + 
-				screenMarkerWidth, 0);
+			
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, 0);
 			target.draw(screenMarkerSide, states);
 
 			// bottom marker
-			screenMarkerMain.setPosition(/*TODO scroll pos*/ 
-				screenMarkerMain.getPosition().x,
-				COMN::uiHeight);
+			screenMarkerMain.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight);
 			target.draw(screenMarkerMain, states);
-
+			
 			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight - 2);
 			target.draw(screenMarkerSide, states);
-
-			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + 
-				screenMarkerWidth, COMN::uiHeight - 2);
+			
+			screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, COMN::uiHeight - 2);
 			target.draw(screenMarkerSide, states);
 
 			// Show right aligned score ------------------------------------------------------------

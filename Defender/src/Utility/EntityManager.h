@@ -67,6 +67,13 @@ public:
 	static void      spawn(SpawnType type, EntityID::ID ID, sf::Vector2f pos, Args&&... args);
 	static ScoreType getScore();
 
+	static sf::Vector2f getPlayerPos() 
+	{
+		if (player)
+			return player->getPos();
+		return {};
+	}
+
 private:
 	// @todo If time permits, play with optimization, potentially using a spatial tree.
 	template<typename T>
