@@ -32,6 +32,7 @@ struct SpriteData
 class Animation : public sf::Drawable
 {
 public:
+
 	Animation(const SpriteData& SPRITE_DATA_, sf::Texture* customTex = tex);
 
 	void tick(double deltatime);
@@ -47,6 +48,7 @@ public:
 			<< ", Bounds{ T: " << SPRITE_DATA.bounds.top << ", L: " << SPRITE_DATA.bounds.left << ", H: " << SPRITE_DATA.bounds.height << ", W: " << SPRITE_DATA.bounds.width << " }, Shader: "
 			<< (uint16_t)SPRITE_DATA.shader << " }, Texture: " << texture << ", FrameIndex: " << frameIndex << " }\n";
 	}
+	uint8_t getFrameIndex() { return frameIndex; }
 
 private:
 	static sf::Texture* tex;

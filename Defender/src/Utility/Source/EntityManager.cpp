@@ -124,7 +124,7 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
     */
 }
 
-bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
+bool EntityManager::tick(double deltatime, float center = 0)
 {
     bool     playerDeath = false;
     //uint16_t enemyIndex  = 0;
@@ -133,10 +133,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
 
     // Tick player first
     if (player)
-    {
-        player->setActions(actions);
         player->tick(deltatime);
-    }
 
     // Tick enemies
     for (auto &enemy : enemies.entities)
@@ -223,7 +220,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
         if (playerDeath)
             break;
     }
-
+    /*
     for (uint16_t i = 0; i < enemies.entities.size(); ++i)
     {
         if (playerDeath)
@@ -235,7 +232,7 @@ bool EntityManager::tick(Action &actions, double deltatime, float center = 0)
             if (playerDeath)
                 enemies.kill(i);
         }
-    }
+    }*/
 
 
     return playerDeath;
@@ -292,7 +289,9 @@ void EntityManager::killArea(sf::FloatRect viewport)
     
     for (uint16_t i = 0; i < enemies.entities.size(); i++)
     {
-        if (enemies.entities.at(i)->getPos().x > viewport.left &&
+
+        if (enemies.entities.at(i) &&
+            enemies.entities.at(i)->getPos().x > viewport.left &&
             enemies.entities.at(i)->getPos().x < viewport.left + viewport.width)
             enemies.kill(i);
     }

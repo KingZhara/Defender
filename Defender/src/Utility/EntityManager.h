@@ -58,7 +58,7 @@ public:
 	}*/
 
 	static void adjViewport(sf::View* view, double deltatime);
-    static bool      tick(Action& actions, double deltatime, float );
+    static bool      tick(double deltatime, float );
     virtual void     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity);
 	static void      killArea(sf::FloatRect viewport);
@@ -98,7 +98,7 @@ private:
 template<typename T>
 void EntityManager::EntityHolder<T>::kill(uint16_t index)
 {
-	std::cout << "KILL! CT: " << count << ", SZ: " << entities.size() << '\n';
+	//std::cout << "KILL! CT: " << count << ", SZ: " << entities.size() << '\n';
 	delete entities.at(index);
 
 	entities.at(index) = nullptr;

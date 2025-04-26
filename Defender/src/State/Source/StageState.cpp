@@ -69,7 +69,7 @@ bool StageState::tick(Action& actions, double deltatime)
 		}
 
 		// Handle player death.
-		playerDead = entityManager.tick(actions, deltatime, DisplayManager::getView().getCenter().x);
+		playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
 	}
 
 	// Should handle saving the high score if needed

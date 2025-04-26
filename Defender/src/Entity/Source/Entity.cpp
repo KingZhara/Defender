@@ -13,7 +13,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 	EntityData{
 		// Sprite Data
 		SpriteData{
-		    {0,0,15,6}, // Sprite IntRect
+		    {0,18,15,6}, // Sprite IntRect
 			2, // Sprite frame count
 			// Shader type
 			// Custom frame length

@@ -27,6 +27,9 @@ int main()
     // The Clock used for deltatime
     sf::Clock clock;
     // Min game loop
+
+    Player::setActions(actions);
+
     while (DisplayManager::getWindow()->isOpen())
     {
         // The windows events
@@ -65,6 +68,8 @@ int main()
 
         game.tick(actions, clock.restart().asMilliseconds() / 1000.);
 
+		//actions = Action(); // Reset actions for next frame
+
         DisplayManager::draw(game);
     }
 
@@ -78,7 +83,10 @@ int main()
 
 void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
 {
+
     using Key = sf::Keyboard::Key;
+    static std::unordered_set<Key> pressedKeys;
+
     switch (key)
     {
     case Key::W:		// UP
@@ -97,8 +105,12 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
         break;
 
     case Key::D:		// CHANGE DIRECTION
-        if (pressed)
-            actions.flags.left = ~actions.flags.left;
+        std::cout << "D: " << pressedKeys.count(key) << ", R: " << pressed << ", O: " << (pressed && !pressedKeys.count(key)) << '\n';
+
+        if (pressed && !pressedKeys.count(key))
+            actions.flags.left = true;
+        else
+            actions.flags.left = false;
         break;
 
     case Key::Right:	// CHANGE DIRECTION
@@ -106,17 +118,33 @@ void setAction(Action &actions, sf::Keyboard::Key key, bool pressed)
         break;
 
     case Key::Space:    // FIRE
-        actions.flags.fire = pressed;
+        std::cout << "F: " << pressedKeys.count(key) << ", R: " << pressed << ", O: " << (pressed && !pressedKeys.count(key));
+        if (pressed && !pressedKeys.count(key))
+            actions.flags.fire = true;
+        else
+            actions.flags.fire = false;
+        std::cout << ", V: " << (short)actions.flags.fire << '\n';
         break;
 
     case Key::LShift:   // HYPERSPACE
-        actions.flags.hyperspace = pressed;
+        if (pressed && !pressedKeys.count(key))
+            actions.flags.hyperspace = true;
+        else
+            actions.flags.hyperspace = false;
         break;
 
     case Key::LControl: // SMART BOMB
-        actions.flags.smart_bomb = pressed;
+        if (pressed && !pressedKeys.count(key))
+            actions.flags.smart_bomb = true;
+        else
+            actions.flags.smart_bomb = false;
         break;
     }
+
+    if (pressed)
+        pressedKeys.emplace(key);
+    else
+        pressedKeys.erase(key);
 }
 
 //         ___   ___   ___
