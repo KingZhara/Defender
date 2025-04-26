@@ -25,7 +25,7 @@ EntityManager::EntityManager(bool scripted_)
     delete player;
     player = nullptr;
 
-    score = rand() % 20 * 500;
+    score = 0;
 }
 
 void EntityManager::adjViewport(sf::View *view, double deltatime)
@@ -209,8 +209,8 @@ bool EntityManager::tick(double deltatime, float center = 0)
     {
         if (projectiles.entities.at(i) != nullptr)
         {
-            //if (!playerDeath)
-            //    playerDeath = player->collide(projectiles.entities.at(i));
+            if (!playerDeath)
+                playerDeath = player->collide(projectiles.entities.at(i));
 
 
             if (!playerDeath && !collisionWrapper<Enemy>(i, enemies))
@@ -220,7 +220,7 @@ bool EntityManager::tick(double deltatime, float center = 0)
         if (playerDeath)
             break;
     }
-    /*
+    
     for (uint16_t i = 0; i < enemies.entities.size(); ++i)
     {
         if (playerDeath)
@@ -230,9 +230,12 @@ bool EntityManager::tick(double deltatime, float center = 0)
         {
             playerDeath = player->collide(enemies.entities.at(i));
             if (playerDeath)
+            {
+                score += enemies.entities[i]->getXP();
                 enemies.kill(i);
+            }
         }
-    }*/
+    }
 
 
     return playerDeath;

@@ -251,6 +251,16 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 		{
 			//particleize(false, entities.entities.at(i)->getPos(), entities.entities.at(i)->getID());
 
+			// Check if entity is an enemy to give points
+			if (dynamic_cast<Lander*>(entities.entities.at(i)) ||
+				dynamic_cast<Mutant*>(entities.entities.at(i)) ||
+				dynamic_cast<Pod*>(entities.entities.at(i))    ||
+				dynamic_cast<Baiter*>(entities.entities.at(i)) ||
+				dynamic_cast<Swarmer*>(entities.entities.at(i))||
+				dynamic_cast<Bomber*>(entities.entities.at(i)))
+				score += entities.entities[i]->getXP();
+
+
 			projectiles.kill(entity);
 			entities.kill(i);
 
