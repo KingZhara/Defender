@@ -31,6 +31,11 @@ public:
                                              animation(DATA_TABLE[ID_].SPRITE_DATA),
                                              ID(ID_)
     {
+
+        // Not setting caused bug of player instantly losing a life
+        animation.setPosition(pos);
+
+
         //std::cout << pos.x << ' ' << pos.y << '\n';
 
         //std::cout << "BOUNDS: " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getPosition().y << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().x << ", " << DATA_TABLE[ID_].SPRITE_DATA.bounds.getSize().y << '\n';
