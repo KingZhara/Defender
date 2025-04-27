@@ -99,14 +99,7 @@ public:
 			constexpr float minimapScale = 0.05;
 
 			// top marker
-			screenMarkerMain.setPosition(
-				// Recentering player position
-				// where the player spawns is 0
-				(entityManager.getPlayerPos().x -
-				// copied this mess from the player spawn line
-				(float)(DisplayManager::getView().getCenter().x * 1.5) + 
-				Entity::makeCenteredTL({ 0, 0 }, EntityID::PLAYER).x) * 
-				minimapScale + COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+			screenMarkerMain.setPosition(COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
 
 			target.draw(screenMarkerMain, states);
 			
