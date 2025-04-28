@@ -46,7 +46,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 		},
 		Vec2<double>{
 			1.0f,
-			1.0f
+			3.f / 2.0f
 		},
 		0
 	},
@@ -59,7 +59,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 		},
 		Vec2<double>{
 			1.0f,
-			1.0f
+			3.f/2.0f
 		},
 		0
 	},
@@ -219,7 +219,7 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, Entit
 
 	pos = makeCenteredTL(pos, ID);
 	// Use the center & normalize
-	pos.x -= - half;
+	pos.x -= half;
 
 	// Normalize the target
 	target.x += EntityData::PLAYER_REF.pos->x - pos.x - half;
