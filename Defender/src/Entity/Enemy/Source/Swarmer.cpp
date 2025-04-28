@@ -6,7 +6,7 @@ void Swarmer::tick(double deltatime)
 
 	if (targetTimer.tick(deltatime))
 	{
-		vel = Entity::makePlayerTargetedVec(pos, ID, 2);
+		vel = Entity::makePlayerTargetedVec(pos, ID, 2).vel;
 	}
 
 	if (pos.y < COMN::uiHeight)

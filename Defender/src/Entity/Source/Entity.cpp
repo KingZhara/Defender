@@ -210,26 +210,58 @@ void Entity::setVel(sf::Vector2f newVel)
 	vel = newVel;
 }
 
-const sf::Vector2f Entity::makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale = 2)
+const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale = 1)
 {
-	double rot = atan2(EntityData::PLAYER_REF.pos->y + EntityData::PLAYER_REF.vel->y - pos.y, EntityData::PLAYER_REF.pos->x + EntityData::PLAYER_REF.vel->x - pos.x);
-	sf::Vector2f vel = {
-		(float)(cos(rot) * scale * EntityData::BASE_VELOCITY.x* DATA_TABLE[ID].VELOCITY_FACTOR.x),
-		(float)(sin(rot) * scale * EntityData::BASE_VELOCITY.y* DATA_TABLE[ID].VELOCITY_FACTOR.y)
-	};
-	if (ID == EntityID::BULLET)
-		return{
-			vel.x + EntityData::PLAYER_REF.vel->x,
-			vel.y + EntityData::PLAYER_REF.vel->y
-	};
+	static constexpr float half = COMN::worldSize / 2;
 
-    return vel;
+	sf::Vector2f target = makeCenteredTL({ 0, 0 }, EntityID::PLAYER);
+	sf::Vector2f eVel = getEVel(ID);
+
+	pos = makeCenteredTL(pos, ID);
+	// Use the center & normalize
+	pos.x -= - half;
+
+	// Normalize the target
+	target.x += EntityData::PLAYER_REF.pos->x - pos.x - half;
+	target.y += EntityData::PLAYER_REF.pos->y - pos.y;
+
+	// Apply wrapping
+	if (target.x > half)
+		target.x -= COMN::worldSize;
+	else if (target.x < -half)
+		target.x += COMN::worldSize;
+
+	// Generate the angle
+	double rot = atan2(target.y, target.x);
+
+	// Generate the velocity
+	sf::Vector2f vel = {
+		(float)(cos(rot) * scale * eVel.x),
+		(float)(sin(rot) * scale * eVel.y)
+	};
+	vel += *EntityData::PLAYER_REF.vel;
+
+
+	return { vel, target };
 }
 
-const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID)
+const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID id)
 {
 	return {
-		pos.x + DATA_TABLE[EntityID::PARTICLE].SPRITE_DATA.bounds.left / 2,
-		pos.y + DATA_TABLE[EntityID::PARTICLE].SPRITE_DATA.bounds.top / 2
+		pos.x + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.width / 2.),
+		pos.y + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.height  / 2.)
 	};
+}
+
+bool Entity::isOnScreen()
+{
+	static constexpr float half = COMN::resolution.x / 2;
+	float left  = DisplayManager::getView().getCenter().x - half,
+		  right = DisplayManager::getView().getCenter().x + half;
+	return (pos.y >= 0 && pos.y <= COMN::resolution.y) &&
+		(
+			(pos.x >= left - COMN::worldSize && pos.x <= right - COMN::worldSize) ||
+			(pos.x >= left && pos.x <= right) ||
+			(pos.x >= left + COMN::worldSize && pos.x <= right + COMN::worldSize)
+			);
 }

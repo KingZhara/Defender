@@ -19,8 +19,9 @@ void Mutant::tick(double deltatime)
     
     // Attack
     if (attackTimer.tick(deltatime))
-        entityQueue.emplace(QueuedEntity( pos, EntityID::BULLET ));
+        entityQueue.emplace(QueuedEntity( makeCenteredTL(pos, EntityID::MUTANT), EntityID::BULLET ));
     
+
     // Movement
     // If above the player
     

@@ -190,20 +190,17 @@ bool EntityManager::tick(double deltatime, float center = 0)
         if (projectiles.entities.at(i) != nullptr)
         {
             projectiles.entities.at(i)->tick(deltatime);
+            Projectile& projectile = *projectiles.entities.at(i);
+            sf::Vector2f pos = projectile.getPos();
 
-            if (projectiles.entities.at(i)->getPos().y > COMN::resolution.y ||
-                projectiles.entities.at(i)->getPos().y < 0 ||
-                projectiles.entities.at(i)->getPos().x > center +
-                COMN::resolution.x / 2 ||
-                projectiles.entities.at(i)->getPos().x < center -
-                COMN::resolution.x / 2)
+            if (!projectile.isOnScreen())
                 projectiles.kill(i);
         }
     }
 
     // Spawn all projectiles
     clearQueue();
-
+    /*
     // Handles all entity collisions with projectiles
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
@@ -235,7 +232,7 @@ bool EntityManager::tick(double deltatime, float center = 0)
                 enemies.kill(i);
             }
         }
-    }
+    }*/
 
 
     return playerDeath;
@@ -321,14 +318,13 @@ void EntityManager::clearQueue()
         Entity::QueuedEntity &e   = Entity::getQueue().front();
         double                rot = atan2(player->getPos().y - e.pos.y,
                                           player->getPos().x - e.pos.x);
-        sf::Vector2f entityVel = Entity::getEVel(e.id);
+        
 
         switch (e.id)
         {
         case EntityID::BULLET:
             projectiles.entities.at(projectiles.spawn<Bullet>(e.pos))->setVel({
-                entityVel.x * static_cast<float>(cos(rot)) + player->getVel().x,
-                entityVel.y * static_cast<float>(sin(rot)) + player->getVel().y
+                Entity::makePlayerTargetedVec(e.pos, e.id, 1).vel
             });
             break;
 

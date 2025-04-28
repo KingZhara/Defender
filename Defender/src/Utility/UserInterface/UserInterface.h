@@ -8,7 +8,7 @@ class UserInterface
 	// ################# WORLD BACKGROUND #################
 	class World : public sf::Drawable
 	{
-		class Component
+		struct Component
 		{
 			enum Type : uint8_t
 			{
@@ -21,7 +21,7 @@ class UserInterface
 
 			uint8_t generate(sf::Image& img, sf::Vector2u& pos, uint16_t maxDx);
 
-		private:
+
 			Type type;
 			uint8_t length;
 		};

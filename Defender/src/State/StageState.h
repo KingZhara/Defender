@@ -32,6 +32,7 @@ public:
 		// TODO add timer for death animation
 		if (playerState.lives > 0)
 		{
+			UserInterface::drawBackground(target, DisplayManager::getView());
 			target.draw(entityManager, states);
 
 			// Needs to reset view to highscore
@@ -49,7 +50,6 @@ public:
 			target.draw(clearUI, states);
 
 
-			UserInterface::drawBackground(target, DisplayManager::getView());
 			UserInterface::drawForeground(target, DisplayManager::getView());
 
 			// Draw player lives ---------------------------------------------------------------------

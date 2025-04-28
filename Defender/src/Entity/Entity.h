@@ -13,6 +13,10 @@
 class Entity : public sf::Drawable
 {
 public:
+    struct EntityTarget
+    {
+        sf::Vector2f vel, pos;
+    };
     struct QueuedEntity
     {
         sf::Vector2f pos;
@@ -65,7 +69,7 @@ public:
     sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
-    static const sf::Vector2f makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
+    static const EntityTarget makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
     static const sf::Vector2f makeCenteredTL(sf::Vector2f pos, EntityID::ID);
     static const sf::Vector2f getEVel(EntityID::ID ID_)
     {
@@ -80,6 +84,7 @@ public:
 
         return ret;
     }
+    bool isOnScreen();
 
 protected:
     virtual void
@@ -104,7 +109,6 @@ protected:
 			// animation.setPosition(pos); // Should not be needed; is reset by tick
 		}
     }
-    bool isOnScreen();
     struct EntityData
     {
 		struct PlayerRef

@@ -34,6 +34,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
 {
     bool invalid;
 	std::cout << "\nSIZE: " << size << '\n';
+    //length = rand() % 10;
     do
     {
         invalid = false;
@@ -88,26 +89,34 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         switch (type)
         {
         case Type::UP:
-            ++pos.y;
+            if (pos.y - 1 == 0)
+                return i;
+            img.setPixel(++pos.x, --pos.y, sf::Color::White);
+            //++pos.y;
             break;
 
         case Type::DOWN:
-            --pos.y;
+            if (pos.y + 1 > COMN::worldBgHeight)
+                return i;
+            img.setPixel(++pos.x, ++pos.y, sf::Color::White);
+           // --pos.y;
             break;
 
         case Type::FLAT:
             // [  ##]
             // [##  ]
             std::cout << "(" << pos.x << ", " << pos.y << "), ";
-            img.setPixel(pos.x + 1, pos.y, sf::Color::White);
-            ++pos.x;
+            img.setPixel(++pos.x, pos.y - 1, sf::Color::White);
+            img.setPixel(++pos.x, pos.y, sf::Color::White);
+            //++pos.y;
+            //++pos.x;
             ++i;
             break;
         }
 
-        ++pos.x;
+        //++pos.x;
         std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
-        img.setPixel(pos.x, pos.y, sf::Color::White);
+        //img.setPixel(pos.x, pos.y, sf::Color::White);
     }
 
     return length;
@@ -116,7 +125,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
 void UserInterface::World::generate()
 {
 	sf::Vector2u pos(0, COMN::world_startY);
-    uint8_t genType = 2; // rand() % 3;
+    uint8_t genType = rand() % 3;
 	uint16_t genLength = 0;
     Component piece{0, 0};
     sf::Image bgIntermediary;
@@ -133,34 +142,48 @@ void UserInterface::World::generate()
 
     while (pos.x < COMN::worldSize)
     {
-        piece = Component{
-            static_cast<uint8_t>(rand() % 3),
-            static_cast<uint8_t>(rand() % 1 + 1)
-        };
-        /*genLength = rand() % 800 + 201;
+        //piece = Component{
+        //    static_cast<uint8_t>(rand() % 3),
+        //    static_cast<uint8_t>(rand() % 1 + 1)
+        //};
+        genLength = (rand() % 800 + 201) % (COMN::worldSize - pos.x);
         while (genLength > 0)
         {
+
             switch (genType)
             {
             case 0: // Mountains
+                piece = Component{
+                    static_cast<uint8_t>(rand() % 3),
+                    static_cast<uint8_t>(20 + rand() % (40 - 20))
+                };
 				break;
             case 1: // Minor mountains
+                piece = Component{
+                    static_cast<uint8_t>(rand() % 3),
+                    static_cast<uint8_t>(5 + rand() % (15 - 5))
+                };
                 break;
             case 2: // Rough
                 piece = Component{
                     static_cast<uint8_t>(rand() % 3),
-                    static_cast<uint8_t>(rand() % 10 + 1)
+                    static_cast<uint8_t>(1 + rand() % (5 - 1))
                 };
                 break;
             }
-            std::cout << '\n' << genLength << '\n';*/
-			genLength -= piece.generate(bgIntermediary, pos, COMN::worldSize/* - pos.x /*std::min(pos.x < genLength ? genLength - pos.x : genLength, COMN::worldSize - pos.x)*/);
-        //}
+            std::cout << '\n' << genLength << '\n';
+
+			piece.length = std::min<uint8_t>(piece.length, static_cast<uint8_t>(std::min<uint16_t>(255, genLength)));
+			genLength -= std::min<uint16_t>(genLength, piece.generate(bgIntermediary, pos, COMN::worldSize/* - pos.x /*std::min(pos.x < genLength ? genLength - pos.x : genLength, COMN::worldSize - pos.x)*/));
+        }
         //std::cout << '\n' << pos.x << " < " << COMN::worldSize << '\n';
     }
 
 	bgTex->loadFromImage(bgIntermediary);
+    bgTex->setRepeated(true);
 	background.setTexture(*bgTex);
+    background.setPosition(-COMN::worldSize, COMN::resolution.y - background.getGlobalBounds().height);
+    background.setTextureRect(sf::IntRect(0, 0, COMN::worldSize * 3, background.getGlobalBounds().height));
 }
 
 void UserInterface::World::draw(sf::RenderTarget &target,
@@ -204,7 +227,7 @@ void UserInterface::initialize()
     williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
 
     // World
-    //UserInterface::World::generate();
+    UserInterface::World::generate();
 }
 
 const sf::Font &UserInterface::getFont() { return *font; }
