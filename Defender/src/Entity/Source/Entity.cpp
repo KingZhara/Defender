@@ -248,8 +248,8 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, Entit
 const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID id)
 {
 	return {
-		pos.x + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.width / 2.),
-		pos.y + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.height  / 2.)
+		pos.x + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.width  / 2.),
+		pos.y + (float)(DATA_TABLE[id].SPRITE_DATA.bounds.height / 2.)
 	};
 }
 
