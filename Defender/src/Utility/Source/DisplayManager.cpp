@@ -7,7 +7,7 @@
 
 sf::Vector2u DisplayManager::resolution = getMaxAspectResolution(
     sf::VideoMode::getDesktopMode().width,
-    sf::VideoMode::getDesktopMode().height,
+    sf::VideoMode::getDesktopMode().height - 200 /*space for taskbar, wont work for anything besides small horizontal taskbar*/,
     static_cast<int>(COMN::aspectRatio.x),
     static_cast<int>(COMN::aspectRatio.y)
 );
