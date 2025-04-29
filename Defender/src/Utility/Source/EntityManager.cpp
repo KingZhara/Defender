@@ -300,10 +300,13 @@ void EntityManager::killArea(sf::FloatRect viewport)
 
 void EntityManager::hyperspace(sf::Vector2f size, float left)
 {
-    player->setPos({
-        static_cast<float>(std::rand() % static_cast<int>(size.x + left)),
-        static_cast<float>(std::rand() % static_cast<int>(size.y))
-    });
+    if (player)
+    {
+        player->setPos({
+            static_cast<float>(std::rand() % static_cast<int>(size.x + left)),
+            static_cast<float>(std::rand() % static_cast<int>(size.y))
+            });
+    }
 }
 
 ScoreType EntityManager::getScore()

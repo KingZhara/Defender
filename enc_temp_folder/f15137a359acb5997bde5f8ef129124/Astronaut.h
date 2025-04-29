@@ -7,10 +7,5 @@ public:
 	explicit Astronaut(sf::Vector2f pos_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_) {}
-
-	/**
-	 * Add fall length; kill if > COMN::Resolution.y / 4
-	 *
-	 */
 };
 

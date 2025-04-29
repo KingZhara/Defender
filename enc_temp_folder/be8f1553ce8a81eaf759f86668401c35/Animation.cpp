@@ -92,11 +92,3 @@ void Animation::setPosition(sf::Vector2f pos) const
 {
 	frame.setPosition(round(pos.x), round(pos.y));
 }
-
-bool Animation::intersects(sf::FloatRect &otherBounds)
-{
-
-	otherBounds.left = fmod(abs(otherBounds.left) + otherBounds.width, (float)COMN::worldSize) - otherBounds.width;
-
-	return frame.getGlobalBounds().intersects(otherBounds);
-}

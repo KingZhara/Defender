@@ -61,7 +61,6 @@ public:
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     virtual void                     tick(double deltatime);
     virtual bool                     collide(Entity* other);
-    bool                             collide(sf::FloatRect otherBound); // Used by Laser
     virtual void wrap();
     static const sf::IntRect &       getBounds(EntityID::ID ID);
     void                             setPos(sf::Vector2f newPos);

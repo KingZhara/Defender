@@ -20,40 +20,40 @@ void Mutant::tick(double deltatime)
     // Attack
     if (attackTimer.tick(deltatime))
         entityQueue.emplace(QueuedEntity( makeCenteredTL(pos, EntityID::MUTANT), EntityID::BULLET ));
-    
+
+    EntityTarget targetData = makePlayerTargetedVec(pos, ID, 1);
 
     // Movement
     // If above the player
     
-    if (abs(pos.x - EntityData::PLAYER_REF.pos->x) <
-        4) // 2 = square radius on the x-axis around the player
+    if (abs(targetData.pos.x) < 4) // 4 px to the left or right of the player
     {
-        if (pos.x - EntityData::PLAYER_REF.pos->x < -2)
+        if (targetData.pos.x < -4)
             vel.x = COMN::baseSpeed.x;
-        else if (pos.x - EntityData::PLAYER_REF.pos->x > 2)
+        else if (targetData.pos.x > 4)
             vel.x = -COMN::baseSpeed.x;
 
-        if (pos.y - EntityData::PLAYER_REF.pos->y < 0)
+        if (targetData.pos.y > 0)
             vel.y = COMN::baseSpeed.y;
         else
             vel.y = -COMN::baseSpeed.y;
     }
     else
     {
-        if (pos.x - EntityData::PLAYER_REF.pos->x < 0)
+        if (targetData.pos.x > 0)
             vel.x = COMN::baseSpeed.x;
         else
             vel.x = -COMN::baseSpeed.x;
 
         // If we are out of the ideal range (screen height / 8 +- 5)
-        if (pos.y - EntityData::PLAYER_REF.pos->y >  COMN::resolution.y / 8 + 5 || 
-            pos.y - EntityData::PLAYER_REF.pos->y < -COMN::resolution.y / 8 - 5)
+        if (targetData.pos.y > COMN::resolution.y / 8 + 5 ||
+            targetData.pos.y < -COMN::resolution.y / 8 - 5)
         {
             // If above the range, move down
-            if (pos.y - EntityData::PLAYER_REF.pos->y > COMN::resolution.y / 8 + 5)
-                vel.y = -COMN::baseSpeed.y;
-            else
+            if (targetData.pos.y > COMN::resolution.y / 8 + 5)
                 vel.y = COMN::baseSpeed.y;
+            else
+                vel.y = -COMN::baseSpeed.y;
         }
         else
             vel.y = 0;

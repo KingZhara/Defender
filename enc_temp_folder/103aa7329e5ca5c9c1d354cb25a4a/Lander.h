@@ -20,8 +20,5 @@ public:
     */
 
     void tick(double deltaTime);
-
-private:
-    int getAstronauts();
 };
 

@@ -42,7 +42,6 @@ public:
 	void setTexturePos(sf::Vector2i pos);
 	void setPosition(sf::Vector2f pos) const;
 	bool intersects(Animation& other);
-	bool intersects(sf::FloatRect& bound);
 	void printDebugInfo()
 	{
 		std::cout << "AN_DBG_INF{ TEX_STATIC: " << tex << ", Sprite Data{ frameCount: " << SPRITE_DATA.frameCount
@@ -64,8 +63,9 @@ private:
 inline bool Animation::intersects(Animation &other)
 {
 	sf::FloatRect otherBounds = other.frame.getGlobalBounds();
+	otherBounds.left = fmod(abs(otherBounds.left) + otherBounds.width, (float)COMN::worldSize) - otherBounds.width;
 
-    return intersects(otherBounds);
+    return frame.getGlobalBounds().intersects(otherBounds);
 }
 
 /*class Animation : public sf::Drawable

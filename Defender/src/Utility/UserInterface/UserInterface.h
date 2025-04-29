@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../ShaderID.h"
-
+#include "../common.h"
 
 class UserInterface
 {
@@ -91,7 +91,7 @@ private:
 	static sf::Shader*    shiftingShader;
 	static sf::Shader*    flashingShader;
 	static sf::Shader*    williamsShader;
-	static sf::Glsl::Vec3 brightColors[];
+	static Color<float> brightColors[];
 	static sf::Font*      otherFont     ;
 };
 
