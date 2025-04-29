@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity\Source\Particle.cpp" />
+    <ClCompile Include="src\State\Source\ScannerState.cpp" />
     <ClCompile Include="src\Utility\Source\DisplayManager.cpp" />
     <ClCompile Include="src\Utility\Source\common.cpp" />
     <ClCompile Include="src\Utility\Source\EntityManager.cpp" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Particle.h" />
+    <ClInclude Include="src\State\ScannerState.h" />
     <ClInclude Include="src\Utility\EntityScript\EntityFireScript.h" />
     <ClInclude Include="src\Utility\EntityScript\EntitySpawnScript.h" />
     <ClInclude Include="src\Utility\UserInterface\HSV.h" />

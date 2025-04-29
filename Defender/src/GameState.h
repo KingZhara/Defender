@@ -17,7 +17,8 @@ struct GameState : sf::Drawable
 	{
 		ATTRACT,
 		HIGHSCORE,
-		STAGE
+		STAGE,
+		SCANNER
 	};
 
 	/**
@@ -48,7 +49,8 @@ struct GameState : sf::Drawable
 	/**
 	 * Switches the state according to the default rules:
 	 * 1. Attract   -> Highscore
-	 * 2. Highscore -> Attract
+	 * 2. Highscore -> Scanner
+	 * 2. Scanner   -> Attract
 	 * 3. Stage     -> Highscore
 	 * 4. *         -> Stage (stage == true?)
 	 * 
@@ -58,5 +60,5 @@ struct GameState : sf::Drawable
 
 	// The current state
 	State type;
-	std::variant<AttractState, HighscoreState, StageState> state = AttractState();
+	std::variant<AttractState, HighscoreState, StageState, ScannerState> state = AttractState();
 };
