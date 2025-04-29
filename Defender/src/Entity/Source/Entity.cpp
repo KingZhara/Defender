@@ -187,7 +187,7 @@ bool Entity::collide(Entity* other)
 
 bool Entity::collide(sf::FloatRect otherBound)
 {
-    return animation.intersects()
+	return animation.intersects(otherBound);
 }
 
 void Entity::wrap()
