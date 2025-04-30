@@ -8,6 +8,13 @@ void Lander::tick(double deltatime)
 	Entity::tick(deltatime);
 }
 
+bool Lander::hasTarget() { return target; }
+
+void Lander::setTarget(Entity *target_)
+{
+	target = target_;
+}
+
 int Lander::getAstronauts()
 {
 	return -1;

@@ -9,11 +9,13 @@
 
 class StageState : public sf::Drawable
 {
+	// For shared variable
+	friend class EntityManager;
+
 	struct PlayerState
 	{
-		uint8_t lives : 2 = 3;
+		uint8_t lives : 6 = 3;
 		uint8_t smart_bombs : 2 = 3;
-		uint8_t padding : 4 = 0;
 	};
 
 public:
@@ -41,24 +43,35 @@ private:
 
 class StageState::SpawnManager
 {
+	// for Shared Variable
+	friend class EntityManager;
+
 public:
 	SpawnManager() = delete;
 
-	void tick();
-
-	void setWave(uint16_t);
+	static void tick(double deltatime);
+	static void nextWave();
+	static void reset();
+	static void startInvasion() { invasion = true; baiterTime = 45; }
 
 private:
     /**
      * Spawns a group of entities of the specified ID and parameters
      * 
      * @param count Number of entities
-     * @param height The target height
-     * @param width The x-spacing
-     * @param ID ID of the entities
+     * @param ID Type of entity
+	 * @param target Target position
+	 * @param change Difference in position between each entity spawn
+     * @param entropy Entropy for random position offset
      */
-    void spawnCount(uint8_t count, uint8_t height, uint16_t width, EntityID::ID ID);
-	sf::Vector2<uint16_t> genPos(uint8_t x, uint8_t y);
-    void resetRNG();
+    static void spawnCount(uint8_t count, EntityID::ID ID, sf::Vector2<uint16_t> target, sf::Vector2<uint16_t> change, sf::Vector2<uint16_t> entropy);
+	static sf::Vector2<uint16_t> genPos(uint16_t x, uint8_t y);
+    static void resetAstronauts();
 
-};
+	static bool firstSub;
+	static bool invasion;
+	static uint8_t bombCount, podCount, baiterTime;
+	static Timer<double> subWaveTimer;
+	static uint8_t subwave;
+	static uint8_t wave, invasionWave; // 1 - 4; @ 1, spawn
+ };

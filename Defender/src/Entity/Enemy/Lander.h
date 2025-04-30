@@ -20,8 +20,11 @@ public:
     */
 
     void tick(double deltaTime);
+    bool hasTarget();
+	void setTarget(Entity* target);
 
 private:
     int getAstronauts();
+	Entity* target = nullptr;
 };
 

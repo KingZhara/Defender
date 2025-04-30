@@ -20,6 +20,10 @@ public:
 		Entity::EntityData::PlayerRef::vel = &vel;
 	}
 
+	~Player()
+	{
+		std::cout << "Player destructor called\n";
+	}
 
 	virtual void tick(double deltatime) override
     {
@@ -56,7 +60,7 @@ public:
 
 	bool collide(Entity *other) override
 	{
-	    return Entity::collide(other);
+		return false; // Entity::collide(other);
 	}
 
 	bool getDir() const

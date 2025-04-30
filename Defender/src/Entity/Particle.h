@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Player.h"
 
 
 class Particle : public Entity
@@ -11,6 +12,10 @@ public:
 	{
 		_aligned_free(pieces);
 		pieces = nullptr;
+
+		if (dynamic_cast<Player*>(entity))
+			std::cout << "Destroyed from particle\n";
+
 		delete entity;
 	};
 

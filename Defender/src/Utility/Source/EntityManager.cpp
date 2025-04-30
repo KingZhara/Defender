@@ -9,7 +9,8 @@ EntityManager::EntityHolder<Enemy> EntityManager::enemies;
 EntityManager::EntityHolder<Astronaut> EntityManager::astronauts;
 EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
-
+std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> EntityManager::landerTargetTable;
+uint16_t EntityManager::baiterCounter = 0;
 // @todo Make score update
 ScoreType EntityManager::score;
 
@@ -22,10 +23,15 @@ EntityManager::EntityManager(bool scripted_)
     astronauts.reset();
     particles.reset();
 
+	landerTargetTable.first.clear();
+	landerTargetTable.second.clear();
+
+    std::cout << "Player Destroyed\n";
     delete player;
     player = nullptr;
 
     score = 0;
+    baiterCounter = 0;
 }
 
 void EntityManager::adjViewport(sf::View *view, double deltatime)
@@ -134,14 +140,17 @@ bool EntityManager::tick(double deltatime, float center = 0)
     // Tick player first
     if (player)
         player->tick(deltatime);
+    else
+        std::cout << "NO PLAYER\n";
 
     // Tick enemies
-    for (auto &enemy : enemies.entities)
+    for (uint16_t i = 0; i < enemies.entities.size(); i++)
     {
+        Enemy*& enemy = enemies.entities.at(i);
         if (enemy != nullptr)
         {
             if (dynamic_cast<Lander*>(enemy))
-                dynamic_cast<Lander*>(enemy)->tick(deltatime);
+                tickLander(deltatime, i);
             else if (dynamic_cast<Mutant*>(enemy))
                 dynamic_cast<Mutant*>(enemy)->tick(deltatime);
             else if (dynamic_cast<Pod*>(enemy))
@@ -160,8 +169,8 @@ bool EntityManager::tick(double deltatime, float center = 0)
         }
     }
 
-    // Tick astronauts
-    for (auto &astronaut : astronauts.entities)
+    // @todo Needs to detect death
+    for (auto& astronaut : astronauts.entities)
     {
         if (astronaut != nullptr)
             astronaut->tick(deltatime);
@@ -200,13 +209,13 @@ bool EntityManager::tick(double deltatime, float center = 0)
 
     // Spawn all projectiles
     clearQueue();
-    /*
+    
     // Handles all entity collisions with projectiles
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
         if (projectiles.entities.at(i) != nullptr)
         {
-            if (!playerDeath)
+            if (player && !playerDeath && projectiles.entities.at(i)->getID() != EntityID::LASER)
                 playerDeath = player->collide(projectiles.entities.at(i));
 
 
@@ -217,22 +226,25 @@ bool EntityManager::tick(double deltatime, float center = 0)
         if (playerDeath)
             break;
     }
-    
-    for (uint16_t i = 0; i < enemies.entities.size(); ++i)
-    {
-        if (playerDeath)
-            break;
 
-        if (enemies.entities.at(i))
+    if (player)
+    {
+        for (uint16_t i = 0; i < enemies.entities.size(); ++i)
         {
-            playerDeath = player->collide(enemies.entities.at(i));
             if (playerDeath)
+                break;
+
+            if (enemies.entities.at(i))
             {
-                score += enemies.entities[i]->getXP();
-                enemies.kill(i);
+                playerDeath = player->collide(enemies.entities.at(i));
+                if (playerDeath)
+                {
+                    score += enemies.entities[i]->getXP();
+                    enemies.kill(i);
+                }
             }
         }
-    }*/
+    }
 
 
     return playerDeath;
@@ -244,7 +256,7 @@ void EntityManager::draw(sf::RenderTarget &target,
     // @todo correct animation calling
 
     // Draw all astronauuts
-    for (auto &astronaut : astronauts.entities)
+    for (auto& astronaut : astronauts.entities)
     {
         if (astronaut != nullptr)
             target.draw(*astronaut, states);
@@ -314,14 +326,31 @@ ScoreType EntityManager::getScore()
     return score;
 }
 
+void EntityManager::waveReset()
+{
+	projectiles.reset();
+    enemies.reset();
+	particles.reset();
+    baiterCounter = 0;
+}
+
+void EntityManager::deathReset()
+{
+	projectiles.reset();
+	enemies.zero();
+	particles.zero();
+}
+
+bool EntityManager::waveComplete()
+{
+    return enemies.getLiveCount() - baiterCounter;
+}
+
 void EntityManager::clearQueue()
 {
     while (!Entity::getQueue().empty())
     {
         Entity::QueuedEntity &e   = Entity::getQueue().front();
-        double                rot = atan2(player->getPos().y - e.pos.y,
-                                          player->getPos().x - e.pos.x);
-        
 
         switch (e.id)
         {
@@ -333,15 +362,13 @@ void EntityManager::clearQueue()
 
         case EntityID::LASER:
             projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
-                static_cast<float>(cos(rot)) * 3,
-                static_cast<float>(sin(rot)) * 3
+                0, 0//Entity::makePlayerTargetedVec(e.pos, e.id, 1).vel
             });
             break;
 
         case EntityID::BOMB:
             projectiles.entities.at(projectiles.spawn<Bomb>(e.pos))->setVel({
-                static_cast<float>(cos(rot)) * 3,
-                static_cast<float>(sin(rot)) * 3
+                Entity::makePlayerTargetedVec(e.pos, e.id, 0.1).vel
             });
             break;
 
@@ -399,6 +426,7 @@ void EntityManager::spawn_typeWrapper(Entity* entity)
         astronauts.push<Astronaut>(entity);
         break;
     case EntityID::PLAYER:
+		std::cout << "Player Spawned\n";
         delete player;
         player = (Player*)entity;
         break;

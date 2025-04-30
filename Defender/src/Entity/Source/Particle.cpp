@@ -117,6 +117,12 @@ void Particle::tick(double deltatime)
 	//std::cout << "Tick Particle\n";
 	if (!lifetime.isComplete())
 	{
+		//if (entity->getPos() != pos)
+		//{
+		//	std::cout << "Entity pos  : " << entity->getPos().x << ", " << entity->getPos().y << '\n';
+		//	std::cout << "Particle pos: " << pos.x << ", " << pos.y << '\n';
+		//}
+
 		for (int8_t x = 0; x < size.x; x++)
 			for (int8_t y = 0; y < size.y; y++)
 				if (!skipCenter || (skipCenter && x * size.y + y < size.x * size.y - 1))

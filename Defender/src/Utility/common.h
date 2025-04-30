@@ -52,6 +52,12 @@ struct COMN
 		100.f
 	};
 
+	struct playHeight
+	{
+		static constexpr uint8_t min = uiHeight;
+		static constexpr uint8_t max = resolution.y;
+	};
+
 	static constexpr float playerSpeedFactor = 1.5;
 
 	static constexpr uint16_t worldSize = static_cast<uint16_t>(9 * resolution.x);

@@ -7,20 +7,22 @@ Timer<double> StageState::hyperspaceCooldown = Timer<double>(5.0f /*@todo correc
 StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[4] = { 0, 0, 0, 0 };
 uint8_t StageState::namePos = 0;
-
 const char StageState::validChars[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+bool& EntityManager::isInvasion = StageState::SpawnManager::invasion;
+bool StageState::SpawnManager::invasion = false;
 
 StageState::StageState()
 {
-
 	entityManager = EntityManager();
-	entityManager.spawn(EntityManager::SpawnType::ASTRONAUT, EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
+	SpawnManager::reset();
+	//entityManager.spawn(EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::POD, sf::Vector2f{ 100, 100 });
-	entityManager.spawn(EntityManager::SpawnType::PLAYER, EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::BOMBER, sf::Vector2f{ 100, 100 });
+	entityManager.spawn(EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
+	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 100, 150 });
-	entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, { 50, 50 });
+	//entityManager.spawn(EntityID::SWARMER, sf::Vector2f{ 100, 150 });
+	//entityManager.spawn(EntityID::MUTANT, { 50, 50 });
+
 }
 
 bool StageState::tick(Action& actions, double deltatime)
@@ -34,10 +36,7 @@ bool StageState::tick(Action& actions, double deltatime)
 	static Timer<double> spwn{ 1 };
 
 
-	if (spwn.tick(deltatime))
-	{
-		//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::MUTANT, sf::Vector2f{ 50, 50 });
-	}
+	SpawnManager::tick(deltatime);
 
 
 	if (!playerDead)
@@ -79,7 +78,8 @@ bool StageState::tick(Action& actions, double deltatime)
 			if (playerState.lives != 3)
 				++playerState.lives;
 		}
-
+		if (EntityManager::playerLiving() && EntityManager::astronautCount() == 0) // All astronauts dead
+			SpawnManager::startInvasion();
 		// Handle player death.
 		playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
 	}
@@ -89,6 +89,7 @@ bool StageState::tick(Action& actions, double deltatime)
 	{
 		if (playerState.lives <= 1)
 		{
+			SpawnManager::nextWave();
 			playerState.lives = 0;
 			if (SaveHighscore(actions))
 			{
@@ -103,6 +104,9 @@ bool StageState::tick(Action& actions, double deltatime)
 
 		    return false;
 		}
+
+		EntityManager::deathReset();
+
 
 		std::cout << "KILLING>>>\n";
 		--playerState.lives;
@@ -320,4 +324,169 @@ bool StageState::SaveHighscore(Action& actions)
 	downPressed = actions.flags.down;
 
 	return false;
+}
+
+
+
+// Spawn Manager
+
+bool StageState::SpawnManager::firstSub;
+uint8_t StageState::SpawnManager::bombCount;
+uint8_t StageState::SpawnManager::podCount;
+uint8_t StageState::SpawnManager::baiterTime;
+uint8_t StageState::SpawnManager::subwave;
+uint8_t StageState::SpawnManager::wave;
+uint8_t StageState::SpawnManager::invasionWave; // 1 - 4; @ 1, spawn
+Timer<double> StageState::SpawnManager::subWaveTimer = Timer<double>(2);
+
+
+
+
+void StageState::SpawnManager::tick(double deltatime)
+{
+	std::cout << "Ticking spawn manager: BASE: " << subWaveTimer.BASE << ", TIME: " << subWaveTimer.time << '\n';
+	if (subWaveTimer.tick(deltatime))
+	{
+		do
+		{
+			sf::Vector2<uint16_t> target;
+			if (firstSub)
+			{
+
+				// spawn pods in a range to the right forth of the map based around the player
+				// spawn bombers on the same spot at the far right side ~1/6 from the top
+
+				firstSub = false;
+
+				subWaveTimer = Timer<double>(6);
+
+				if (wave == 0)
+					resetAstronauts();
+
+				if (subwave == 3)
+					baiterTime = 32;
+
+				// Make pod target
+				target = {
+					(uint16_t)((uint16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 4) % COMN::worldSize),
+					(uint16_t)(COMN::resolution.y / 2)
+				};
+				// Spawn pods
+				spawnCount(podCount, EntityID::POD, target, { 15, 0 }, { 5, 20 });
+
+				// Make bomb target
+				target = {
+					(uint16_t)((uint16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 2) % COMN::worldSize),
+					(uint16_t)(COMN::resolution.y / 6)
+				};
+				// Spawn bombs
+				spawnCount(bombCount, EntityID::BOMBER, target, { 0, 0 }, { 0, 0 });
+			}
+
+			if (subwave != 0)
+			{
+
+				// Make lander target
+				target = {
+					0,
+					(uint16_t)(COMN::resolution.y / 5)
+				};
+				// Spawn landers
+				spawnCount(5, EntityID::LANDER, target, { COMN::worldSize / 3, 0 }, { 20, 5 });
+
+				--subwave;
+
+				if (subwave == 0)
+				{
+					subWaveTimer = Timer<double>(baiterTime);
+					subWaveTimer.tick(0);
+				}
+			}
+			else
+			{
+				baiterTime = std::max(baiterTime / 2, 2);
+
+			    subWaveTimer = Timer<double>(baiterTime);
+
+				subWaveTimer.tick(0);
+
+				std::cout << "Spawning Baiter";
+				spawnCount(1, EntityID::BAITER, { 0, 0 }, { 0, 0 }, { 50, 50 });
+			}
+
+			// Loop through all subwaves immediately if it is an invasion
+		} while (subwave != 0 && invasion);
+	}
+}
+void StageState::SpawnManager::nextWave()
+{
+	subwave = 4;
+	wave = (wave + 1) % 5;
+	firstSub = true;
+	baiterTime = 16;
+
+	EntityManager::waveReset();
+
+	if (invasion)
+		++invasionWave;
+
+	// I think invasions are actually based around wave being 0, not a seperate wave counter; persisted for 4 waves until astronauts were reset @ n=1
+	// This will remain as a placeholder
+	if (invasionWave == 5)
+	{
+		invasionWave = 0;
+		invasion = false;
+
+		resetAstronauts();
+	}
+
+	if (bombCount == 0 && podCount == 0) // first wave
+	{
+		podCount = 3;
+		bombCount = 3;
+	}
+	else if (podCount < 4 || bombCount < 5)
+	{
+		// Alternate incrementing the two
+	    if (podCount == bombCount)
+			bombCount++;
+		else
+			podCount++;
+	}
+
+	subWaveTimer = Timer<double>(2);
+}
+void StageState::SpawnManager::reset()
+{
+	bombCount = 0; podCount = 0; subwave = 3; wave = 0; firstSub = true;
+	baiterTime = 32;
+
+	// resetAstronauts();
+
+	subWaveTimer = Timer<double>(2);
+}
+
+void StageState::SpawnManager::spawnCount(uint8_t count,
+        EntityID::ID ID,
+        sf::Vector2<uint16_t> target,
+        sf::Vector2<uint16_t> change,
+        sf::Vector2<uint16_t> entropy)
+{
+    for (uint16_t i = 0; i < count; i++)
+    {
+		sf::Vector2<uint16_t> pos = 
+		{
+		    (uint16_t)((target.x + change.x * i + (entropy.x > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.x) : 0)) % COMN::worldSize),
+			(uint16_t)((target.y + change.y * i + (entropy.y > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.y) : 0)) % (uint16_t)COMN::resolution.y)
+		};
+
+		EntityManager::spawn(ID, {(float)pos.x, (float)pos.y});
+    }
+}
+
+void StageState::SpawnManager::resetAstronauts()
+{
+	EntityManager::killAstronauts();
+
+	spawnCount(10, EntityID::ASTRONAUT, { 0, (uint16_t)COMN::resolution.y - 20 }, { COMN::worldSize / 5, 0 }, { 10, 0 });
 }
