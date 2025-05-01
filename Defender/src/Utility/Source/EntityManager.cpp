@@ -26,7 +26,6 @@ EntityManager::EntityManager(bool scripted_)
 	landerTargetTable.first.clear();
 	landerTargetTable.second.clear();
 
-    std::cout << "Player Destroyed\n";
     delete player;
     player = nullptr;
 
@@ -132,6 +131,8 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 
 bool EntityManager::tick(double deltatime, float center = 0)
 {
+	//std::cout << particles.entities.size() << " particles\n";
+
     bool     playerDeath = false;
     //uint16_t enemyIndex  = 0;
 
@@ -140,8 +141,6 @@ bool EntityManager::tick(double deltatime, float center = 0)
     // Tick player first
     if (player)
         player->tick(deltatime);
-    else
-        std::cout << "NO PLAYER\n";
 
     // Tick enemies
     for (uint16_t i = 0; i < enemies.entities.size(); i++)
@@ -343,7 +342,8 @@ void EntityManager::deathReset()
 
 bool EntityManager::waveComplete()
 {
-    return enemies.getLiveCount() - baiterCounter;
+	std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << spawningComplete << '\n';
+    return (enemies.getLiveCount() - baiterCounter == 0 && spawningComplete);
 }
 
 void EntityManager::clearQueue()
@@ -362,7 +362,8 @@ void EntityManager::clearQueue()
 
         case EntityID::LASER:
             projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
-                0, 0//Entity::makePlayerTargetedVec(e.pos, e.id, 1).vel
+                (player->getDir() ? -1 : 1) * Entity::getEVel(EntityID::LASER).x + player->getVel().x,
+                0
             });
             break;
 
@@ -384,6 +385,7 @@ void EntityManager::clearQueue()
 
 void EntityManager::spawn_typeWrapper(Entity* entity)
 {
+    std::cout << entity << '\n';
     switch (entity->getID())
     {
     case EntityID::BULLET:

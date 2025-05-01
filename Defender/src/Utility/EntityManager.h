@@ -22,7 +22,7 @@ class EntityManager : public sf::Drawable
 		uint16_t push(Entity* entity);
 		uint16_t getLiveCount() const
 		{
-			std::cout << "Live Count: " << entities.size() - count << '\n';
+			//std::cout << "Live Count: " << entities.size() - count << '\n';
 			return entities.size() - count;
 		}
 		void kill(uint16_t index);
@@ -114,8 +114,9 @@ private:
 	static ScoreType score;
 
 	static uint16_t baiterCounter;
+	
 	static bool scripted;
-	static bool& isInvasion;
+	static const bool& isInvasion, &spawningComplete;
 };
 
 inline void EntityManager::tickLander(double deltatime, uint16_t index)
@@ -336,9 +337,11 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 						// Erase the entry pairing this lander with the astronaut
 						landerTargetTable.first.erase(i);
 					}
-				}
-				if (dynamic_cast<Baiter*>(entity_))
+				} else if (dynamic_cast<Baiter*>(entity_))
 					--baiterCounter;
+				else if (dynamic_cast<Pod*>(entity_))
+					for (uint8_t i = 0; i < 5; i++)
+						spawn(EntityID::SWARMER, entity_->getPos());
 			}
 			else if constexpr (std::is_same_v<T, Astronaut>)
 			{

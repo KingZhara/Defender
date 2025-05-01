@@ -53,6 +53,7 @@ public:
 	static void nextWave();
 	static void reset();
 	static void startInvasion() { invasion = true; baiterTime = 45; }
+	static bool waveStarted() { return started; };
 
 private:
     /**
@@ -64,12 +65,13 @@ private:
 	 * @param change Difference in position between each entity spawn
      * @param entropy Entropy for random position offset
      */
-    static void spawnCount(uint8_t count, EntityID::ID ID, sf::Vector2<uint16_t> target, sf::Vector2<uint16_t> change, sf::Vector2<uint16_t> entropy);
-	static sf::Vector2<uint16_t> genPos(uint16_t x, uint8_t y);
+    static void spawnCount(uint8_t count, EntityID::ID ID, sf::Vector2<int16_t> target, sf::Vector2<int16_t> change, sf::Vector2<int16_t> entropy);
     static void resetAstronauts();
 
 	static bool firstSub;
 	static bool invasion;
+	static bool started;
+	static bool spawningComplete;
 	static uint8_t bombCount, podCount, baiterTime;
 	static Timer<double> subWaveTimer;
 	static uint8_t subwave;

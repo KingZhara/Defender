@@ -59,5 +59,5 @@ void Mutant::tick(double deltatime)
             vel.y = 0;
     }
 
-    Entity::tick(deltatime);
+    Enemy::tick(deltatime);
 }

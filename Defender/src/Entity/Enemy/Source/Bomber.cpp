@@ -34,5 +34,5 @@ void Bomber::tick(double deltatime)
 		}
 	}
 
-	Entity::tick(deltatime);
+	Enemy::tick(deltatime);
 }

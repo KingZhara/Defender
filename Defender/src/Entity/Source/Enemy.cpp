@@ -31,3 +31,12 @@ void Enemy::tick(double deltatime)
 	);
 	
 }*/
+void Enemy::tick(double deltatime)
+{
+    Entity::tick(deltatime);
+
+	if (pos.y > COMN::playHeight::max)
+		pos.y -= COMN::playHeight::max - COMN::playHeight::min;
+	else if (pos.y < COMN::playHeight::min)
+		pos.y += COMN::playHeight::max - COMN::playHeight::min;
+}

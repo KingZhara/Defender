@@ -51,5 +51,5 @@ void Baiter::tick(double deltatime)
 	if (attackTimer.tick(deltatime))
 		entityQueue.emplace(QueuedEntity(pos, EntityID::BULLET));
 
-	Entity::tick(deltatime);
+	Enemy::tick(deltatime);
 }

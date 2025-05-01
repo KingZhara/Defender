@@ -8,8 +8,11 @@ StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[4] = { 0, 0, 0, 0 };
 uint8_t StageState::namePos = 0;
 const char StageState::validChars[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-bool& EntityManager::isInvasion = StageState::SpawnManager::invasion;
 bool StageState::SpawnManager::invasion = false;
+bool StageState::SpawnManager::spawningComplete = false;
+bool StageState::SpawnManager::started = false;
+const bool& EntityManager::isInvasion = StageState::SpawnManager::invasion;
+const bool& EntityManager::spawningComplete = StageState::SpawnManager::spawningComplete;
 
 StageState::StageState()
 {
@@ -35,6 +38,9 @@ bool StageState::tick(Action& actions, double deltatime)
 
 	static Timer<double> spwn{ 1 };
 
+
+	if (EntityManager::waveComplete())
+		SpawnManager::nextWave();
 
 	SpawnManager::tick(deltatime);
 
@@ -78,7 +84,7 @@ bool StageState::tick(Action& actions, double deltatime)
 			if (playerState.lives != 3)
 				++playerState.lives;
 		}
-		if (EntityManager::playerLiving() && EntityManager::astronautCount() == 0) // All astronauts dead
+		if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
 			SpawnManager::startInvasion();
 		// Handle player death.
 		playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
@@ -344,12 +350,14 @@ Timer<double> StageState::SpawnManager::subWaveTimer = Timer<double>(2);
 
 void StageState::SpawnManager::tick(double deltatime)
 {
-	std::cout << "Ticking spawn manager: BASE: " << subWaveTimer.BASE << ", TIME: " << subWaveTimer.time << '\n';
+	std::cout << "Ticking spawn manager: BASE: " << subWaveTimer.BASE << ", TIME: " << subWaveTimer.time << ", INVASION: " << invasion << '\n';
 	if (subWaveTimer.tick(deltatime))
 	{
+		if (!firstSub)
+			started = true;
 		do
 		{
-			sf::Vector2<uint16_t> target;
+			sf::Vector2<int16_t> target;
 			if (firstSub)
 			{
 
@@ -359,6 +367,7 @@ void StageState::SpawnManager::tick(double deltatime)
 				firstSub = false;
 
 				subWaveTimer = Timer<double>(6);
+				subWaveTimer.tick(0);
 
 				if (wave == 0)
 					resetAstronauts();
@@ -368,16 +377,16 @@ void StageState::SpawnManager::tick(double deltatime)
 
 				// Make pod target
 				target = {
-					(uint16_t)((uint16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 4) % COMN::worldSize),
-					(uint16_t)(COMN::resolution.y / 2)
+					(int16_t)((int16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 4) % COMN::worldSize),
+					(int16_t)(COMN::resolution.y / 2)
 				};
 				// Spawn pods
 				spawnCount(podCount, EntityID::POD, target, { 15, 0 }, { 5, 20 });
 
 				// Make bomb target
 				target = {
-					(uint16_t)((uint16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 2) % COMN::worldSize),
-					(uint16_t)(COMN::resolution.y / 6)
+					(int16_t)((int16_t)(DisplayManager::getView().getCenter().x + COMN::worldSize / 2) % COMN::worldSize),
+					(int16_t)(COMN::resolution.y / 6)
 				};
 				// Spawn bombs
 				spawnCount(bombCount, EntityID::BOMBER, target, { 0, 0 }, { 0, 0 });
@@ -389,17 +398,18 @@ void StageState::SpawnManager::tick(double deltatime)
 				// Make lander target
 				target = {
 					0,
-					(uint16_t)(COMN::resolution.y / 5)
+					(int16_t)(COMN::resolution.y / 5)
 				};
 				// Spawn landers
 				spawnCount(5, EntityID::LANDER, target, { COMN::worldSize / 3, 0 }, { 20, 5 });
-
+				std::cout << "Subwave: " << (short)subwave << '\n';
 				--subwave;
 
 				if (subwave == 0)
 				{
 					subWaveTimer = Timer<double>(baiterTime);
 					subWaveTimer.tick(0);
+					spawningComplete = true;
 				}
 			}
 			else
@@ -411,7 +421,7 @@ void StageState::SpawnManager::tick(double deltatime)
 				subWaveTimer.tick(0);
 
 				std::cout << "Spawning Baiter";
-				spawnCount(1, EntityID::BAITER, { 0, 0 }, { 0, 0 }, { 50, 50 });
+				spawnCount(1, EntityID::BAITER, { 0, 0 }, { 0, 0 }, { 100, 100 });
 			}
 
 			// Loop through all subwaves immediately if it is an invasion
@@ -420,15 +430,21 @@ void StageState::SpawnManager::tick(double deltatime)
 }
 void StageState::SpawnManager::nextWave()
 {
+	std::cout << "Next Wave\n";
 	subwave = 4;
 	wave = (wave + 1) % 5;
 	firstSub = true;
 	baiterTime = 16;
+	spawningComplete = false;
+	started = false;
 
 	EntityManager::waveReset();
 
 	if (invasion)
 		++invasionWave;
+
+	if (wave == 0)
+		resetAstronauts();
 
 	// I think invasions are actually based around wave being 0, not a seperate wave counter; persisted for 4 waves until astronauts were reset @ n=1
 	// This will remain as a placeholder
@@ -455,31 +471,37 @@ void StageState::SpawnManager::nextWave()
 	}
 
 	subWaveTimer = Timer<double>(2);
+	subWaveTimer.tick(0);
 }
 void StageState::SpawnManager::reset()
 {
 	bombCount = 0; podCount = 0; subwave = 3; wave = 0; firstSub = true;
 	baiterTime = 32;
+	spawningComplete = false;
+	started = false;
 
 	// resetAstronauts();
 
 	subWaveTimer = Timer<double>(2);
+	subWaveTimer.tick(0);
 }
 
 void StageState::SpawnManager::spawnCount(uint8_t count,
         EntityID::ID ID,
-        sf::Vector2<uint16_t> target,
-        sf::Vector2<uint16_t> change,
-        sf::Vector2<uint16_t> entropy)
+        sf::Vector2<int16_t> target,
+        sf::Vector2<int16_t> change,
+        sf::Vector2<int16_t> entropy)
 {
+
+	std::cout << "Spawning...\n";
     for (uint16_t i = 0; i < count; i++)
     {
-		sf::Vector2<uint16_t> pos = 
+		sf::Vector2<int16_t> pos = 
 		{
-		    (uint16_t)((target.x + change.x * i + (entropy.x > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.x) : 0)) % COMN::worldSize),
-			(uint16_t)((target.y + change.y * i + (entropy.y > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.y) : 0)) % (uint16_t)COMN::resolution.y)
+		    (int16_t)((target.x + change.x * i + (entropy.x > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.x) : 0)) % COMN::worldSize),
+			(int16_t)((target.y + change.y * i + (entropy.y > 0 ? (rand() % 2 ? 1 : -1) * (rand() % entropy.y) : 0)) % (int16_t)COMN::resolution.y)
 		};
-
+		std::cout << "Spawning: " << (int)ID << " at " << pos.x << ", " << pos.y << '\n';
 		EntityManager::spawn(ID, {(float)pos.x, (float)pos.y});
     }
 }

@@ -22,7 +22,6 @@ public:
 
 	~Player()
 	{
-		std::cout << "Player destructor called\n";
 	}
 
 	virtual void tick(double deltatime) override
@@ -45,7 +44,7 @@ public:
 
 		if (actions->flags.fire)
 		{
-			entityQueue.emplace(pos, EntityID::LASER);
+			entityQueue.emplace(sf::Vector2f{pos.x - 4, pos.y}, EntityID::LASER);
 			actions->flags.fire = false; // In theory this is redundant, yet here we are.
 		}
 
