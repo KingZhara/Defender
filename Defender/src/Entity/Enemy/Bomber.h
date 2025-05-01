@@ -17,7 +17,14 @@ public:
 	*/
 	void tick(double deltaTime);
 
+	uint8_t yMovTimStart = (rand()%20)+10;
+	uint8_t range = (rand() % 20) + 5;
+
 	uint8_t yMovTim = 20;
 	uint8_t stopTim = 20;
+
+	int16_t dx = ((rand() % 200) - 100);
+
+	uint8_t rerollTim = 100;
 };
 

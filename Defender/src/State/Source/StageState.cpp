@@ -18,7 +18,10 @@ StageState::StageState()
 	//entityManager.spawn(EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::POD, sf::Vector2f{ 100, 100 });
 	entityManager.spawn(EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
-	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
+	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
+	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 108, 95 });
+	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 90, 90 });
+	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 120, 110 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
 	//entityManager.spawn(EntityID::SWARMER, sf::Vector2f{ 100, 150 });
 	//entityManager.spawn(EntityID::MUTANT, { 50, 50 });
