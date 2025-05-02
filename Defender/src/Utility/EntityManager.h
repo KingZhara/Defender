@@ -65,7 +65,7 @@ public:
 	{
 	    astronauts.reset();
 	}
-	static ScoreType getScore();
+	static ScoreType& getScore();
 	static void waveReset();
 	static void deathReset();
 	static bool waveComplete();

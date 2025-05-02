@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+
+#include "../Utility/WaveCompletionScreen.h"
+
 #include "../Utility/Action.h"
 #include "../Utility/EntityManager.h"
 #include "../Utility/common.h"
@@ -14,8 +17,8 @@ class StageState : public sf::Drawable
 
 	struct PlayerState
 	{
-		uint8_t lives : 6 = 3;
-		uint8_t smart_bombs : 2 = 3;
+		uint8_t lives = 3;
+		uint8_t smart_bombs = 3;
 	};
 
 public:
@@ -38,9 +41,25 @@ private:
 	static char name[4];
 	static uint8_t namePos;
 
+	static bool playerDead;
+	// For this to be adjustable it should be moved to the class definition with appropriate methods
+	static constexpr ScoreType rewardReq = 10000;
+	// Last cutoff multiple where rewards were given
+	static uint16_t lastReward;
+	static uint32_t wave;
+	static bool waveComplete;
+
+	static WaveCompletionScreen* waveScreen;
+
 	static const char validChars[];
 };
 
+// ################# STAGE STATE END #####################
+
+
+
+
+// ################# SPAWN MANAGER ######################
 class StageState::SpawnManager
 {
 	// for Shared Variable

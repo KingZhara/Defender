@@ -99,6 +99,9 @@
     <ClCompile Include="src\State\Source\ScannerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\Source\WaveCompletionScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Entity.h">
@@ -225,6 +228,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\State\ScannerState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\WaveCompletionScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

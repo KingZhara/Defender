@@ -14,17 +14,25 @@ bool StageState::SpawnManager::started = false;
 const bool& EntityManager::isInvasion = StageState::SpawnManager::invasion;
 const bool& EntityManager::spawningComplete = StageState::SpawnManager::spawningComplete;
 
+
+bool StageState::playerDead = false;
+// Last cutoff multiple where rewards were given
+uint16_t StageState::lastReward = 1;
+uint32_t StageState::wave = 1;
+bool StageState::waveComplete = false;
+WaveCompletionScreen* StageState::waveScreen = nullptr;
+
 StageState::StageState()
 {
 	entityManager = EntityManager();
 	SpawnManager::reset();
 	//entityManager.spawn(EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
-	entityManager.spawn(EntityID::POD, sf::Vector2f{ 100, 100 });
+	//entityManager.spawn(EntityID::POD, sf::Vector2f{ 100, 100 });
 	entityManager.spawn(EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
-	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
-	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 108, 95 });
-	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 90, 90 });
-	entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 120, 110 });
+	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
+	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 108, 95 });
+	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 90, 90 });
+	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 120, 110 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
 	//entityManager.spawn(EntityID::SWARMER, sf::Vector2f{ 100, 150 });
 	//entityManager.spawn(EntityID::MUTANT, { 50, 50 });
@@ -33,99 +41,107 @@ StageState::StageState()
 
 bool StageState::tick(Action& actions, double deltatime)
 {
-	static bool playerDead = false;
-	// For this to be adjustable it should be moved to the class definition with appropriate methods
-	static const ScoreType rewardReq = 10000;
-	// Last cutoff multiple where rewards were given
-	static uint16_t lastReward = 1;
-
-	static Timer<double> spwn{ 1 };
-
-
-	if (EntityManager::waveComplete())
-		SpawnManager::nextWave();
-
-	SpawnManager::tick(deltatime);
-
-
-	if (!playerDead)
+	if (!waveComplete)
 	{
-		// ##############################
-        // ####  Handle  Keypresses  ####
-		// ##############################
+		waveComplete = EntityManager::waveComplete();
 
-		// @todo check if a cooldown was needed, I am just assuming it is - Ricky
-		// Handle the hyperspace cooldown
-		if (!hyperspaceCooldown.isComplete())
-			hyperspaceCooldown.tick(deltatime);
-
-		// Execute hyperspace if applicable
-		if (actions.flags.hyperspace && hyperspaceCooldown.isComplete())
-		{
-			entityManager.hyperspace(DisplayManager::getView().getSize(), DisplayManager::getView().getCenter().x - (DisplayManager::getView().getSize().x / 2.f));
-			actions.flags.hyperspace = false;
-			hyperspaceCooldown.tick(0);
-		}
-
-		// Handle and update smart bombs accordingly
-		if (actions.flags.smart_bomb && playerState.smart_bombs > 0)
-		{
-			entityManager.killArea(DisplayManager::getView().getViewport());
-			--playerState.smart_bombs;
-		}
-
-		// ##############################
-		// #######  Handle Score  #######
-		// ##############################
-
-		if (entityManager.getScore() >= rewardReq * lastReward)
-		{
-			++lastReward;
-
-			if (playerState.smart_bombs != 3)
-				++playerState.smart_bombs;
-			if (playerState.lives != 3)
-				++playerState.lives;
-		}
-		if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
-			SpawnManager::startInvasion();
-		// Handle player death.
-		playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
+		if (waveComplete)
+			waveScreen = new WaveCompletionScreen(EntityManager::getScore(), wave, EntityManager::astronautCount());
 	}
 
-	// Should handle saving the high score if needed
-	if (playerDead)
+	if (waveComplete)
 	{
-		if (playerState.lives <= 1)
-		{
+	    if (waveScreen->tick(deltatime))
+	    {
 			SpawnManager::nextWave();
-			playerState.lives = 0;
-			if (SaveHighscore(actions))
-			{
-				// Reset ALL data before returning
-				playerState.lives = 3;
-				playerState.smart_bombs = 0;
-				playerDead = false;
-
-				DisplayManager::resetViewPos();
-				return true;
-			}
-
-		    return false;
-		}
-
-		EntityManager::deathReset();
-
-
-		std::cout << "KILLING>>>\n";
-		--playerState.lives;
-
-
-		//@todo Add respawning mechanics...
-		playerDead = false;
+			++wave;
+			waveComplete = false;
+			delete waveScreen;
+	    }
 	}
 	else
-		EntityManager::adjViewport(&DisplayManager::getView(), deltatime);
+	{
+		if (!playerDead)
+		{
+			SpawnManager::tick(deltatime);
+
+			// ##############################
+			// ####  Handle  Keypresses  ####
+			// ##############################
+
+			// @todo check if a cooldown was needed, I am just assuming it is - Ricky
+			// Handle the hyperspace cooldown
+			if (!hyperspaceCooldown.isComplete())
+				hyperspaceCooldown.tick(deltatime);
+
+			// Execute hyperspace if applicable
+			if (actions.flags.hyperspace && hyperspaceCooldown.isComplete())
+			{
+				entityManager.hyperspace(DisplayManager::getView().getSize(), DisplayManager::getView().getCenter().x - (DisplayManager::getView().getSize().x / 2.f));
+				actions.flags.hyperspace = false;
+				hyperspaceCooldown.tick(0);
+			}
+
+			// Handle and update smart bombs accordingly
+			if (actions.flags.smart_bomb && playerState.smart_bombs > 0)
+			{
+				entityManager.killArea(DisplayManager::getView().getViewport());
+				--playerState.smart_bombs;
+			}
+
+			// ##############################
+			// #######  Handle Score  #######
+			// ##############################
+
+			if (entityManager.getScore() >= rewardReq * lastReward)
+			{
+				++lastReward;
+
+				if (playerState.smart_bombs != 255)
+					++playerState.smart_bombs;
+				if (playerState.lives != 255)
+					++playerState.lives;
+			}
+			if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
+				SpawnManager::startInvasion();
+			// Handle player death.
+			playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
+		}
+
+		// Should handle saving the high score if needed
+		if (playerDead)
+		{
+			if (playerState.lives <= 1)
+			{
+				SpawnManager::nextWave();
+				playerState.lives = 0;
+				if (SaveHighscore(actions))
+				{
+					// Reset ALL data before returning
+					playerState.lives = 3;
+					playerState.smart_bombs = 0;
+					playerDead = false;
+
+					DisplayManager::resetViewPos();
+					return true;
+				}
+
+				return false;
+			}
+
+			EntityManager::deathReset();
+
+
+			std::cout << "KILLING>>>\n";
+			--playerState.lives;
+
+
+			//@todo Add respawning mechanics...
+			playerDead = false;
+		}
+		else
+			EntityManager::adjViewport(&DisplayManager::getView(), deltatime);
+	}
 
 	return false;
 }
@@ -135,6 +151,7 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
     static sf::Text           initials;
     static char               nameStr[4];
     static sf::RectangleShape underline;
+
 
     // TODO add timer for death animation
     if (playerState.lives > 0)
@@ -260,6 +277,10 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         target.draw(initials, states);
         target.draw(underline, states);
     }
+
+
+	if (waveComplete)
+		waveScreen->draw(target, states);
 }
 
 std::string StageState::getInitials() {

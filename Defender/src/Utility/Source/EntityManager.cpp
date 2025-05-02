@@ -337,7 +337,7 @@ void EntityManager::hyperspace(sf::Vector2f size, float left)
     }
 }
 
-ScoreType EntityManager::getScore()
+ScoreType& EntityManager::getScore()
 {
     return score;
 }

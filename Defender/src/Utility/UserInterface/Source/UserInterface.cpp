@@ -17,6 +17,7 @@ sf::Shader* UserInterface::williamsShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
+HSV UserInterface::shiftReplacement{};
 Color<float> UserInterface::brightColors[] =
 { // Data table from somewhere...
     {1.0f * 255.0f, 0.0f * 255.0f, 0.0f * 255.0f},
@@ -265,7 +266,6 @@ const void UserInterface::shaderTick(double deltatime)
 {
     static Timer<double>      replaceType{ 1 / 8. };
 	static bool               type = false;
-    static HSV                shiftReplacement;
     static Timer<double>      replaceWilliams{ 1. };
 	static bool               williamsType = false;
 

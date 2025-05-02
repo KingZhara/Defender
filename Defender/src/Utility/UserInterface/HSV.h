@@ -58,6 +58,27 @@ public:
         else if (h < 300.f) { r = x; g = 0; b = c; }
         else { r = c; g = 0; b = x; }
 
-        return {r + m, g + m, b + m};
+        return { r + m, g + m, b + m };
+    }
+
+    operator sf::Color() const {
+        float c = v * s;
+        float x = c * (1 - std::fabs(std::fmod(h / 60.f, 2.f) - 1));
+        float m = v - c;
+
+        float r = 0, g = 0, b = 0;
+
+        if (h < 60.f) { r = c; g = x; b = 0; }
+        else if (h < 120.f) { r = x; g = c; b = 0; }
+        else if (h < 180.f) { r = 0; g = c; b = x; }
+        else if (h < 240.f) { r = 0; g = x; b = c; }
+        else if (h < 300.f) { r = x; g = 0; b = c; }
+        else { r = c; g = 0; b = x; }
+
+        return sf::Color(
+            static_cast<sf::Uint8>((r + m) * 255.f),
+            static_cast<sf::Uint8>((g + m) * 255.f),
+            static_cast<sf::Uint8>((b + m) * 255.f)
+        );
     }
 };

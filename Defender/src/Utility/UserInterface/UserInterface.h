@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
+#include "HSV.h"
+
 #include "../ShaderID.h"
 #include "../common.h"
 
@@ -77,6 +80,10 @@ public:
 	static       sf::Shader* getWilliamsShader();
 	static sf::Shader* getShader(ShaderID::ID ID);
 	static const void shaderTick(double deltatime);
+	static sf::Color getColor()
+	{
+		return shiftReplacement;
+	}
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
 	static void drawForeground(sf::RenderTarget&, sf::View&);
@@ -91,7 +98,8 @@ private:
 	static sf::Shader*    shiftingShader;
 	static sf::Shader*    flashingShader;
 	static sf::Shader*    williamsShader;
-	static Color<float> brightColors[];
+	static Color<float>   brightColors[];
 	static sf::Font*      otherFont     ;
+	static HSV            shiftReplacement;
 };
 
