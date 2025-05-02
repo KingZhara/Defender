@@ -107,8 +107,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 			2
 		},
 		Vec2<double>{
-			2.0f,
-			3.0f
+			2./3.,
+			1
 		},
 		200
 	},
@@ -215,12 +215,15 @@ void Entity::setVel(sf::Vector2f newVel)
 	vel = newVel;
 }
 
-const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale = 1)
+const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale, bool playerVelType)
 {
 	static constexpr float half = COMN::worldSize / 2;
 
 	sf::Vector2f target = makeCenteredTL({ 0, 0 }, EntityID::PLAYER);
 	sf::Vector2f eVel = getEVel(ID);
+
+	if (playerVelType)
+		target += *EntityData::PLAYER_REF.vel;
 
 	pos = makeCenteredTL(pos, ID);
 	// Use the center & normalize
@@ -244,7 +247,9 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(sf::Vector2f pos, Entit
 		(float)(cos(rot) * scale * eVel.x),
 		(float)(sin(rot) * scale * eVel.y)
 	};
-	vel += *EntityData::PLAYER_REF.vel;
+
+	if (!playerVelType)
+    	vel += *EntityData::PLAYER_REF.vel;
 
 
 	return { vel, target };

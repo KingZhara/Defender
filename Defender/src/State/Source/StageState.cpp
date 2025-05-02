@@ -19,7 +19,7 @@ StageState::StageState()
 	entityManager = EntityManager();
 	SpawnManager::reset();
 	//entityManager.spawn(EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
-	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::POD, sf::Vector2f{ 100, 100 });
+	entityManager.spawn(EntityID::POD, sf::Vector2f{ 100, 100 });
 	entityManager.spawn(EntityID::PLAYER, sf::Vector2f{(float)(DisplayManager::getView().getCenter().x * 1.5) + Entity::makeCenteredTL({0, 0}, EntityID::PLAYER).x, (float)DisplayManager::getView().getCenter().y });
 	//entityManager.spawn(EntityID::BOMBER, sf::Vector2f{ 100, 100 });
 	//entityManager.spawn(EntityManager::SpawnType::ENEMY, EntityID::SWARMER, sf::Vector2f{ 50, 50});
@@ -350,7 +350,7 @@ Timer<double> StageState::SpawnManager::subWaveTimer = Timer<double>(2);
 
 void StageState::SpawnManager::tick(double deltatime)
 {
-	std::cout << "Ticking spawn manager: BASE: " << subWaveTimer.BASE << ", TIME: " << subWaveTimer.time << ", INVASION: " << invasion << '\n';
+	//std::cout << "Ticking spawn manager: BASE: " << subWaveTimer.BASE << ", TIME: " << subWaveTimer.time << ", INVASION: " << invasion << '\n';
 	if (subWaveTimer.tick(deltatime))
 	{
 		if (!firstSub)

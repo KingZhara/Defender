@@ -44,7 +44,7 @@ void Mutant::tick(double deltatime)
             vel.x = COMN::baseSpeed.x;
         else
             vel.x = -COMN::baseSpeed.x;
-
+        /*
         // If we are out of the ideal range (screen height / 8 +- 5)
         if (targetData.pos.y > COMN::resolution.y / 8 + 5 ||
             targetData.pos.y < -COMN::resolution.y / 8 - 5)
@@ -55,7 +55,7 @@ void Mutant::tick(double deltatime)
             else
                 vel.y = -COMN::baseSpeed.y;
         }
-        else
+        else*/
             vel.y = 0;
     }
 

@@ -8,7 +8,5 @@ public:
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Projectile(pos_, EntityID::LASER, isScripted_, script_)
     {}
-
-    virtual bool collide(Entity *other) override;
 };
 

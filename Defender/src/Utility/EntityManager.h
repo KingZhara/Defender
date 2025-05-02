@@ -17,40 +17,29 @@ class EntityManager : public sf::Drawable
 		template<typename E, typename... Args>
 			requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 		uint16_t spawn(Args&&... args);
+		uint16_t spawn(uint16_t index, T* entity);
 		template<typename E>
 			requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 		uint16_t push(Entity* entity);
 		uint16_t getLiveCount() const
 		{
-			//std::cout << "Live Count: " << entities.size() - count << '\n';
-			return entities.size() - count;
+			return static_cast<uint16_t>(entities.size() - freeIndices.size());
+		}
+
+		uint16_t getDeadCount() const
+		{
+			return static_cast<uint16_t>(freeIndices.size());
 		}
 		void kill(uint16_t index);
 		void reset();
 		void zero();
 
 		~EntityHolder();
-
-		uint16_t first = 0, last = 0, count = 0;
 	private:
-
-		void getIndex(uint16_t& index);
-		uint16_t getNextIndex(uint16_t start, uint16_t extrema, int8_t diff);
-		uint16_t findIndex_last_internal();
-
-		// Dead entity search information
-		bool insertionSide = false;
+		std::deque<uint16_t> freeIndices; // Tracks free indices
 	};
 
 public:
-	enum class SpawnType
-	{
-		PLAYER,
-		PROJECTILE,
-		ENEMY,
-		ASTRONAUT,
-	};
-
 	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
@@ -101,8 +90,8 @@ private:
 
 
 	static EntityHolder<Projectile> projectiles;
-	static EntityHolder<Enemy>      enemies;
-	static EntityHolder<Astronaut>  astronauts;
+	static EntityHolder<Entity>     enemies;
+	static EntityHolder<Entity>     astronauts;
 	static EntityHolder<Particle>   particles; // Always scripted
 	static Player* player;
 
@@ -136,9 +125,10 @@ inline void EntityManager::tickLander(double deltatime, uint16_t index)
 	{
 		for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
 		{
-			if (astronauts.entities.at(i) && astronauts.entities.at(i)->targeted())
+			Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
+			if (astronaut && astronaut->targeted())
 			{
-				entity->setTarget(astronauts.entities.at(i));
+				entity->setTarget(astronaut);
 				landerTargetTable.first[index] = i;
 				landerTargetTable.second[i] = index;
 				break;
@@ -161,17 +151,9 @@ inline void EntityManager::tickLander(double deltatime, uint16_t index)
 template<typename T>
 void EntityManager::EntityHolder<T>::kill(uint16_t index)
 {
-	//std::cout << "KILL! CT: " << count << ", SZ: " << entities.size() << '\n';
-	delete entities.at(index);
-
-	entities.at(index) = nullptr;
-
-	count++;
-
-	if (index < first)
-		first = index;
-	else if (index > last)
-		last = index;
+	delete entities[index];
+	entities[index] = nullptr;
+	freeIndices.push_back(index);
 }
 
 template<typename T>
@@ -179,10 +161,27 @@ template<typename E, typename ... Args>
 	requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 uint16_t EntityManager::EntityHolder<T>::spawn(Args &&...args)
 {
-	uint16_t index = findIndex_last_internal();
+	uint16_t index;
 
+	if (!freeIndices.empty()) {
+		index = freeIndices.front();
+		freeIndices.pop_front();
+	}
+	else {
+		index = static_cast<uint16_t>(entities.size());
+		entities.emplace_back(nullptr);
+	}
+
+	entities[index] = new E(std::forward<Args>(args)...);
+	return index;
+}
+
+template<typename T>
+uint16_t EntityManager::EntityHolder<T>::spawn(uint16_t index, T* entity)
+{
+	delete entities.at(index);
 	// Place new entity
-	entities.at(index) = new E(std::forward<Args>(args)...);
+	entities.at(index) = entity;
 
 	return index;
 }
@@ -192,45 +191,18 @@ template<typename E>
 requires (std::is_base_of_v<T, E> || std::is_same_v<T, E>)
 uint16_t EntityManager::EntityHolder<T>::push(Entity* entity)
 {
-	uint16_t index = findIndex_last_internal();
+	uint16_t index;
 
-	// Place new entity
-	entities.at(index) = dynamic_cast<E*>(entity);
-
-	return index;
-}
-
-template<typename T>
-uint16_t EntityManager::EntityHolder<T>::findIndex_last_internal()
-{
-	uint16_t index = 0;
-
-	//std::cout << "SPAWNING AT - (" << pos.x << ", " << pos.y << ")\n";
-
-	//std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << "\n";
-	// Generate index
-	if (count == 0)
-	{
-		//std::cout << "ECOUT\n";
+	if (!freeIndices.empty()) {
+		index = freeIndices.front();
+		freeIndices.pop_front();
+	}
+	else {
+		index = static_cast<uint16_t>(entities.size());
 		entities.emplace_back(nullptr);
-		index = static_cast<uint16_t>(entities.size() - 1);
 	}
-	else
-	{
 
-		//std::cout << "N_ECOUT\n";
-		if (count > 1)
-			getIndex(index);
-		else // count == 1
-			index = first;
-
-
-		--count;
-	}
-	//std::cout << "FS: " << first << ", LS: " << last << ", CT: " << count << ", SZ: " << entities.size() << " END\n";
-
-	//std::cout << index << '\n';
-	// Place new entity
+	entities[index] = dynamic_cast<E*>(entity);
 	return index;
 }
 
@@ -244,15 +216,20 @@ EntityManager::EntityHolder<T>::~EntityHolder()
 template<typename T>
 void EntityManager::EntityHolder<T>::reset()
 {
-	for (auto& entity : entities)
-		delete entity;
-
-	entities.clear();
-	entities.shrink_to_fit();
-
-	first = 0;
-	last = 0;
-	count = 0;
+	for (T*& e : entities) {
+		delete e;
+		e = nullptr;
+	}
+	freeIndices.clear();
+	for (uint16_t i = 0; i < entities.size(); ++i)
+		freeIndices.push_back(i);
+	for (T*& e : entities) {
+		delete e;
+		e = nullptr;
+	}
+	freeIndices.clear();
+	for (uint16_t i = 0; i < entities.size(); ++i)
+		freeIndices.push_back(i);
 }
 
 template<typename T>
@@ -266,50 +243,6 @@ void EntityManager::EntityHolder<T>::zero()
 }
 
 template<typename T>
-void EntityManager::EntityHolder<T>::getIndex(uint16_t &index)
-{
-	if (count < 2)
-		throw std::runtime_error("Invalid count during call : uint16_t EntityManager::EntityHolder::getIndex()");
-
-	// Generate the index
-	if (count == 2)
-	{
-		// Assign it to one, make both the same
-		if (insertionSide)
-		{
-			index = first;
-			first = last;
-		}
-		else
-		{
-			index = last;
-			last = first;
-		}
-	}
-	else
-	{
-		// Assign it to one, find the next index for that side
-		index = insertionSide ? first : last;
-		insertionSide ? first : last = insertionSide ? getNextIndex(first, last, 1)
-			: getNextIndex(last, first, -1);
-	}
-}
-
-template<typename T>
-uint16_t EntityManager::EntityHolder<T>::getNextIndex(uint16_t start,
-        uint16_t extrema,
-        int8_t diff)
-{
-	// Search for the first nullptr in selected direction(diff)
-	do
-		start += diff;
-	while (start != extrema - diff && entities.at(start) != nullptr);
-
-	// Return the first found
-	return start;
-}
-
-template<typename T>
 bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 {
 	uint16_t i = 0;
@@ -318,32 +251,41 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 	while (i < entities.entities.size() && died != true)
 	{
 		//std::cout << entity_ << ' ' << projectiles.entities.at(entity) << '\n';
-		T*& entity_ = entities.entities.at(i);
+		T* entity_ = entities.entities.at(i);
 
-		if (entity_ != nullptr &&
-			projectiles.entities.at(entity)->collide(entity_))
+		if (entity_ != nullptr && // If the entity is not dead
+		 !((projectiles.entities.at(entity)->getID() == EntityID::LASER && entity_->getID() == EntityID::PLAYER) || // If its not a laser hitting a player
+		   (projectiles.entities.at(entity)->getID() != EntityID::LASER && entity_->getID() != EntityID::PLAYER)) && // or a non laser hitting a non player
+			projectiles.entities.at(entity)->collide(entity_)) // and the collision is happening
 		{
-			if constexpr (std::is_same_v<T, Enemy>)
+			if (dynamic_cast<Enemy*>(entity_))
 			{
 				score += entity_->getXP();
 
 				if (dynamic_cast<Lander*>(entity_))
 				{
-					if (dynamic_cast<Lander*>(entity_)->hasTarget())
+					Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]));
+					if (astronaut && dynamic_cast<Lander*>(entity_)->hasTarget())
 					{
-						astronauts.entities.at(landerTargetTable.first[i])->setTargeted(false);
+						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]))->setTargeted(false);
 						// Erase the entry pairing this astronaut with the lander
 						landerTargetTable.second.erase(landerTargetTable.first[i]);
 						// Erase the entry pairing this lander with the astronaut
 						landerTargetTable.first.erase(i);
 					}
-				} else if (dynamic_cast<Baiter*>(entity_))
-					--baiterCounter;
+				}
 				else if (dynamic_cast<Pod*>(entity_))
-					for (uint8_t i = 0; i < 5; i++)
+				{
+					for (uint8_t j = 0; j < 5; j++)
+					{
 						spawn(EntityID::SWARMER, entity_->getPos());
+					    entity_ = entities.entities.at(i);
+					}
+				}
+				else if (dynamic_cast<Baiter*>(entity_))
+					--baiterCounter;
 			}
-			else if constexpr (std::is_same_v<T, Astronaut>)
+			else if (dynamic_cast<Astronaut*>(entity_))
 			{
 				if (dynamic_cast<Astronaut*>(entity_)->targeted())
 				{
@@ -356,7 +298,15 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 			}
 
 			// @todo Find collision point for particalization; Projectile method?
-			//particleize(false, entity_->getPos(), entity_->getID());
+			particleize(
+				false,
+				entity_->getPos(),
+				entity_->getID(),
+				{
+					(int8_t)(projectiles.entities.at(entity)->getPos().x - entity_->getPos().x),
+					(int8_t)(projectiles.entities.at(entity)->getPos().y - entity_->getPos().y)
+				},
+				nullptr);
 
 			projectiles.kill(entity);
 			entities.kill(i);
@@ -375,7 +325,7 @@ template<typename ... Args>
 void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
 	Entity* entity;
-
+	std::cout << "SPAWNING..\n.";
 	switch (ID)
 	{
 

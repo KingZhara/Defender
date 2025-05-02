@@ -3,10 +3,9 @@
 
 void Baiter::tick(double deltatime)
 {
-	static Timer<double>      attackTimer{ 0.6 };
 
 	//@todo change baiter targeting
-
+	/*
 	if (init) 
 	{
 		destinationX = (uint16_t)(EntityData::PlayerRef::pos->x + ((EntityData::PlayerRef::pos->x - pos.x) / 3));
@@ -46,7 +45,9 @@ void Baiter::tick(double deltatime)
 
 	if (vel.y < 0 && pos.y < destinationY)
 		init = true;
-
+        */
+	if (targetTimer.tick(deltatime))
+		vel = makePlayerTargetedVec(pos, ID, 1).vel;
 	// Attack
 	if (attackTimer.tick(deltatime))
 		entityQueue.emplace(QueuedEntity(pos, EntityID::BULLET));

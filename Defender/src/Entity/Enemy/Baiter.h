@@ -20,7 +20,8 @@ public:
     int16_t destinationY = 0;
 
     bool init = true;
-
+    Timer<double>      attackTimer{ 0.6 };
+    Timer<double> targetTimer{ 1 };
     double rot;
 };
 

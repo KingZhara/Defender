@@ -5,8 +5,8 @@ bool EntityManager::scripted = true;
 
 
 EntityManager::EntityHolder<Projectile> EntityManager::projectiles;
-EntityManager::EntityHolder<Enemy> EntityManager::enemies;
-EntityManager::EntityHolder<Astronaut> EntityManager::astronauts;
+EntityManager::EntityHolder<Entity> EntityManager::enemies;
+EntityManager::EntityHolder<Entity> EntityManager::astronauts;
 EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
 std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> EntityManager::landerTargetTable;
@@ -145,34 +145,36 @@ bool EntityManager::tick(double deltatime, float center = 0)
     // Tick enemies
     for (uint16_t i = 0; i < enemies.entities.size(); i++)
     {
-        Enemy*& enemy = enemies.entities.at(i);
-        if (enemy != nullptr)
+        if (enemies.entities.at(i) != nullptr)
         {
-            if (dynamic_cast<Lander*>(enemy))
+            if (dynamic_cast<Lander*>(enemies.entities.at(i)))
                 tickLander(deltatime, i);
-            else if (dynamic_cast<Mutant*>(enemy))
-                dynamic_cast<Mutant*>(enemy)->tick(deltatime);
-            else if (dynamic_cast<Pod*>(enemy))
-                dynamic_cast<Pod*>(enemy)->tick(deltatime);
-            else if (dynamic_cast<Baiter*>(enemy))
-                dynamic_cast<Baiter*>(enemy)->tick(deltatime);
-            else if (dynamic_cast<Swarmer*>(enemy))
-                dynamic_cast<Swarmer*>(enemy)->tick(deltatime);
-            else if (dynamic_cast<Bomber*>(enemy))
-                dynamic_cast<Bomber*>(enemy)->tick(deltatime);
             else
+                enemies.entities.at(i)->tick(deltatime);
+            if (dynamic_cast<Particle*>(enemies.entities.at(i)))
             {
-                throw std::runtime_error(
-                        "Failed to cast enemy! : EntityManager::Tick()");
+                Particle* particle = dynamic_cast<Particle*>(enemies.entities.at(i));
+                if (particle->isComplete())
+					enemies.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
             }
         }
     }
 
     // @todo Needs to detect death
-    for (auto& astronaut : astronauts.entities)
+    for (uint16_t i = 0; i < astronauts.entities.size(); i++)
     {
-        if (astronaut != nullptr)
-            astronaut->tick(deltatime);
+        Entity*& entity = astronauts.entities.at(i);
+
+        if (entity != nullptr)
+        {
+            entity->tick(deltatime);
+            if (dynamic_cast<Particle*>(entity))
+            {
+                Particle* particle = dynamic_cast<Particle*>(entity);
+                if (particle->isComplete())
+                    astronauts.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
+            }
+        }
     }
 
     // Tick Particles
@@ -218,8 +220,8 @@ bool EntityManager::tick(double deltatime, float center = 0)
                 playerDeath = player->collide(projectiles.entities.at(i));
 
 
-            if (!playerDeath && !collisionWrapper<Enemy>(i, enemies))
-                collisionWrapper<Astronaut>(i, astronauts);
+            if (!playerDeath && !collisionWrapper<Entity>(i, enemies))
+                collisionWrapper<Entity>(i, astronauts);
         }
 
         if (playerDeath)
@@ -238,6 +240,9 @@ bool EntityManager::tick(double deltatime, float center = 0)
                 playerDeath = player->collide(enemies.entities.at(i));
                 if (playerDeath)
                 {
+                    if (enemies.entities.at(i)->getID() == EntityID::BAITER)
+                        --baiterCounter;
+
                     score += enemies.entities[i]->getXP();
                     enemies.kill(i);
                 }
@@ -292,7 +297,19 @@ void EntityManager::draw(sf::RenderTarget &target,
 // @todo make death behavior
 void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity)
 {
-    particles.spawn<Particle>(pos, ID, spawn, collision, entity);
+
+    if (spawn)
+    {
+        if (ID == EntityID::ASTRONAUT)
+            astronauts.spawn<Particle>(pos, ID, spawn, collision, entity);
+        else if (ID >= EntityID::LANDER && ID <= EntityID::SWARMER)
+            enemies.spawn<Particle>(pos, ID, spawn, collision, entity);
+        else
+            particles.spawn<Particle>(pos, ID, spawn, collision, entity);
+    }
+    else
+        particles.spawn<Particle>(pos, ID, spawn, collision, entity);
+
 }
 
 void EntityManager::killArea(sf::FloatRect viewport)
@@ -342,7 +359,7 @@ void EntityManager::deathReset()
 
 bool EntityManager::waveComplete()
 {
-	std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << spawningComplete << '\n';
+	std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << (spawningComplete ? "true" : "false") << '\n';
     return (enemies.getLiveCount() - baiterCounter == 0 && spawningComplete);
 }
 
@@ -386,6 +403,10 @@ void EntityManager::clearQueue()
 void EntityManager::spawn_typeWrapper(Entity* entity)
 {
     std::cout << entity << '\n';
+
+    if (entity == nullptr)
+        return;
+
     switch (entity->getID())
     {
     case EntityID::BULLET:
@@ -428,7 +449,7 @@ void EntityManager::spawn_typeWrapper(Entity* entity)
         astronauts.push<Astronaut>(entity);
         break;
     case EntityID::PLAYER:
-		std::cout << "Player Spawned\n";
+ 		std::cout << "Player Spawned\n";
         delete player;
         player = (Player*)entity;
         break;

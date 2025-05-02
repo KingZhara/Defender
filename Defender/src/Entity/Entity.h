@@ -61,7 +61,7 @@ public:
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     virtual void                     tick(double deltatime);
     virtual bool                     collide(Entity* other);
-    bool                             collide(sf::FloatRect otherBound); // Used by Laser
+    virtual bool                     collide(sf::FloatRect otherBound); // Used by Laser
     virtual void wrap();
     static const sf::IntRect &       getBounds(EntityID::ID ID);
     void                             setPos(sf::Vector2f newPos);
@@ -70,7 +70,7 @@ public:
     sf::Vector2f                     getVel() { return vel; }
     EntityID::ID                     getID() { return ID; }
     const uint16_t                   getXP() { return DATA_TABLE[ID].XP; }
-    static const EntityTarget makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale);
+    static const EntityTarget makePlayerTargetedVec(sf::Vector2f pos, EntityID::ID ID, uint8_t scale = 1, bool playerVelType = false);
     static const sf::Vector2f makeCenteredTL(sf::Vector2f pos, EntityID::ID);
     static const sf::Vector2f getEVel(EntityID::ID ID_)
     {

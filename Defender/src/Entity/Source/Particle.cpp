@@ -1,4 +1,5 @@
 #include "../Particle.h"
+#include <algorithm>
 #include <new>
 
 #include "../Entity.h"
@@ -20,16 +21,23 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 		throw std::overflow_error("Privided Glyph is too large for this type");
 	}
 	// If collision = {-1, -1}, reset
-	if (collision.x == -1 || collision.y == -1)
+    if (collision.x == -1 || collision.y == -1)
 	{
 		collision.x = (size.x + 1) / 2;
 	    collision.y = (size.y + 1) / 2;
-
-		skipCenter = true;
+	
+		//skipCenter = true;
 	}
 	// Create the array pointer, size.x * size.y - 1 (collision), if spawning
 	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0)), alignof(Entity)));
 	if (!pieces) throw std::bad_alloc();
+
+    collision.x = std::min<int>(collision.x, size.x);
+    collision.y = std::min<int>(collision.y, size.y);
+    collision.x = std::max<int>(collision.x, 0);
+    collision.y = std::max<int>(collision.y, 0);
+
+    //std::cout << "Size: " << (size.x * size.y - (skipCenter ? 1 : 0)) << '\n';
 
 	// For each piece, create a new particle
     /* // For x; +=2
@@ -58,8 +66,8 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			gridPos -= collision;
 
 			// Skip the collision piece; Only triggered when collision piece is within bounds
-			if (gridPos.x == 0 && gridPos.y == 0)
-				continue;
+			//if (gridPos.x == 0 && gridPos.y == 0)
+			//	continue;
 
 			// Get the real position of the piece
 			sf::Vector2f nPos = pos;
@@ -123,10 +131,8 @@ void Particle::tick(double deltatime)
 		//	std::cout << "Particle pos: " << pos.x << ", " << pos.y << '\n';
 		//}
 
-		for (int8_t x = 0; x < size.x; x++)
-			for (int8_t y = 0; y < size.y; y++)
-				if (!skipCenter || (skipCenter && x * size.y + y < size.x * size.y - 1))
-				    pieces[x * size.y + y].tick(deltatime);
+		for (int8_t i = 0; i < size.x * size.y - (skipCenter ? 1 : 0); i++)
+		    pieces[i].tick(deltatime);
 
 		lifetime.tick(deltatime);
 	}
@@ -137,8 +143,11 @@ void Particle::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	//std::cout << "Draw Particle\n";
 	// Draw all pieces
 	if (!lifetime.isComplete())
-    	for (int8_t x = 0; x < size.x; x++)
-	    	for (int8_t y = 0; y < size.y; y++)
-				if (!skipCenter || (skipCenter && x * size.y + y < size.x * size.y - 1))
-    			    target.draw(pieces[x * size.y + y], states);
+	{
+		for (int8_t i = 0; i < size.x * size.y - (skipCenter ? 1 : 0); i++)
+		{
+			//std::cout << "Index: " << i << ", ADDR: " << &pieces[i] << '\n';
+			target.draw(pieces[i], states);
+		}
+	}
 }
