@@ -34,6 +34,8 @@ public:
 	static int getPlayerBombs() { return playerState.smart_bombs; }
 	static int getScore() { return entityManager.getScore(); }
 
+	static const EntityManager& getEntityManager() { return entityManager; }
+
 private:
 	class SpawnManager;
 

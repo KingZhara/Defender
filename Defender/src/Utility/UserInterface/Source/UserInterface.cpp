@@ -411,6 +411,26 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
     target.draw(scoreTxt);
 
 
+    // Draw minimap
+    const EntityManager& entityManager = StageState::getEntityManager();
+    sf::Vector2f playerPos = entityManager.getPlayerPos();
+
+
+    sf::RectangleShape player;
+    player.setSize({ 1, 1 });
+    player.setPosition(
+        // center player
+        COMN::resolution.x / 2.f + 
+        // get the player pos - view center
+        (playerPos.x - DisplayManager::getView().getCenter().x) / 20.f
+        + player.getSize().x / 2.f,
+
+        // convert game pos to ui pos
+        (playerPos.y - COMN::uiHeight) / (COMN::resolution.y - COMN::uiHeight)
+        * (COMN::uiHeight - 4) + 4 - player.getSize().y);
+
+    target.draw(player);
+
     // Reset view
     target.setView(oldView);
 }
