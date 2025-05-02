@@ -31,6 +31,10 @@ public:
 		waveText.setFillColor(textColor);
 		completed.setFillColor(textColor);
 		bonusText.setFillColor(textColor);
+
+		//waveText.setLetterSpacing(1. / 2.f);
+		//completed.setLetterSpacing(1. / 2.f);
+		//bonusText.setLetterSpacing(1. / 2.f);
 	}
 
 	bool tick(double deltatime)
@@ -60,11 +64,11 @@ public:
 		// Loop from 0 < astronautCount
 		  // draw the astronaut sprite at the appropriate location; +8px?
 
-		astronaut.setPosition(bonusText.getPosition().x - 1, COMN::uiHeight + height * 15);
+		astronaut.setPosition(bonusText.getPosition().x, COMN::uiHeight + height * 15);
 
 		for  (uint8_t i = 0; i < astronautCount; i++)
 		{
-			astronaut.setPosition(bonusText.getPosition().x - 1 + i * 9, astronaut.getPosition().y);
+			astronaut.setPosition(bonusText.getPosition().x + i * 8, astronaut.getPosition().y);
 			target.draw(astronaut, states);
 		}
 	}

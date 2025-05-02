@@ -43,7 +43,7 @@ bool StageState::tick(Action& actions, double deltatime)
 {
 	if (!waveComplete)
 	{
-		waveComplete = EntityManager::waveComplete();
+		waveComplete = true;//EntityManager::waveComplete();
 
 		if (waveComplete)
 			waveScreen = new WaveCompletionScreen(EntityManager::getScore(), wave, EntityManager::astronautCount());
