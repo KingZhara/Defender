@@ -185,7 +185,7 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         lifeDisplay.setTextureRect(playerUI);
         lifeDisplay.setSize(sf::Vector2f(playerUI.getSize()));
 
-        for (int i = 0; i < playerState.lives - 1; i++)
+        for (int i = 0; i < std::min(playerState.lives - 1, 3); i++)
         {
             lifeDisplay.setPosition(playerUIPos.x + (playerUI.width + 2) * i, playerUIPos.y);
             target.draw(lifeDisplay);
@@ -200,7 +200,7 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         bombDisplay.setTextureRect(bombUI);
         bombDisplay.setSize(sf::Vector2f(bombUI.getSize()));
 
-        for (int i = 0; i < playerState.smart_bombs; i++)
+        for (int i = 0; i < std::min((int)playerState.smart_bombs, 3); i++)
         {
             bombDisplay.setPosition(bombUIPos.x, bombUIPos.y + (bombUI.height + 1) * i);
             target.draw(bombDisplay);
