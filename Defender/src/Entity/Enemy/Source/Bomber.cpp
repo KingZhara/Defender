@@ -2,11 +2,19 @@
 
 void Bomber::tick(double deltatime)
 {
-	//!!!!!!!!!! ELLIOT READ THIS !!!!!!!!
-	// The bomber moves in random directions and is not related to the players position.
-	// its similar to the pod, except its direction keeps changing, assume once every 2 seconds.
-	// for this use the same code from the pods constructor except wrap it in a timer like inside of the swarmer,
-	// that will properly mimic the behavior
+	if (rerollTim)
+		rerollTim--; 
+	else 
+	{
+		if (abs(EntityData::PLAYER_REF.pos->x - pos.x) > 300) 
+		{
+			yMovTimStart = (rand() % 20) + 10;
+			range = (rand() % 20) + 5;
+			dx = ((rand() % 200) - 100);
+
+			rerollTim = 100;
+		}
+	}
 
 	if(yMovTim)
 	{
@@ -28,17 +36,25 @@ void Bomber::tick(double deltatime)
 		}
 	}
 
-	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < 10)
+	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range)
 	{
 		stopTim--;
 
 		if (!stopTim) 
 		{
-			yMovTim = 20;
+			yMovTim = yMovTimStart;
 			stopTim = 20;
 			vel.y = 0;
 		}
 	}
 
-	Enemy::tick(deltatime);
+	if (pos.y < COMN::uiHeight)
+		pos.y = COMN::uiHeight;
+
+	if (pos.y > 240-7)
+		pos.y = 240-7;
+
+	vel.x = dx;
+
+	Entity::tick(deltatime);
 }
