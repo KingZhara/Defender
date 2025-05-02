@@ -2,6 +2,8 @@
 #include "../../Timer.h"
 #include "../../src/Entity/Enemy/Mutant.h"
 #include "../HSV.h"
+#include "../../../State/StageState.h"
+
 
 
 UserInterface::World UserInterface::world;
@@ -307,6 +309,14 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
     target.setView(defView);
 
 
+    // Need to cover stuff from gameplay like projectiles ---------------------------------------------
+    sf::RectangleShape clearUI;
+    clearUI.setFillColor(sf::Color::Black);
+    clearUI.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
+    target.draw(clearUI);
+
+
+    // UI dividers
     sf::RectangleShape uiDivider;
     uiDivider.setPosition(0, COMN::uiHeight);
     uiDivider.setSize(sf::Vector2f(COMN::resolution.x, 2));
@@ -321,5 +331,86 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
     minimapDivider.setOutlineThickness(2);
     target.draw(minimapDivider);
 
+
+    // Draw player lives ---------------------------------------------------------------------
+    sf::IntRect  playerUI = { 64, 18, 10, 4 };
+    sf::Vector2i playerUIPos = { 18, 12 };
+
+    sf::RectangleShape lifeDisplay;
+    lifeDisplay.setTexture(DisplayManager::getTexture());
+    lifeDisplay.setTextureRect(playerUI);
+    lifeDisplay.setSize(sf::Vector2f(playerUI.getSize()));
+
+    for (int i = 0; i < std::min(StageState::getPlayerLives() - 1, 3); i++)
+    {
+        lifeDisplay.setPosition(playerUIPos.x + (playerUI.width + 2) * i, playerUIPos.y);
+        target.draw(lifeDisplay);
+    }
+
+    // Draw bomb count ---------------------------------------------------------------------
+    sf::IntRect  bombUI = { 75, 18, 6, 4 };
+    sf::Vector2i bombUIPos = { 70, 19 };
+
+    sf::RectangleShape bombDisplay;
+    bombDisplay.setTexture(DisplayManager::getTexture());
+    bombDisplay.setTextureRect(bombUI);
+    bombDisplay.setSize(sf::Vector2f(bombUI.getSize()));
+
+    for (int i = 0; i < std::min(StageState::getPlayerBombs(), 3); i++)
+    {
+        bombDisplay.setPosition(bombUIPos.x, bombUIPos.y + (bombUI.height + 1) * i);
+        target.draw(bombDisplay);
+    }
+
+
+    // draw screen view markers -------------------------------------------------
+    constexpr int screenMarkerWidth = 15;
+
+    sf::RectangleShape screenMarkerMain;
+    screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
+    screenMarkerMain.setFillColor(sf::Color(0xBFBFBFFF));
+
+
+    sf::RectangleShape screenMarkerSide;
+    screenMarkerSide.setSize(sf::Vector2f(1, 4));
+    screenMarkerSide.setFillColor(sf::Color(0xBFBFBFFF));
+
+
+    constexpr float minimapScale = 0.05;
+
+    // top marker
+    screenMarkerMain.setPosition(COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+
+    target.draw(screenMarkerMain);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, 0);
+    target.draw(screenMarkerSide);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, 0);
+    target.draw(screenMarkerSide);
+
+    // bottom marker
+    screenMarkerMain.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight);
+    target.draw(screenMarkerMain);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight - 2);
+    target.draw(screenMarkerSide);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, COMN::uiHeight - 2);
+    target.draw(screenMarkerSide);
+
+    // Show right aligned score ------------------------------------------------------------
+    // Same position as in highscore
+    sf::Text scoreTxt;
+    scoreTxt.setFont(UserInterface::getFont());
+    scoreTxt.setCharacterSize(16);
+    scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
+    scoreTxt.setString(std::to_string(StageState::getScore()));
+    scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+    scoreTxt.setPosition(63, 14);
+    target.draw(scoreTxt);
+
+
+    // Reset view
     target.setView(oldView);
 }

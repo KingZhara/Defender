@@ -30,6 +30,10 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     static std::string getInitials();
 
+	static int getPlayerLives() { return playerState.lives; }
+	static int getPlayerBombs() { return playerState.smart_bombs; }
+	static int getScore() { return entityManager.getScore(); }
+
 private:
 	class SpawnManager;
 
