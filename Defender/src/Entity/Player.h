@@ -55,6 +55,13 @@ public:
 		Entity::tick(deltatime);
     }
 
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
+	{
+		miniSprite->setTextureRect(sf::IntRect(80, 3, 3, 3));
+
+		Entity::draw(target, states);
+	}
+
     static void setActions(Action& actions);
 
 	bool collide(Entity *other) override

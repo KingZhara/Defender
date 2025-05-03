@@ -8,6 +8,13 @@ public:
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_) {}
 
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
+	{
+		miniSprite->setTextureRect(sf::IntRect(84, 3, 2, 2));
+
+		Entity::draw(target, states);
+	}
+
 	void setTargeted(bool v)
 	{
 		isTargeted = v;

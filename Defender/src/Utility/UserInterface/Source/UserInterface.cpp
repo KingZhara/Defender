@@ -29,6 +29,9 @@ Color<float> UserInterface::brightColors[] =
     {1.0f * 255.0f, 1.0f * 255.0f, 1.0f * 255.0f},
     {1.0f * 255.0f, 0.5f * 255.0f, 0.0f * 255.0f}
 };
+sf::RenderTexture* UserInterface::miniTarget = nullptr;
+sf::Sprite* UserInterface::miniSprite = nullptr;
+const sf::Vector2f UserInterface::UIBounds::minimapPosConversion = sf::Vector2f{ (float)((double)MINIMAP_WIDTH / (double)COMN::worldSize), (float)((double)MINIMAP_HEIGHT / COMN::resolution.y) };
 
 
 uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& pos, uint16_t size)
@@ -230,6 +233,19 @@ void UserInterface::initialize()
 
     // World
     UserInterface::World::generate();
+
+	miniTarget = new sf::RenderTexture;
+    miniTarget->create(UIBounds::MINIMAP_WIDTH, UIBounds::MINIMAP_HEIGHT);
+	miniTarget->setSmooth(false);
+	miniTarget->setRepeated(true);
+
+	miniSprite = new sf::Sprite(miniTarget->getTexture());
+
+	miniSprite->setScale(1, -1);
+
+	miniSprite->setPosition(UIBounds::MINIMAP_X, UIBounds::MINIMAP_Y);
+
+	miniSprite->setTextureRect(sf::IntRect(0, 0, UIBounds::MINIMAP_WIDTH*3, UIBounds::MINIMAP_HEIGHT));
 }
 
 const sf::Font &UserInterface::getFont() { return *font; }
@@ -306,6 +322,8 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
     defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
     target.setView(defView);
 
+    target.draw(*miniSprite);
+    miniTarget->clear();
 
     sf::RectangleShape uiDivider;
     uiDivider.setPosition(0, COMN::uiHeight);

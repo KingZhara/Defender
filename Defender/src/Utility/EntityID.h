@@ -20,6 +20,7 @@ struct EntityID
 		SWARMER,
 
 		PARTICLE,
+		PIECE,
 
 		LENGTH
 	};

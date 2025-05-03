@@ -58,6 +58,26 @@ class UserInterface
 	// ################# STARS BACKGROUND END #############
 
 public:
+	struct UIBounds
+	{
+		static constexpr uint8_t MINIMAP_WIDTH = 120;
+		// 1/7 of the screen height, minus the 2 pixels below, minus the 1 pixel above
+		static constexpr uint8_t MINIMAP_HEIGHT = COMN::resolution.y / 7 - 2 - 1;
+		static const sf::Vector2f minimapPosConversion;
+
+		static constexpr uint8_t DIVIDER_WIDTH = 2;
+		static constexpr uint8_t LIFE_SPACING = 2;
+		static constexpr uint8_t BOMB_SPACING = 1;
+		static constexpr uint8_t SIDE_SPACING = (COMN::resolution.x - 2 * DIVIDER_WIDTH - MINIMAP_WIDTH) / 2;
+		static constexpr uint8_t MINIMAP_X = SIDE_SPACING + DIVIDER_WIDTH;
+		static constexpr uint8_t MINIMAP_Y = MINIMAP_HEIGHT + 1;
+	};
+
+	struct EntityManagerData
+	{
+		uint8_t lives, smartBombs;
+	};
+
 	UserInterface() = delete;
 
 	static void initialize();
@@ -84,22 +104,27 @@ public:
 	{
 		return shiftReplacement;
 	}
+	static sf::RenderTarget* getMiniTarget()
+	{
+		return miniTarget;
+	}
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
 	static void drawForeground(sf::RenderTarget&, sf::View&);
 
 private:
-	static      World     world         ;
-	static      Stars     stars         ;
-	static      Minimap   minimap       ;
-	static sf ::Font*     font          ;
-	static sf ::Text      score         ;
-	static sf ::Text      credits       ; // @todo find out if this is necessary...
-	static sf::Shader*    shiftingShader;
-	static sf::Shader*    flashingShader;
-	static sf::Shader*    williamsShader;
-	static Color<float>   brightColors[];
-	static sf::Font*      otherFont     ;
-	static HSV            shiftReplacement;
+	static      World         world           ;
+	static      Stars         stars           ;
+	static      Minimap       minimap         ;
+	static sf ::Font*         font            ;
+	static sf ::Text          score           ;
+	static sf ::Text          credits         ; // @todo find out if this is necessary...
+	static sf::Shader*        shiftingShader  ;
+	static sf::Shader*        flashingShader  ;
+	static sf::Shader*        williamsShader  ;
+	static Color<float>       brightColors[]  ;
+	static sf::Font*          otherFont       ;
+	static HSV                shiftReplacement;
+	static sf::RenderTexture* miniTarget      ;
+	static sf::Sprite*        miniSprite      ;
 };
-

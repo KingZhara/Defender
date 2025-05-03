@@ -43,7 +43,7 @@ bool StageState::tick(Action& actions, double deltatime)
 {
 	if (!waveComplete)
 	{
-		waveComplete = true;//EntityManager::waveComplete();
+		waveComplete = EntityManager::waveComplete();
 
 		if (waveComplete)
 			waveScreen = new WaveCompletionScreen(EntityManager::getScore(), wave, EntityManager::astronautCount());
@@ -171,7 +171,7 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         sf::RectangleShape clearUI;
         clearUI.setFillColor(sf::Color::Black);
         clearUI.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
-        target.draw(clearUI, states);
+        //target.draw(clearUI, states);
 
 
         UserInterface::drawForeground(target, DisplayManager::getView());
