@@ -10,7 +10,7 @@ public:
 
 	virtual ~Particle() override
 	{
-		_aligned_free(pieces);
+		free(pieces);
 		pieces = nullptr;
 
 		if (dynamic_cast<Player*>(entity))

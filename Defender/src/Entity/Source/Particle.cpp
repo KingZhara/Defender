@@ -29,7 +29,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 		//skipCenter = true;
 	}
 	// Create the array pointer, size.x * size.y - 1 (collision), if spawning
-	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0)), alignof(Entity)));
+	pieces = static_cast<Entity*>(malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0))));
 	if (!pieces) throw std::bad_alloc();
 
     collision.x = std::min<int>(collision.x, size.x);
