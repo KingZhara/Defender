@@ -12,7 +12,10 @@ public:
              sf::Vector2<int8_t> collision,
              Entity *            entity_);
 
-    virtual ~Particle() override;
+	virtual ~Particle() override
+	{
+		free(pieces);
+		pieces = nullptr;
 
     virtual void               tick(double deltatime) override;
     virtual void               draw(sf::RenderTarget &target, sf::RenderStates states) const override;

@@ -303,6 +303,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 }
 
 
+// @TODO Add bool for preventing particalization
 template<typename ... Args>
 void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
