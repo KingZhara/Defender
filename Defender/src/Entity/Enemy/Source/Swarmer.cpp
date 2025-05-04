@@ -1,25 +1,25 @@
 #include "../Swarmer.h"
 
-#define epsilon 0.01
-
 void Swarmer::tick(double deltatime)
 {
+    if (switchTimer.tick(deltatime))
+    {
+        direction = rand() % 2 == 0 ? -1 : 1;
 
-	if (targetTimer.tick(deltatime))
-	{
-		vel = Entity::makePlayerTargetedVec(pos, ID, 1, true).vel;
-		// E
-		if (!(rand() % 3))
-			vel.y *= -1;
-		if (!(rand() % 3))
-			vel.x *= -1;
+        if (switchTimer.tick((rand() % 2 == 0 ? -1 : 1) * rand() % 50 / 10))
+            yVal = 0;
+    }
 
-	}
 
-	// Add off screen handling here... this is magic RICKY will handle
-	//std::cout << "swarmer pos: ";
-	//std::cout << pos.x << ',' << pos.y << '\n';
+    if (direction != 0)
+    {
+        yVal = fmod(yVal + deltatime, 2);
+        vel = getEVel(ID);
 
-	Enemy::tick(deltatime);
+        vel.y *= std::cos(M_PI * yVal);
+        vel.x *= direction;
+    }
+
+    Enemy::tick(deltatime);
 }
  

@@ -90,7 +90,7 @@ void Animation::setTexturePos(sf::Vector2i pos)
 
 void Animation::setPosition(sf::Vector2f pos) const
 {
-	frame.setPosition(round(pos.x), round(pos.y));
+	frame.setPosition(pos.x, pos.y);
 }
 
 bool Animation::intersects(sf::FloatRect &otherBounds)

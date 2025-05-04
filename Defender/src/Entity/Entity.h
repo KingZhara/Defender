@@ -80,9 +80,9 @@ public:
     const uint16_t getXP() const { return DATA_TABLE[ID].XP; }
     bool           isOnScreen();
 
-protected:
     virtual void
-        draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+        draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+protected:
 
     sf::Vector2f makeMiniDrawPos() const;
 

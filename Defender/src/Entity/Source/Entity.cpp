@@ -163,13 +163,39 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
         0
 
     },
+    // Piece
+    EntityData{
+        SpriteData{
+            {0, 0, 10, 8},
+            1,
+            ShaderID::RAND_COL
+        },
+        Vec2<double>{
+            1.0f,
+            1.0f
+        },
+        150
+    },
+    // Death animation piece
+    EntityData{
+        SpriteData{
+            {92, 0, 2, 2},
+            1,
+            ShaderID::DEATH_ANIM
+        },
+        Vec2<double>{
+            1.0f,
+            1.0f
+        },
+        150
+    },
 };
 
 void Entity::tick(double deltatime)
 {
     pos += {
-        static_cast<float>(vel.x * deltatime),
-        static_cast<float>(vel.y * deltatime)
+        std::round(static_cast<float>(vel.x * deltatime)),
+        std::round(static_cast<float>(vel.y * deltatime))
     };
 
     if (abs(vel.x) < 0.1f)
@@ -180,8 +206,8 @@ void Entity::tick(double deltatime)
     //animation.printDebugInfo();
     wrap(); // Overridden in player
 
-    animation.tick(deltatime);
     animation.setPosition(pos);
+    animation.tick(deltatime);
     //std::cout << '\n';
 }
 

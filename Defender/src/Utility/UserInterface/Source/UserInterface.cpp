@@ -1,8 +1,7 @@
 #include "../UserInterface.h"
 #include "../../Timer.h"
-#include "../../src/Entity/Enemy/Mutant.h"
 #include "../HSV.h"
-#include "../../../State/StageState.h"
+#include "../../DisplayManager.h"
 
 
 
@@ -20,6 +19,7 @@ sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
 HSV UserInterface::shiftReplacement{};
+UserInterface::DeathReplacement UserInterface::deathReplacement {};
 Color<float> UserInterface::brightColors[] =
 { // Data table from somewhere...
     {1.0f * 255.0f, 0.0f * 255.0f, 0.0f * 255.0f},
@@ -308,82 +308,133 @@ const void UserInterface::shaderTick(double deltatime)
     shiftReplacement.shift(6);
 
 	shiftingShader->setUniform("replaceColor", shiftReplacement);
+
+    if (deathReplacement.active)
+    {
+        // If not passed white, tick
+        // if passed white
+			// if not passed hue, shift
+		    // if passed, set passed to true
+                // if v == 0, set active to false
+                // else, -= 1*deltatime
+
+        if (!deathReplacement.passedWhite)
+            deathReplacement.passedWhite = deathReplacement.whiteTime.tick(deltatime);
+        else
+        {
+            if (!deathReplacement.passedHue)
+            {
+				deathReplacement.color.shift(1);
+
+                if (HSV::hasPassedHue(HSV(0.6, 1., 1.), deathReplacement.color, 0))
+                    deathReplacement.passedHue = true;
+            }
+            else
+            {
+				if (deathReplacement.color.getV() == 0)
+				{
+                    // Reset
+                    deathReplacement.color = HSV(0.6, 1., 1.);
+					deathReplacement.active = false;
+					deathReplacement.passedHue = false;
+                    deathReplacement.passedWhite = false;
+				}
+				else
+					deathReplacement.color.dim(1. * deltatime);
+            }
+        }
+    }
 }
 
 void UserInterface::drawBackground(sf::RenderTarget& rnd, sf::View& viewport)
 {
 	rnd.draw(world);
+    // In theory this would also draw other things listed here
 }
 
-void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view) 
+void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, EntityManagerData& data) 
 {
-    // Needs to reset view to highscore
-    sf::View oldView = target.getView();
+    static bool initialized = false;
+    static sf::RectangleShape cover;
+	static sf::RectangleShape divider;
+    static sf::RenderTexture scoreTarget;
+	static sf::Sprite scoreSprite(scoreTarget.getTexture());
+    static sf::Text scoreTxt;
+    static sf::View uiView;
 
-    sf::View defView = oldView;
-    defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
-    target.setView(defView);
+    if (!initialized)
+    {
+		cover.setFillColor(sf::Color::Black);
+        divider.setOutlineThickness(2);
+		divider.setOutlineColor(sf::Color::Blue); // Needs to be changed
+        divider.setFillColor(sf::Color::Transparent);
+        scoreTxt.setFont(UserInterface::getFont());
+        scoreTxt.setCharacterSize(16);
 
-    target.draw(*miniSprite);
+        scoreTarget.create(UIBounds::MINIMAP_X - 18, 7);
+
+        scoreSprite.setScale(1, -1);
+		scoreSprite.setPosition(0, 26);
+
+        uiView = target.getDefaultView();
+        uiView.setSize(COMN::resolution.x, COMN::resolution.y); // Set size of view (in world units)
+        uiView.setCenter(COMN::resolution.x / 2.f, COMN::resolution.y / 2.f); // Center the view in world space
+
+
+		initialized = true;
+    }
+
+    // Temporary for drawing HUD elements
+    //view.setCenter(view.getSize().x / 2, view.getSize().y / 2);
+    target.setView(uiView);
+
+    // Cover gameplay for UI
+    cover.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
+    target.draw(cover);
+
+    // Draw minimap
+    sf::RenderStates states = sf::RenderStates::Default;
+    states.shader = flashingShader;
+
+    miniSprite->setPosition(UIBounds::MINIMAP_X - UIBounds::MINIMAP_WIDTH + data.minimapOffset, miniSprite->getPosition().y);
+    target.draw(*miniSprite, states);
     miniTarget->clear();
 
-    // Need to cover stuff from gameplay like projectiles ---------------------------------------------
-    sf::RectangleShape clearUI;
-    clearUI.setFillColor(sf::Color::Black);
-    clearUI.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
-    target.draw(clearUI);
+    // Cover overflow
+    cover.setSize({ UIBounds::MINIMAP_X - 1, COMN::uiHeight });
+    target.draw(cover);
+	cover.setPosition(COMN::resolution.x - (UIBounds::MINIMAP_X - 1), 0);
+    target.draw(cover);
 
+    // UI divider
+    divider.setPosition(0, 0);
+    divider.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight - 2));
+    target.draw(divider);
 
-    // UI dividers
-    sf::RectangleShape uiDivider;
-    uiDivider.setPosition(0, COMN::uiHeight);
-    uiDivider.setSize(sf::Vector2f(COMN::resolution.x, 2));
-    uiDivider.setFillColor(sf::Color::Blue);
-    target.draw(uiDivider);
-
-    sf::RectangleShape minimapDivider;
-    minimapDivider.setPosition(82, 1);
-    minimapDivider.setSize(sf::Vector2f((COMN::resolution.x / 2.f - 82) * 2, COMN::uiHeight - 1));
-    minimapDivider.setFillColor(sf::Color::Transparent);
-    minimapDivider.setOutlineColor(sf::Color::Blue);
-    minimapDivider.setOutlineThickness(2);
-    target.draw(minimapDivider);
+    // Draw minimap box
+    divider.setPosition(UIBounds::MINIMAP_X, 1);
+    divider.setSize(sf::Vector2f(UIBounds::MINIMAP_WIDTH, UIBounds::MINIMAP_HEIGHT));
+    target.draw(divider);
 
 
     // Draw player lives ---------------------------------------------------------------------
-    sf::IntRect  playerUI = { 64, 18, 10, 4 };
-    sf::Vector2i playerUIPos = { 18, 12 };
-
-    sf::RectangleShape lifeDisplay;
-    lifeDisplay.setTexture(DisplayManager::getTexture());
-    lifeDisplay.setTextureRect(playerUI);
-    lifeDisplay.setSize(sf::Vector2f(playerUI.getSize()));
-
-    for (int i = 0; i < std::min(StageState::getPlayerLives() - 1, 3); i++)
-    {
-        lifeDisplay.setPosition(playerUIPos.x + (playerUI.width + 2) * i, playerUIPos.y);
-        target.draw(lifeDisplay);
-    }
+    repeatElement(
+        { 64, 18, 10, 4 }, 
+        { 18, 12 }, 
+        { 12, 0 }, 
+        std::min<uint8_t>(5, data.extraLives), target);
 
     // Draw bomb count ---------------------------------------------------------------------
-    sf::IntRect  bombUI = { 75, 18, 6, 4 };
-    sf::Vector2i bombUIPos = { 70, 19 };
 
-    sf::RectangleShape bombDisplay;
-    bombDisplay.setTexture(DisplayManager::getTexture());
-    bombDisplay.setTextureRect(bombUI);
-    bombDisplay.setSize(sf::Vector2f(bombUI.getSize()));
-
-    for (int i = 0; i < std::min(StageState::getPlayerBombs(), 3); i++)
-    {
-        bombDisplay.setPosition(bombUIPos.x, bombUIPos.y + (bombUI.height + 1) * i);
-        target.draw(bombDisplay);
-    }
+    repeatElement(
+        { 75, 18, 6, 4 }, 
+        { 70, 19 }, 
+        { 0, 4 }, 
+        std::min<uint8_t>(3, data.smartBombs), target);
 
 
     // draw screen view markers -------------------------------------------------
     constexpr int screenMarkerWidth = 15;
-
     sf::RectangleShape screenMarkerMain;
     screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
     screenMarkerMain.setFillColor(sf::Color(0xBFBFBFFF));
@@ -419,23 +470,44 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view)
 
     // Show right aligned score ------------------------------------------------------------
     // Same position as in highscore
-    sf::Text scoreTxt;
-    scoreTxt.setFont(UserInterface::getFont());
-    scoreTxt.setCharacterSize(16);
-    scoreTxt.setFillColor(sf::Color(COMN::ShaderTarget));
-    scoreTxt.setString(std::to_string(StageState::getScore()));
-    scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
-    scoreTxt.setPosition(63, 14);
-    target.draw(scoreTxt);
 
 
-    // Draw minimap
-    const EntityManager& entityManager = StageState::getEntityManager();
-    sf::Vector2f playerPos = entityManager.getPlayerPos();
-
+    //-18, 24
 
     
+    scoreTxt.setString(std::to_string(data.score));
+    //scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+    scoreTxt.setPosition(UIBounds::MINIMAP_X - 18 - scoreTxt.getGlobalBounds().width, 0);
+    scoreTarget.draw(scoreTxt);
+
+	states.shader = shiftingShader;
+    target.draw(scoreSprite, states);
+
+    // Death Animation
+    // Validate stage state
+    // Validate entity manager
+	// Validate death replacement
+
 
     // Reset view
-    target.setView(oldView);
+    target.setView(view);
+	//view.setCenter(viewResetCenter);
+}
+
+void UserInterface::repeatElement(sf::IntRect texBounds,
+        sf::Vector2f pos,
+        sf::Vector2f diff,
+        uint8_t count, 
+        sf::RenderTarget& target)
+{
+    static sf::Sprite toDraw(*DisplayManager::getTexture());
+
+	toDraw.setTextureRect(texBounds);
+	//toDraw.setPosition(pos);
+
+    for (uint8_t i = 0; i < count; i++)
+    {
+		toDraw.setPosition(pos.x + diff.x * i, pos.y + diff.y * i);
+		target.draw(toDraw);
+    }
 }

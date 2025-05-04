@@ -2,6 +2,8 @@
 #include <concepts>
 #include <vector>
 #include "Action.h"
+#include "DeathAnimation.h"
+
 #include "../Entity/Entity.hpp"
 
 using ScoreType = uint64_t;
@@ -40,24 +42,21 @@ class EntityManager : public sf::Drawable
 	};
 
 public:
+	enum class PlayerState
+	{
+	    ALIVE,
+		RESPAWNING,
+		DEAD
+	};
+
 	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-    /*
-	void test()
-	{
-		enemies.kill(2);
-		enemies.kill(5);
-		enemies.kill(6);
-		enemies.kill(1);
-	}*/
 
-	static void adjViewport(sf::View* view, double deltatime);
-    static bool      tick(double deltatime, float );
+
+    static PlayerState      tick(double deltatime, Action& actions);
     virtual void     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity);
-	static void      killArea(sf::FloatRect viewport);
-	static void      hyperspace(sf::Vector2f size, float left);
 	template <typename... Args>
 	static void      spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args);
 	static uint8_t astronautCount() { return static_cast<uint8_t>(astronauts.getLiveCount()); }
@@ -69,7 +68,6 @@ public:
 	static void waveReset();
 	static void deathReset();
 	static bool waveComplete();
-	static bool playerLiving() { return player; }
 
 	static sf::Vector2f getPlayerPos() 
 	{
@@ -79,6 +77,10 @@ public:
 	}
 
 private:
+	static void adjViewport(sf::View* view, double deltatime);
+	static void      killArea(sf::FloatRect viewport);
+	static void      hyperspace();
+
 	// @todo If time permits, play with optimization, potentially using a spatial tree.
 	template<typename T>
 	static bool collisionWrapper(uint16_t entity, EntityHolder<T>& entities);
@@ -87,6 +89,8 @@ private:
 	static void spawn_typeWrapper(Entity* entity);
 
 	static void tickLander(double deltatime, uint16_t index);
+	static void tickPlayer(double deltatime, Action& actions);
+	static void tickEntities(double deltatime);
 
 
 	static EntityHolder<Projectile> projectiles;
@@ -94,6 +98,14 @@ private:
 	static EntityHolder<Entity>     astronauts;
 	static EntityHolder<Particle>   particles; // Always scripted
 	static Player* player;
+	static DeathAnimation* deathAnim;
+
+	static UserInterface::EntityManagerData uiPassthrough;
+
+	// For this to be adjustable it should be moved to the class definition with appropriate methods
+	static constexpr ScoreType rewardReq = 10000;
+	// Last cutoff multiple where rewards were given
+	static uint16_t lastReward;
 
 	// first is lander     -> astronaut
 	// second is astronaut -> lander
@@ -105,40 +117,10 @@ private:
 	static uint16_t baiterCounter;
 	
 	static bool scripted;
+    static PlayerState playerState;
 	static const bool& isInvasion, &spawningComplete;
 };
 
-inline void EntityManager::tickLander(double deltatime, uint16_t index)
-{
-	Lander* entity = dynamic_cast<Lander*>(enemies.entities.at(index));
-
-	if (isInvasion)
-	{
-		std::cout << "INVASION SPAWN\n";
-		spawn(EntityID::MUTANT, entity->getPos());
-		spawn(EntityID::MUTANT, entity->getPos());
-		enemies.kill(index);
-		return;
-	}
-    
-	if (!entity->hasTarget())
-	{
-		for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
-		{
-			Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
-			if (astronaut && astronaut->targeted())
-			{
-				entity->setTarget(astronaut);
-				landerTargetTable.first[index] = i;
-				landerTargetTable.second[i] = index;
-				break;
-			}
-
-		}
-	}
-
-	enemies.entities.at(index)->tick(deltatime);
-}
 
 // ################################################
 // ################################################

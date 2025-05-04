@@ -21,6 +21,7 @@ struct EntityID
 
 		PARTICLE,
 		PIECE,
+	    DEATH_ANIM_PIECE,
 
 		LENGTH
 	};

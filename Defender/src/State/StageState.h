@@ -15,12 +15,6 @@ class StageState : public sf::Drawable
 	// For shared variable
 	friend class EntityManager;
 
-	struct PlayerState
-	{
-		uint8_t lives = 3;
-		uint8_t smart_bombs = 3;
-	};
-
 public:
 	StageState();
 
@@ -30,28 +24,16 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     static std::string getInitials();
 
-	static int getPlayerLives() { return playerState.lives; }
-	static int getPlayerBombs() { return playerState.smart_bombs; }
-	static int getScore() { return entityManager.getScore(); }
-
-	static const EntityManager& getEntityManager() { return entityManager; }
-
 private:
 	class SpawnManager;
 
 	static bool SaveHighscore(Action& actions);
 
 	static EntityManager entityManager;
-	static Timer<double> hyperspaceCooldown;
-	static PlayerState playerState;
 	static char name[4];
 	static uint8_t namePos;
 
 	static bool playerDead;
-	// For this to be adjustable it should be moved to the class definition with appropriate methods
-	static constexpr ScoreType rewardReq = 10000;
-	// Last cutoff multiple where rewards were given
-	static uint16_t lastReward;
 	static uint32_t wave;
 	static bool waveComplete;
 

@@ -47,12 +47,8 @@ public:
 			entityQueue.emplace(sf::Vector2f{pos.x - 4, pos.y}, EntityID::LASER);
 			actions->flags.fire = false; // In theory this is redundant, yet here we are.
 		}
-
-        pos.y = std::max<float>(pos.y, COMN::uiHeight);
-
-        pos.y = std::min(pos.y, COMN::resolution.y - getBounds(EntityID::PLAYER).height);
-
 		Entity::tick(deltatime);
+
     }
 
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
@@ -101,6 +97,10 @@ private:
     		DisplayManager::getView().setCenter(
 	    		pos.x - diff,
 		    	DisplayManager::getView().getCenter().y);
+
+		pos.y = std::max<float>(pos.y, COMN::uiHeight);
+
+		pos.y = std::min(pos.y, COMN::resolution.y - getBounds(EntityID::PLAYER).height);
 
 		//std::cout << "PLAYER POS: " << pos.x << '\n';
 	}

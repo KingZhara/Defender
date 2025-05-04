@@ -5,6 +5,7 @@
 
 #include "../ShaderID.h"
 #include "../common.h"
+#include "../Timer.h"
 
 
 class UserInterface
@@ -76,7 +77,9 @@ public:
 
 	struct EntityManagerData
 	{
-		uint8_t lives, smartBombs;
+		uint8_t extraLives = 2, smartBombs = 3;
+		int16_t minimapOffset = 0;
+		uint64_t score = 0;
 	};
 
 	UserInterface() = delete;
@@ -105,15 +108,34 @@ public:
 	{
 		return shiftReplacement;
 	}
+	static sf::Color resetDeathColor()
+	{
+		return deathReplacement.color;
+	}
 	static sf::RenderTarget* getMiniTarget()
 	{
 		return miniTarget;
 	}
+	static void startDeathAnimation()
+	{
+		deathReplacement.active = true;
+	}
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
-	static void drawForeground(sf::RenderTarget&, sf::View&);
+	static void drawForeground(sf::RenderTarget&, sf::View&, EntityManagerData& data);
 
 private:
+	struct DeathReplacement
+	{
+		bool active = false, passedWhite = false, passedHue = false;
+		HSV color;
+		float     shift, fadeFactor;
+		Timer<double> whiteTime{ 2 };
+	};
+
+	static void repeatElement(sf::IntRect texBounds, sf::Vector2f pos, sf::Vector2f diff, uint8_t count, sf::RenderTarget& target);
+
+
 	static      World         world           ;
 	static      Stars         stars           ;
 	static      Minimap       minimap         ;
@@ -128,4 +150,5 @@ private:
 	static HSV                shiftReplacement;
 	static sf::RenderTexture* miniTarget      ;
 	static sf::Sprite*        miniSprite      ;
+	static DeathReplacement deathReplacement;
 };

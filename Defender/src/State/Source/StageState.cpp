@@ -3,8 +3,6 @@
 #include <iostream>
 
 EntityManager StageState::entityManager = EntityManager(false);
-Timer<double> StageState::hyperspaceCooldown = Timer<double>(5.0f /*@todo correct time in seconds*/, false);
-StageState::PlayerState StageState::playerState = PlayerState();
 char StageState::name[4] = { 0, 0, 0, 0 };
 uint8_t StageState::namePos = 0;
 const char StageState::validChars[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -17,7 +15,6 @@ const bool& EntityManager::spawningComplete = StageState::SpawnManager::spawning
 
 bool StageState::playerDead = false;
 // Last cutoff multiple where rewards were given
-uint16_t StageState::lastReward = 1;
 uint32_t StageState::wave = 1;
 bool StageState::waveComplete = false;
 WaveCompletionScreen* StageState::waveScreen = nullptr;
@@ -41,6 +38,8 @@ StageState::StageState()
 
 bool StageState::tick(Action& actions, double deltatime)
 {
+	EntityManager::PlayerState state;
+
 	if (!waveComplete)
 	{
 		waveComplete = EntityManager::waveComplete();
@@ -61,86 +60,26 @@ bool StageState::tick(Action& actions, double deltatime)
 	}
 	else
 	{
-		if (!playerDead)
+		state = EntityManager::tick(deltatime, actions);
+
+		// If the player is alive
+		if (state == EntityManager::PlayerState::ALIVE)
 		{
+			playerDead = false;
 			SpawnManager::tick(deltatime);
 
-			// ##############################
-			// ####  Handle  Keypresses  ####
-			// ##############################
-
-			// @todo check if a cooldown was needed, I am just assuming it is - Ricky
-			// Handle the hyperspace cooldown
-			if (!hyperspaceCooldown.isComplete())
-				hyperspaceCooldown.tick(deltatime);
-
-			// Execute hyperspace if applicable
-			if (actions.flags.hyperspace && hyperspaceCooldown.isComplete())
-			{
-				entityManager.hyperspace(DisplayManager::getView().getSize(), DisplayManager::getView().getCenter().x - (DisplayManager::getView().getSize().x / 2.f));
-				actions.flags.hyperspace = false;
-				hyperspaceCooldown.tick(0);
-			}
-
-			// Handle and update smart bombs accordingly
-			if (actions.flags.smart_bomb && playerState.smart_bombs > 0)
-			{
-				entityManager.killArea(DisplayManager::getView().getViewport());
-				--playerState.smart_bombs;
-			}
-
-			// ##############################
-			// #######  Handle Score  #######
-			// ##############################
-
-			if (entityManager.getScore() >= rewardReq * lastReward)
-			{
-				++lastReward;
-
-				if (playerState.smart_bombs != 255)
-					++playerState.smart_bombs;
-				if (playerState.lives != 255)
-					++playerState.lives;
-			}
 			if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
 				SpawnManager::startInvasion();
-			// Handle player death.
-			playerDead = entityManager.tick(deltatime, DisplayManager::getView().getCenter().x);
 		}
-
-		// Should handle saving the high score if needed
-		if (playerDead)
+	    else if (state == EntityManager::PlayerState::DEAD)
 		{
-			if (playerState.lives <= 1)
+			playerDead = true;
+			if (SaveHighscore(actions))
 			{
-				SpawnManager::nextWave();
-				playerState.lives = 0;
-				if (SaveHighscore(actions))
-				{
-					// Reset ALL data before returning
-					playerState.lives = 3;
-					playerState.smart_bombs = 0;
-					playerDead = false;
-
-					DisplayManager::resetViewPos();
-					return true;
-				}
-
-				return false;
+				DisplayManager::resetViewPos();
+				return true;
 			}
-
-			EntityManager::deathReset();
-
-
-			std::cout << "KILLING>>>\n";
-			--playerState.lives;
-
-
-			//@todo Add respawning mechanics...
-			playerDead = false;
 		}
-		else
-			EntityManager::adjViewport(&DisplayManager::getView(), deltatime);
 	}
 
 	return false;
@@ -154,12 +93,11 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 
     // TODO add timer for death animation
-    if (playerState.lives > 0)
+    if (!playerDead)
     {
         UserInterface::drawBackground(target, DisplayManager::getView());
         target.draw(entityManager, states);
 
-        UserInterface::drawForeground(target, DisplayManager::getView());
     }
     else // Enter initials =------------------------------------------------------------------
     {
