@@ -22,6 +22,11 @@ WaveCompletionScreen* StageState::waveScreen = nullptr;
 StageState::StageState()
 {
 	entityManager = EntityManager();
+
+	playerDead = false;
+	wave = 0;
+	waveComplete = false;
+	
 	SpawnManager::reset();
 	//entityManager.spawn(EntityID::ASTRONAUT, sf::Vector2f{ 50, 50 });
 	//entityManager.spawn(EntityID::POD, sf::Vector2f{ 100, 100 });
@@ -39,49 +44,50 @@ StageState::StageState()
 bool StageState::tick(Action& actions, double deltatime)
 {
 	EntityManager::PlayerState state;
-
-	if (!waveComplete)
+	// Validate reset
+	if (!playerDead)
 	{
-		waveComplete = EntityManager::waveComplete();
+		if (!waveComplete)
+		{
+			waveComplete = EntityManager::waveComplete();
+
+			if (waveComplete)
+				waveScreen = new WaveCompletionScreen(EntityManager::getScore(), wave, EntityManager::astronautCount());
+		}
 
 		if (waveComplete)
-			waveScreen = new WaveCompletionScreen(EntityManager::getScore(), wave, EntityManager::astronautCount());
-	}
-
-	if (waveComplete)
-	{
-	    if (waveScreen->tick(deltatime))
-	    {
-			SpawnManager::nextWave();
-			++wave;
-			waveComplete = false;
-			delete waveScreen;
-	    }
-	}
-	else
-	{
-		state = EntityManager::tick(deltatime, actions);
-
-		//std::cout << "Recieved PlayerState: " << (short)state << '\n';
-
-		// If the player is alive
-		if (state == EntityManager::PlayerState::ALIVE)
 		{
-			playerDead = false;
-			SpawnManager::tick(deltatime);
-
-			if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
-				SpawnManager::startInvasion();
-		}
-	    else if (state == EntityManager::PlayerState::DEAD)
-		{
-			playerDead = true;
-			if (SaveHighscore(actions))
+			if (waveScreen->tick(deltatime))
 			{
-				DisplayManager::resetViewPos();
-				return true;
+				SpawnManager::nextWave();
+				++wave;
+				waveComplete = false;
+				delete waveScreen;
 			}
 		}
+		else
+		{
+			state = EntityManager::tick(deltatime, actions);
+
+			//std::cout << "Recieved PlayerState: " << (short)state << '\n';
+
+			// If the player is alive
+			if (state == EntityManager::PlayerState::ALIVE)
+			{
+				playerDead = false;
+				SpawnManager::tick(deltatime);
+
+				if (SpawnManager::waveStarted() && EntityManager::astronautCount() == 0) // All astronauts dead
+					SpawnManager::startInvasion();
+			}
+			else if (state == EntityManager::PlayerState::DEAD)
+				playerDead = true;
+		}
+	}
+	if (playerDead && SaveHighscore(actions))
+	{
+		DisplayManager::resetViewPos();
+		return true;
 	}
 
 	return false;
@@ -268,7 +274,7 @@ void StageState::SpawnManager::tick(double deltatime)
 					(int16_t)(COMN::resolution.y / 5)
 				};
 				// Spawn landers
-				spawnCount(5, EntityID::LANDER, target, { COMN::worldSize / 3, 0 }, { 20, 5 });
+				spawnCount(5, EntityID::LANDER, target, { COMN::worldSize / 3, 0 }, { 200, 5 });
 				//std::cout << "Subwave: " << (short)subwave << '\n';
 				--subwave;
 

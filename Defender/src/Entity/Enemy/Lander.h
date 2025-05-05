@@ -24,7 +24,10 @@ public:
 	void setTarget(Entity* target);
 
 private:
+    //enyum
+
     int getAstronauts();
 	Entity* target = nullptr;
+
 };
 
