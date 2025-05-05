@@ -426,7 +426,7 @@ void StageState::SpawnManager::tick(double deltatime)
 				};
 				// Spawn landers
 				spawnCount(5, EntityID::LANDER, target, { COMN::worldSize / 3, 0 }, { 20, 5 });
-				std::cout << "Subwave: " << (short)subwave << '\n';
+				//std::cout << "Subwave: " << (short)subwave << '\n';
 				--subwave;
 
 				if (subwave == 0)
@@ -444,7 +444,7 @@ void StageState::SpawnManager::tick(double deltatime)
 
 				subWaveTimer.tick(0);
 
-				std::cout << "Spawning Baiter";
+				//std::cout << "Spawning Baiter";
 				spawnCount(1, EntityID::BAITER, { 0, 0 }, { 0, 0 }, { 100, 100 });
 			}
 
@@ -454,7 +454,7 @@ void StageState::SpawnManager::tick(double deltatime)
 }
 void StageState::SpawnManager::nextWave()
 {
-	std::cout << "Next Wave\n";
+	//std::cout << "Next Wave\n";
 	subwave = 4;
 	wave = (wave + 1) % 5;
 	firstSub = true;
@@ -517,7 +517,7 @@ void StageState::SpawnManager::spawnCount(uint8_t count,
         sf::Vector2<int16_t> entropy)
 {
 
-	std::cout << "Spawning...\n";
+	//std::cout << "Spawning...\n";
     for (uint16_t i = 0; i < count; i++)
     {
 		sf::Vector2<int16_t> pos = 

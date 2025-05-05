@@ -359,7 +359,7 @@ void EntityManager::deathReset()
 
 bool EntityManager::waveComplete()
 {
-	std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << (spawningComplete ? "true" : "false") << '\n';
+	//std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << (spawningComplete ? "true" : "false") << '\n';
     return (enemies.getLiveCount() - baiterCounter == 0 && spawningComplete);
 }
 

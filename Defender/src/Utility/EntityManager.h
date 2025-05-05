@@ -325,13 +325,13 @@ template<typename ... Args>
 void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
 	Entity* entity;
-	std::cout << "SPAWNING..\n.";
+	//std::cout << "SPAWNING..\n.";
 	switch (ID)
 	{
 
 	case EntityID::PLAYER:
 		//delete player;
-		std::cout << "SPAWNING PLAYER...";
+		//std::cout << "SPAWNING PLAYER...";
 		entity = new Player(pos, args...);
 		break;
 
