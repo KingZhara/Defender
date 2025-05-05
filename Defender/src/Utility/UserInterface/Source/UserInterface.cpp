@@ -412,6 +412,7 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
 
     // Cover overflow
     cover.setSize({ UIBounds::MINIMAP_X - 1, COMN::uiHeight });
+    cover.setPosition(0, 0);
     target.draw(cover);
 	cover.setPosition(COMN::resolution.x - (UIBounds::MINIMAP_X - 1), 0);
     target.draw(cover);
