@@ -2,6 +2,8 @@
 #include <concepts>
 #include <vector>
 #include "Action.h"
+#include "DeathAnimation.h"
+
 #include "../Entity/Entity.hpp"
 
 using ScoreType = uint64_t;
@@ -40,26 +42,23 @@ class EntityManager : public sf::Drawable
 	};
 
 public:
+	enum class PlayerState
+	{
+	    ALIVE,
+		RESPAWNING,
+		DEAD
+	};
+
 	EntityManager(bool scripted_ = false);
 
 	~EntityManager() override = default;
-    /*
-	void test()
-	{
-		enemies.kill(2);
-		enemies.kill(5);
-		enemies.kill(6);
-		enemies.kill(1);
-	}*/
 
-	static void adjViewport(sf::View* view, double deltatime);
-    static bool      tick(double deltatime, float );
+
+    static PlayerState      tick(double deltatime, Action& actions);
     virtual void     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity);
-	static void      killArea(sf::FloatRect viewport);
-	static void      hyperspace(sf::Vector2f size, float left);
 	template <typename... Args>
-	static void      spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args);
+	static void      spawn(bool particalize, EntityID::ID ID, sf::Vector2f pos, Args&&... args);
 	static uint8_t astronautCount() { return static_cast<uint8_t>(astronauts.getLiveCount()); }
 	static void killAstronauts()
 	{
@@ -69,7 +68,6 @@ public:
 	static void waveReset();
 	static void deathReset();
 	static bool waveComplete();
-	static bool playerLiving() { return player; }
 
 	static sf::Vector2f getPlayerPos() 
 	{
@@ -79,6 +77,30 @@ public:
 	}
 
 private:
+	struct LanderTargetTable
+	{
+		std::unordered_map<uint16_t, uint16_t> landerToAstronaut;
+		std::unordered_map<uint16_t, uint16_t> astronautToLander;
+
+		LanderTargetTable() = default;
+
+		void link(uint16_t lander, uint16_t astronaut)
+		{
+			landerToAstronaut[lander] = astronaut;
+			astronautToLander[astronaut] = lander;
+		}
+
+		void unlink(uint16_t lander, uint16_t astronaut)
+		{
+			landerToAstronaut.erase(lander);
+			astronautToLander.erase(astronaut);
+		}
+	};
+
+	static void adjViewport(sf::View* view, double deltatime);
+	static void      killArea(sf::FloatRect viewport);
+	static void      hyperspace();
+
 	// @todo If time permits, play with optimization, potentially using a spatial tree.
 	template<typename T>
 	static bool collisionWrapper(uint16_t entity, EntityHolder<T>& entities);
@@ -87,6 +109,8 @@ private:
 	static void spawn_typeWrapper(Entity* entity);
 
 	static void tickLander(double deltatime, uint16_t index);
+	static void tickPlayer(double deltatime, Action& actions);
+	static void tickEntities(double deltatime);
 
 
 	static EntityHolder<Projectile> projectiles;
@@ -94,10 +118,18 @@ private:
 	static EntityHolder<Entity>     astronauts;
 	static EntityHolder<Particle>   particles; // Always scripted
 	static Player* player;
+	static DeathAnimation* deathAnim;
+
+	static UserInterface::EntityManagerData uiPassthrough;
+
+	// For this to be adjustable it should be moved to the class definition with appropriate methods
+	static constexpr ScoreType rewardReq = 10000;
+	// Last cutoff multiple where rewards were given
+	static uint16_t lastReward;
 
 	// first is lander     -> astronaut
 	// second is astronaut -> lander
-	static std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> landerTargetTable;
+	static LanderTargetTable landerTargetTable;
 
 	// @todo Make score update
 	static ScoreType score;
@@ -105,40 +137,10 @@ private:
 	static uint16_t baiterCounter;
 	
 	static bool scripted;
+    static PlayerState playerState;
 	static const bool& isInvasion, &spawningComplete;
 };
 
-inline void EntityManager::tickLander(double deltatime, uint16_t index)
-{
-	Lander* entity = dynamic_cast<Lander*>(enemies.entities.at(index));
-
-	if (isInvasion)
-	{
-		std::cout << "INVASION SPAWN\n";
-		spawn(EntityID::MUTANT, entity->getPos());
-		spawn(EntityID::MUTANT, entity->getPos());
-		enemies.kill(index);
-		return;
-	}
-    
-	if (!entity->hasTarget())
-	{
-		for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
-		{
-			Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
-			if (astronaut && astronaut->targeted())
-			{
-				entity->setTarget(astronaut);
-				landerTargetTable.first[index] = i;
-				landerTargetTable.second[i] = index;
-				break;
-			}
-
-		}
-	}
-
-	enemies.entities.at(index)->tick(deltatime);
-}
 
 // ################################################
 // ################################################
@@ -264,21 +266,19 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 
 				if (dynamic_cast<Lander*>(entity_))
 				{
-					Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]));
+					Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]));
 					if (astronaut && dynamic_cast<Lander*>(entity_)->hasTarget())
 					{
-						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]))->setTargeted(false);
+						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]))->setTargeted(false);
 						// Erase the entry pairing this astronaut with the lander
-						landerTargetTable.second.erase(landerTargetTable.first[i]);
-						// Erase the entry pairing this lander with the astronaut
-						landerTargetTable.first.erase(i);
+						landerTargetTable.unlink(i, landerTargetTable.landerToAstronaut[i]);
 					}
 				}
 				else if (dynamic_cast<Pod*>(entity_))
 				{
 					for (uint8_t j = 0; j < 5; j++)
 					{
-						spawn(EntityID::SWARMER, entity_->getPos());
+						spawn(false, EntityID::SWARMER, entity_->getPos());
 					    entity_ = entities.entities.at(i);
 					}
 				}
@@ -289,11 +289,9 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 			{
 				if (dynamic_cast<Astronaut*>(entity_)->targeted())
 				{
-					dynamic_cast<Lander*>(enemies.entities.at(landerTargetTable.second[i]))->setTarget(nullptr);
+					dynamic_cast<Lander*>(enemies.entities.at(landerTargetTable.astronautToLander[i]))->setTarget(nullptr);
 					// Erase the entry pairing this astronaut with the lander
-					landerTargetTable.first.erase(landerTargetTable.second[i]);
-					// Erase the entry pairing this lander with the astronaut
-					landerTargetTable.second.erase(i);
+					landerTargetTable.unlink(landerTargetTable.astronautToLander[i], i);
 				}
 			}
 
@@ -321,8 +319,9 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 }
 
 
+// @TODO Add bool for preventing particalization
 template<typename ... Args>
-void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
+void EntityManager::spawn(bool particalize, EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
 	Entity* entity;
 	//std::cout << "SPAWNING..\n.";
@@ -332,6 +331,7 @@ void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 	case EntityID::PLAYER:
 		//delete player;
 		//std::cout << "SPAWNING PLAYER...";
+		playerState = PlayerState::ALIVE;
 		entity = new Player(pos, args...);
 		break;
 
@@ -395,5 +395,8 @@ void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 	}
 
 	// @todo complete
-	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
+	if (particalize)
+    	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
+	else
+		spawn_typeWrapper(entity);
 }

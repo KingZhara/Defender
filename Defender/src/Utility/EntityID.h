@@ -20,6 +20,8 @@ struct EntityID
 		SWARMER,
 
 		PARTICLE,
+		PIECE,
+	    DEATH_ANIM_PIECE,
 
 		LENGTH
 	};

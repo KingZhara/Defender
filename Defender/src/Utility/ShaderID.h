@@ -9,6 +9,7 @@ struct ShaderID
 		HUE_SHIFT,
 		STARS,
 		RAND_COL,
-		WILLIAMS
+		WILLIAMS,
+		DEATH_ANIM,
 	};
 };

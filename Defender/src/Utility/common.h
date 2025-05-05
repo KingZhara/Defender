@@ -60,7 +60,8 @@ struct COMN
 
 	static constexpr float playerSpeedFactor = 1.5;
 
-	static constexpr uint16_t worldSize = static_cast<uint16_t>(9 * resolution.x);
+	// The number 3.75 was found from watching gameplay footage, its a lot of effort to explain it, please accept it, it's a nice number.
+	static constexpr uint16_t worldSize = static_cast<uint16_t>(3.75 * resolution.x);
 
 	static constexpr uint8_t worldBgHeight = 80;
 	static constexpr uint8_t world_startY = 20;

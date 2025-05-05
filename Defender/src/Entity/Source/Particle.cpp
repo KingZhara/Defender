@@ -7,7 +7,7 @@
 
 #include "../Entity.h"
 
-Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector2<int8_t> collision, Entity* entity_) : Entity(pos), entity(entity_)
+Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector2<int8_t> collision, Entity* entity_) : Entity(pos, EntityID::PARTICLE, sf::IntRect{}), entity(entity_)
 {
 	const sf::IntRect& bounds = DATA_TABLE[ID_].SPRITE_DATA.bounds;
 	// Make sure we round up
@@ -29,7 +29,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 		//skipCenter = true;
 	}
 	// Create the array pointer, size.x * size.y - 1 (collision), if spawning
-	pieces = static_cast<Entity*>(_aligned_malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0)), alignof(Entity)));
+	pieces = static_cast<Entity*>(malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0))));
 	if (!pieces) throw std::bad_alloc();
 
     collision.x = std::min<int>(collision.x, size.x);
@@ -107,7 +107,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 
 
 			// Create the piece
-			new (&pieces[index]) Entity(nPos,nBounds);
+			new (&pieces[index]) Entity(nPos, EntityID::PIECE,nBounds);
 			pieces[index].setVel(nVel);
 
 
@@ -120,17 +120,21 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 		throw std::runtime_error("Particle issue...");
 }
 
+Particle::~Particle() {
+    free(pieces);
+    pieces = nullptr;
+
+    if (dynamic_cast<Player*>(entity))
+        std::cout << "Destroyed from particle\n";
+
+    delete entity;
+}
+
 void Particle::tick(double deltatime)
 {
 	//std::cout << "Tick Particle\n";
 	if (!lifetime.isComplete())
 	{
-		//if (entity->getPos() != pos)
-		//{
-		//	std::cout << "Entity pos  : " << entity->getPos().x << ", " << entity->getPos().y << '\n';
-		//	std::cout << "Particle pos: " << pos.x << ", " << pos.y << '\n';
-		//}
-
 		for (int8_t i = 0; i < size.x * size.y - (skipCenter ? 1 : 0); i++)
 		    pieces[i].tick(deltatime);
 
@@ -140,14 +144,34 @@ void Particle::tick(double deltatime)
 
 void Particle::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	//std::cout << "Draw Particle\n";
 	// Draw all pieces
 	if (!lifetime.isComplete())
-	{
 		for (int8_t i = 0; i < size.x * size.y - (skipCenter ? 1 : 0); i++)
-		{
-			//std::cout << "Index: " << i << ", ADDR: " << &pieces[i] << '\n';
 			target.draw(pieces[i], states);
-		}
+
+	// Set mini data
+	if (entity)
+	{
+		if (entity->getID() >= EntityID::LANDER && entity->getID() <= EntityID::SWARMER)
+			miniSprite->setTextureRect(sf::IntRect(80 + (entity->getID() - EntityID::LANDER) * 4, 0, 2, 2));
+		else if (entity->getID() == EntityID::PLAYER)
+			miniSprite->setTextureRect(sf::IntRect(80, 3, 3, 3));
+		else if (entity->getID() == EntityID::ASTRONAUT)
+			miniSprite->setTextureRect(sf::IntRect(84, 3, 2, 2));
+		else throw std::runtime_error("Particle: Entity ID not found");
+
+		Entity::draw(target, states);
 	}
+}
+
+bool Particle::isComplete() const { return lifetime.isComplete(); }
+sf::Vector2<int8_t> Particle::defCent() {
+    return { -1, -1 };
+}
+
+Entity * Particle::getEntity() {
+    Entity* tmp = entity;
+    entity      = nullptr;
+
+    return tmp;
 }

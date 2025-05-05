@@ -1,5 +1,6 @@
 #include "../EntityManager.h"
 #include "../common.h"
+#include "../DeathAnimation.h"
 
 bool EntityManager::scripted = true;
 
@@ -9,10 +10,14 @@ EntityManager::EntityHolder<Entity> EntityManager::enemies;
 EntityManager::EntityHolder<Entity> EntityManager::astronauts;
 EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
-std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> EntityManager::landerTargetTable;
+EntityManager::LanderTargetTable EntityManager::landerTargetTable;
 uint16_t EntityManager::baiterCounter = 0;
 // @todo Make score update
 ScoreType EntityManager::score;
+EntityManager::PlayerState EntityManager::playerState = PlayerState::DEAD;
+DeathAnimation* EntityManager::deathAnim = nullptr;
+UserInterface::EntityManagerData EntityManager::uiPassthrough;
+uint16_t EntityManager::lastReward = 1;
 
 EntityManager::EntityManager(bool scripted_)
 {
@@ -23,8 +28,8 @@ EntityManager::EntityManager(bool scripted_)
     astronauts.reset();
     particles.reset();
 
-	landerTargetTable.first.clear();
-	landerTargetTable.second.clear();
+	landerTargetTable.landerToAstronaut.clear();
+	landerTargetTable.astronautToLander.clear();
 
     delete player;
     player = nullptr;
@@ -37,32 +42,36 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 {
     // @todo Add starting movement freedom... Refactor to be better as well
 
+  
+    //if (!player)
+      //  return;
+
+    static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
+    static int8_t viewOffset = 0;
+
     if (!player)
         return;
 
-    static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
-	static constexpr double epsilon = 1; // Epsilon for the cutoff
-	const  double centeredPlayer = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.; // The players position centered to its hitbox
-	//const  double left = view->getCenter().x - playfieldWidth / 2.; // Left side of playfield
+    const int8_t maxOffset = static_cast<int8_t>(COMN::resolution.x * playfieldFactor);
+    const double centeredPlayer = (player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.);
 
-    // Handling is based on the side
-    if (!player->getDir())
+    // Update offset
+    if (player->getDir()) // Facing left
     {
-        view->setCenter((float)std::round(view->getCenter().x + (COMN::baseSpeed.x + player->getVel().x) * deltatime), view->getCenter().y);
-
-        if (centeredPlayer - (view->getCenter().x - view->getSize().x * playfieldFactor) < epsilon)
-            view->setCenter((float)std::round(centeredPlayer + view->getSize().x * playfieldFactor), view->getCenter().y);
+        if (viewOffset > -maxOffset)
+            --viewOffset;
     }
-    else
+    else // Facing right
     {
-        view->setCenter((float)std::round(view->getCenter().x - (COMN::baseSpeed.x  - player->getVel().x) * deltatime), view->getCenter().y);
-
-        if ((view->getCenter().x + view->getSize().x * playfieldFactor) - centeredPlayer < epsilon)
-            view->setCenter((float)std::round(centeredPlayer - view->getSize().x * playfieldFactor), view->getCenter().y);
-        
+        if (viewOffset < maxOffset)
+            ++viewOffset;
     }
 
+    // Apply offset to view
+    float viewCenterX = static_cast<float>(centeredPlayer + viewOffset);
+    view->setCenter(std::round(viewCenterX), std::round(view->getCenter().y));
 
+	//view->setCenter(std::round(view->getCenter().x), view->getCenter().y);
 
 	/*#################### VV The Fun Way VV ####################*/
 
@@ -129,18 +138,60 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
     */
 }
 
-bool EntityManager::tick(double deltatime, float center = 0)
+EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions)
 {
+    // TMEPORARY DECLARATION
+    //playerState = PlayerState::ALIVE;
 	//std::cout << particles.entities.size() << " particles\n";
-
-    bool     playerDeath = false;
     //uint16_t enemyIndex  = 0;
 
     //std::cout << "There are " << particles.entities.size() - particles.count << " particles\n";
 
     // Tick player first
-    if (player)
-        player->tick(deltatime);
+    if (playerState == PlayerState::ALIVE)
+    {
+
+        if (player)
+            player->tick(deltatime);
+
+        // Change playerState to be a player state -> make default to dead, handle in constructor... and spawn methods
+
+
+        // if player is respawning perform animation, if dead, reset data (maybe? look at constructor and reset methods to determine if necessary...) return accordingly.
+        // handle death animation interactions with user interface
+        // Handle UI changes..
+        // 
+        tickEntities(deltatime);
+        tickPlayer(deltatime, actions);
+    }
+    if (playerState != PlayerState::ALIVE)
+    {
+        if (!deathAnim)
+        {
+            deathAnim = new DeathAnimation(player->getPos());
+            UserInterface::startDeathAnimation();
+        }
+        else if (!UserInterface::isDeathAnimCompleted())
+            deathAnim->tick(deltatime);
+        else
+            deathReset();
+
+		std::cout << "DEATH ANIM: " << deathAnim << ", COMPL: " << UserInterface::isDeathAnimCompleted() << '\n';
+    }
+
+
+    //playerState = PlayerState::ALIVE;
+
+    if (playerState == PlayerState::DEAD && deathAnim)
+        return PlayerState::RESPAWNING;
+
+    return playerState;
+}
+
+
+void EntityManager::tickEntities(double deltatime)
+{
+    bool     playerDeath = false;
 
     // Tick enemies
     for (uint16_t i = 0; i < enemies.entities.size(); i++)
@@ -155,7 +206,7 @@ bool EntityManager::tick(double deltatime, float center = 0)
             {
                 Particle* particle = dynamic_cast<Particle*>(enemies.entities.at(i));
                 if (particle->isComplete())
-					enemies.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
+                    enemies.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
             }
         }
     }
@@ -210,7 +261,7 @@ bool EntityManager::tick(double deltatime, float center = 0)
 
     // Spawn all projectiles
     clearQueue();
-    
+
     // Handles all entity collisions with projectiles
     for (uint16_t i = 0; i < projectiles.entities.size(); i++)
     {
@@ -250,8 +301,113 @@ bool EntityManager::tick(double deltatime, float center = 0)
         }
     }
 
+    if (playerDeath)
+        playerState = PlayerState::RESPAWNING; // Updates in playerTick
+}
 
-    return playerDeath;
+void EntityManager::tickPlayer(double deltatime, Action& actions)
+{
+    //static Timer<double> hyperspaceCooldown;
+    // DO NOT CALL IOF PLAYER IS DESD; THAT IS HANDLES WITH DEATH ANIMATION
+
+    if (playerState == PlayerState::ALIVE)
+    {
+        // ##############################
+        // ####  Handle  Keypresses  ####
+        // ##############################
+
+        // @todo check if a cooldown was needed, I am just assuming it is - Ricky
+        // Handle the hyperspace cooldown
+        //if (!hyperspaceCooldown.isComplete())
+        //    hyperspaceCooldown.tick(deltatime);
+
+        // Execute hyperspace if applicable
+        if (actions.flags.hyperspace)// && hyperspaceCooldown.isComplete())
+        {
+            hyperspace();
+            actions.flags.hyperspace = false;
+            //hyperspaceCooldown.tick(0);
+        }
+
+        // Handle and update smart bombs accordingly
+        if (actions.flags.smart_bomb && uiPassthrough.smartBombs > 0)
+        {
+            killArea(DisplayManager::getView().getViewport());
+            --uiPassthrough.smartBombs;
+        }
+
+        // ##############################
+        // #######  Handle Score  #######
+        // ##############################
+
+        if (score >= rewardReq * lastReward)
+        {
+            ++lastReward;
+
+            if (uiPassthrough.smartBombs != 255)
+                ++uiPassthrough.smartBombs;
+            if (uiPassthrough.extraLives != 255)
+                ++uiPassthrough.extraLives;
+        }
+    }
+
+    // Should handle saving the high score if needed
+    if (playerState == PlayerState::RESPAWNING)
+    {
+        if (uiPassthrough.extraLives >= 1)
+            --uiPassthrough.extraLives;
+		else // Game Over; Reset Player
+            playerState = PlayerState::DEAD;
+
+        //playerState = false;
+    }
+    else
+        adjViewport(&DisplayManager::getView(), deltatime);
+}
+
+void EntityManager::tickLander(double deltatime, uint16_t index)
+{
+    Lander* entity = dynamic_cast<Lander*>(enemies.entities.at(index));
+    Astronaut* newTarget = nullptr;
+    uint16_t astroIndex = 0;
+    int16_t minDx = -1;
+
+    if (isInvasion)
+    {
+        std::cout << "INVASION SPAWN\n";
+        spawn(false, EntityID::MUTANT, entity->getPos());
+        spawn(false, EntityID::MUTANT, entity->getPos());
+        enemies.kill(index);
+        return;
+    }
+
+    if (!entity->hasTarget())
+    {
+        for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
+        {
+            Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
+            if (astronaut && !astronaut->targeted())
+            {
+				int16_t dx = std::abs(astronaut->getPos().x - entity->getPos().x);
+				if (minDx == -1 || dx < minDx)
+				{
+					minDx = dx;
+					newTarget = astronaut;
+					astroIndex = i;
+				}
+            }
+
+        }
+    }
+
+    if (newTarget)
+    {
+        entity->setTarget(newTarget);
+        landerTargetTable.landerToAstronaut[index] = astroIndex;
+        landerTargetTable.astronautToLander[astroIndex] = index;
+    }
+
+    enemies.entities.at(index)->tick(deltatime);
 }
 
 void EntityManager::draw(sf::RenderTarget &target,
@@ -290,6 +446,13 @@ void EntityManager::draw(sf::RenderTarget &target,
     // Draw the player
     if (player)
         target.draw(*player, states);
+    if (player)
+    	uiPassthrough.minimapOffset = (COMN::worldSize / 2 - DisplayManager::getView().getCenter().x) / COMN::worldSize * UserInterface::UIBounds::MINIMAP_WIDTH;
+
+    if (deathAnim)
+        target.draw(*deathAnim, states);
+
+    UserInterface::drawForeground(target, DisplayManager::getView(), uiPassthrough);
 }
 
 // Use for spawning entity or for death
@@ -326,13 +489,15 @@ void EntityManager::killArea(sf::FloatRect viewport)
     
 }
 
-void EntityManager::hyperspace(sf::Vector2f size, float left)
+void EntityManager::hyperspace()
 {
+    // add chance to go wrong
+    // make random board position
     if (player)
     {
         player->setPos({
-            static_cast<float>(std::rand() % static_cast<int>(size.x + left)),
-            static_cast<float>(std::rand() % static_cast<int>(size.y))
+            static_cast<float>(std::rand() % COMN::worldSize),
+            static_cast<float>(std::rand() % (int)COMN::uiHeight)
             });
     }
 }
@@ -352,6 +517,14 @@ void EntityManager::waveReset()
 
 void EntityManager::deathReset()
 {
+    delete deathAnim;
+    deathAnim = nullptr;
+
+    // Figure out wht death isnt working,this is likely an issue with how DEAD is being set, and stage state reading it.
+
+    if (playerState != PlayerState::DEAD)
+    	playerState = PlayerState::ALIVE;
+
 	projectiles.reset();
 	enemies.zero();
 	particles.zero();
@@ -452,6 +625,7 @@ void EntityManager::spawn_typeWrapper(Entity* entity)
  		std::cout << "Player Spawned\n";
         delete player;
         player = (Player*)entity;
+        player->setPos({ COMN::worldSize / 2, (COMN::resolution.y - COMN::uiHeight) / 2 });
         break;
 
     default:

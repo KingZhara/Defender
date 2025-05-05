@@ -4,12 +4,13 @@
 #include <SFML/Graphics/Color.hpp>
 
 class HSV {
-public:
     float h = 0.0f; // Hue: [0, 360)
     float s = 1.0f; // Saturation: [0, 1]
     float v = 1.0f; // Value: [0, 1]
 
+public:
     HSV() = default;
+	HSV(float h_, float s_, float v_) : h(h_), s(s_), v(v_) {}
 
     void setRGB(const sf::Color& rgb) {
         float r = rgb.r / 255.f;
@@ -42,6 +43,36 @@ public:
     void shift(float shiftAmount = 1.0f) {
         h = std::fmod(h + shiftAmount, 360.f);
         if (h < 0.f) h += 360.f;
+    }
+
+    void setS(float s_)
+	{
+		s = std::clamp(s_, 0.f, 1.f);
+	}
+
+    float getV()
+    {
+        return v;
+    }
+
+    void dim(float v_)
+    {
+        v -= v_;
+    }
+
+    static bool hasPassedHue(const HSV& original, const HSV& current, float targetHue) {
+        // Normalize all to [0, 360)
+        auto norm = [](float h) { return std::fmod((h < 0 ? h + 360.f : h), 360.f); };
+
+        float h0 = norm(original.h);
+        float h1 = norm(current.h);
+        float target = norm(targetHue);
+
+        // Handle wrapping properly
+        if (h1 > h0) h1 -= 360.f;
+        if (target > h0) target -= 360.f;
+
+        return h1 <= target;
     }
 
     operator sf::Glsl::Vec3() const {

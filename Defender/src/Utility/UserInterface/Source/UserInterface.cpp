@@ -1,12 +1,12 @@
 #include "../UserInterface.h"
 #include "../../Timer.h"
-#include "../../src/Entity/Enemy/Mutant.h"
 #include "../HSV.h"
+#include "../../DisplayManager.h"
+
 
 
 UserInterface::World UserInterface::world;
 UserInterface::Stars UserInterface::stars;
-UserInterface::Minimap UserInterface::minimap;
 sf::Font* UserInterface::font;
 sf::Font* UserInterface::otherFont;
 sf::Text UserInterface::score;
@@ -14,10 +14,12 @@ sf::Text UserInterface::credits; // @todo find out if this is necessary...
 sf::Shader* UserInterface::shiftingShader = nullptr;
 sf::Shader* UserInterface::flashingShader = nullptr;
 sf::Shader* UserInterface::williamsShader = nullptr;
+sf::Shader* UserInterface::deathShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
 HSV UserInterface::shiftReplacement{};
+UserInterface::DeathReplacement UserInterface::deathReplacement {};
 Color<float> UserInterface::brightColors[] =
 { // Data table from somewhere...
     {1.0f * 255.0f, 0.0f * 255.0f, 0.0f * 255.0f},
@@ -29,6 +31,9 @@ Color<float> UserInterface::brightColors[] =
     {1.0f * 255.0f, 1.0f * 255.0f, 1.0f * 255.0f},
     {1.0f * 255.0f, 0.5f * 255.0f, 0.0f * 255.0f}
 };
+sf::RenderTexture* UserInterface::miniTarget = nullptr;
+sf::Sprite* UserInterface::miniSprite = nullptr;
+const sf::Vector2f UserInterface::UIBounds::minimapPosConversion = sf::Vector2f{ (float)((double)MINIMAP_WIDTH / (double)COMN::worldSize), (float)((double)MINIMAP_HEIGHT / COMN::resolution.y) };
 
 
 uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& pos, uint16_t size)
@@ -195,9 +200,6 @@ void UserInterface::World::draw(sf::RenderTarget &target,
 	//target.draw(border, states);
 }
 
-void UserInterface::Minimap::draw(sf::RenderTarget &target,
-                                  sf::RenderStates  states) const {}
-
 void UserInterface::Stars::draw(sf::RenderTarget &target,
                                 sf::RenderStates  states) const {}
 
@@ -216,6 +218,7 @@ void UserInterface::initialize()
     shiftingShader = new sf::Shader;
     flashingShader = new sf::Shader;
     williamsShader = new sf::Shader;
+    deathShader = new sf::Shader;
 
     shiftingShader->loadFromFile("res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
@@ -223,21 +226,41 @@ void UserInterface::initialize()
         sf::Shader::Type::Fragment);
     williamsShader->loadFromFile("./res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
+    deathShader->loadFromFile("./res/shaders/replace.frag",
+        sf::Shader::Type::Fragment);
 
     flashingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
+    deathShader->   setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
 
     // World
     UserInterface::World::generate();
+
+	miniTarget = new sf::RenderTexture;
+    miniTarget->create(UIBounds::MINIMAP_WIDTH, UIBounds::MINIMAP_HEIGHT);
+	miniTarget->setSmooth(false);
+	miniTarget->setRepeated(true);
+
+	miniSprite = new sf::Sprite(miniTarget->getTexture());
+
+	miniSprite->setScale(1, -1);
+
+	miniSprite->setPosition(UIBounds::MINIMAP_X, UIBounds::MINIMAP_Y);
+
+	miniSprite->setTextureRect(sf::IntRect(0, 0, UIBounds::MINIMAP_WIDTH*3, UIBounds::MINIMAP_HEIGHT));
 }
 
 const sf::Font &UserInterface::getFont() { return *font; }
 const sf::Font &UserInterface::getOtherFont() { return *otherFont; }
 
-sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
-sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
-sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
+//sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
+//sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
+//sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
+//sf::Shader * UserInterface::getDeathShader()
+//{
+//	return deathShader;
+//}
 
 sf::Shader * UserInterface::getShader(ShaderID::ID ID)
 {
@@ -257,8 +280,10 @@ sf::Shader * UserInterface::getShader(ShaderID::ID ID)
 
     case ShaderID::WILLIAMS:
         return williamsShader;
+	case ShaderID::DEATH_ANIM:
+		return deathShader;
     }
-
+	throw std::runtime_error("Invalid shader ID");
 	return nullptr;
 }
 
@@ -290,36 +315,209 @@ const void UserInterface::shaderTick(double deltatime)
     shiftReplacement.shift(6);
 
 	shiftingShader->setUniform("replaceColor", shiftReplacement);
+
+    if (deathReplacement.active)
+    {
+        std::cout << "ACTIVE DEATH ANIM!";
+		deathShader->setUniform("replaceColor", deathReplacement.color);
+        // If not passed white, tick
+        // if passed white
+			// if not passed hue, shift
+		    // if passed, set passed to true
+                // if v == 0, set active to false
+                // else, -= 1*deltatime
+
+        if (!deathReplacement.passedWhite)
+            deathReplacement.passedWhite = deathReplacement.whiteTime.tick(deltatime);
+        else
+        {
+            if (!deathReplacement.passedHue)
+            {
+				deathReplacement.color.shift(1);
+
+                if (HSV::hasPassedHue(HSV(0.6, 1., 1.), deathReplacement.color, 0))
+                    deathReplacement.passedHue = true;
+            }
+            else
+            {
+                deathReplacement.color.setS(1);
+				if (deathReplacement.color.getV() <= 0)
+				{
+                    // Reset
+                    deathReplacement.color = HSV(0.6, 0, 1.);
+					deathReplacement.active = false;
+					deathReplacement.passedHue = false;
+                    deathReplacement.passedWhite = false;
+				}
+				else
+					deathReplacement.color.dim(1. * deltatime);
+            }
+        }
+    }
 }
 
 void UserInterface::drawBackground(sf::RenderTarget& rnd, sf::View& viewport)
 {
 	rnd.draw(world);
+    // In theory this would also draw other things listed here
 }
 
-void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view) 
+void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, EntityManagerData& data) 
 {
-    // Needs to reset view to highscore
-    sf::View oldView = target.getView();
+    static bool initialized = false;
+    static sf::RectangleShape cover;
+	static sf::RectangleShape divider;
+    static sf::RenderTexture scoreTarget;
+	static sf::Sprite scoreSprite(scoreTarget.getTexture());
+    static sf::Text scoreTxt;
+    static sf::View uiView;
 
-    sf::View defView = oldView;
-    defView.setCenter(defView.getSize().x / 2.f, defView.getSize().y / 2.f);
-    target.setView(defView);
+    if (!initialized)
+    {
+		cover.setFillColor(sf::Color::Black);
+        divider.setOutlineThickness(2);
+		divider.setOutlineColor(sf::Color::Blue); // Needs to be changed
+        divider.setFillColor(sf::Color::Transparent);
+        scoreTxt.setFont(UserInterface::getFont());
+        scoreTxt.setCharacterSize(16);
+
+        scoreTarget.create(UIBounds::MINIMAP_X - 18, 7);
+
+        scoreSprite.setScale(1, -1);
+		scoreSprite.setPosition(0, 26);
+
+        uiView = target.getDefaultView();
+        uiView.setSize(COMN::resolution.x, COMN::resolution.y); // Set size of view (in world units)
+        uiView.setCenter(COMN::resolution.x / 2.f, COMN::resolution.y / 2.f); // Center the view in world space
 
 
-    sf::RectangleShape uiDivider;
-    uiDivider.setPosition(0, COMN::uiHeight);
-    uiDivider.setSize(sf::Vector2f(COMN::resolution.x, 2));
-    uiDivider.setFillColor(sf::Color::Blue);
-    target.draw(uiDivider);
+		initialized = true;
+    }
 
-    sf::RectangleShape minimapDivider;
-    minimapDivider.setPosition(82, 1);
-    minimapDivider.setSize(sf::Vector2f((COMN::resolution.x / 2.f - 82) * 2, COMN::uiHeight - 1));
-    minimapDivider.setFillColor(sf::Color::Transparent);
-    minimapDivider.setOutlineColor(sf::Color::Blue);
-    minimapDivider.setOutlineThickness(2);
-    target.draw(minimapDivider);
+    // Temporary for drawing HUD elements
+    //view.setCenter(view.getSize().x / 2, view.getSize().y / 2);
+    target.setView(uiView);
 
-    target.setView(oldView);
+    // Cover gameplay for UI
+    cover.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight));
+    target.draw(cover);
+
+    // Draw minimap
+    sf::RenderStates states = sf::RenderStates::Default;
+    states.shader = flashingShader;
+
+    miniSprite->setPosition(UIBounds::MINIMAP_X - UIBounds::MINIMAP_WIDTH + data.minimapOffset, miniSprite->getPosition().y);
+    target.draw(*miniSprite, states);
+    miniTarget->clear();
+
+    // Cover overflow
+    cover.setSize({ UIBounds::MINIMAP_X - 1, COMN::uiHeight });
+    target.draw(cover);
+	cover.setPosition(COMN::resolution.x - (UIBounds::MINIMAP_X - 1), 0);
+    target.draw(cover);
+
+    // UI divider
+    divider.setPosition(0, 0);
+    divider.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight - 2));
+    target.draw(divider);
+
+    // Draw minimap box
+    divider.setPosition(UIBounds::MINIMAP_X, 1);
+    divider.setSize(sf::Vector2f(UIBounds::MINIMAP_WIDTH, UIBounds::MINIMAP_HEIGHT));
+    target.draw(divider);
+
+
+    // Draw player lives ---------------------------------------------------------------------
+    repeatElement(
+        { 64, 18, 10, 4 }, 
+        { 18, 12 }, 
+        { 12, 0 }, 
+        std::min<uint8_t>(5, data.extraLives), target);
+
+    // Draw bomb count ---------------------------------------------------------------------
+
+    repeatElement(
+        { 75, 18, 6, 4 }, 
+        { 70, 19 }, 
+        { 0, 4 }, 
+        std::min<uint8_t>(3, data.smartBombs), target);
+
+
+    // draw screen view markers -------------------------------------------------
+    constexpr int screenMarkerWidth = 15;
+    sf::RectangleShape screenMarkerMain;
+    screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
+    screenMarkerMain.setFillColor(sf::Color(0xBFBFBFFF));
+
+
+    sf::RectangleShape screenMarkerSide;
+    screenMarkerSide.setSize(sf::Vector2f(1, 4));
+    screenMarkerSide.setFillColor(sf::Color(0xBFBFBFFF));
+
+
+    constexpr float minimapScale = 0.05;
+
+    // top marker
+    screenMarkerMain.setPosition(COMN::resolution.x / 2 - screenMarkerWidth / 2.f, 0);
+
+    target.draw(screenMarkerMain);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, 0);
+    target.draw(screenMarkerSide);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, 0);
+    target.draw(screenMarkerSide);
+
+    // bottom marker
+    screenMarkerMain.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight);
+    target.draw(screenMarkerMain);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x, COMN::uiHeight - 2);
+    target.draw(screenMarkerSide);
+
+    screenMarkerSide.setPosition(screenMarkerMain.getPosition().x + screenMarkerWidth, COMN::uiHeight - 2);
+    target.draw(screenMarkerSide);
+
+    // Show right aligned score ------------------------------------------------------------
+    // Same position as in highscore
+
+
+    //-18, 24
+
+    
+    scoreTxt.setString(std::to_string(data.score));
+    //scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
+    scoreTxt.setPosition(UIBounds::MINIMAP_X - 18 - scoreTxt.getGlobalBounds().width, 0);
+    scoreTarget.draw(scoreTxt);
+
+	states.shader = shiftingShader;
+    target.draw(scoreSprite, states);
+
+    // Death Animation
+    // Validate stage state
+    // Validate entity manager
+	// Validate death replacement
+
+
+    // Reset view
+    target.setView(view);
+	//view.setCenter(viewResetCenter);
+}
+
+void UserInterface::repeatElement(sf::IntRect texBounds,
+        sf::Vector2f pos,
+        sf::Vector2f diff,
+        uint8_t count, 
+        sf::RenderTarget& target)
+{
+    static sf::Sprite toDraw(*DisplayManager::getTexture());
+
+	toDraw.setTextureRect(texBounds);
+	//toDraw.setPosition(pos);
+
+    for (uint8_t i = 0; i < count; i++)
+    {
+		toDraw.setPosition(pos.x + diff.x * i, pos.y + diff.y * i);
+		target.draw(toDraw);
+    }
 }

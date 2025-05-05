@@ -18,20 +18,14 @@ public:
         vel.x *= std::cos(rot);
         vel.y *= std::sin(rot);
 
-        targetTimer.tick(0);
+        attackTimer.tick(0);
+		switchTimer.tick(4.5);
     }
-
-    /*
-    The swarmer gives the player 150 xp upon death. It's behaviour seems to be 
-    heading in the direction of the player and not changing direction until 
-    it goes off screen, in that case it repeats the cycle. They also shoot at 
-    the player. We should also make sure that they spawn in groups.
-    */
-
-    void tick(double deltaTime);
+    virtual void tick(double deltatime) override;
 
     bool init = true;
-    double rot;
-    Timer<double> targetTimer{ 1 };
+    float yVal = 0;
+    int8_t direction = 0;
+    Timer<double> attackTimer{ 2 }, switchTimer{ 5 };
 };
 

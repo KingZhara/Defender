@@ -4,12 +4,7 @@
 #include "src/Utility/Action.h"
 #include "src/Utility/common.h"
 
-void         setAction(Action &actions, sf::Keyboard::Key key, bool pressed);
-sf::Texture *loadSpritesheet();
-sf::Vector2u getMaxAspectResolution(int screenWidth,
-                                    int screenHeight,
-                                    int aspectWidth,
-                                    int aspectHeight);
+void setAction(Action &actions, sf::Keyboard::Key key, bool pressed);
 
 int main()
 {

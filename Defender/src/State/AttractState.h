@@ -31,9 +31,9 @@ public:
 		switch (stage)
 		{
 		case 4:
-			UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
-			UserInterface::getFlashingShader()->setUniform("texture", sf::Shader::CurrentTexture);
-			UserInterface::getWilliamsShader()->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getShader(ShaderID::HUE_SHIFT)->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getShader(ShaderID::RAND_COL)->setUniform("texture", sf::Shader::CurrentTexture);
+			UserInterface::getShader(ShaderID::WILLIAMS)->setUniform("texture", sf::Shader::CurrentTexture);
 			[[fallthrough]];
 
 		case 3: // Copyright
@@ -42,7 +42,7 @@ public:
 			[[fallthrough]];
 
 		case 2: // Defender
-			UserInterface::getFlashingShader()->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
+			UserInterface::getShader(ShaderID::RAND_COL)->setUniform("targetColor", sf::Glsl::Vec3(1.f, 1.f, 0.f));
 			flashing->draw(defender, states);
 			[[fallthrough]];
 
@@ -57,15 +57,15 @@ public:
 			willFlashing->draw(williams, states); // Will require alternate shader
 		}
 
-		states.shader = UserInterface::getFlashingShader();
+		states.shader = UserInterface::getShader(ShaderID::RAND_COL);
 		target.draw(flshDra, states);
-		UserInterface::getFlashingShader()->setUniform("targetColor", COMN::ShaderTarget);
+		UserInterface::getShader(ShaderID::RAND_COL)->setUniform("targetColor", COMN::ShaderTarget);
 
 
-		states.shader = UserInterface::getShiftingShader();
+		states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
 		target.draw(shftDra, states);
 
-		states.shader = UserInterface::getWilliamsShader();
+		states.shader = UserInterface::getShader(ShaderID::WILLIAMS);
 		target.draw(willFlshDra, states);
 	}
 

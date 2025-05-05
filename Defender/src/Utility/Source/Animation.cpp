@@ -75,6 +75,7 @@ void Animation::tick(double deltatime)
 void Animation::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	states.shader = UserInterface::getShader(SPRITE_DATA.shader);
+	std::cout << SPRITE_DATA.shader << '\n';
 	target.draw(frame, states);
 }
 
@@ -90,7 +91,7 @@ void Animation::setTexturePos(sf::Vector2i pos)
 
 void Animation::setPosition(sf::Vector2f pos) const
 {
-	frame.setPosition(round(pos.x), round(pos.y));
+	frame.setPosition(pos.x, pos.y);
 }
 
 bool Animation::intersects(sf::FloatRect &otherBounds)
