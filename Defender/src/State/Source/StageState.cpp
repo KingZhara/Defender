@@ -254,7 +254,7 @@ void StageState::SpawnManager::tick(double deltatime)
 					(int16_t)(COMN::resolution.y / 2)
 				};
 				// Spawn pods
-				spawnCount(podCount, EntityID::POD, target, { 15, 0 }, { 5, 20 });
+				spawnCount(podCount, EntityID::POD, target, { 15, 0 }, { 30, 30 });
 
 				// Make bomb target
 				target = {
@@ -298,6 +298,7 @@ void StageState::SpawnManager::tick(double deltatime)
 			}
 
 			// Loop through all subwaves immediately if it is an invasion
+			std::cout << "Subwave: " << (short)subwave << ", Invasion: " << invasion << '\n';
 		} while (subwave != 0 && invasion);
 	}
 }

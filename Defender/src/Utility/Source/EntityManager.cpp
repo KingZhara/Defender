@@ -403,6 +403,7 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     if (newTarget)
     {
         entity->setTarget(newTarget);
+		dynamic_cast<Astronaut*>(astronauts.entities.at(astroIndex))->setTargeted(true);
         landerTargetTable.landerToAstronaut[index] = astroIndex;
         landerTargetTable.astronautToLander[astroIndex] = index;
     }

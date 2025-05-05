@@ -7,7 +7,9 @@ public:
     explicit Lander(sf::Vector2f pos_,
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Enemy(pos_, EntityID::LANDER, isScripted_, script_)
-    {}
+    {
+        wanderTimer.tick(0);
+    }
 
     /*
     The lander gives the player 150 xp upon death. Also needs a method to 
@@ -24,10 +26,9 @@ public:
 	void setTarget(Entity* target);
 
 private:
-    //enyum
-
     int getAstronauts();
 	Entity* target = nullptr;
-
+    Timer<double> wanderTimer{ 5, false };
+    bool dir = false, holding = false;
 };
 
