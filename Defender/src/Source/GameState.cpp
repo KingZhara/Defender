@@ -6,7 +6,7 @@
 GameState::GameState()
 {
 	type = State::ATTRACT;
-	new (&state) HighscoreState();
+	new (&state) AttractState();
 }
 
 bool GameState::tick(Action& actions, double deltatime)
