@@ -15,28 +15,7 @@ public:
 
 	bool tick(double deltatime);
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-	{
-		UserInterface::getShader(ShaderID::HUE_SHIFT)->setUniform("texture", sf::Shader::CurrentTexture);
-
-		shifting->draw(scoreTxt, states);
-
-		shifting->draw(defender, states);
-
-		shifting->draw(hallOfFame, states);
-
-		shifting->draw(goatodayTitle, states);
-		shifting->draw(goatimeTitle, states);
-
-		shifting->draw(goatodayUnder, states);
-		shifting->draw(goatimeUnder, states);
-
-		shifting->draw(goatoday);
-		shifting->draw(goatime);
-
-		states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
-		target.draw(shftDra, states);
-	}
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	static void clean()
 	{
@@ -63,8 +42,6 @@ private:
 	static void loadHighscores();
 
 	static void writeHighscores();
-
-	static std::string makeScores(Score scores[HS_COUNT]);
 
 	static Score today[HS_COUNT], allTime[HS_COUNT];
 

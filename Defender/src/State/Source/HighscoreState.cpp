@@ -26,11 +26,6 @@ HighscoreState::HighscoreState()
 {
 	shifting->clear();
 
-	// Call something like this when stagestate is done
-	// addScore("TST", 1000);
-
-	goatoday.setString(makeScores(today));
-	goatime.setString(makeScores(allTime));
 
 	tick(0);
 }
@@ -81,17 +76,15 @@ void HighscoreState::initialize()
 	goatodayUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatimeUnder.setSize(sf::Vector2f(goatimeTitle.getGlobalBounds().getSize().x, 2));
-	goatimeUnder.setPosition(COMN::resolution.x * 3 / 4 - goatodayUnder.getGlobalBounds().getSize().x / 2, 110);
+	goatimeUnder.setPosition(COMN::resolution.x * 3 / 4 - goatimeUnder.getGlobalBounds().getSize().x / 2, 110);
 	goatimeUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatoday.setFont(UserInterface::getFont());
 	goatoday.setCharacterSize(16);
-	goatoday.setPosition(COMN::resolution.x * 0.25f - (18 * 10.f / 4), 110);
 	goatoday.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatime.setFont(UserInterface::getFont());
 	goatime.setCharacterSize(16);
-	goatime.setPosition(COMN::resolution.x * 0.75f - (18 * 10.f / 4), 110);
 	goatime.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	scoreTxt.setFont(UserInterface::getFont());
@@ -182,34 +175,91 @@ void HighscoreState::writeHighscores()
 	}
 }
 
-std::string HighscoreState::makeScores(Score scores[HS_COUNT])
+
+void HighscoreState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	std::string str;
-	for (int i = 0; i < HS_COUNT; i++)
+	UserInterface::getShader(ShaderID::HUE_SHIFT)->setUniform("texture", sf::Shader::CurrentTexture);
+
+	shifting->draw(scoreTxt, states);
+
+	shifting->draw(defender, states);
+
+	shifting->draw(hallOfFame, states);
+
+	shifting->draw(goatodayTitle, states);
+	shifting->draw(goatimeTitle, states);
+
+	shifting->draw(goatodayUnder, states);
+	shifting->draw(goatimeUnder, states);
+
+	for (int i = 0; i < 8; i++)
 	{
-		if (scores[i].score == 0) // NULL score
-			snprintf(&str[i * 11], 12, "%d         \n", (i + 1));
+		// need to treat string as 3 strings
+		// why no monospace
 
-		// Explaining this printf format:
-		// "Do not be afraid" there is much worse
-		//
-		// "%d" - prints int
-		// "%s" - prints cstring
-		// "%6d" - prints padded int (6 digits length)
-		
-		// The buffer parameter math is to skip to line i
-		// The buffer count being 1 more than the line length is intentional.
-		//     It has to write the null char somewhere.
-		//     If it's not the final loop it writes to the next line, 
-		//     which will be overwritten next, so it doesn't matter.
-		//     If it's the final loop it writes it to std::string's null char,
-		//     so it is the same and doesn't matter.
+		// today
+		goatoday.setString(std::to_string(i));
+		goatoday.setPosition(COMN::resolution.x / 4 - 
+			goatodayUnder.getGlobalBounds().getSize().x / 2 +
+			8 * (-0.75f)
+			, 110 + i * 10);
+		shifting->draw(goatoday);
 
-		else
-			snprintf(&str[i * 11], 12, "%d%s%6d\n", 
-				(i + 1), // always gonna be 1 digit
-				scores[i].initials, // always 3 characters
-				scores[i].score % 100000); // wrap around to keep 5 digits (+ 1 space padding)
+		// no i can't even draw the initials as a string
+		// they need to be drawn char by char to make sure they are aligned
+		for (int ii = 0; ii < 3; ii++)
+		{
+			goatoday.setString(today[i].initials[ii]);
+			goatoday.setPosition(COMN::resolution.x / 4 - 
+				goatodayUnder.getGlobalBounds().getSize().x / 2 +
+				8 * (ii + 0.5f)
+				, 110 + i * 10);
+			shifting->draw(goatoday);
+		}
+
+		if (today[i].score > 99999)
+			today[i].score = 99999;
+		std::string score = std::to_string(today[i].score);
+		goatoday.setString(score);
+		// right align
+		goatoday.setPosition(COMN::resolution.x / 4 -
+			goatodayUnder.getGlobalBounds().getSize().x / 2 +
+			8 * (8.75f - score.length())
+			, 110 + i * 10);
+		shifting->draw(goatoday);
+
+
+
+		// all time
+		goatime.setString(std::to_string(i));
+		goatime.setPosition(COMN::resolution.x * 3 / 4 -
+			goatimeUnder.getGlobalBounds().getSize().x / 2 +
+			8 * (-0.75f)
+			, 110 + i * 10);
+		shifting->draw(goatime);
+
+		for (int ii = 0; ii < 3; ii++)
+		{
+			goatime.setString(allTime[i].initials[ii]);
+			goatime.setPosition(COMN::resolution.x * 3 / 4 -
+				goatimeUnder.getGlobalBounds().getSize().x / 2 +
+				8 * (ii + 0.5f)
+				, 110 + i * 10);
+			shifting->draw(goatime);
+		}
+
+		if (allTime[i].score > 999999)
+			allTime[i].score = 999999;
+		score = std::to_string(allTime[i].score);
+		goatime.setString(score);
+		// right align
+		goatime.setPosition(COMN::resolution.x * 3 / 4 -
+			goatimeUnder.getGlobalBounds().getSize().x / 2 +
+			8 * (8.75 - score.length())
+			, 110 + i * 10);
+		shifting->draw(goatime);
 	}
-	return str;
+
+	states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
+	target.draw(shftDra, states);
 }
