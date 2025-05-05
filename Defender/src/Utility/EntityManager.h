@@ -77,6 +77,26 @@ public:
 	}
 
 private:
+	struct LanderTargetTable
+	{
+		std::unordered_map<uint16_t, uint16_t> landerToAstronaut;
+		std::unordered_map<uint16_t, uint16_t> astronautToLander;
+
+		LanderTargetTable() = default;
+
+		void link(uint16_t lander, uint16_t astronaut)
+		{
+			landerToAstronaut[lander] = astronaut;
+			astronautToLander[astronaut] = lander;
+		}
+
+		void unlink(uint16_t lander, uint16_t astronaut)
+		{
+			landerToAstronaut.erase(lander);
+			astronautToLander.erase(astronaut);
+		}
+	};
+
 	static void adjViewport(sf::View* view, double deltatime);
 	static void      killArea(sf::FloatRect viewport);
 	static void      hyperspace();
@@ -109,7 +129,7 @@ private:
 
 	// first is lander     -> astronaut
 	// second is astronaut -> lander
-	static std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> landerTargetTable;
+	static LanderTargetTable landerTargetTable;
 
 	// @todo Make score update
 	static ScoreType score;
@@ -246,14 +266,12 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 
 				if (dynamic_cast<Lander*>(entity_))
 				{
-					Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]));
+					Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]));
 					if (astronaut && dynamic_cast<Lander*>(entity_)->hasTarget())
 					{
-						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.first[i]))->setTargeted(false);
+						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]))->setTargeted(false);
 						// Erase the entry pairing this astronaut with the lander
-						landerTargetTable.second.erase(landerTargetTable.first[i]);
-						// Erase the entry pairing this lander with the astronaut
-						landerTargetTable.first.erase(i);
+						landerTargetTable.unlink(i, landerTargetTable.landerToAstronaut[i]);
 					}
 				}
 				else if (dynamic_cast<Pod*>(entity_))
@@ -271,11 +289,9 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 			{
 				if (dynamic_cast<Astronaut*>(entity_)->targeted())
 				{
-					dynamic_cast<Lander*>(enemies.entities.at(landerTargetTable.second[i]))->setTarget(nullptr);
+					dynamic_cast<Lander*>(enemies.entities.at(landerTargetTable.astronautToLander[i]))->setTarget(nullptr);
 					// Erase the entry pairing this astronaut with the lander
-					landerTargetTable.first.erase(landerTargetTable.second[i]);
-					// Erase the entry pairing this lander with the astronaut
-					landerTargetTable.second.erase(i);
+					landerTargetTable.unlink(landerTargetTable.astronautToLander[i], i);
 				}
 			}
 

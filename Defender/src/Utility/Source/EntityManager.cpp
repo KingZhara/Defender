@@ -368,6 +368,9 @@ void EntityManager::tickPlayer(double deltatime, Action& actions)
 void EntityManager::tickLander(double deltatime, uint16_t index)
 {
     Lander* entity = dynamic_cast<Lander*>(enemies.entities.at(index));
+    Astronaut* newTarget = nullptr;
+    uint16_t astroIndex = 0;
+    int16_t minDx = -1;
 
     if (isInvasion)
     {
@@ -383,15 +386,25 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
         for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
         {
             Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
-            if (astronaut && astronaut->targeted())
+            if (astronaut && !astronaut->targeted())
             {
-                entity->setTarget(astronaut);
-                landerTargetTable.first[index] = i;
-                landerTargetTable.second[i] = index;
-                break;
+				int16_t dx = std::abs(astronaut->getPos().x - entity->getPos().x);
+				if (minDx == -1 || dx < minDx)
+				{
+					minDx = dx;
+					newTarget = astronaut;
+					astroIndex = i;
+				}
             }
 
         }
+    }
+
+    if (newTarget)
+    {
+        entity->setTarget(newTarget);
+        landerTargetTable.first[index] = astroIndex;
+        landerTargetTable.second[astroIndex] = index;
     }
 
     enemies.entities.at(index)->tick(deltatime);
