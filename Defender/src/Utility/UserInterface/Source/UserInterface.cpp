@@ -318,7 +318,7 @@ const void UserInterface::shaderTick(double deltatime)
 
     if (deathReplacement.active)
     {
-        std::cout << "ACTIVE DEATH ANIM!";
+        //std::cout << "ACTIVE DEATH ANIM!";
 		deathShader->setUniform("replaceColor", deathReplacement.color);
         // If not passed white, tick
         // if passed white

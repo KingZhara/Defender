@@ -176,7 +176,7 @@ EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions
         else
             deathReset();
 
-		std::cout << "DEATH ANIM: " << deathAnim << ", COMPL: " << UserInterface::isDeathAnimCompleted() << '\n';
+		//std::cout << "DEATH ANIM: " << deathAnim << ", COMPL: " << UserInterface::isDeathAnimCompleted() << '\n';
     }
 
 
