@@ -59,7 +59,11 @@ public:
 	static void tick(double deltatime);
 	static void nextWave();
 	static void reset();
-	static void startInvasion() { invasion = true; baiterTime = 45; }
+	static void startInvasion()
+	{
+		invasion = true; baiterTime = 45;
+		subWaveTimer.addTime(subWaveTimer.getBase() - subWaveTimer.time);
+	}
 	static bool waveStarted() { return started; };
 
 private:

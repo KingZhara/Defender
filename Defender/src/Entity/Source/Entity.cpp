@@ -5,7 +5,8 @@
 std::queue<Entity::QueuedEntity> Entity::entityQueue;
 
 sf::Vector2f *Entity::EntityData::PlayerRef::pos = nullptr;
-sf::Vector2f *Entity::EntityData::PlayerRef::vel = nullptr;
+sf::Vector2f* Entity::EntityData::PlayerRef::vel = nullptr;
+Entity* Entity::EntityData::PlayerRef::entity = nullptr;
 
 sf::Sprite *Entity::miniSprite = nullptr;
 
@@ -84,8 +85,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
             4
         },
         Vec2<double>{
-            1.0f,
-            1.0f
+            .5f,
+            .5f
         },
         150
     },
@@ -248,42 +249,7 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(
         uint8_t      scale,
         bool         playerVelType)
 {
-    static constexpr float half = COMN::worldSize / 2;
-
-    sf::Vector2f target = makeCenteredTL({0, 0}, EntityID::PLAYER);
-    sf::Vector2f eVel   = getEVel(ID);
-
-    if (playerVelType)
-        target += *EntityData::PLAYER_REF.vel;
-
-    pos = makeCenteredTL(pos, ID);
-    // Use the center & normalize
-    pos.x -= half;
-
-    // Normalize the target
-    target.x += EntityData::PLAYER_REF.pos->x - pos.x - half;
-    target.y += EntityData::PLAYER_REF.pos->y - pos.y;
-
-    // Apply wrapping
-    if (target.x > half)
-        target.x -= COMN::worldSize;
-    else if (target.x < -half)
-        target.x += COMN::worldSize;
-
-    // Generate the angle
-    double rot = atan2(target.y, target.x);
-
-    // Generate the velocity
-    sf::Vector2f vel = {
-        static_cast<float>(cos(rot) * scale * eVel.x),
-        static_cast<float>(sin(rot) * scale * eVel.y)
-    };
-
-    if (!playerVelType)
-        vel += *EntityData::PLAYER_REF.vel;
-
-
-    return {vel, target};
+    return makeTargetedVec(pos, ID, EntityData::PLAYER_REF.entity, scale, playerVelType);
 }
 
 const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID id)
@@ -368,4 +334,45 @@ sf::Vector2f Entity::makeMiniDrawPos() const
     pos_.y = std::round(pos.y * UserInterface::UIBounds::minimapPosConversion.y);
 
     return pos_;
+}
+
+const Entity::EntityTarget Entity::makeTargetedVec(sf::Vector2f pos, EntityID::ID ID, Entity* other,
+	uint8_t scale, bool velType)
+{
+    static constexpr float half = COMN::worldSize / 2;
+
+    sf::Vector2f target = makeCenteredTL({ 0, 0 }, other->getID());
+    sf::Vector2f eVel = getEVel(ID);
+
+    if (velType)
+        target += other->getVel();
+
+    pos = makeCenteredTL(pos, ID);
+    // Use the center & normalize
+    pos.x -= half;
+
+    // Normalize the target
+    target.x += other->getPos().x - pos.x - half;
+    target.y += other->getPos().y - pos.y;
+
+    // Apply wrapping
+    if (target.x > half)
+        target.x -= COMN::worldSize;
+    else if (target.x < -half)
+        target.x += COMN::worldSize;
+
+    // Generate the angle
+    double rot = atan2(target.y, target.x);
+
+    // Generate the velocity
+    sf::Vector2f vel = {
+        static_cast<float>(cos(rot) * scale * eVel.x),
+        static_cast<float>(sin(rot) * scale * eVel.y)
+    };
+
+    if (!velType)
+        vel += other->getVel();
+
+
+    return { vel, target };
 }

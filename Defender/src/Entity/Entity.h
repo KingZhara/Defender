@@ -85,6 +85,8 @@ public:
 protected:
 
     sf::Vector2f makeMiniDrawPos() const;
+    static const EntityTarget        makeTargetedVec(sf::Vector2f pos, EntityID::ID ID, Entity* other,
+        uint8_t scale, bool velType);
 
     struct EntityData
     {
@@ -101,6 +103,7 @@ protected:
         {
             static sf::Vector2f *pos;
             static sf::Vector2f *vel;
+			static Entity* entity;
         };
 
         static constexpr Vec2<double> BASE_VELOCITY
