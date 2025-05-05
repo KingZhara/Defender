@@ -61,27 +61,27 @@ void HighscoreState::initialize()
 	hallOfFame.setFont(UserInterface::getFont());
 	hallOfFame.setString("HALL OF FAME");
 	hallOfFame.setCharacterSize(16);
-	hallOfFame.setPosition(COMN::resolution.x / 2 - (18 * 12.75f / 4), 50);
+	hallOfFame.setPosition(COMN::resolution.x / 2 - hallOfFame.getGlobalBounds().getSize().x / 2, 50);
 	hallOfFame.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatodayTitle.setFont(UserInterface::getFont());
 	goatodayTitle.setString(" TODAYS \nGREATEST");
 	goatodayTitle.setCharacterSize(16);
-	goatodayTitle.setPosition(COMN::resolution.x / 4 - (18 * 8.f / 4), 80);
+	goatodayTitle.setPosition(COMN::resolution.x / 4 - goatodayTitle.getGlobalBounds().getSize().x / 2, 80);
 	goatodayTitle.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatimeTitle.setFont(UserInterface::getFont());
 	goatimeTitle.setString("ALL TIME\nGREATEST");
 	goatimeTitle.setCharacterSize(16);
-	goatimeTitle.setPosition(COMN::resolution.x / 4 * 3 - (18 * 8.f / 4), 80);
+	goatimeTitle.setPosition(COMN::resolution.x * 3 / 4 - goatimeTitle.getGlobalBounds().getSize().x / 2, 80);
 	goatimeTitle.setFillColor(sf::Color(COMN::ShaderTarget));
 
-	goatodayUnder.setSize(sf::Vector2f(18 * 8.5f / 2, 2));
-	goatodayUnder.setPosition(COMN::resolution.x / 4 - (18 * 8.f / 4), 110);
+	goatodayUnder.setSize(sf::Vector2f(goatodayTitle.getGlobalBounds().getSize().x, 2));
+	goatodayUnder.setPosition(COMN::resolution.x / 4 - goatodayUnder.getGlobalBounds().getSize().x / 2, 110);
 	goatodayUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
-	goatimeUnder.setSize(sf::Vector2f(18 * 8.5f / 2, 2));
-	goatimeUnder.setPosition(COMN::resolution.x / 4 * 3 - (18 * 8.f / 4), 110);
+	goatimeUnder.setSize(sf::Vector2f(goatimeTitle.getGlobalBounds().getSize().x, 2));
+	goatimeUnder.setPosition(COMN::resolution.x * 3 / 4 - goatodayUnder.getGlobalBounds().getSize().x / 2, 110);
 	goatimeUnder.setFillColor(sf::Color(COMN::ShaderTarget));
 
 	goatoday.setFont(UserInterface::getFont());
@@ -184,7 +184,7 @@ void HighscoreState::writeHighscores()
 
 std::string HighscoreState::makeScores(Score scores[HS_COUNT])
 {
-	std::string str(11 * HS_COUNT, ' ');
+	std::string str;
 	for (int i = 0; i < HS_COUNT; i++)
 	{
 		if (scores[i].score == 0) // NULL score
@@ -196,7 +196,7 @@ std::string HighscoreState::makeScores(Score scores[HS_COUNT])
 		// "%d" - prints int
 		// "%s" - prints cstring
 		// "%6d" - prints padded int (6 digits length)
-
+		
 		// The buffer parameter math is to skip to line i
 		// The buffer count being 1 more than the line length is intentional.
 		//     It has to write the null char somewhere.
