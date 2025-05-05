@@ -10,7 +10,7 @@ EntityManager::EntityHolder<Entity> EntityManager::enemies;
 EntityManager::EntityHolder<Entity> EntityManager::astronauts;
 EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
-std::pair<std::unordered_map<uint16_t, uint16_t>, std::unordered_map<uint16_t, uint16_t>> EntityManager::landerTargetTable;
+EntityManager::LanderTargetTable EntityManager::landerTargetTable;
 uint16_t EntityManager::baiterCounter = 0;
 // @todo Make score update
 ScoreType EntityManager::score;
@@ -28,8 +28,8 @@ EntityManager::EntityManager(bool scripted_)
     astronauts.reset();
     particles.reset();
 
-	landerTargetTable.first.clear();
-	landerTargetTable.second.clear();
+	landerTargetTable.landerToAstronaut.clear();
+	landerTargetTable.astronautToLander.clear();
 
     delete player;
     player = nullptr;
@@ -403,8 +403,8 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     if (newTarget)
     {
         entity->setTarget(newTarget);
-        landerTargetTable.first[index] = astroIndex;
-        landerTargetTable.second[astroIndex] = index;
+        landerTargetTable.landerToAstronaut[index] = astroIndex;
+        landerTargetTable.astronautToLander[astroIndex] = index;
     }
 
     enemies.entities.at(index)->tick(deltatime);
