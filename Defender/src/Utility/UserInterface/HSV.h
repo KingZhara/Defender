@@ -45,6 +45,11 @@ public:
         if (h < 0.f) h += 360.f;
     }
 
+    void setS(float s_)
+	{
+		s = std::clamp(s_, 0.f, 1.f);
+	}
+
     float getV()
     {
         return v;

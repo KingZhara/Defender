@@ -141,7 +141,7 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions)
 {
     // TMEPORARY DECLARATION
-    playerState = PlayerState::ALIVE;
+    //playerState = PlayerState::ALIVE;
 	//std::cout << particles.entities.size() << " particles\n";
     //uint16_t enemyIndex  = 0;
 
@@ -164,23 +164,27 @@ EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions
         tickEntities(deltatime);
         tickPlayer(deltatime, actions);
     }
-    else
+    if (playerState != PlayerState::ALIVE)
     {
         if (!deathAnim)
         {
             deathAnim = new DeathAnimation(player->getPos());
             UserInterface::startDeathAnimation();
         }
+        else if (!UserInterface::isDeathAnimCompleted())
+            deathAnim->tick(deltatime);
+        else
+            deathReset();
 
-
-        // Player Death Animation
-        // once done
-
-        EntityManager::deathReset();
+		std::cout << "DEATH ANIM: " << deathAnim << ", COMPL: " << UserInterface::isDeathAnimCompleted() << '\n';
     }
 
 
-    playerState = PlayerState::ALIVE;
+    //playerState = PlayerState::ALIVE;
+
+    if (playerState == PlayerState::DEAD && deathAnim)
+        return PlayerState::RESPAWNING;
+
     return playerState;
 }
 
@@ -368,8 +372,8 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     if (isInvasion)
     {
         std::cout << "INVASION SPAWN\n";
-        spawn(EntityID::MUTANT, entity->getPos());
-        spawn(EntityID::MUTANT, entity->getPos());
+        spawn(false, EntityID::MUTANT, entity->getPos());
+        spawn(false, EntityID::MUTANT, entity->getPos());
         enemies.kill(index);
         return;
     }
@@ -431,6 +435,9 @@ void EntityManager::draw(sf::RenderTarget &target,
         target.draw(*player, states);
     if (player)
     	uiPassthrough.minimapOffset = (COMN::worldSize / 2 - DisplayManager::getView().getCenter().x) / COMN::worldSize * UserInterface::UIBounds::MINIMAP_WIDTH;
+
+    if (deathAnim)
+        target.draw(*deathAnim, states);
 
     UserInterface::drawForeground(target, DisplayManager::getView(), uiPassthrough);
 }
@@ -497,7 +504,14 @@ void EntityManager::waveReset()
 
 void EntityManager::deathReset()
 {
-    player->setPos({ COMN::worldSize / 2, (COMN::resolution.y - COMN::uiHeight) / 2 });
+    delete deathAnim;
+    deathAnim = nullptr;
+
+    // Figure out wht death isnt working,this is likely an issue with how DEAD is being set, and stage state reading it.
+
+    if (playerState != PlayerState::DEAD)
+    	playerState = PlayerState::ALIVE;
+
 	projectiles.reset();
 	enemies.zero();
 	particles.zero();
@@ -598,6 +612,7 @@ void EntityManager::spawn_typeWrapper(Entity* entity)
  		std::cout << "Player Spawned\n";
         delete player;
         player = (Player*)entity;
+        player->setPos({ COMN::worldSize / 2, (COMN::resolution.y - COMN::uiHeight) / 2 });
         break;
 
     default:

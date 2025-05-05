@@ -342,7 +342,7 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
         specialX = pos.x - COMN::worldSize;
 
     // Handle the miniSprite
-    if ((ID < EntityID::BULLET || ID > EntityID::BOMB) && ID != EntityID::PIECE)
+    if ((ID < EntityID::BULLET || ID > EntityID::BOMB) && ID != EntityID::PIECE && ID != EntityID::DEATH_ANIM_PIECE)
     {
         miniSprite->setPosition(makeMiniDrawPos());
         UserInterface::getMiniTarget()->draw(*miniSprite, states);

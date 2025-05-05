@@ -41,14 +41,6 @@ class UserInterface
 	};
 	// ################# WORLD BACKGROUND END #############
 
-	// ################# MINIMAP ##########################
-	class Minimap : public sf::Drawable
-	{
-	public:
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	private:
-	};
-	// ################# MINIMAP END ######################
 
 	// ################# STARS BACKGROUND #################
 	class Stars : public sf::Drawable
@@ -91,6 +83,7 @@ public:
 		delete shiftingShader;
 		delete flashingShader;
 		delete williamsShader;
+		delete deathShader;
 
 		delete font;
 		delete otherFont;
@@ -99,9 +92,10 @@ public:
 	// @todo complete shader conversion...
 	static const sf::Font& getFont();
 	static const sf::Font& getOtherFont();
-	static       sf::Shader* getShiftingShader();
-	static       sf::Shader* getFlashingShader();
-	static       sf::Shader* getWilliamsShader();
+	//static       sf::Shader* getShiftingShader();
+	//static       sf::Shader* getFlashingShader();
+	//static       sf::Shader* getWilliamsShader();
+	//static sf::Shader* getDeathShader();
 	static sf::Shader* getShader(ShaderID::ID ID);
 	static const void shaderTick(double deltatime);
 	static sf::Color getColor()
@@ -119,6 +113,10 @@ public:
 	static void startDeathAnimation()
 	{
 		deathReplacement.active = true;
+	}
+	static bool isDeathAnimCompleted()
+	{
+		return !deathReplacement.active;
 	}
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);
@@ -138,13 +136,13 @@ private:
 
 	static      World         world           ;
 	static      Stars         stars           ;
-	static      Minimap       minimap         ;
 	static sf ::Font*         font            ;
 	static sf ::Text          score           ;
 	static sf ::Text          credits         ; // @todo find out if this is necessary...
 	static sf::Shader*        shiftingShader  ;
 	static sf::Shader*        flashingShader  ;
 	static sf::Shader*        williamsShader  ;
+	static sf::Shader*        deathShader;
 	static Color<float>       brightColors[]  ;
 	static sf::Font*          otherFont       ;
 	static HSV                shiftReplacement;

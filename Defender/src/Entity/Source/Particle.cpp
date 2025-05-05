@@ -121,7 +121,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 }
 
 Particle::~Particle() {
-    _aligned_free(pieces);
+    free(pieces);
     pieces = nullptr;
 
     if (dynamic_cast<Player*>(entity))

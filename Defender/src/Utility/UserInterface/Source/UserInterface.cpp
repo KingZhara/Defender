@@ -7,7 +7,6 @@
 
 UserInterface::World UserInterface::world;
 UserInterface::Stars UserInterface::stars;
-UserInterface::Minimap UserInterface::minimap;
 sf::Font* UserInterface::font;
 sf::Font* UserInterface::otherFont;
 sf::Text UserInterface::score;
@@ -15,6 +14,7 @@ sf::Text UserInterface::credits; // @todo find out if this is necessary...
 sf::Shader* UserInterface::shiftingShader = nullptr;
 sf::Shader* UserInterface::flashingShader = nullptr;
 sf::Shader* UserInterface::williamsShader = nullptr;
+sf::Shader* UserInterface::deathShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
@@ -200,9 +200,6 @@ void UserInterface::World::draw(sf::RenderTarget &target,
 	//target.draw(border, states);
 }
 
-void UserInterface::Minimap::draw(sf::RenderTarget &target,
-                                  sf::RenderStates  states) const {}
-
 void UserInterface::Stars::draw(sf::RenderTarget &target,
                                 sf::RenderStates  states) const {}
 
@@ -221,6 +218,7 @@ void UserInterface::initialize()
     shiftingShader = new sf::Shader;
     flashingShader = new sf::Shader;
     williamsShader = new sf::Shader;
+    deathShader = new sf::Shader;
 
     shiftingShader->loadFromFile("res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
@@ -228,10 +226,13 @@ void UserInterface::initialize()
         sf::Shader::Type::Fragment);
     williamsShader->loadFromFile("./res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
+    deathShader->loadFromFile("./res/shaders/replace.frag",
+        sf::Shader::Type::Fragment);
 
     flashingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
+    deathShader->   setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
 
     // World
     UserInterface::World::generate();
@@ -253,9 +254,13 @@ void UserInterface::initialize()
 const sf::Font &UserInterface::getFont() { return *font; }
 const sf::Font &UserInterface::getOtherFont() { return *otherFont; }
 
-sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
-sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
-sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
+//sf::Shader * UserInterface::getShiftingShader() { return shiftingShader; }
+//sf::Shader * UserInterface::getFlashingShader() { return flashingShader; }
+//sf::Shader * UserInterface::getWilliamsShader() { return williamsShader; }
+//sf::Shader * UserInterface::getDeathShader()
+//{
+//	return deathShader;
+//}
 
 sf::Shader * UserInterface::getShader(ShaderID::ID ID)
 {
@@ -275,8 +280,10 @@ sf::Shader * UserInterface::getShader(ShaderID::ID ID)
 
     case ShaderID::WILLIAMS:
         return williamsShader;
+	case ShaderID::DEATH_ANIM:
+		return deathShader;
     }
-
+	throw std::runtime_error("Invalid shader ID");
 	return nullptr;
 }
 
@@ -311,6 +318,8 @@ const void UserInterface::shaderTick(double deltatime)
 
     if (deathReplacement.active)
     {
+        std::cout << "ACTIVE DEATH ANIM!";
+		deathShader->setUniform("replaceColor", deathReplacement.color);
         // If not passed white, tick
         // if passed white
 			// if not passed hue, shift
@@ -331,10 +340,11 @@ const void UserInterface::shaderTick(double deltatime)
             }
             else
             {
-				if (deathReplacement.color.getV() == 0)
+                deathReplacement.color.setS(1);
+				if (deathReplacement.color.getV() <= 0)
 				{
                     // Reset
-                    deathReplacement.color = HSV(0.6, 1., 1.);
+                    deathReplacement.color = HSV(0.6, 0, 1.);
 					deathReplacement.active = false;
 					deathReplacement.passedHue = false;
                     deathReplacement.passedWhite = false;

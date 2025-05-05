@@ -75,6 +75,7 @@ void Animation::tick(double deltatime)
 void Animation::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	states.shader = UserInterface::getShader(SPRITE_DATA.shader);
+	std::cout << SPRITE_DATA.shader << '\n';
 	target.draw(frame, states);
 }
 

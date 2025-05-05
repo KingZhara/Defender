@@ -2,6 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>   // for M_PI
 #include <new>
+#include <random>
+
 #include <SFML/Graphics.hpp>
 #include "../Entity/Entity.h"
 
@@ -10,18 +12,27 @@ class DeathAnimation : public sf::Drawable
 public:
     DeathAnimation(sf::Vector2f pos)
     {
-		pieces = (Entity*)malloc(100 * sizeof(Entity));
+		pieces = (Entity*)malloc(500 * sizeof(Entity));
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 500; i++)
         {
-            Entity* piece = &pieces[i];
+			static std::mt19937 rng(std::random_device{}()); // seed once globally or per context
 
-            float vel = rand() % 100 + 1;
-            float rot = static_cast<float>(rand()) / RAND_MAX * 2.0f * M_PI;
+			// Uniform speed in range [minSpeed, maxSpeed]
+			std::uniform_real_distribution<float> speedDist(10.f, 100.f);
+
+			// Uniform direction in [0, 2?)
+			std::uniform_real_distribution<float> angleDist(0.f, 2.f * static_cast<float>(M_PI));
+
+			// Create entity
+			Entity* piece = &pieces[i];
+
+			float speed = speedDist(rng);
+			float angle = angleDist(rng);
 
 			new (piece) Entity(pos, EntityID::DEATH_ANIM_PIECE, sf::IntRect{ 92, 0, 2, 2 });
 
-            piece->setVel({ std::cos(rot), std::sin(rot) });
+			piece->setVel({ std::cos(angle) * speed, std::sin(angle) * speed });
         }
     }
 

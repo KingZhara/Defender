@@ -17,7 +17,7 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
-		UserInterface::getShiftingShader()->setUniform("texture", sf::Shader::CurrentTexture);
+		UserInterface::getShader(ShaderID::HUE_SHIFT)->setUniform("texture", sf::Shader::CurrentTexture);
 
 		shifting->draw(scoreTxt, states);
 
@@ -34,7 +34,7 @@ public:
 		shifting->draw(goatoday);
 		shifting->draw(goatime);
 
-		states.shader = UserInterface::getShiftingShader();
+		states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
 		target.draw(shftDra, states);
 	}
 

@@ -58,7 +58,7 @@ public:
     virtual void     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	static void particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, sf::Vector2<int8_t> collision, Entity* entity);
 	template <typename... Args>
-	static void      spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args);
+	static void      spawn(bool particalize, EntityID::ID ID, sf::Vector2f pos, Args&&... args);
 	static uint8_t astronautCount() { return static_cast<uint8_t>(astronauts.getLiveCount()); }
 	static void killAstronauts()
 	{
@@ -260,7 +260,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 				{
 					for (uint8_t j = 0; j < 5; j++)
 					{
-						spawn(EntityID::SWARMER, entity_->getPos());
+						spawn(false, EntityID::SWARMER, entity_->getPos());
 					    entity_ = entities.entities.at(i);
 					}
 				}
@@ -305,7 +305,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 
 // @TODO Add bool for preventing particalization
 template<typename ... Args>
-void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
+void EntityManager::spawn(bool particalize, EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 {
 	Entity* entity;
 	std::cout << "SPAWNING..\n.";
@@ -314,6 +314,7 @@ void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 
 	case EntityID::PLAYER:
 		//delete player;
+		playerState = PlayerState::ALIVE;
 		std::cout << "SPAWNING PLAYER...";
 		entity = new Player(pos, args...);
 		break;
@@ -378,5 +379,8 @@ void EntityManager::spawn(EntityID::ID ID, sf::Vector2f pos, Args&&... args)
 	}
 
 	// @todo complete
-	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
+	if (particalize)
+    	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
+	else
+		spawn_typeWrapper(entity);
 }

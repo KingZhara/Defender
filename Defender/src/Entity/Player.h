@@ -13,98 +13,26 @@ class Player :
 {
 public:
 	Player(sf::Vector2f pos_,
-		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, EntityID::PLAYER, isScripted_, script_)
-	{
-		Entity::EntityData::PlayerRef::pos = &pos;
-		Entity::EntityData::PlayerRef::vel = &vel;
-	}
+		bool         isScripted_ = false, EntityScript* script_ = nullptr);
 
-	~Player()
-	{
-	}
+    virtual ~Player() override = default;
 
-	virtual void tick(double deltatime) override
-    {
-		processActions();
-
-		// Horizontal Movement
-		if (actions->flags.thrust)
-			vel.x = (float)((left ? -1 :1) * COMN::baseSpeed.x * COMN::playerSpeedFactor);
-		else
-			vel.x *= (float)(0.9 * deltatime);
-		if (actions->flags.up)
-			vel.y = (float)(-COMN::baseSpeed.y * COMN::playerSpeedFactor);
-		else if (actions->flags.down)
-			vel.y = (float)(COMN::baseSpeed.y * COMN::playerSpeedFactor);
-		else
-			vel.y *= (float)(0.9 * deltatime);
-
-		//std::cout << "PLAYER FLAGS: F: " << (short)actions->flags.fire << '\n';
-
-		if (actions->flags.fire)
-		{
-			entityQueue.emplace(sf::Vector2f{pos.x - 4, pos.y}, EntityID::LASER);
-			actions->flags.fire = false; // In theory this is redundant, yet here we are.
-		}
-		Entity::tick(deltatime);
-
-    }
-
-	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
-	{
-		miniSprite->setTextureRect(sf::IntRect(80, 3, 3, 3));
-
-		Entity::draw(target, states);
-	}
-
+	virtual void tick(double deltatime) override;
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     static void setActions(Action& actions);
+    virtual bool collide(Entity *other) override;
 
-	bool collide(Entity *other) override
-	{
-		return false; // Entity::collide(other);
-	}
-
-	bool getDir() const
-	{
-		return left;
-	}
+    bool getDir() const;
 
 private:
-	void processActions()
-	{
-		if (actions->flags.left)
-		{
-			actions->flags.left = false;
-			left = !left;
-
-			uint8_t index = animation.getFrameIndex() + (left ? 2 : 0);
-
-			animation.setTexturePos({
-				DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.left + DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.width * index + index,
-				DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.top
-				});
-		}
-	}
-	virtual void wrap() override
-	{
-		float diff = pos.x - DisplayManager::getView().getCenter().x;
-		float x = pos.x;
-
-		Entity::wrap();
-
-		if (x != pos.x)
-    		DisplayManager::getView().setCenter(
-	    		pos.x - diff,
-		    	DisplayManager::getView().getCenter().y);
-
-		pos.y = std::max<float>(pos.y, COMN::uiHeight);
-
-		pos.y = std::min(pos.y, COMN::resolution.y - getBounds(EntityID::PLAYER).height);
-
-		//std::cout << "PLAYER POS: " << pos.x << '\n';
-	}
+	void         processActions();
+    virtual void wrap() override;
 
     static Action* actions;
 	bool left = false;
 };
+
+// Go to user interface and look at the handling of the death animaation
+//the death animation should have a staart function that is called inside of Entity manager upon[player state == respawning; initialization
+//please ensure that the start method changes the boolean, and make sure that entity managers drawing included the death animation if it exists
+//if both of those are true then please add debug statements to check activity inside of the user interface method, but ensure drawing works before shading
