@@ -116,12 +116,12 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         initials.setString(nameStr);
         initials.setFont(UserInterface::getFont());
         initials.setCharacterSize(32);
-        initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(25.f, 10.f));
+        initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(20.f, 10.f));
 
         underline.setSize(sf::Vector2f(15.f, 2.5));
         // center underline under current character
         underline.setPosition(DisplayManager::getView().getCenter() +
-                sf::Vector2f((namePos - 1) * 20.f - 7.5f, 25.f));
+                sf::Vector2f((namePos - 1) * 15.f - 7.5f, 25.f));
 
         target.draw(initials, states);
         target.draw(underline, states);
