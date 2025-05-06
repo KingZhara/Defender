@@ -39,7 +39,7 @@ const sf::Vector2f UserInterface::UIBounds::minimapPosConversion = sf::Vector2f{
 uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& pos, uint16_t size)
 {
     bool invalid;
-	std::cout << "\nSIZE: " << size << '\n';
+	//std::cout << "\nSIZE: " << size << '\n';
     //length = rand() % 10;
     do
     {
@@ -87,11 +87,11 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
 
     length = std::min<uint8_t>(length, static_cast<uint8_t>(std::min<uint16_t>(255, size)));
 
-	std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
+	//std::cout << "LEN: " << (short)length << ", POS: (" << pos.x << ", " << pos.y << ")\n{\n";
 
     for (uint8_t i = 0; i < length; i++)
     {
-        std::cout << "    ";
+        //std::cout << "    ";
         switch (type)
         {
         case Type::UP:
@@ -121,7 +121,7 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
         }
 
         //++pos.x;
-        std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
+        //std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
         //img.setPixel(pos.x, pos.y, sf::Color::White);
     }
 
@@ -178,12 +178,12 @@ void UserInterface::World::generate()
                 };
                 break;
             }
-            std::cout << '\n' << genLength << '\n';
+            //std::cout << '\n' << genLength << '\n';
 
 			piece.length = std::min<uint8_t>(piece.length, static_cast<uint8_t>(std::min<uint16_t>(255, genLength)));
 			genLength -= std::min<uint16_t>(genLength, piece.generate(bgIntermediary, pos, COMN::worldSize/* - pos.x /*std::min(pos.x < genLength ? genLength - pos.x : genLength, COMN::worldSize - pos.x)*/));
         }
-        std::cout << '\n' << pos.x << " < " << COMN::worldSize << '\n';
+        //std::cout << '\n' << pos.x << " < " << COMN::worldSize << '\n';
     }
 
 	bgTex->loadFromImage(bgIntermediary);
