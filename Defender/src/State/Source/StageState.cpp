@@ -24,7 +24,7 @@ StageState::StageState()
 	entityManager = EntityManager();
 
 	playerDead = false;
-	wave = 0;
+	wave = 1;
 	waveComplete = false;
 	
 	SpawnManager::reset();
