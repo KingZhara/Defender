@@ -15,6 +15,18 @@ public:
 		Entity::draw(target, states);
 	}
 
+	virtual void tick(double deltatime) override
+	{
+
+	    if (pos.y < (uint16_t)COMN::resolution.y - 20)
+	    {
+			vel = getEVel(ID);
+			vel.x = 0;
+	    }
+
+		Entity::tick(deltatime);
+	}
+
 	void setTargeted(bool v)
 	{
 		isTargeted = v;

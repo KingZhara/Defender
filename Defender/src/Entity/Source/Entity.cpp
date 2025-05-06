@@ -217,6 +217,29 @@ bool Entity::collide(Entity *other)
     return animation.intersects(other->animation);
 }
 
+void Entity::applyFriction(double deltatime, double time)
+{
+    if (time == 0)
+        throw std::runtime_error("DIVISION BY 0 FRICTION");
+
+    sf::Vector2f fric = getEVel(ID);
+    fric.x /= time;
+    fric.y /= time;
+
+    fric.x *= deltatime;
+    fric.y *= deltatime;
+
+    fric.x = std::min(abs(vel.x), fric.x);
+    fric.y = std::min(abs(vel.y), fric.y);
+
+    if (vel.x < 0)
+        fric.x = -fric.x;
+    if (vel.y < 0)
+        fric.y = -fric.y;
+
+    vel -= fric;
+}
+
 bool Entity::collide(sf::FloatRect otherBound)
 {
     return animation.intersects(otherBound);

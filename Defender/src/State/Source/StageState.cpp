@@ -384,5 +384,5 @@ void StageState::SpawnManager::resetAstronauts()
 {
 	EntityManager::killAstronauts();
 
-	spawnCount(10, EntityID::ASTRONAUT, { 0, (uint16_t)COMN::resolution.y - 20 }, { COMN::worldSize / 5, 0 }, { 10, 0 });
+	spawnCount(10, EntityID::ASTRONAUT, { 0, (uint16_t)COMN::resolution.y - 20 }, { COMN::worldSize / 5, 0 }, { 30, 0 });
 }

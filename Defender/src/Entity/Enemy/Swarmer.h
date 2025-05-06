@@ -26,6 +26,6 @@ public:
     bool init = true;
     float yVal = 0;
     int8_t direction = 0;
-    Timer<double> attackTimer{ 2 }, switchTimer{ 5 };
+    Timer<double> attackTimer{ 0.8 }, switchTimer{ 5 };
 };
 

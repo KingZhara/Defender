@@ -17,6 +17,7 @@ public:
 	*/
 	void tick(double deltaTime);
 
+	Timer<double> attackTimer{ 0.6 };
 	uint8_t yMovTimStart = (rand()%20)+10;
 	uint8_t range = (rand() % 20) + 5;
 

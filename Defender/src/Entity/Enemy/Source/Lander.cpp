@@ -21,8 +21,9 @@ void Lander::tick(double deltatime)
 			{
 				vel = getEVel(ID);
 				vel.x = 0;
+				vel.y *= -1;
 
-				target->setPos({ pos.x + makeCenteredTL(pos, ID).x - makeCenteredTL(target->getPos(), EntityID::ASTRONAUT).x / 2, pos.y - (getBounds(ID).height + 2) });
+				target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
 			}
 			// if held, move upwards, set target pos to {pos.x + this center - half its center, pos.y - (this height + 2)}
 		}

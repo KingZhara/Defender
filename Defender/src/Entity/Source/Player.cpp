@@ -13,17 +13,17 @@ Player::Player(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enti
 void Player::tick(double deltatime) {
     processActions();
 
+    applyFriction(deltatime, 1);
+    vel.y = 0;
+
     // Horizontal Movement
     if (actions->flags.thrust)
         vel.x = (float)((left ? -1 :1) * COMN::baseSpeed.x * COMN::playerSpeedFactor);
-    else
-        vel.x *= (float)(0.9 * deltatime);
+
     if (actions->flags.up)
         vel.y = (float)(-COMN::baseSpeed.y * COMN::playerSpeedFactor);
     else if (actions->flags.down)
         vel.y = (float)(COMN::baseSpeed.y * COMN::playerSpeedFactor);
-    else
-        vel.y *= (float)(0.9 * deltatime);
 
     //std::cout << "PLAYER FLAGS: F: " << (short)actions->flags.fire << '\n';
 

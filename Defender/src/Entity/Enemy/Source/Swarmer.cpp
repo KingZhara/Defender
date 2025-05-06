@@ -20,6 +20,9 @@ void Swarmer::tick(double deltatime)
         vel.x *= direction;
     }
 
+    if (attackTimer.tick(deltatime))
+        entityQueue.emplace(QueuedEntity(makeCenteredTL(pos, ID), EntityID::BULLET));
+
     Enemy::tick(deltatime);
 }
  

@@ -70,6 +70,7 @@ public:
     // 
     virtual void   tick(double deltatime);
     virtual bool   collide(Entity *other);
+    virtual void   applyFriction(double deltatime, double time);
     virtual bool   collide(sf::FloatRect otherBound); // Used by Laser
     virtual void   wrap();
     void           setPos(sf::Vector2f newPos);

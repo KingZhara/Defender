@@ -8,7 +8,9 @@ public:
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Enemy(pos_, EntityID::LANDER, isScripted_, script_)
     {
-        wanderTimer.tick(0);
+        dir = rand() % 2 == 0 ? -1 : 1;
+
+        wanderTimer.tick((rand() % 2 == 0 ? -1 : 1) * rand() % 100 / 10);
     }
 
     /*
@@ -23,6 +25,10 @@ public:
 
     void tick(double deltaTime);
     bool hasTarget();
+    bool shouldMutate()
+    {
+        return pos.y <= COMN::uiHeight + 1 && holding;
+    }
 	void setTarget(Entity* target);
 
 private:

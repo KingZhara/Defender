@@ -371,14 +371,12 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     Astronaut* newTarget = nullptr;
     uint16_t astroIndex = 0;
     int16_t minDx = -1;
+    bool mutate = false;
 
     if (isInvasion)
     {
         std::cout << "INVASION SPAWN\n";
         spawn(false, EntityID::MUTANT, entity->getPos());
-        spawn(false, EntityID::MUTANT, entity->getPos());
-        enemies.kill(index);
-        return;
     }
 
     if (!entity->hasTarget())
@@ -407,6 +405,19 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
         landerTargetTable.landerToAstronaut[index] = astroIndex;
         landerTargetTable.astronautToLander[astroIndex] = index;
     }
+
+     if (entity->shouldMutate())
+     {
+         spawn(false, EntityID::MUTANT, entity->getPos());
+
+		 astronauts.kill(landerTargetTable.landerToAstronaut[index]);
+         enemies.kill(index);
+
+		 landerTargetTable.astronautToLander.erase(landerTargetTable.landerToAstronaut[index]);
+		 landerTargetTable.landerToAstronaut.erase(index);
+		 return;
+
+     }
 
     enemies.entities.at(index)->tick(deltatime);
 }

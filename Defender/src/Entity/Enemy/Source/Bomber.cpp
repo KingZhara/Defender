@@ -56,5 +56,8 @@ void Bomber::tick(double deltatime)
 
 	vel.x = dx;
 
+	if (attackTimer.tick(deltatime))
+		entityQueue.emplace(QueuedEntity(makeCenteredTL(pos, ID), EntityID::BOMB));
+
 	Entity::tick(deltatime);
 }
