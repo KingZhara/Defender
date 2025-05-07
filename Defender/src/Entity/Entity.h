@@ -60,7 +60,7 @@ public:
     // Static Methods
 
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
-    static const sf::IntRect&        getBounds(EntityID::ID ID);
+    static const sf::IntRect         getBounds(EntityID::ID ID);
     static const sf::Vector2f        makeCenteredTL(sf::Vector2f pos, EntityID::ID);
     static const sf::Vector2f        getEVel(EntityID::ID ID_);
     static const EntityTarget        makePlayerTargetedVec(
@@ -93,13 +93,10 @@ protected:
 
     struct EntityData
     {
-        EntityData(SpriteData   spriteData,
-            Vec2<double> velocityFactor,
-            uint16_t     xp) : SPRITE_DATA(spriteData),
-            VELOCITY_FACTOR(velocityFactor), XP(xp) {}
+        EntityData(Vec2<double> velocityFactor,
+            uint16_t     xp) : VELOCITY_FACTOR(velocityFactor), XP(xp) {}
 
-        EntityData() : SPRITE_DATA({ 0, 0, 0, 0 }, 0),
-            VELOCITY_FACTOR(0.0, 0.0),
+        EntityData() : VELOCITY_FACTOR(0.0, 0.0),
             XP(0) {}
 
         struct PlayerRef
@@ -115,7 +112,6 @@ protected:
             100.f
         };
         static const PlayerRef PLAYER_REF;
-        SpriteData             SPRITE_DATA;
         Vec2<double>           VELOCITY_FACTOR;
         uint16_t               XP;
     };

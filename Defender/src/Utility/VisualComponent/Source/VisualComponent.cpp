@@ -162,6 +162,11 @@ SpriteTableEntry & VisualComponent::getPlayerData()
 	return DATA_TABLE[EntityID::PLAYER];
 }
 
+sf::IntRect VisualComponent::getBounds(EntityID::ID ID)
+{
+    return DATA_TABLE[ID].bounds;
+}
+
 void VisualComponent::patchDrawData(sf::Sprite * sprite, sf::RenderStates& states) const
 {
     sprite->setPosition(pos);

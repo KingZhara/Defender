@@ -35,6 +35,7 @@ public:
 	static void tick(double deltatime);
 	static void initialize(sf::Texture* tex_);
 	static SpriteTableEntry& getPlayerData();
+	static sf::IntRect getBounds(EntityID::ID ID);
 protected:
 	void patchDrawData(sf::Sprite*, sf::RenderStates& states) const;
 

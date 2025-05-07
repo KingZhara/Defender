@@ -14,13 +14,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 {
     // Player
     EntityData{
-        // Sprite Data
-        SpriteData{
-            {0, 18, 15, 6}, // Sprite IntRect
-            2, // Sprite frame count
-            // Shader type
-            // Custom frame length
-        },
         // Velocity factor
         Vec2<double>{
             1.5f,
@@ -31,10 +24,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Astronaut
     EntityData{
-        SpriteData{
-            {48, 0, 3, 8},
-            1
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -43,10 +32,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Bullet
     EntityData{
-        SpriteData{
-            {13, 9, 3, 3},
-            1
-        },
         Vec2<double>{
             1.0f,
             1
@@ -56,10 +41,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     // Laser
     // @todo Replace later; blank data, will not use a sprite for drawing, custom image
     EntityData{
-        SpriteData{
-            {19, 0, 8, 8},
-            2
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -68,10 +49,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Bomb
     EntityData{
-        SpriteData{
-            {9, 9, 8, 8},
-            2
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -80,10 +57,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Lander
     EntityData{
-        SpriteData{
-            {23, 9, 9, 8},
-            4
-        },
         Vec2<double>{
             .5f,
             .5f
@@ -92,11 +65,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Mutant
     EntityData{
-        SpriteData{
-            {0, 0, 10, 8},
-            1,
-            ShaderID::RAND_COL
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -105,10 +73,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Baiter
     EntityData{
-        SpriteData{
-            {63, 9, 11, 4},
-            2
-        },
         Vec2<double>{
             0.5,
             0.5
@@ -117,10 +81,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Bomber
     EntityData{
-        SpriteData{
-            {52, 0, 6, 7},
-            4
-        },
         Vec2<double>{
             0,
             0
@@ -129,10 +89,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Pod
     EntityData{
-        SpriteData{
-            {40, 0, 7, 7},
-            1
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -141,10 +97,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Swarmer
     EntityData{
-        SpriteData{
-            {17, 9, 5, 4},
-            1
-        },
         Vec2<double>{
             1,
             1
@@ -153,24 +105,15 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Particle
     EntityData{
-        SpriteData{
-            {0, 0, 1, 0},
-            1
-        },
         Vec2<double>{
-            1.0f,
-            1.5f,
+            1.f,
+            1.f,
         },
         0
 
     },
     // Piece
     EntityData{
-        SpriteData{
-            {0, 0, 10, 8},
-            1,
-            ShaderID::RAND_COL
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -179,11 +122,6 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
     // Death animation piece
     EntityData{
-        SpriteData{
-            {92, 0, 2, 2},
-            1,
-            ShaderID::DEATH_ANIM
-        },
         Vec2<double>{
             1.0f,
             1.0f
@@ -252,11 +190,6 @@ void Entity::wrap()
         pos.x -= COMN::worldSize;
 }
 
-const sf::IntRect &Entity::getBounds(const EntityID::ID ID)
-{
-    return DATA_TABLE[ID].SPRITE_DATA.bounds;
-}
-
 void Entity::setPos(sf::Vector2f newPos)
 {
     pos = newPos;
@@ -274,12 +207,17 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(
     return makeTargetedVec(pos, ID, EntityData::PLAYER_REF.entity, scale, playerVelType);
 }
 
+const sf::IntRect Entity::getBounds(EntityID::ID ID)
+{
+    return VisualComponent::getBounds(ID);
+}
+
 const sf::Vector2f Entity::makeCenteredTL(sf::Vector2f pos, EntityID::ID id)
 {
     return {
-        pos.x + static_cast<float>(DATA_TABLE[id].SPRITE_DATA.bounds.width /
+        pos.x + static_cast<float>(VisualComponent::getBounds(id).width /
             2.),
-        pos.y + static_cast<float>(DATA_TABLE[id].SPRITE_DATA.bounds.height /
+        pos.y + static_cast<float>(VisualComponent::getBounds(id).height /
             2.)
     };
 }
@@ -325,7 +263,7 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
     float specialX = 0;
     if (pos.x < 0 + bound.y)
         specialX = pos.x + COMN::worldSize;
-    else if (pos.x + DATA_TABLE[ID].SPRITE_DATA.bounds.width > COMN::worldSize +
+    else if (pos.x + VisualComponent::getBounds(ID).width > COMN::worldSize +
         bound.x)
         specialX = pos.x - COMN::worldSize;
 

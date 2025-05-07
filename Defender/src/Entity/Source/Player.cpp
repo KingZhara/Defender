@@ -67,8 +67,8 @@ void Player::processActions() {
         uint8_t index = playerVisualData.frameIndex + (left ? 2 : 0);
 
         playerVisualData.sprite->setTextureRect({
-            DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.left + DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.width * index + index,
-            DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.top,
+            VisualComponent::getBounds(ID).left + VisualComponent::getBounds(ID).width * index + index,
+            VisualComponent::getBounds(ID).top,
             playerVisualData.bounds.width,
             playerVisualData.bounds.height
             });

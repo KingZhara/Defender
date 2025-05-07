@@ -24,6 +24,7 @@ int main()
     sf::Clock clock;
     // Min game loop
 
+
     Player::setActions(actions);
 
     while (DisplayManager::getWindow()->isOpen())

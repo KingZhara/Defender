@@ -9,7 +9,8 @@
 
 Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector2<int8_t> collision, Entity* entity_) : Entity(pos, EntityID::PARTICLE, sf::IntRect{}), entity(entity_)
 {
-	const sf::IntRect& bounds = DATA_TABLE[ID_].SPRITE_DATA.bounds;
+	const sf::IntRect bounds = VisualComponent::getBounds(ID_);
+	sf::Vector2f baseVel = getEVel(ID);
 	// Make sure we round up
 	size = {
 		static_cast<uint8_t>((bounds.width  + PARTICLE_SIZE - 1) / PARTICLE_SIZE),
@@ -57,12 +58,13 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 
 	uint16_t index = 0;
 
-	for (int8_t y = 0; y < bounds.height; y += 2)
+	for (int8_t y = 0; y < bounds.height; y += PARTICLE_SIZE)
 	{
-		for (int8_t x = 0; x < bounds.width; x += 2)
+		for (int8_t x = 0; x < bounds.width; x += PARTICLE_SIZE)
 		{
 			// Get the grid position based on the collision as the origin
 			sf::Vector2<int8_t> gridPos = { (int8_t)(x / PARTICLE_SIZE), (int8_t)(y / PARTICLE_SIZE) };
+
 			gridPos -= collision;
 
 			// Skip the collision piece; Only triggered when collision piece is within bounds
@@ -75,9 +77,12 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 
 			// Velocity is the grid pos
 			sf::Vector2f nVel = {
-				(float)(gridPos.x * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.x * EntityData::BASE_VELOCITY.x),
-				(float)(gridPos.y * DATA_TABLE[EntityID::PARTICLE].VELOCITY_FACTOR.y * EntityData::BASE_VELOCITY.y)
+				(float)(gridPos.x),
+				(float)(gridPos.y)
 			};
+
+			nVel.x *= baseVel.x;
+			nVel.y *= baseVel.y;
 
 			// Modify position if spawning
 			if (spawning)
@@ -115,9 +120,12 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			++index;
 		}
 	}
+
 	lifetime.tick(0);
 	if (lifetime.isComplete())
 		throw std::runtime_error("Particle issue...");
+	//if (spawning)
+	//	lifetime.tick(29);
 }
 
 Particle::~Particle() {

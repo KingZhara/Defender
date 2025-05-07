@@ -396,7 +396,7 @@ void EntityManager::spawn(bool particalize, EntityID::ID ID, sf::Vector2f pos, A
 
 	// @todo complete
 	if (particalize)
-    	particleize(true, Entity::makeCenteredTL(pos, ID), ID, Particle::defCent(), entity);
+    	particleize(true, pos, ID, Particle::defCent(), entity);
 	else
 		spawn_typeWrapper(entity);
 }
