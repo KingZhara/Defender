@@ -33,6 +33,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	pieces = static_cast<Entity*>(malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0))));
 	if (!pieces) throw std::bad_alloc();
 
+	// Limit collision to the sides of the sprite
     collision.x = std::min<int>(collision.x, size.x);
     collision.y = std::min<int>(collision.y, size.y);
     collision.x = std::max<int>(collision.x, 0);
@@ -77,8 +78,8 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 
 			// Velocity is the grid pos
 			sf::Vector2f nVel = {
-				(float)(gridPos.x),
-				(float)(gridPos.y)
+				(float)(gridPos.x - collision.x),
+				(float)(gridPos.y - collision.y)
 			};
 
 			nVel.x *= baseVel.x;
