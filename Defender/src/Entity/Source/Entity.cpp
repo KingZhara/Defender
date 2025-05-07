@@ -24,7 +24,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
         // Velocity factor
         Vec2<double>{
             1.5f,
-            1.0f
+            1.5f
         },
         // XP
         0
@@ -49,7 +49,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
         },
         Vec2<double>{
             1.0f,
-            3.f / 2.0f
+            1
         },
         0
     },
@@ -62,7 +62,7 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
         },
         Vec2<double>{
             1.0f,
-            3.f / 2.0f
+            1.0f
         },
         0
     },
@@ -110,8 +110,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
             2
         },
         Vec2<double>{
-            2. / 3.,
-            1
+            0.5,
+            0.5
         },
         200
     },
@@ -146,8 +146,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
             1
         },
         Vec2<double>{
-            1.0f / 3.0f * 2,
-            1.0f / 2.0f * 2
+            1,
+            1
         },
         150
     },
@@ -204,17 +204,16 @@ void Entity::tick(double deltatime)
     if (abs(vel.y) < 0.1f)
         vel.y = 0;
 
-    //animation.printDebugInfo();
+    //visual->printDebugInfo();
     wrap(); // Overridden in player
 
-    animation.setPosition(pos);
-    animation.tick(deltatime);
+    visual->setPosition(pos);
     //std::cout << '\n';
 }
 
 bool Entity::collide(Entity *other)
 {
-    return animation.intersects(other->animation);
+    return visual->intersects(other->visual);
 }
 
 void Entity::applyFriction(double deltatime, double time)
@@ -242,7 +241,7 @@ void Entity::applyFriction(double deltatime, double time)
 
 bool Entity::collide(sf::FloatRect otherBound)
 {
-    return animation.intersects(otherBound);
+    return visual->intersects(otherBound);
 }
 
 void Entity::wrap()
@@ -261,7 +260,7 @@ const sf::IntRect &Entity::getBounds(const EntityID::ID ID)
 void Entity::setPos(sf::Vector2f newPos)
 {
     pos = newPos;
-    animation.setPosition(newPos);
+    visual->setPosition(newPos);
 }
 
 void Entity::setVel(sf::Vector2f newVel) { vel = newVel; }
@@ -340,11 +339,11 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
     if (ID != EntityID::PARTICLE)
     {
         // Handle the main sprite
-        target.draw(animation, states);
+        target.draw(*visual, states);
         if (specialX != 0)
         {
-            animation.setPosition({specialX, pos.y});
-            target.draw(animation, states);
+            visual->setPosition({specialX, pos.y});
+            target.draw(*visual, states);
         }
     }
 }

@@ -26,6 +26,8 @@ public:
 
 private:
 	class SpawnManager;
+	// AAccess to wave as a reference
+	friend class UserInterface;
 
 	static bool SaveHighscore(Action& actions);
 

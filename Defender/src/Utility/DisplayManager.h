@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Shader.hpp>
 
-#include "Animation.h"
+#include "VisualComponent/Animation.h"
 #include "common.h"
 
 namespace sf

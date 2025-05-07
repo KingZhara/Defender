@@ -49,7 +49,7 @@ void Player::setActions(Action& actions_)
 }
 
 bool Player::collide(Entity *other) {
-    return  Entity::collide(other);
+    return false;// Entity::collide(other);
 }
 
 bool Player::getDir() const {
@@ -57,17 +57,21 @@ bool Player::getDir() const {
 }
 
 void Player::processActions() {
+    auto& playerVisualData = visual->getPlayerData();
+
     if (actions->flags.left)
     {
         actions->flags.left = false;
         left                = !left;
 
-        uint8_t index = animation.getFrameIndex() + (left ? 2 : 0);
+        uint8_t index = playerVisualData.frameIndex + (left ? 2 : 0);
 
-        animation.setTexturePos({
+        playerVisualData.sprite->setTextureRect({
             DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.left + DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.width * index + index,
-            DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.top
-        });
+            DATA_TABLE[EntityID::PLAYER].SPRITE_DATA.bounds.top,
+            playerVisualData.bounds.width,
+            playerVisualData.bounds.height
+            });
     }
 }
 

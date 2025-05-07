@@ -54,14 +54,14 @@ struct COMN
 
 	struct playHeight
 	{
-		static constexpr uint8_t min = uiHeight;
-		static constexpr uint8_t max = resolution.y;
+		static constexpr uint8_t min = (uint8_t)uiHeight;
+		static constexpr uint8_t max = (uint8_t)resolution.y;
 	};
 
 	static constexpr float playerSpeedFactor = 1.5;
 
 	// The number 3.75 was found from watching gameplay footage, its a lot of effort to explain it, please accept it, it's a nice number.
-	static constexpr uint16_t worldSize = static_cast<uint16_t>(3.75 * resolution.x);
+	static constexpr uint16_t worldSize = static_cast<uint16_t>(4 * resolution.x);
 
 	static constexpr uint8_t worldBgHeight = 80;
 	static constexpr uint8_t world_startY = 20;

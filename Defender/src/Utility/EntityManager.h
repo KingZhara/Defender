@@ -132,7 +132,7 @@ private:
 	static LanderTargetTable landerTargetTable;
 
 	// @todo Make score update
-	static ScoreType score;
+	//static ScoreType score;
 
 	static uint16_t baiterCounter;
 	
@@ -262,7 +262,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 		{
 			if (dynamic_cast<Enemy*>(entity_))
 			{
-				score += entity_->getXP();
+				uiPassthrough.score += entity_->getXP();
 
 				if (dynamic_cast<Lander*>(entity_))
 				{

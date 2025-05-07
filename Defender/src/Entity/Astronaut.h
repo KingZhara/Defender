@@ -18,11 +18,13 @@ public:
 	virtual void tick(double deltatime) override
 	{
 
-	    if (pos.y < (uint16_t)COMN::resolution.y - 20)
-	    {
-			vel = getEVel(ID);
+		if (pos.y < (uint16_t)COMN::resolution.y - 20)
+		{
+			vel.y += (getEVel(ID).y / 1) * deltatime;
 			vel.x = 0;
-	    }
+		}
+		else
+			vel.y = 0;
 
 		Entity::tick(deltatime);
 	}

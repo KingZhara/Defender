@@ -21,16 +21,25 @@ sf::Texture* UserInterface::World::bgTex = nullptr;
 HSV UserInterface::shiftReplacement{};
 UserInterface::DeathReplacement UserInterface::deathReplacement {};
 Color<float> UserInterface::brightColors[] =
-{ // Data table from somewhere...
-    {1.0f * 255.0f, 0.0f * 255.0f, 0.0f * 255.0f},
-    {0.0f * 255.0f, 1.0f * 255.0f, 0.0f * 255.0f},
-    {1.0f * 255.0f, 1.0f * 255.0f, 0.0f * 255.0f},
-    {0.0f * 255.0f, 0.0f * 255.0f, 1.0f * 255.0f},
-    {1.0f * 255.0f, 0.0f * 255.0f, 1.0f * 255.0f},
-    {0.0f * 255.0f, 1.0f * 255.0f, 1.0f * 255.0f},
-    {1.0f * 255.0f, 1.0f * 255.0f, 1.0f * 255.0f},
-    {1.0f * 255.0f, 0.5f * 255.0f, 0.0f * 255.0f}
-};
+{
+    {0.0f * 255.f, 0.0f * 255.f, 0.0f * 255.f},    // Black
+    {0.0f * 255.f, 0.0f * 255.f, 1.0f * 255.f},    // Blue
+    {0.0f * 255.f, 1.0f * 255.f, 0.0f * 255.f},    // Green
+    {1.0f * 255.f, 0.0f * 255.f, 0.0f * 255.f},    // Red
+    {1.0f * 255.f, 0.5f * 255.f, 0.0f * 255.f},    // Orange
+    {1.0f * 255.f, 1.0f * 255.f, 0.0f * 255.f},    // Yellow
+    {0.5f * 255.f, 0.0f * 255.f, 0.5f * 255.f},    // Dark Purple (Arcade-style)
+    {0.8f * 255.f, 0.3f * 255.f, 0.0f * 255.f},    // Burnt Orange
+
+    {0.0f * 255.f, 1.0f * 255.f, 1.0f * 255.f},    // Cyan
+    {0.5f * 255.f, 0.5f * 255.f, 0.5f * 255.f},    // Dark Gray
+    {0.7f * 255.f, 0.7f * 255.f, 0.7f * 255.f},    // Light Gray
+    {0.3f * 255.f, 0.3f * 255.f, 0.3f * 255.f},    // Extra Gray
+    {0.5f * 255.f, 0.0f * 255.f, 0.0f * 255.f},    // Dark Red
+    {0.0f * 255.f, 0.5f * 255.f, 0.0f * 255.f},    // Dark Green
+    {0.0f * 255.f, 0.0f * 255.f, 0.5f * 255.f},    // Dark Blue
+    {1.0f * 255.f, 1.0f * 255.f, 1.0f * 255.f}     // White
+};;
 sf::RenderTexture* UserInterface::miniTarget = nullptr;
 sf::Sprite* UserInterface::miniSprite = nullptr;
 const sf::Vector2f UserInterface::UIBounds::minimapPosConversion = sf::Vector2f{ (float)((double)MINIMAP_WIDTH / (double)COMN::worldSize), (float)((double)MINIMAP_HEIGHT / COMN::resolution.y) };
@@ -368,7 +377,7 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
     static sf::RectangleShape cover;
 	static sf::RectangleShape divider;
     static sf::RenderTexture scoreTarget;
-	static sf::Sprite scoreSprite(scoreTarget.getTexture());
+	static sf::Sprite scoreSprite;
     static sf::Text scoreTxt;
     static sf::View uiView;
 
@@ -380,11 +389,14 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
         divider.setFillColor(sf::Color::Transparent);
         scoreTxt.setFont(UserInterface::getFont());
         scoreTxt.setCharacterSize(16);
+		scoreTxt.setFillColor({ 136, 0, 255 });
 
-        scoreTarget.create(UIBounds::MINIMAP_X - 18, 7);
+        scoreTarget.create(UIBounds::MINIMAP_X - 22, 8);
 
-        scoreSprite.setScale(1, -1);
-		scoreSprite.setPosition(0, 26);
+        scoreSprite.setScale(1, 1);
+		scoreSprite.setPosition(0,20);
+        scoreSprite.setTexture(scoreTarget.getTexture());
+		scoreSprite.setTextureRect(sf::IntRect(0, 0, UIBounds::MINIMAP_X - 22, 8));
 
         uiView = target.getDefaultView();
         uiView.setSize(COMN::resolution.x, COMN::resolution.y); // Set size of view (in world units)
@@ -417,6 +429,9 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
 	cover.setPosition(COMN::resolution.x - (UIBounds::MINIMAP_X - 1), 0);
     target.draw(cover);
 
+    // Color based on wave
+    divider.setOutlineColor(brightColors[EntityManagerData::wave % 8]);
+
     // UI divider
     divider.setPosition(0, 0);
     divider.setSize(sf::Vector2f(COMN::resolution.x, COMN::uiHeight - 2));
@@ -445,7 +460,7 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
 
 
     // draw screen view markers -------------------------------------------------
-    constexpr int screenMarkerWidth = 15;
+    constexpr int screenMarkerWidth = 18;
     sf::RectangleShape screenMarkerMain;
     screenMarkerMain.setSize(sf::Vector2f(screenMarkerWidth, 2));
     screenMarkerMain.setFillColor(sf::Color(0xBFBFBFFF));
@@ -488,17 +503,18 @@ void UserInterface::drawForeground(sf::RenderTarget& target, sf::View& view, Ent
     
     scoreTxt.setString(std::to_string(data.score));
     //scoreTxt.setOrigin(scoreTxt.getGlobalBounds().width, 0);
-    scoreTxt.setPosition(UIBounds::MINIMAP_X - 18 - scoreTxt.getGlobalBounds().width, 0);
+    scoreTxt.setPosition(UIBounds::MINIMAP_X - 22 - scoreTxt.getGlobalBounds().width, -9);
+	scoreTarget.clear();
     scoreTarget.draw(scoreTxt);
+	scoreTarget.display();
 
 	states.shader = shiftingShader;
+
+    //scoreSprite.setPosition()
     target.draw(scoreSprite, states);
+    //target.draw(scoreTxt, states);
 
-    // Death Animation
-    // Validate stage state
-    // Validate entity manager
-	// Validate death replacement
-
+    
 
     // Reset view
     target.setView(view);

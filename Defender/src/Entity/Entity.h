@@ -3,10 +3,12 @@
 #include <queue>
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
-#include "../Utility/Animation.h"
+#include "../Utility/VisualComponent/Animation.h"
 #include "../Utility/EntityID.h"
 #include "../Utility/ShaderID.h"
 #include "../Utility/EntityScript/EntityScript.h"
+#include "../Utility/VisualComponent/VisualComponent.h"
+#include "../Utility/VisualComponent/PieceVisualComponent.h"
 
 // new EntityScript(EntityScript::ScriptType::DONE) - BLANK SCRIPT
 
@@ -36,10 +38,10 @@ public:
            EntityScript *script_     = nullptr) : pos(pos_),
                                                   isScripted(isScripted_),
                                                   script(script_),
-                                                  animation(DATA_TABLE[ID_].SPRITE_DATA),
+                                                  visual(new VisualComponent(ID_)),
                                                   ID(ID_)
     {
-        animation.setPosition(pos);
+        visual->setPosition(pos);
 
         // Lazy initialization of the miniSprite
         if (!miniSprite)
@@ -52,7 +54,7 @@ public:
            sf::IntRect  bounds = {}) : pos(pos_),
                                        isScripted(false),
                                        script(nullptr),
-                                       animation(SpriteData{bounds, 1}),
+                                       visual(new PieceVisualComponent(bounds, ID_)),
                                        ID(ID_) {}
 
     // Static Methods
@@ -109,7 +111,7 @@ protected:
 
         static constexpr Vec2<double> BASE_VELOCITY
         {
-            150.f,
+            100.f,
             100.f
         };
         static const PlayerRef PLAYER_REF;
@@ -128,6 +130,6 @@ protected:
     sf::Vector2f       pos, vel;
     bool               isScripted;
     EntityScript *     script;
-    Animation          animation;
+    VisualComponent* visual;
     const EntityID::ID ID;
 };

@@ -148,7 +148,6 @@
     <ClCompile Include="src\Utility\Source\DisplayManager.cpp" />
     <ClCompile Include="src\Utility\Source\common.cpp" />
     <ClCompile Include="src\Utility\Source\EntityManager.cpp" />
-    <ClCompile Include="src\Utility\Source\Animation.cpp" />
     <ClCompile Include="src\State\Source\AttractState.cpp" />
     <ClCompile Include="src\Source\GameState.cpp" />
     <ClCompile Include="src\State\Source\HighscoreState.cpp" />
@@ -172,8 +171,12 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp" />
     <ClCompile Include="src\Utility\UserInterface\Source\UserInterface.cpp" />
     <ClCompile Include="src\Utility\Source\WaveCompletionScreen.cpp" />
+    <ClCompile Include="src\Utility\VisualComponent\Source\Animation.cpp" />
+    <ClCompile Include="src\Utility\VisualComponent\Source\PieceVisualComponent.cpp" />
+    <ClCompile Include="src\Utility\VisualComponent\Source\VisualComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PieceVisualComponent.h" />
     <ClInclude Include="src\Utility\DeathAnimation.h" />
     <ClInclude Include="src\Entity\Particle.h" />
     <ClInclude Include="src\State\ScannerState.h" />
@@ -187,7 +190,6 @@
     <ClInclude Include="src\Utility\EntityScript\EntityWaitScript.h" />
     <ClInclude Include="src\Utility\EntityManager.h" />
     <ClInclude Include="src\Utility\Action.h" />
-    <ClInclude Include="src\Utility\Animation.h" />
     <ClInclude Include="src\Entity\Enemy\Enemy.hpp" />
     <ClInclude Include="src\Entity\Entity.hpp" />
     <ClInclude Include="src\Game.hpp" />
@@ -217,7 +219,10 @@
     <ClInclude Include="src\Utility\ShaderID.h" />
     <ClInclude Include="src\Utility\Timer.h" />
     <ClInclude Include="src\Utility\UserInterface\UserInterface.h" />
+    <ClInclude Include="src\Utility\VisualComponent\Animation.h" />
+    <ClInclude Include="src\Utility\VisualComponent\PieceVisualComponent.h" />
     <ClInclude Include="src\Utility\WaveCompletionScreen.h" />
+    <ClInclude Include="src\Utility\VisualComponent\VisualComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Spritesheet.png" />

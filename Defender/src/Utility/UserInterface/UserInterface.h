@@ -69,6 +69,8 @@ public:
 
 	struct EntityManagerData
 	{
+		const static uint32_t& wave;
+
 		uint8_t extraLives = 2, smartBombs = 3;
 		int16_t minimapOffset = 0;
 		uint64_t score = 0;

@@ -104,6 +104,8 @@ sf::Texture * DisplayManager::loadSpritesheet()
     tex->loadFromFile("res/Spritesheet.png");
 
     Animation::setTexture(tex);
+	VisualComponent::initialize(tex);
+	PieceVisualComponent::initialize(tex);
 
     return tex;
 }

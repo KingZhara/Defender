@@ -11,6 +11,7 @@ bool StageState::SpawnManager::spawningComplete = false;
 bool StageState::SpawnManager::started = false;
 const bool& EntityManager::isInvasion = StageState::SpawnManager::invasion;
 const bool& EntityManager::spawningComplete = StageState::SpawnManager::spawningComplete;
+const uint32_t& UserInterface::EntityManagerData::wave = StageState::wave;
 
 
 bool StageState::playerDead = false;
@@ -63,6 +64,7 @@ bool StageState::tick(Action& actions, double deltatime)
 				++wave;
 				waveComplete = false;
 				delete waveScreen;
+				waveScreen = nullptr;
 			}
 		}
 		else
@@ -103,7 +105,11 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
     // TODO add timer for death animation
     if (!playerDead)
     {
-        UserInterface::drawBackground(target, DisplayManager::getView());
+		if (!waveScreen)
+            UserInterface::drawBackground(target, DisplayManager::getView());
+
+		//WEFawef // Add death screen
+
         target.draw(entityManager, states);
 
     }

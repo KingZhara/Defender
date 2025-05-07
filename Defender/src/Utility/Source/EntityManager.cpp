@@ -13,7 +13,7 @@ Player *EntityManager::player = nullptr;
 EntityManager::LanderTargetTable EntityManager::landerTargetTable;
 uint16_t EntityManager::baiterCounter = 0;
 // @todo Make score update
-ScoreType EntityManager::score;
+//ScoreType EntityManager::score;
 EntityManager::PlayerState EntityManager::playerState = PlayerState::DEAD;
 DeathAnimation* EntityManager::deathAnim = nullptr;
 UserInterface::EntityManagerData EntityManager::uiPassthrough;
@@ -34,7 +34,7 @@ EntityManager::EntityManager(bool scripted_)
     delete player;
     player = nullptr;
 
-    score = 0;
+    uiPassthrough = UserInterface::EntityManagerData();
     baiterCounter = 0;
 }
 
@@ -294,7 +294,7 @@ void EntityManager::tickEntities(double deltatime)
                     if (enemies.entities.at(i)->getID() == EntityID::BAITER)
                         --baiterCounter;
 
-                    score += enemies.entities[i]->getXP();
+                    uiPassthrough.score += enemies.entities[i]->getXP();
                     enemies.kill(i);
                 }
             }
@@ -340,7 +340,7 @@ void EntityManager::tickPlayer(double deltatime, Action& actions)
         // #######  Handle Score  #######
         // ##############################
 
-        if (score >= rewardReq * lastReward)
+        if (uiPassthrough.score >= rewardReq * lastReward)
         {
             ++lastReward;
 
@@ -373,10 +373,22 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     int16_t minDx = -1;
     bool mutate = false;
 
-    if (isInvasion)
+    if (entity->shouldMutate() || isInvasion)
     {
-        std::cout << "INVASION SPAWN\n";
         spawn(false, EntityID::MUTANT, entity->getPos());
+
+        if (!isInvasion)
+            astronauts.kill(landerTargetTable.landerToAstronaut[index]);
+        else
+            spawn(false, EntityID::MUTANT, entity->getPos());
+
+
+        enemies.kill(index);
+
+        landerTargetTable.astronautToLander.erase(landerTargetTable.landerToAstronaut[index]);
+        landerTargetTable.landerToAstronaut.erase(index);
+        return;
+
     }
 
     if (!entity->hasTarget())
@@ -405,19 +417,6 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
         landerTargetTable.landerToAstronaut[index] = astroIndex;
         landerTargetTable.astronautToLander[astroIndex] = index;
     }
-
-     if (entity->shouldMutate())
-     {
-         spawn(false, EntityID::MUTANT, entity->getPos());
-
-		 astronauts.kill(landerTargetTable.landerToAstronaut[index]);
-         enemies.kill(index);
-
-		 landerTargetTable.astronautToLander.erase(landerTargetTable.landerToAstronaut[index]);
-		 landerTargetTable.landerToAstronaut.erase(index);
-		 return;
-
-     }
 
     enemies.entities.at(index)->tick(deltatime);
 }
@@ -516,7 +515,7 @@ void EntityManager::hyperspace()
 
 ScoreType& EntityManager::getScore()
 {
-    return score;
+    return uiPassthrough.score;
 }
 
 void EntityManager::waveReset()

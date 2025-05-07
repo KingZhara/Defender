@@ -78,9 +78,6 @@
     <ClCompile Include="src\Utility\Source\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\Source\Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Utility\Source\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -103,6 +100,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Source\DeathAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\VisualComponent\Source\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\VisualComponent\Source\VisualComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceVisualComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\VisualComponent\Source\PieceVisualComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,9 +194,6 @@
     <ClInclude Include="src\Utility\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Utility\EntityID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -237,6 +243,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\DeathAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\VisualComponent\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\VisualComponent\VisualComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceVisualComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\VisualComponent\PieceVisualComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

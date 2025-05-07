@@ -18,7 +18,7 @@ bool Projectile::collide(sf::FloatRect otherBound)
 	if (!Entity::collide(otherBound))
 	{
 		// Move back to the previous position
-		animation.setPosition(pos - vel * lastDT);
+		visual->setPosition(pos - vel * lastDT);
 
 		// Compute total displacement
 		sf::Vector2f delta = vel * lastDT;
@@ -27,7 +27,7 @@ bool Projectile::collide(sf::FloatRect otherBound)
 		if (distance == 0.f)
 		{
 			// No movement; collision must already be present (or not)
-			animation.setPosition(pos);
+			visual->setPosition(pos);
 			return false;
 		}
 
@@ -42,7 +42,7 @@ bool Projectile::collide(sf::FloatRect otherBound)
 		for (uint16_t i = 1; i <= stepCount; ++i)
 		{
 			sf::Vector2f testPos = pos - step * static_cast<float>(i);
-			animation.setPosition(testPos);
+			visual->setPosition(testPos);
 
 			if (Entity::collide(otherBound))
 			{
@@ -53,7 +53,7 @@ bool Projectile::collide(sf::FloatRect otherBound)
 		}
 
 		// Finalize animation position
-		animation.setPosition(pos);
+		visual->setPosition(pos);
 	}
 	else
 	{

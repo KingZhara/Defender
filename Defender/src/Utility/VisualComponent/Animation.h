@@ -4,13 +4,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "DisplayManager.h"
-#include "common.h"
-#include "EntityID.h"
-#include "ShaderID.h"
-#include "Timer.h"
+#include "../DisplayManager.h"
+#include "../common.h"
+#include "../EntityID.h"
+#include "../ShaderID.h"
+#include "../Timer.h"
 
-#include "UserInterface/UserInterface.h"
+#include "../UserInterface/UserInterface.h"
 
 
 struct SpriteData
