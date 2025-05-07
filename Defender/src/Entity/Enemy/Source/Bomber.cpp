@@ -4,16 +4,17 @@ void Bomber::tick(double deltatime)
 {
 
 	//rerolls the stats
-	if (rerollTim)
-		rerollTim--; 
-	else 
+
+	if (!isOnScreen()) 
 	{
-		if (abs(EntityData::PLAYER_REF.pos->x - pos.x) > 300) 
+		if (rerollTim)
+			rerollTim--;
+		else
 		{
 			yMovTimStart = (rand() % 20) + 10;
 			range = (rand() % 20) + 5;
 
-			do 
+			do
 			{
 				dx = ((rand() % 200) - 100);
 			} while (abs(dx) < 20);
@@ -30,25 +31,28 @@ void Bomber::tick(double deltatime)
 	}
 	else 
 	{
-		if (pos.y < EntityData::PLAYER_REF.pos->y) 
+		if (isOnScreen())
 		{
-			if (vel.y < 100)
-				vel.y += 10;
-		}
+			if (pos.y < EntityData::PLAYER_REF.pos->y)
+			{
+				if (vel.y < 100)
+					vel.y += 10;
+			}
 
-		if (pos.y > EntityData::PLAYER_REF.pos->y)
-		{
-			if (vel.y > -100)
-				vel.y -= 10;
+			if (pos.y > EntityData::PLAYER_REF.pos->y)
+			{
+				if (vel.y > -100)
+					vel.y -= 10;
+			}
 		}
 	}
 
 	//stops when it's at the player's height
-	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range&&(abs(EntityData::PLAYER_REF.pos->x - pos.x) > 300))
+	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range && isOnScreen())
 	{
 		stopTim--;
 
-		if (!stopTim) 
+		if (!stopTim)
 		{
 			yMovTim = yMovTimStart;
 			stopTim = 20;

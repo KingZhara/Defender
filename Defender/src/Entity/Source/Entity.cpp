@@ -58,16 +58,16 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     // Lander
     EntityData{
         Vec2<double>{
-            .5f,
-            .5f
+            .35f,
+            .35f
         },
         150
     },
     // Mutant
     EntityData{
         Vec2<double>{
-            1.0f,
-            1.0f
+            .75f,
+            .75f
         },
         150
     },
