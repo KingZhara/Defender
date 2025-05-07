@@ -21,11 +21,12 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		throw std::overflow_error("Privided Glyph is too large for this type");
 	}
+	std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
 	// If collision = {-1, -1}, reset
     if (collision.x == -1 || collision.y == -1)
 	{
-		collision.x = (size.x + 1) / 2;
-	    collision.y = (size.y + 1) / 2;
+		collision.x = (size.x) / 2;
+	    collision.y = (size.y) / 2;
 	
 		//skipCenter = true;
 	}
@@ -33,12 +34,15 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	pieces = static_cast<Entity*>(malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0))));
 	if (!pieces) throw std::bad_alloc();
 
+	// Limit collision to the sides of the sprite
     collision.x = std::min<int>(collision.x, size.x);
     collision.y = std::min<int>(collision.y, size.y);
     collision.x = std::max<int>(collision.x, 0);
     collision.y = std::max<int>(collision.y, 0);
 
     //std::cout << "Size: " << (size.x * size.y - (skipCenter ? 1 : 0)) << '\n';
+
+	std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
 
 	// For each piece, create a new particle
     /* // For x; +=2
@@ -65,6 +69,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			// Get the grid position based on the collision as the origin
 			sf::Vector2<int8_t> gridPos = { (int8_t)(x / PARTICLE_SIZE), (int8_t)(y / PARTICLE_SIZE) };
 
+			// Center coordinates around the collision as the origin
 			gridPos -= collision;
 
 			// Skip the collision piece; Only triggered when collision piece is within bounds
@@ -81,8 +86,10 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 				(float)(gridPos.y)
 			};
 
+			std::cout << "    BEF MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 			nVel.x *= baseVel.x;
 			nVel.y *= baseVel.y;
+			std::cout << "    AFT MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 
 			// Modify position if spawning
 			if (spawning)

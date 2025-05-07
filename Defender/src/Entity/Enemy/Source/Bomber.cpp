@@ -2,20 +2,28 @@
 
 void Bomber::tick(double deltatime)
 {
-	if (rerollTim)
-		rerollTim--; 
-	else 
+
+	//rerolls the stats
+
+	if (!isOnScreen()) 
 	{
-		if (abs(EntityData::PLAYER_REF.pos->x - pos.x) > 300) 
+		if (rerollTim)
+			rerollTim--;
+		else
 		{
 			yMovTimStart = (rand() % 20) + 10;
 			range = (rand() % 20) + 5;
-			dx = ((rand() % 200) - 100);
+
+			do
+			{
+				dx = ((rand() % 200) - 100);
+			} while (abs(dx) < 20);
 
 			rerollTim = 100;
 		}
 	}
 
+	//matches the player's y value based on a delay
 	if(yMovTim)
 	{
 		if (pos.y != EntityData::PLAYER_REF.pos->y)
@@ -23,24 +31,28 @@ void Bomber::tick(double deltatime)
 	}
 	else 
 	{
-		if (pos.y < EntityData::PLAYER_REF.pos->y) 
+		if (isOnScreen())
 		{
-			if (vel.y < 100)
-				vel.y += 10;
-		}
+			if (pos.y < EntityData::PLAYER_REF.pos->y)
+			{
+				if (vel.y < 100)
+					vel.y += 10;
+			}
 
-		if (pos.y > EntityData::PLAYER_REF.pos->y)
-		{
-			if (vel.y > -100)
-				vel.y -= 10;
+			if (pos.y > EntityData::PLAYER_REF.pos->y)
+			{
+				if (vel.y > -100)
+					vel.y -= 10;
+			}
 		}
 	}
 
-	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range)
+	//stops when it's at the player's height
+	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range && isOnScreen())
 	{
 		stopTim--;
 
-		if (!stopTim) 
+		if (!stopTim)
 		{
 			yMovTim = yMovTimStart;
 			stopTim = 20;
@@ -48,6 +60,7 @@ void Bomber::tick(double deltatime)
 		}
 	}
 
+	//keeps it from going above or below the screen
 	if (pos.y < COMN::uiHeight)
 		pos.y = COMN::uiHeight;
 

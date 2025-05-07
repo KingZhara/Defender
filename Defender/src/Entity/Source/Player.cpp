@@ -13,7 +13,7 @@ Player::Player(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enti
 void Player::tick(double deltatime) {
     processActions();
 
-    applyFriction(deltatime, 1);
+    applyFriction(deltatime, 0.6);
     vel.y = 0;
 
     // Horizontal Movement

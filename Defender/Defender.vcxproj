@@ -176,7 +176,6 @@
     <ClCompile Include="src\Utility\VisualComponent\Source\VisualComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PieceVisualComponent.h" />
     <ClInclude Include="src\Utility\DeathAnimation.h" />
     <ClInclude Include="src\Entity\Particle.h" />
     <ClInclude Include="src\State\ScannerState.h" />
