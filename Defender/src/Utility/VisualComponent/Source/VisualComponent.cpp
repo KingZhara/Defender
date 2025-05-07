@@ -112,7 +112,7 @@ bool VisualComponent::intersects(sf::FloatRect other)
 
 bool VisualComponent::intersects(VisualComponent *other)
 {
-	DATA_TABLE[ID].sprite->setPosition(pos);
+	DATA_TABLE[other->ID].sprite->setPosition(other->pos);
 	return intersects(DATA_TABLE[other->ID].sprite->getGlobalBounds());
 }
 
