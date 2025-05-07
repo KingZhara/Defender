@@ -24,8 +24,8 @@ public:
 	uint8_t yMovTim = 20;
 	uint8_t stopTim = 20;
 
-	int16_t dx = ((rand() % 200) - 100);
+	int16_t dx;
 
-	uint8_t rerollTim = 100;
+	uint8_t rerollTim = 0;
 };
 

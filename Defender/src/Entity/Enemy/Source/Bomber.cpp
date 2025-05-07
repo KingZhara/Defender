@@ -2,6 +2,8 @@
 
 void Bomber::tick(double deltatime)
 {
+
+	//rerolls the stats
 	if (rerollTim)
 		rerollTim--; 
 	else 
@@ -10,12 +12,17 @@ void Bomber::tick(double deltatime)
 		{
 			yMovTimStart = (rand() % 20) + 10;
 			range = (rand() % 20) + 5;
-			dx = ((rand() % 200) - 100);
+
+			do 
+			{
+				dx = ((rand() % 200) - 100);
+			} while (abs(dx) < 20);
 
 			rerollTim = 100;
 		}
 	}
 
+	//matches the player's y value based on a delay
 	if(yMovTim)
 	{
 		if (pos.y != EntityData::PLAYER_REF.pos->y)
@@ -36,7 +43,8 @@ void Bomber::tick(double deltatime)
 		}
 	}
 
-	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range)
+	//stops when it's at the player's height
+	if (abs(pos.y - EntityData::PLAYER_REF.pos->y) < range&&(abs(EntityData::PLAYER_REF.pos->x - pos.x) > 300))
 	{
 		stopTim--;
 
@@ -48,6 +56,7 @@ void Bomber::tick(double deltatime)
 		}
 	}
 
+	//keeps it from going above or below the screen
 	if (pos.y < COMN::uiHeight)
 		pos.y = COMN::uiHeight;
 

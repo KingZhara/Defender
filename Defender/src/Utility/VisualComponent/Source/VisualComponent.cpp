@@ -98,7 +98,6 @@ void VisualComponent::setPosition(sf::Vector2f pos_)
 void VisualComponent::draw(sf::RenderTarget &target,
                            sf::RenderStates states) const
 {
-	std::cout << "Drawing ID: " << (short)ID << '\n';
     DATA_TABLE[ID].sprite->setPosition(pos);
 	states.shader = UserInterface::getShader(DATA_TABLE[ID].shader);
 	target.draw(*DATA_TABLE[ID].sprite, states);
