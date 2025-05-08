@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include "../Utility/VisualComponent/Animation.h"
 #include "../Utility/EntityID.h"
-#include "../Utility/ShaderID.h"
 #include "../Utility/EntityScript/EntityScript.h"
 #include "../Utility/VisualComponent/VisualComponent.h"
 #include "../Utility/VisualComponent/PieceVisualComponent.h"

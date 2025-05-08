@@ -32,12 +32,14 @@ class UserInterface
 		};
 	public:
 		static void generate();
+		static const uint8_t(&getHeightMap())[COMN::worldSize] {return  heightMap; }
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	private:
 		static sf::RectangleShape border;
 		static sf::Sprite background;
 		static sf::Texture* bgTex;
+		static uint8_t heightMap[COMN::worldSize];
 	};
 	// ################# WORLD BACKGROUND END #############
 
@@ -62,7 +64,7 @@ public:
 		static constexpr uint8_t DIVIDER_WIDTH = 2;
 		static constexpr uint8_t LIFE_SPACING = 2;
 		static constexpr uint8_t BOMB_SPACING = 1;
-		static constexpr uint8_t SIDE_SPACING = (COMN::resolution.x - 2 * DIVIDER_WIDTH - MINIMAP_WIDTH) / 2;
+		static constexpr uint8_t SIDE_SPACING = (uint8_t)((COMN::resolution.x - 2 * DIVIDER_WIDTH - MINIMAP_WIDTH) / 2);
 		static constexpr uint8_t MINIMAP_X = SIDE_SPACING + DIVIDER_WIDTH;
 		static constexpr uint8_t MINIMAP_Y = MINIMAP_HEIGHT + 1;
 	};
@@ -119,6 +121,15 @@ public:
 	static bool isDeathAnimCompleted()
 	{
 		return !deathReplacement.active;
+	}
+	static const uint8_t getHeight(int16_t x)
+	{
+		if (x < 0)
+			x += COMN::worldSize;
+		else if (x > COMN::worldSize)
+			x -= COMN::worldSize;
+
+		return World::getHeightMap()[x];
 	}
 
 	static void drawBackground(sf::RenderTarget&, sf::View&);

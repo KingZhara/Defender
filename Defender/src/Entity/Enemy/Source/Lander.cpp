@@ -12,21 +12,23 @@ void Lander::tick(double deltatime)
 		{
 			if (!holding)
 			{
+				std::cout << "Chasing target\n";
 				if (!collide(target))
 					vel = makeTargetedVec(pos, ID, target, 1, true).vel;
 				else
+				{
 					holding = true;
+					// Garanteed to be an astronaut
+					dynamic_cast<Astronaut*>(target)->setHolder(this);
+				}
 			}
 
 			if (holding)
 			{
+				std::cout << "Hasg target\n";
 				vel = getEVel(ID);
 				vel.x = 0;
 				vel.y *= -1;
-
-				target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
-				if (dynamic_cast<Astronaut*>(target))
-					dynamic_cast<Astronaut*>(target)->setOnGround(false);
 			}
 			// if held, move upwards, set target pos to {pos.x + this center - half its center, pos.y - (this height + 2)}
 		}
@@ -43,13 +45,19 @@ void Lander::tick(double deltatime)
 
 		vel = getEVel(ID);
 
-		// Should use a height map
-		if (pos.y > COMN::resolution.y / 4 * 3)
+		// @todo smooth with sinusoidal function
+		if (pos.y > COMN::resolution.y - (UserInterface::getHeight(pos.x) + 35)) // 40 - 35 = 5px range
+			vel.y *= -1;
+		else if (pos.y > COMN::resolution.y - (UserInterface::getHeight(pos.x) + 40)) // Hover 40px above the ground
 			vel.y = 0;
+
+
 		if (dir)
 			vel.x *= -1;
 	}
 	Enemy::tick(deltatime);
+	if (holding)
+		target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
 }
 
 bool Lander::hasTarget() { return target; }

@@ -18,6 +18,7 @@ sf::Shader* UserInterface::deathShader = nullptr;
 sf::RectangleShape UserInterface::World::border;
 sf::Sprite UserInterface::World::background;
 sf::Texture* UserInterface::World::bgTex = nullptr;
+uint8_t UserInterface::World::heightMap[COMN::worldSize];
 HSV UserInterface::shiftReplacement{};
 UserInterface::DeathReplacement UserInterface::deathReplacement {};
 Color<float> UserInterface::brightColors[] =
@@ -122,16 +123,19 @@ uint8_t UserInterface::World::Component::generate(sf::Image &img, sf::Vector2u& 
             // [##  ]
             std::cout << "(" << pos.x << ", " << pos.y << "), ";
             img.setPixel(++pos.x, pos.y - 1, brightColors[7]);
+            heightMap[pos.x % COMN::worldSize] = COMN::worldBgHeight - (pos.y - 1);
             img.setPixel(++pos.x, pos.y, brightColors[7]);
             //++pos.y;
             //++pos.x;
             ++i;
             break;
         }
+        heightMap[pos.x % COMN::worldSize] = COMN::worldBgHeight - pos.y;
 
         //++pos.x;
         //std::cout << "(" << pos.x << ", " << pos.y << ") | " << "COUNT: " << (short)i << '\n';
         //img.setPixel(pos.x, pos.y, sf::Color::White);
+
     }
 
     return length;
@@ -224,13 +228,18 @@ void UserInterface::initialize()
     otherFont->setSmooth(false);
 
     // Shaders
+
+    std::cout << "BEF SHIFTING: " << shiftingShader << '\n';
     shiftingShader = new sf::Shader;
+    std::cout << "AFT SHIFTING: " << shiftingShader << '\n';
     flashingShader = new sf::Shader;
     williamsShader = new sf::Shader;
     deathShader = new sf::Shader;
 
-    shiftingShader->loadFromFile("res/shaders/replace.frag",
-        sf::Shader::Type::Fragment);
+    if(!shiftingShader->loadFromFile("res/shaders/replace.frag",
+        sf::Shader::Type::Fragment))
+	    throw (std::runtime_error(""));
+    std::cout << "AFT2 SHIFTING: " << shiftingShader << '\n';
     flashingShader->loadFromFile("./res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
     williamsShader->loadFromFile("./res/shaders/replace.frag",

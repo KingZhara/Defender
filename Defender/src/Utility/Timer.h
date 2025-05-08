@@ -1,5 +1,4 @@
 #pragma once
-#include <type_traits>
 #include <iostream>
 
 template<typename T> requires(std::is_arithmetic_v<T>)

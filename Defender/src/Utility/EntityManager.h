@@ -270,6 +270,7 @@ bool EntityManager::collisionWrapper(uint16_t entity, EntityHolder<T> &entities)
 					if (astronaut && dynamic_cast<Lander*>(entity_)->hasTarget())
 					{
 						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]))->setTargeted(false);
+						dynamic_cast<Astronaut*>(astronauts.entities.at(landerTargetTable.landerToAstronaut[i]))->setHolder(nullptr);
 						// Erase the entry pairing this astronaut with the lander
 						landerTargetTable.unlink(i, landerTargetTable.landerToAstronaut[i]);
 					}

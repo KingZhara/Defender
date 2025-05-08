@@ -6,47 +6,23 @@ class Astronaut :
 public:
 	explicit Astronaut(sf::Vector2f pos_,
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_) {}
+		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_), onGround(true), held(false) {}
 
-	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
-	{
-		miniSprite->setTextureRect(sf::IntRect(84, 3, 2, 2));
-
-		Entity::draw(target, states);
-	}
-
-	virtual void tick(double deltatime) override
-	{
-		// Falling
-		if (pos.y < (uint16_t)COMN::resolution.y - 20)
-		{
-			vel.y += (getEVel(ID).y / 1) * deltatime;
-			vel.x = 0;
-			setOnGround(false);
-		}
-		// On ground
-		else
-		{
-			vel.y = 0;
-			setOnGround(true);
-		}
-
-		Entity::tick(deltatime);
-	}
-
-	void setTargeted(bool v)
-	{
-		isTargeted = v;
-	}
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	virtual void tick(double deltatime) override;
+	void setTargeted(bool v);
 	bool targeted();
-
-	bool isOnGround() { return onGround; };
-	void setOnGround(bool value) { onGround = value; }
+	bool isOnGround()   const { return onGround; }
+	Entity* getHolder() const { return holder; }
+	void setHolder(Entity* holder_);
 
 private:
 	bool isTargeted;
+	bool held;
+	bool onGround;
 
-	bool onGround = true;;
+	// Player and lander can set holder
+	Entity* holder;
 	/**
 	 * Add fall length; kill if > COMN::Resolution.y / 4
 	 *

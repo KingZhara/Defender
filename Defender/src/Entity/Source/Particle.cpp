@@ -21,7 +21,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		throw std::overflow_error("Privided Glyph is too large for this type");
 	}
-	std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
+	//std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
 	// If collision = {-1, -1}, reset
     if (collision.x == -1 || collision.y == -1)
 	{
@@ -42,7 +42,7 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 
     //std::cout << "Size: " << (size.x * size.y - (skipCenter ? 1 : 0)) << '\n';
 
-	std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
+	//std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
 
 	// For each piece, create a new particle
     /* // For x; +=2
@@ -86,10 +86,10 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 				(float)(gridPos.y)
 			};
 
-			std::cout << "    BEF MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
+			//std::cout << "    BEF MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 			nVel.x *= baseVel.x;
 			nVel.y *= baseVel.y;
-			std::cout << "    AFT MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
+			//std::cout << "    AFT MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 
 			// Modify position if spawning
 			if (spawning)
@@ -139,8 +139,6 @@ Particle::~Particle() {
     free(pieces);
     pieces = nullptr;
 
-    if (dynamic_cast<Player*>(entity))
-        std::cout << "Destroyed from particle\n";
 
     delete entity;
 }
