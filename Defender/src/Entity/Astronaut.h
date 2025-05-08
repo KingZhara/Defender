@@ -17,14 +17,19 @@ public:
 
 	virtual void tick(double deltatime) override
 	{
-
+		// Falling
 		if (pos.y < (uint16_t)COMN::resolution.y - 20)
 		{
 			vel.y += (getEVel(ID).y / 1) * deltatime;
 			vel.x = 0;
+			setOnGround(false);
 		}
+		// On ground
 		else
+		{
 			vel.y = 0;
+			setOnGround(true);
+		}
 
 		Entity::tick(deltatime);
 	}
@@ -34,8 +39,14 @@ public:
 		isTargeted = v;
 	}
 	bool targeted();
+
+	bool isOnGround() { return onGround; };
+	void setOnGround(bool value) { onGround = value; }
+
 private:
 	bool isTargeted;
+
+	bool onGround = true;;
 	/**
 	 * Add fall length; kill if > COMN::Resolution.y / 4
 	 *

@@ -1,4 +1,5 @@
 #include "../Lander.h"
+#include "../../Astronaut.h"
 
 void Lander::tick(double deltatime)
 {
@@ -24,6 +25,8 @@ void Lander::tick(double deltatime)
 				vel.y *= -1;
 
 				target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
+				if (dynamic_cast<Astronaut*>(target))
+					dynamic_cast<Astronaut*>(target)->setOnGround(false);
 			}
 			// if held, move upwards, set target pos to {pos.x + this center - half its center, pos.y - (this height + 2)}
 		}
