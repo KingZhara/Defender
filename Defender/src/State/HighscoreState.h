@@ -28,6 +28,8 @@ public:
 
 	static void addScore(const char initials[4], int score);
 
+	static bool isHighscore(int score);
+
 private:
 
 	static constexpr int HS_COUNT = 8;

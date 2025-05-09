@@ -86,7 +86,9 @@ bool StageState::tick(Action& actions, double deltatime)
 				playerDead = true;
 		}
 	}
-	if (playerDead && SaveHighscore(actions))
+	if (playerDead && (SaveHighscore(actions) || 
+		// if its not a new high score, skip initials
+		!HighscoreState::isHighscore(entityManager.getScore())))
 	{
 		DisplayManager::resetViewPos();
 		return true;
