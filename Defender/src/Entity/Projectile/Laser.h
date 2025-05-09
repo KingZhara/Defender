@@ -25,7 +25,7 @@ public:
         //laserTex.loadFromImage(laserNoise);
         laserTex.loadFromImage(laserTrail);
 
-        startX = pos.x;
+        startX = 0;// pos.x;
 
         //head = tail = 0;
 
@@ -56,10 +56,8 @@ public:
         // dx += pos.x
         // for (int i = 0; i < dx / 5.; i++)
         //      trail.setPixel(i, sf::color::transparent)
-        //  replace the start of the transparent region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
         // for (int i = 0; i < pos.x; i++) // pos.x is the difference of this tick
         //      trail.setPixel(dx - i, sf::color(shaderColor))
-        //  replace the start of the noise region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
         // //
         //  replace the start of the noise region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
         // //.
@@ -80,44 +78,49 @@ public:
         Projectile::tick(deltatime);
 
         // There is an issue with getting the dx when facing left.
-        dx += abs(pos.x);
+        dx += abs(vel.x * deltatime);
 
-        // Solid
-        for (int i = 0; i < pos.x; ++i)
-            laserTrail.setPixel(clamp(dx - i), 0, sf::Color(136, 0, 255));
+        if (dx <= COMN::resolution.x)
+        {
+            // Solid
+            for (int i = 0; i < pos.x + 2; ++i) // + 2 for white tip
+                laserTrail.setPixel(clamp(dx - i), 0, sf::Color(136, 0, 255));
 
-        // Noise
-        for (int i = 0; i < dx / 5 - oldDx / 5; i++)
-            if (rand() % 3 == 0)
-                laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Transparent);
+            // Noise
+            for (int i = 0; i < dx / 5 - oldDx / 5; i++)
+                if (rand() % 3 == 0)
+                    laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Transparent);
 
-        // Transparent
-        for (int i = 0; i < dx / 5 - oldDx / 5; i++)
-            laserTrail.setPixel(clamp(dx / 5 - i), 0, sf::Color::Transparent);
+            // Transparent
+            for (int i = 0; i < dx / 5 - oldDx / 5; i++)
+                laserTrail.setPixel(clamp(dx / 5 - i), 0, sf::Color::Transparent);
 
-        // Laser tip
-        laserTrail.setPixel(clamp(dx), 0, sf::Color::White);
-        laserTrail.setPixel(clamp(dx - 1), 0, sf::Color::White);
+            // Laser tip
+            laserTrail.setPixel(clamp(dx), 0, sf::Color::White);
+            laserTrail.setPixel(clamp(dx - 1), 0, sf::Color::White);
 
-        // Update the texture
-        laserTex.update(laserTrail);
+            // Update the texture
+            laserTex.update(laserTrail);
+            shftDra.setOrigin(dx, 0);
+            shftDra.setTextureRect({ 0, 0, (uint8_t)dx, 1 });
+
+        }
 
         if (vel.x < 0)
         {
             if (!playerSign)
-                startX += pos.x;
+                startX += startX - EntityData::PLAYER_REF.pos->x;
         }
         else
         {
             if (playerSign)
-                startX += pos.x;
+                startX += EntityData::PLAYER_REF.pos->x - startX;
         }
-        pos.x = std::copysign(dx, vel.x) + startX;
+        pos.x = std::copysign(dx, vel.x) + startX + EntityData::PLAYER_REF.pos->x;
 
         shftDra.setPosition(pos);
         visual->setPosition(pos);
 
-        shftDra.setTextureRect({ 0, 0, (uint8_t)dx, 1 });
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
@@ -167,6 +170,7 @@ public:
 
         target.draw(shftDra, states);
     }
+
 
 private:
 

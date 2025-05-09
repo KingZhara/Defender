@@ -24,9 +24,8 @@ SpriteTableEntry VisualComponent::DATA_TABLE[EntityID::LENGTH] =
         1
     },
     // Laser
-    // @todo Replace later; blank data, will not use a sprite for drawing, custom image
     SpriteTableEntry{
-        {19, 0, 8, 8},
+        {0, 0, 1, 1},
         2
     },
     // Bomb
