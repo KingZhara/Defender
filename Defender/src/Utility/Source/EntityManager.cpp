@@ -563,7 +563,7 @@ void EntityManager::clearQueue()
 
         case EntityID::LASER:
             projectiles.entities.at(projectiles.spawn<Laser>(e.pos))->setVel({
-                (player->getDir() ? -1 : 1) * Entity::getEVel(EntityID::LASER).x + player->getVel().x,
+                (player->getDir() ? -1 : 1) * Entity::getEVel(EntityID::LASER).x,
                 0
             });
             break;

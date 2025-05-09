@@ -56,7 +56,7 @@ void Lander::tick(double deltatime)
 	}
 
 	Enemy::tick(deltatime);
-	// Target was nullptr here, check how this is possible. // Happens when you kill the astronaut, check if being cleared in entity manager on collision wrapper when astronaut is killed
+	// Target was nullptr here, check how this is possible.
 	if (holding)
 		target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
 }

@@ -40,6 +40,10 @@ public:
 
     void tick(double deltatime)
     {
+        static auto clamp = [](float value) -> uint16_t {
+            value = std::clamp(value, 0.0f, COMN::resolution.x - 1.0f);
+            return static_cast<uint16_t>(std::round(value));
+            };
         // 2px white at front
         // Whole length is divided into 2 sections; 4/5 visible, 1/5 made transparent
         // of the visible length it is made up of 2 other sections; 1/3 solid near the tip, and 2/3 filled with noise
@@ -75,24 +79,25 @@ public:
 
         Projectile::tick(deltatime);
 
+        // There is an issue with getting the dx when facing left.
         dx += abs(pos.x);
 
         // Solid
         for (int i = 0; i < pos.x; ++i)
-            laserTrail.setPixel((uint16_t)std::min(std::round(dx - i), COMN::resolution.x), 0, sf::Color(136, 0, 255));
+            laserTrail.setPixel(clamp(dx - i), 0, sf::Color(136, 0, 255));
 
         // Noise
         for (int i = 0; i < dx / 5 - oldDx / 5; i++)
             if (rand() % 3 == 0)
-                laserTrail.setPixel((uint16_t)std::min(std::round(dx - (dx - dx / 5) / 3 - i), COMN::resolution.x), 0, sf::Color::Transparent);
+                laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Transparent);
 
         // Transparent
         for (int i = 0; i < dx / 5 - oldDx / 5; i++)
-            laserTrail.setPixel((uint16_t)std::min(std::round(dx / 5 - i), COMN::resolution.x), 0, sf::Color::Transparent);
+            laserTrail.setPixel(clamp(dx / 5 - i), 0, sf::Color::Transparent);
 
         // Laser tip
-        laserTrail.setPixel((uint16_t)std::min(std::round(dx), COMN::resolution.x), 0, sf::Color::White);
-        laserTrail.setPixel((uint16_t)std::min(std::round(dx - 1), COMN::resolution.x), 0, sf::Color::White);
+        laserTrail.setPixel(clamp(dx), 0, sf::Color::White);
+        laserTrail.setPixel(clamp(dx - 1), 0, sf::Color::White);
 
         // Update the texture
         laserTex.update(laserTrail);
@@ -110,6 +115,7 @@ public:
         pos.x = std::copysign(dx, vel.x) + startX;
 
         shftDra.setPosition(pos);
+        visual->setPosition(pos);
 
         shftDra.setTextureRect({ 0, 0, (uint8_t)dx, 1 });
     }
