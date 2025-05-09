@@ -123,11 +123,17 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 		// Looks like same color as the replaced color for shaders
 		// NOT shaded
-        initials.setString(nameStr);
 		initials.setFillColor(sf::Color(136, 0, 255));
         initials.setFont(UserInterface::getFont());
         initials.setCharacterSize(32);
-        initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(20.f, 10.f));
+
+		for (int i = 0; i < 3; i++)
+		{
+			initials.setString(std::string(1, nameStr[i]));
+			initials.setPosition(DisplayManager::getView().getCenter() +
+				sf::Vector2f((i - 1) * 15.f - 5.f, -10.f));
+			target.draw(initials, states);
+		}
 
 		underline.setFillColor(sf::Color(136, 0, 255));
         underline.setSize(sf::Vector2f(15.f, 2.5));
@@ -135,7 +141,6 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
         underline.setPosition(DisplayManager::getView().getCenter() +
                 sf::Vector2f((namePos - 1) * 15.f - 7.5f, 25.f));
 
-        target.draw(initials, states);
         target.draw(underline, states);
 
 
