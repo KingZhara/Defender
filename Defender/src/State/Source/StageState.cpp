@@ -121,11 +121,15 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
             nameStr[i] = validChars[name[i]];
         nameStr[3] = '\0';
 
+		// Looks like same color as the replaced color for shaders
+		// NOT shaded
         initials.setString(nameStr);
+		initials.setFillColor(sf::Color(136, 0, 255));
         initials.setFont(UserInterface::getFont());
         initials.setCharacterSize(32);
         initials.setPosition(DisplayManager::getView().getCenter() - sf::Vector2f(20.f, 10.f));
 
+		underline.setFillColor(sf::Color(136, 0, 255));
         underline.setSize(sf::Vector2f(15.f, 2.5));
         // center underline under current character
         underline.setPosition(DisplayManager::getView().getCenter() +
@@ -133,6 +137,33 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
         target.draw(initials, states);
         target.draw(underline, states);
+
+
+
+		sf::Text playerOne;
+		playerOne.setFillColor(sf::Color(136, 0, 255));
+		playerOne.setFont(UserInterface::getFont());
+		playerOne.setCharacterSize(16);
+		playerOne.setString("PLAYER ONE");
+		playerOne.setPosition(COMN::resolution.x / 2.f - playerOne.getGlobalBounds().width / 2.f, 
+			COMN::resolution.y * 0.1f);
+		target.draw(playerOne, states);
+
+		sf::Text hallOfFame;
+		hallOfFame.setFillColor(sf::Color(136, 0, 255));
+		hallOfFame.setFont(UserInterface::getFont());
+		hallOfFame.setCharacterSize(16);
+		hallOfFame.setString("YOU HAVE QUALIFIED FOR\nTHE DEFENDER HALL OF FAME");
+		hallOfFame.setPosition(COMN::resolution.x * 0.1f, COMN::resolution.y * 0.2f);
+		target.draw(hallOfFame, states);
+
+		sf::Text instructions;
+		instructions.setFillColor(sf::Color(136, 0, 255));
+		instructions.setFont(UserInterface::getFont());
+		instructions.setCharacterSize(16);
+		instructions.setString("SELECT INITIALS WITH UP DOWN KEYS\n\nPRESS RIGHT KEY TO ENTER INITIAL");
+		instructions.setPosition(COMN::resolution.x * 0.1f, COMN::resolution.y * 0.35f);
+		target.draw(instructions, states);
     }
 
 
