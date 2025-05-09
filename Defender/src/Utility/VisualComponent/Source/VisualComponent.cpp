@@ -92,7 +92,8 @@ VisualComponent::VisualComponent(EntityID::ID ID_) : ID(ID_)
 
 void VisualComponent::setPosition(sf::Vector2f pos_)
 {
-	pos = pos_;
+	pos.x = std::round(pos_.x);
+    pos.y = std::round(pos_.y);
 }
 
 void VisualComponent::draw(sf::RenderTarget &target,

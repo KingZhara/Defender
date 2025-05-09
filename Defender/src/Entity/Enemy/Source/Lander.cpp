@@ -3,6 +3,7 @@
 
 void Lander::tick(double deltatime)
 {
+	static Entity* tracked = this;
 	// Ricky will handle logic for picking an astronaut
 
 	// When no astronauts are available, make wander based on a timer; assume can check with "getAstronaut()"; if it returns -1, no astronauts are available
@@ -12,7 +13,8 @@ void Lander::tick(double deltatime)
 		{
 			if (!holding)
 			{
-				std::cout << "Chasing target\n";
+				if (this == tracked)
+    				std::cout << "Chasing target ";
 				if (!collide(target))
 					vel = makeTargetedVec(pos, ID, target, 1, true).vel;
 				else
@@ -22,10 +24,11 @@ void Lander::tick(double deltatime)
 					dynamic_cast<Astronaut*>(target)->setHolder(this);
 				}
 			}
-
+			
 			if (holding)
 			{
-				std::cout << "Hasg target\n";
+				if (this == tracked)
+					std::cout << "Hasg target ";
 				vel = getEVel(ID);
 				vel.x = 0;
 				vel.y *= -1;
@@ -41,6 +44,8 @@ void Lander::tick(double deltatime)
 	}
 	else
 	{
+		if (this == tracked)
+			std::cout << "Wandering ";
 		wanderTimer.tick(deltatime);
 
 		vel = getEVel(ID);
@@ -55,9 +60,14 @@ void Lander::tick(double deltatime)
 		if (dir)
 			vel.x *= -1;
 	}
+
+	if (this == tracked)
+		std::cout << " BEF: { VEL: (" << vel.x << ", " << vel.y << "), POS: (" << pos.x << ", " << pos.y << ") }";
 	Enemy::tick(deltatime);
 	if (holding)
 		target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
+	if (this == tracked)
+		std::cout << " AFT: { VEL: (" << vel.x << ", " << vel.y << "), POS: (" << pos.x << ", " << pos.y << ") }\n";
 }
 
 bool Lander::hasTarget() { return target; }

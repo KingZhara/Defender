@@ -9,6 +9,7 @@ void Astronaut::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Astronaut::tick(double deltatime)
 {
+	vel.x = 0;
 	// Falling
 	if (held == false)
 	{

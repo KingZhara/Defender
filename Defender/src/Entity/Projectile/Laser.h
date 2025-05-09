@@ -8,44 +8,110 @@ public:
         bool         isScripted_ = false, EntityScript* script_ = nullptr)
         : Projectile(pos_, EntityID::LASER, isScripted_, script_)
     {
-        shifting.create(COMN::resolution.x, 1);
-        shftDra.setTexture(shifting.getTexture());
-        shftDra.setPosition(getPos());
+        //shifting.create(COMN::resolution.x, 1);
+        //shftDra.setTexture(shifting.getTexture());
+        //shftDra.setPosition(getPos());
 
         laserTex.create(COMN::resolution.x, 1);
-        laserNoise.create(COMN::resolution.x, 1, sf::Color(0));
-        laserTex.setRepeated(true);
+        //laserNoise.create(COMN::resolution.x, 1, sf::Color::Transparent);
+        laserTrail.create(COMN::resolution.x, 1, sf::Color::Transparent);
+        laserTex.setRepeated(false);
+        shftDra.setTexture(laserTex);
 
         // Laser beam randomness doesn't move with the laser
-        for (int x = 0; x < laserNoise.getSize().x; x++)
-            if (rand() % 2)
-                laserNoise.setPixel(x, 0, sf::Color::White);
-        laserTex.loadFromImage(laserNoise);
+        //for (int x = 0; x < laserNoise.getSize().x; x++)
+        //    if (rand() % 2)
+        //        laserNoise.setPixel(x, 0, sf::Color::White);
+        //laserTex.loadFromImage(laserNoise);
+        laserTex.loadFromImage(laserTrail);
 
+        startX = pos.x;
 
-        head = tail = 0;
+        //head = tail = 0;
+
+        if (EntityData::PLAYER_REF.vel->x < 0)
+            shftDra.setScale(-1, 1);
+
+        // Add a flag to the entity constructor to not make a visual
+// Make collision work for projectiles without a visual
+        //delete visual;
+        //visual = nullptr;
     }
 
     void tick(double deltatime)
     {
-        // update textures here
+        // 2px white at front
+        // Whole length is divided into 2 sections; 4/5 visible, 1/5 made transparent
+        // of the visible length it is made up of 2 other sections; 1/3 solid near the tip, and 2/3 filled with noise
+        // the noise stays the same and is slowly covered up as the transparent region expands
+        // the noise is revealed over time as the projectile moves
+        // We should set the projectiles position as dx from tick of just projectile velocity
+        // we can assign a pos.x of 0, run projectile tick, and then update the projectiles pos based on the known previous dx from player pos
+        // pos.x = 0
+        // projectile tick
+        // dx += pos.x
+        // for (int i = 0; i < dx / 5.; i++)
+        //      trail.setPixel(i, sf::color::transparent)
+        //  replace the start of the transparent region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
+        // for (int i = 0; i < pos.x; i++) // pos.x is the difference of this tick
+        //      trail.setPixel(dx - i, sf::color(shaderColor))
+        //  replace the start of the noise region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
+        // //
+        //  replace the start of the noise region... the length should be... new lengths noise start to the old lengths noise start... we should only need to set transparent pixels?.
+        // //.
+        // pos.x = player.pos.x + copysign(dx, vel.x).
 
+
+
+        //vel.x = std::copysign(getEVel(ID).x + EntityData::PLAYER_REF.vel->x, vel.x);
+        pos.x = 0;
+        float oldDx = dx;
+        bool playerSign = EntityData::PLAYER_REF.vel->x < 0;
+
+        // update textures here
         // Sorta magic numbers sorry
         // The head moves 2x faster than the tail
-        head += abs(vel.x) * deltatime * 1.333f;
-        tail += abs(vel.x) * deltatime * 0.667f;
+
+
+        Projectile::tick(deltatime);
+
+        dx += abs(pos.x);
+
+        // Solid
+        for (int i = 0; i < pos.x; ++i)
+            laserTrail.setPixel((uint16_t)std::min(std::round(dx - i), COMN::resolution.x), 0, sf::Color(136, 0, 255));
+
+        // Noise
+        for (int i = 0; i < dx / 5 - oldDx / 5; i++)
+            if (rand() % 3 == 0)
+                laserTrail.setPixel((uint16_t)std::min(std::round(dx - (dx - dx / 5) / 3 - i), COMN::resolution.x), 0, sf::Color::Transparent);
+
+        // Transparent
+        for (int i = 0; i < dx / 5 - oldDx / 5; i++)
+            laserTrail.setPixel((uint16_t)std::min(std::round(dx / 5 - i), COMN::resolution.x), 0, sf::Color::Transparent);
+
+        // Laser tip
+        laserTrail.setPixel((uint16_t)std::min(std::round(dx), COMN::resolution.x), 0, sf::Color::White);
+        laserTrail.setPixel((uint16_t)std::min(std::round(dx - 1), COMN::resolution.x), 0, sf::Color::White);
+
+        // Update the texture
+        laserTex.update(laserTrail);
 
         if (vel.x < 0)
         {
-            shftDra.setScale(-1, 1);
-            shftDra.setPosition(getPos().x + (head - tail), getPos().y + 3);
+            if (!playerSign)
+                startX += pos.x;
         }
         else
         {
-            shftDra.setPosition(getPos().x - (head - tail), getPos().y + 3);
+            if (playerSign)
+                startX += pos.x;
         }
+        pos.x = std::copysign(dx, vel.x) + startX;
 
-        Projectile::tick(deltatime);
+        shftDra.setPosition(pos);
+
+        shftDra.setTextureRect({ 0, 0, (uint8_t)dx, 1 });
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
@@ -63,7 +129,7 @@ public:
         // Laser disapears when the head touches the screen edge
 
         UserInterface::getShader(ShaderID::HUE_SHIFT)->setUniform("texture", sf::Shader::CurrentTexture);
-
+        /*
         shifting.clear();
 
         // Random back 2/3 of laser
@@ -76,7 +142,6 @@ public:
         laserRand.setTextureRect(sf::IntRect(-getPos().x + (head * 0.667f + tail), 
             0, (head - tail) * 0.667f, 1));
         shifting.draw(laserRand, states);
-
 
         // Soid 1/3 of laser
         sf::RectangleShape laserSolid;
@@ -91,7 +156,7 @@ public:
         laserHead.setSize({ 2, 1 });
         shifting.draw(laserHead, states);
 
-
+        */
         states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
 
         target.draw(shftDra, states);
@@ -99,11 +164,14 @@ public:
 
 private:
 
-    mutable sf::RenderTexture shifting;
+    //mutable sf::RenderTexture shifting;
     sf::Texture laserTex;
-    sf::Image laserNoise;
+    //sf::Image laserNoise;
+    sf::Image laserTrail;
     sf::Sprite shftDra;
 
-    float head = 0, tail = 0;
+    //float head = 0, tail = 0, trail = 0, initX;
+    float dx;
+    float startX;
 };
 

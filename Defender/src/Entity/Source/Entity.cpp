@@ -132,10 +132,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 
 void Entity::tick(double deltatime)
 {
-    pos += {
-        std::round(static_cast<float>(vel.x * deltatime)),
-        std::round(static_cast<float>(vel.y * deltatime))
-    };
+    pos.x += static_cast<float>(vel.x * deltatime);
+    pos.y += static_cast<float>(vel.y * deltatime);
 
     if (abs(vel.x) < 0.1f)
         vel.x = 0;

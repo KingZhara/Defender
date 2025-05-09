@@ -123,8 +123,8 @@ protected:
     static std::queue<QueuedEntity> entityQueue;
 
     sf::Vector2f       pos, vel;
-    bool               isScripted;
     EntityScript *     script;
     VisualComponent* visual;
+    bool               isScripted;
     const EntityID::ID ID;
 };
