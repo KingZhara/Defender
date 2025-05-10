@@ -142,6 +142,12 @@ void HighscoreState::addScore(const char initials[4], int score)
 
 }
 
+bool HighscoreState::isHighscore(int score)
+{
+	for (int i = 0; i < HS_COUNT; i++)
+		return (score > today[i].score || score > allTime[i].score);
+}
+
 void HighscoreState::loadHighscores()
 {	
 	std::ifstream hs("highscores", std::ios::binary);
