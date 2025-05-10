@@ -1,14 +1,18 @@
 #include "../EntityManager.h"
+#include"../EntityManager/EntityHolder.h"
+#include "../EntityManager/LanderTargetTable.h"
+#include <iomanip>
+
 #include "../common.h"
 #include "../DeathAnimation.h"
 
 bool EntityManager::scripted = true;
 
 
-EntityManager::EntityHolder<Projectile> EntityManager::projectiles;
-EntityManager::EntityHolder<Entity> EntityManager::enemies;
-EntityManager::EntityHolder<Entity> EntityManager::astronauts;
-EntityManager::EntityHolder<Particle> EntityManager::particles; // Always scripted
+EntityHolder<Projectile> EntityManager::projectiles;
+EntityHolder<Entity> EntityManager::enemies;
+EntityHolder<Entity> EntityManager::astronauts;
+EntityHolder<Particle> EntityManager::particles; // Always scripted
 Player *EntityManager::player = nullptr;
 EntityManager::LanderTargetTable EntityManager::landerTargetTable;
 uint16_t EntityManager::baiterCounter = 0;
@@ -28,8 +32,7 @@ EntityManager::EntityManager(bool scripted_)
     astronauts.reset();
     particles.reset();
 
-	landerTargetTable.landerToAstronaut.clear();
-	landerTargetTable.astronautToLander.clear();
+    landerTargetTable.reset();
 
     delete player;
     player = nullptr;
@@ -38,7 +41,7 @@ EntityManager::EntityManager(bool scripted_)
     baiterCounter = 0;
 }
 
-void EntityManager::adjViewport(sf::View *view, double deltatime)
+void EntityManager::adjViewport(sf::View *view)
 {
     // @todo Add starting movement freedom... Refactor to be better as well
 
@@ -47,13 +50,14 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
       //  return;
 
     static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
-    static int8_t viewOffset = 0;
+    static double viewOffset = 0;
 
     if (!player)
         return;
 
-    const int8_t maxOffset = static_cast<int8_t>(COMN::resolution.x * playfieldFactor);
-    const double centeredPlayer = (player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.);
+    const double maxOffset = COMN::resolution.x * playfieldFactor;
+    const double centeredPlayer = VisualComponent::getPlayerData().sprite->getPosition().x;//(player->getPos().x); //+Entity::getBounds(EntityID::PLAYER).width / 2.);
+    //std::cout << "PLAYER: " << std::fixed << std::setprecision(10) << centeredPlayer << std::endl;
 
     // Update offset
     if (player->getDir()) // Facing left
@@ -68,8 +72,11 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
     }
 
     // Apply offset to view
-    float viewCenterX = static_cast<float>(centeredPlayer + viewOffset);
-    view->setCenter(std::round(viewCenterX), std::round(view->getCenter().y));
+    float viewCenterX = std::round( centeredPlayer + viewOffset);
+    view->setCenter(viewCenterX, view->getCenter().y);
+    player->fixX(viewCenterX - viewOffset);
+
+    //std::cout << "DIFF: " << view->getCenter().x - centeredPlayer -static_cast<float>(viewOffset) << ", VOFF: " << viewOffset << '\n';
 
 	//view->setCenter(std::round(view->getCenter().x), view->getCenter().y);
 
@@ -356,13 +363,13 @@ void EntityManager::tickPlayer(double deltatime, Action& actions)
     {
         if (uiPassthrough.extraLives >= 1)
             --uiPassthrough.extraLives;
-		else // Game Over; Reset Player
+        else // Game Over; Reset Player
             playerState = PlayerState::DEAD;
 
         //playerState = false;
     }
     else
-        adjViewport(&DisplayManager::getView(), deltatime);
+        adjViewport(&DisplayManager::getView());
 }
 
 void EntityManager::tickLander(double deltatime, uint16_t index)
@@ -378,15 +385,14 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
         spawn(false, EntityID::MUTANT, entity->getPos());
 
         if (!isInvasion)
-            astronauts.kill(landerTargetTable.landerToAstronaut[index]);
+            astronauts.kill(landerTargetTable.getAstroIndex(index));
         else
             spawn(false, EntityID::MUTANT, entity->getPos());
 
 
         enemies.kill(index);
 
-        landerTargetTable.astronautToLander.erase(landerTargetTable.landerToAstronaut[index]);
-        landerTargetTable.landerToAstronaut.erase(index);
+        landerTargetTable.unlinkLander(index);
         return;
 
     }
@@ -414,8 +420,7 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     {
         entity->setTarget(newTarget);
 		dynamic_cast<Astronaut*>(astronauts.entities.at(astroIndex))->setTargeted(true);
-        landerTargetTable.landerToAstronaut[index] = astroIndex;
-        landerTargetTable.astronautToLander[astroIndex] = index;
+        landerTargetTable.link(index, astroIndex);
     }
 
     enemies.entities.at(index)->tick(deltatime);
@@ -456,9 +461,13 @@ void EntityManager::draw(sf::RenderTarget &target,
 
     // Draw the player
     if (player)
+    {
         target.draw(*player, states);
-    if (player)
-    	uiPassthrough.minimapOffset = (COMN::worldSize / 2 - DisplayManager::getView().getCenter().x) / COMN::worldSize * UserInterface::UIBounds::MINIMAP_WIDTH;
+
+        //std::cout << "DIFF _ DRAW: " << DisplayManager::getView().getCenter().x - VisualComponent::getPlayerData().sprite->getPosition().x << '\n';
+
+        uiPassthrough.minimapOffset = (COMN::worldSize / 2 - DisplayManager::getView().getCenter().x) / COMN::worldSize * UserInterface::UIBounds::MINIMAP_WIDTH;
+    }
 
     if (deathAnim)
         target.draw(*deathAnim, states);
@@ -484,6 +493,11 @@ void EntityManager::particleize(bool spawn, sf::Vector2f pos, EntityID::ID ID, s
     else
         particles.spawn<Particle>(pos, ID, spawn, collision, entity);
 
+}
+
+uint8_t EntityManager::astronautCount() { return static_cast<uint8_t>(astronauts.getLiveCount()); }
+void EntityManager::killAstronauts() {
+    astronauts.reset();
 }
 
 void EntityManager::killArea(sf::FloatRect viewport)
@@ -545,6 +559,51 @@ bool EntityManager::waveComplete()
 {
 	//std::cout << "Wave complete: " << enemies.getLiveCount() - baiterCounter << ", SPCOMPL: " << (spawningComplete ? "true" : "false") << '\n';
     return (enemies.getLiveCount() - baiterCounter == 0 && spawningComplete);
+}
+
+sf::Vector2f EntityManager::getPlayerPos() {
+    if (player)
+        return player->getPos();
+    return {};
+}
+
+void EntityManager::enemyCollisionBranch(Enemy *enemy,
+        uint16_t enemyIndex)
+{
+    uiPassthrough.score += enemy->getXP();
+
+    if (dynamic_cast<Lander*>(enemy))
+    {
+        Astronaut* astronaut = landerTargetTable.getAstro(enemyIndex);
+        if (astronaut && dynamic_cast<Lander*>(enemy)->
+            hasTarget())
+        {
+            astronaut->setTargeted(false);
+            astronaut->setHolder(nullptr);
+            // Erase the entry pairing this astronaut with the lander
+            landerTargetTable.unlinkLander(enemyIndex); // @todo this is wrong
+        }
+    }
+    else if (dynamic_cast<Pod*>(enemy))
+    {
+        for (uint8_t j = 0; j < 5; j++)
+        {
+            spawn(false, EntityID::SWARMER, enemy->getPos());
+            enemy = dynamic_cast<Enemy*>(enemies.entities.at(enemyIndex));
+        }
+    }
+    else if (dynamic_cast<Baiter*>(enemy))
+        --baiterCounter;
+}
+
+void EntityManager::astroCollisionBranch(Astronaut *astro, uint16_t astroIndex)
+{
+    if (astro->targeted())
+    {
+        landerTargetTable.getLander(astroIndex)->setTarget(nullptr);
+        // Erase the entry pairing this astronaut with the lander
+        landerTargetTable.unlinkAstro(astroIndex); // @todo this is wrong
+    }
 }
 
 void EntityManager::clearQueue()

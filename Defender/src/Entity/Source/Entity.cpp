@@ -42,8 +42,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     // @todo Replace later; blank data, will not use a sprite for drawing, custom image
     EntityData{
         Vec2<double>{
-            1.0f,
-            1.0f
+            4.0f,
+            4.0f
         },
         0
     },

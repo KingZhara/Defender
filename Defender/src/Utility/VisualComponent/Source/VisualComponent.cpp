@@ -95,9 +95,15 @@ void VisualComponent::setPosition(sf::Vector2f pos_)
     pos.y = std::round(pos_.y);
 }
 
+void VisualComponent::forceUpdateSprite()
+{
+    DATA_TABLE[ID].sprite->setPosition(pos);
+}
+
 void VisualComponent::draw(sf::RenderTarget &target,
                            sf::RenderStates states) const
 {
+    // This is set at the wrong time
     DATA_TABLE[ID].sprite->setPosition(pos);
 	states.shader = UserInterface::getShader(DATA_TABLE[ID].shader);
 	target.draw(*DATA_TABLE[ID].sprite, states);
@@ -106,7 +112,7 @@ void VisualComponent::draw(sf::RenderTarget &target,
 bool VisualComponent::intersects(sf::FloatRect other)
 {
 	DATA_TABLE[ID].sprite->setPosition(pos);
-	return DATA_TABLE[ID].sprite->getGlobalBounds().intersects(other);
+	return DATA_TABLE[ID].sprite->getGlobalBounds().intersects(other); 
 }
 
 bool VisualComponent::intersects(VisualComponent *other)

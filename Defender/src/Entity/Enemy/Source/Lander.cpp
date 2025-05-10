@@ -65,6 +65,8 @@ bool Lander::hasTarget() { return target; }
 
 void Lander::setTarget(Entity *target_)
 {
+	if (target_ == nullptr)
+		holding = false;
 	target = target_;
 }
 

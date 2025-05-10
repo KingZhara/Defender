@@ -108,7 +108,7 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		if (!waveScreen)
             UserInterface::drawBackground(target, DisplayManager::getView());
 
-		//WEFawef // Add death screen
+		// Add death screen
 
         target.draw(entityManager, states);
 
