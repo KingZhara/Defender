@@ -8,12 +8,6 @@ public:
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_), onGround(true), held(false) {}
 
-	~Astronaut()
-	{
-		static int count = 0;
-		++count;
-		std::cout << "ASTRO KILLED: " << count << '\n';
-	}
 
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void tick(double deltatime) override;

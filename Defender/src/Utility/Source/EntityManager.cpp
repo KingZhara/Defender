@@ -378,7 +378,6 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
     Astronaut* newTarget = nullptr;
     uint16_t astroIndex = 0;
     int16_t minDx = -1;
-    bool mutate = false;
 
     if (entity->shouldMutate() || isInvasion)
     {

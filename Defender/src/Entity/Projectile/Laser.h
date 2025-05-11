@@ -24,7 +24,6 @@ public:
 // Make collision work for projectiles without a visual
         //delete visual;
         //visual = nullptr;
-        std::cout << "SPAWNED LASEr\n";
     }
 
     void tick(double deltatime)
@@ -68,14 +67,13 @@ public:
 
         // There is an issue with getting the dx when facing left.
         dx += abs(vel.x * deltatime);
-        std::cout << "DX: " << dx << '\n';
         if (dx <= COMN::resolution.x)
         {
             if (laserTrail.getPixel(0, 0) != sf::Color::Transparent)
                 laserTrail.setPixel(0, 0, sf::Color::Transparent);
 
             // Solid
-            for (int i = 0; i < pos.x + 2; ++i) // + 2 for white tip
+            for (int i = 0; i < dx - oldDx + 2; ++i) // + 2 for white tip
                 laserTrail.setPixel(clamp(dx - i), 0, sf::Color(136, 0, 255));
 
             // Noise
@@ -96,11 +94,10 @@ public:
             shftDra.setOrigin(dx, 0);
             shftDra.setTextureRect({ 0, 0, (uint8_t)dx, 1 });
 
-            std::cout << "DIF: " << pos.x - EntityData::PLAYER_REF.pos->x - dx;
 
         }
 
-        
+        if (EntityData::PLAYER_REF.vel->x != 0)
         if (vel.x < 0)
         {
             if (!playerSign)
@@ -116,6 +113,10 @@ public:
         shftDra.setPosition(pos);
         visual->setPosition(pos);
 
+    }
+
+    void updateTex()
+    {
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override

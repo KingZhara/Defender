@@ -56,8 +56,9 @@ public:
                                        visual(new PieceVisualComponent(bounds, ID_)),
                                        ID(ID_) {}
 
+    virtual ~Entity();
+
     // Static Methods
-    ~Entity();
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
     static const sf::IntRect         getBounds(EntityID::ID ID);
     static const sf::Vector2f        makeCenteredTL(sf::Vector2f pos, EntityID::ID);
