@@ -111,8 +111,12 @@ bool VisualComponent::intersects(sf::FloatRect other)
 
 bool VisualComponent::intersects(VisualComponent *other)
 {
-	DATA_TABLE[other->ID].sprite->setPosition(other->pos);
-	return intersects(DATA_TABLE[other->ID].sprite->getGlobalBounds());
+    if (other)
+    {
+        DATA_TABLE[other->ID].sprite->setPosition(other->pos);
+        return intersects(DATA_TABLE[other->ID].sprite->getGlobalBounds());
+    }
+    return false;
 }
 
 void VisualComponent::tick(double deltatime)
