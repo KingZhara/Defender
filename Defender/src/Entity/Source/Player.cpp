@@ -33,7 +33,7 @@ void Player::tick(double deltatime) {
         actions->flags.fire = false; // In theory this is redundant, yet here we are.
     }
     Entity::tick(deltatime);
-
+    visual->forceUpdateSprite();
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
