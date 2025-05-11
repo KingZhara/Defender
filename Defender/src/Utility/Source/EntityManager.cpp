@@ -402,7 +402,7 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
         for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
         {
             Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
-            if (astronaut && !astronaut->targeted())
+            if (astronaut && !astronaut->targeted() && astronaut->isOnGround())
             {
 				int16_t dx = std::abs(astronaut->getPos().x - entity->getPos().x);
 				if (minDx == -1 || dx < minDx)
@@ -602,7 +602,7 @@ void EntityManager::astroCollisionBranch(Astronaut *astro, uint16_t astroIndex)
     {
         landerTargetTable.getLander(astroIndex)->setTarget(nullptr);
         // Erase the entry pairing this astronaut with the lander
-        landerTargetTable.unlinkAstro(astroIndex); // @todo this is wrong
+        landerTargetTable.unlinkAstro(astroIndex);
     }
 }
 

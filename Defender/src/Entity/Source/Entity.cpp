@@ -205,6 +205,11 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(
     return makeTargetedVec(pos, ID, EntityData::PLAYER_REF.entity, scale, playerVelType);
 }
 
+Entity::~Entity()
+{
+    delete visual;
+}
+
 const sf::IntRect Entity::getBounds(EntityID::ID ID)
 {
     return VisualComponent::getBounds(ID);

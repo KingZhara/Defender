@@ -2,8 +2,6 @@
 
 void Mutant::tick(double deltatime)
 {
-    static Timer<double>      attackTimer{2};
-    static bool               type  = true;
 
     // Bob up or down on even intervals
     if (bobStage % 2 == 0)
@@ -56,7 +54,9 @@ void Mutant::tick(double deltatime)
                 vel.y = -COMN::baseSpeed.y;
         }
         else*/
-            vel.y = 0;
+
+        if (randomFactor.tick(deltatime))
+            vel.y = (rand() % 2 ? -1 : 1) * rand() % 5000 / 100.;
     }
 
     Enemy::tick(deltatime);

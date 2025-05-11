@@ -69,8 +69,3 @@ void Lander::setTarget(Entity *target_)
 		holding = false;
 	target = target_;
 }
-
-int Lander::getAstronauts()
-{
-	return -1;
-}

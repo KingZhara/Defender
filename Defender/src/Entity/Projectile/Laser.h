@@ -24,6 +24,7 @@ public:
 // Make collision work for projectiles without a visual
         //delete visual;
         //visual = nullptr;
+        std::cout << "SPAWNED LASEr\n";
     }
 
     void tick(double deltatime)
