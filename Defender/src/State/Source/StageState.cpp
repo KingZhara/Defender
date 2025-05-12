@@ -150,8 +150,8 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		playerOne.setFont(UserInterface::getFont());
 		playerOne.setCharacterSize(16);
 		playerOne.setString("PLAYER ONE");
-		playerOne.setPosition(COMN::resolution.x / 2.f - playerOne.getGlobalBounds().width / 2.f, 
-			COMN::resolution.y * 0.1f);
+		playerOne.setPosition(DisplayManager::getView().getCenter().x - playerOne.getGlobalBounds().width / 2.f,
+			DisplayManager::getView().getCenter().y - COMN::resolution.y * 0.4);
 		target.draw(playerOne, states);
 
 		sf::Text hallOfFame;
@@ -159,7 +159,8 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		hallOfFame.setFont(UserInterface::getFont());
 		hallOfFame.setCharacterSize(16);
 		hallOfFame.setString("YOU HAVE QUALIFIED FOR\nTHE DEFENDER HALL OF FAME");
-		hallOfFame.setPosition(COMN::resolution.x * 0.1f, COMN::resolution.y * 0.2f);
+		hallOfFame.setPosition(DisplayManager::getView().getCenter().x - COMN::resolution.x * 0.4f, 
+			DisplayManager::getView().getCenter().y - COMN::resolution.y * 0.3f);
 		target.draw(hallOfFame, states);
 
 		sf::Text instructions;
@@ -167,7 +168,8 @@ void StageState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		instructions.setFont(UserInterface::getFont());
 		instructions.setCharacterSize(16);
 		instructions.setString("SELECT INITIALS WITH UP DOWN KEYS\n\nPRESS RIGHT KEY TO ENTER INITIAL");
-		instructions.setPosition(COMN::resolution.x * 0.1f, COMN::resolution.y * 0.35f);
+		instructions.setPosition(DisplayManager::getView().getCenter().x - COMN::resolution.x * 0.4f, 
+			DisplayManager::getView().getCenter().y - COMN::resolution.y * 0.15f);
 		target.draw(instructions, states);
     }
 
