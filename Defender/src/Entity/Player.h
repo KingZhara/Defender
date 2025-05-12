@@ -21,6 +21,10 @@ public:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     static void setActions(Action& actions);
     virtual bool collide(Entity *other) override;
+    void fixX(float x_)
+    {
+        visual->setPosition({ x_, pos.y });
+    }
 
     bool getDir() const;
 

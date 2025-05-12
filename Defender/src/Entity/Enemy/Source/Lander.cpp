@@ -3,6 +3,7 @@
 
 void Lander::tick(double deltatime)
 {
+	static Entity* tracked = this;
 	// Ricky will handle logic for picking an astronaut
 
 	// When no astronauts are available, make wander based on a timer; assume can check with "getAstronaut()"; if it returns -1, no astronauts are available
@@ -12,7 +13,6 @@ void Lander::tick(double deltatime)
 		{
 			if (!holding)
 			{
-				std::cout << "Chasing target\n";
 				if (!collide(target))
 					vel = makeTargetedVec(pos, ID, target, 1, true).vel;
 				else
@@ -22,10 +22,9 @@ void Lander::tick(double deltatime)
 					dynamic_cast<Astronaut*>(target)->setHolder(this);
 				}
 			}
-
+			
 			if (holding)
 			{
-				std::cout << "Hasg target\n";
 				vel = getEVel(ID);
 				vel.x = 0;
 				vel.y *= -1;
@@ -55,8 +54,10 @@ void Lander::tick(double deltatime)
 		if (dir)
 			vel.x *= -1;
 	}
+
 	Enemy::tick(deltatime);
-	if (holding)
+	// Target was nullptr here, check how this is possible. // Happens when you kill the astronaut, check if being cleared in entity manager on collision wrapper when astronaut is killed
+	if (holding && target)
 		target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
 }
 
@@ -64,10 +65,7 @@ bool Lander::hasTarget() { return target; }
 
 void Lander::setTarget(Entity *target_)
 {
+	if (target_ == nullptr)
+		holding = false;
 	target = target_;
-}
-
-int Lander::getAstronauts()
-{
-	return -1;
 }

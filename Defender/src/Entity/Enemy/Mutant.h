@@ -28,5 +28,7 @@ public:
 private:
     // Range [0, 3]; 0, 1 = up; 2, 3 = down;
     uint8_t bobStage;
+    Timer<double> randomFactor{ 3 };
+    Timer<double> attackTimer{ 2 };
 };
 

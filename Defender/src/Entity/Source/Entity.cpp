@@ -42,8 +42,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     // @todo Replace later; blank data, will not use a sprite for drawing, custom image
     EntityData{
         Vec2<double>{
-            1.0f,
-            1.0f
+            4.0f,
+            4.0f
         },
         0
     },
@@ -132,10 +132,8 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
 
 void Entity::tick(double deltatime)
 {
-    pos += {
-        std::round(static_cast<float>(vel.x * deltatime)),
-        std::round(static_cast<float>(vel.y * deltatime))
-    };
+    pos.x += static_cast<float>(vel.x * deltatime);
+    pos.y += static_cast<float>(vel.y * deltatime);
 
     if (abs(vel.x) < 0.1f)
         vel.x = 0;
@@ -205,6 +203,11 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(
         bool         playerVelType)
 {
     return makeTargetedVec(pos, ID, EntityData::PLAYER_REF.entity, scale, playerVelType);
+}
+
+Entity::~Entity()
+{
+    delete visual;
 }
 
 const sf::IntRect Entity::getBounds(EntityID::ID ID)

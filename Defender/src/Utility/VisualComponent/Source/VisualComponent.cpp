@@ -24,9 +24,8 @@ SpriteTableEntry VisualComponent::DATA_TABLE[EntityID::LENGTH] =
         1
     },
     // Laser
-    // @todo Replace later; blank data, will not use a sprite for drawing, custom image
     SpriteTableEntry{
-        {19, 0, 8, 8},
+        {0, 0, 1, 1},
         2
     },
     // Bomb
@@ -92,12 +91,19 @@ VisualComponent::VisualComponent(EntityID::ID ID_) : ID(ID_)
 
 void VisualComponent::setPosition(sf::Vector2f pos_)
 {
-	pos = pos_;
+	pos.x = std::round(pos_.x);
+    pos.y = std::round(pos_.y);
+}
+
+void VisualComponent::forceUpdateSprite()
+{
+    DATA_TABLE[ID].sprite->setPosition(pos);
 }
 
 void VisualComponent::draw(sf::RenderTarget &target,
                            sf::RenderStates states) const
 {
+    // This is set at the wrong time
     DATA_TABLE[ID].sprite->setPosition(pos);
 	states.shader = UserInterface::getShader(DATA_TABLE[ID].shader);
 	target.draw(*DATA_TABLE[ID].sprite, states);
@@ -106,13 +112,17 @@ void VisualComponent::draw(sf::RenderTarget &target,
 bool VisualComponent::intersects(sf::FloatRect other)
 {
 	DATA_TABLE[ID].sprite->setPosition(pos);
-	return DATA_TABLE[ID].sprite->getGlobalBounds().intersects(other);
+	return DATA_TABLE[ID].sprite->getGlobalBounds().intersects(other); 
 }
 
 bool VisualComponent::intersects(VisualComponent *other)
 {
-	DATA_TABLE[other->ID].sprite->setPosition(other->pos);
-	return intersects(DATA_TABLE[other->ID].sprite->getGlobalBounds());
+    if (other)
+    {
+        DATA_TABLE[other->ID].sprite->setPosition(other->pos);
+        return intersects(DATA_TABLE[other->ID].sprite->getGlobalBounds());
+    }
+    return false;
 }
 
 void VisualComponent::tick(double deltatime)

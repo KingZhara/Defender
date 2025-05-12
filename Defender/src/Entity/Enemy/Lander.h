@@ -32,7 +32,6 @@ public:
 	void setTarget(Entity* target);
 
 private:
-    int getAstronauts();
 	Entity* target = nullptr;
     Timer<double> wanderTimer{ 5, false };
     bool dir = false, holding = false;

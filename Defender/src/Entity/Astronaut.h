@@ -8,6 +8,7 @@ public:
 		bool         isScripted_ = false, EntityScript* script_ = nullptr)
 		: Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_), onGround(true), held(false) {}
 
+
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void tick(double deltatime) override;
 	void setTargeted(bool v);

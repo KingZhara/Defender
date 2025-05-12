@@ -28,6 +28,7 @@ public:
 	VisualComponent(EntityID::ID ID);
 
 	void setPosition(sf::Vector2f pos_);
+	void forceUpdateSprite();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual bool intersects(sf::FloatRect other);
 	bool intersects(VisualComponent* other);
