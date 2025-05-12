@@ -8,6 +8,9 @@ Player::Player(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enti
     Entity::EntityData::PlayerRef::pos = &pos;
     Entity::EntityData::PlayerRef::vel = &vel;
 	EntityData::PlayerRef::entity = this;
+
+    // Player faces wrong way after reset sometimes
+    processActions();
 }
 
 void Player::tick(double deltatime) {
