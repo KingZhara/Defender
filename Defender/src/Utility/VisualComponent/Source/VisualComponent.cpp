@@ -91,8 +91,8 @@ VisualComponent::VisualComponent(EntityID::ID ID_) : ID(ID_)
 
 void VisualComponent::setPosition(sf::Vector2f pos_)
 {
-	pos.x = std::round(pos_.x);
-    pos.y = std::round(pos_.y);
+	pos.x = pos_.x;
+    pos.y = pos_.y;
 }
 
 void VisualComponent::forceUpdateSprite()

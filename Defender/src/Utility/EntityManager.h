@@ -52,7 +52,7 @@ private:
     static void tickLander(double deltatime, uint16_t index);
     static void tickPlayer(double deltatime, Action &actions);
     static void tickEntities(double deltatime);
-    static void adjViewport(sf::View *view);
+    static void adjViewport(sf::View *view, double deltatime);
     static void killArea(sf::FloatRect viewport);
     static void hyperspace();
 

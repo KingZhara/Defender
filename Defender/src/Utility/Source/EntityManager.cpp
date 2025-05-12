@@ -41,108 +41,35 @@ EntityManager::EntityManager(bool scripted_)
     baiterCounter = 0;
 }
 
-void EntityManager::adjViewport(sf::View *view)
+void EntityManager::adjViewport(sf::View *view, double deltatime)
 {
-    // @todo Add starting movement freedom... Refactor to be better as well
-
-  
-    //if (!player)
-      //  return;
-
-    static constexpr double playfieldFactor = 1. / 4.; // Side cutoff
-    static double viewOffset = 0;
-
     if (!player)
         return;
 
-    const double maxOffset = COMN::resolution.x * playfieldFactor;
-    const double centeredPlayer = VisualComponent::getPlayerData().sprite->getPosition().x;//(player->getPos().x); //+Entity::getBounds(EntityID::PLAYER).width / 2.);
-    //std::cout << "PLAYER: " << std::fixed << std::setprecision(10) << centeredPlayer << std::endl;
+    const double centeredPlayer = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.;
+	double centerOffset = 1. / 4. * COMN::resolution.x;
+    double range = 1. / 5.;
+    double vel = Entity::getEVel(EntityID::PLAYER).x;
+    double centerDiff;
+    double workingPlayerCenter = view->getCenter().x + 1. / 8. * COMN::resolution.x;
+    float newX = view->getCenter().x;
 
-    // Update offset
-    if (player->getDir()) // Facing left
+    if (player->getDir()) // left
     {
-        if (viewOffset > -maxOffset)
-            --viewOffset;
-    }
-    else // Facing right
-    {
-        if (viewOffset < maxOffset)
-            ++viewOffset;
-    }
-
-    // Apply offset to view
-    float viewCenterX = std::round( centeredPlayer + viewOffset);
-    view->setCenter(viewCenterX, view->getCenter().y);
-    player->fixX(viewCenterX - viewOffset);
-
-    //std::cout << "DIFF: " << view->getCenter().x - centeredPlayer -static_cast<float>(viewOffset) << ", VOFF: " << viewOffset << '\n';
-
-	//view->setCenter(std::round(view->getCenter().x), view->getCenter().y);
-
-	/*#################### VV The Fun Way VV ####################*/
-
-    /*
-    static double playfieldFactor    = 2. / 4.;
-    static double normalizationWidth = 50;
-    const  double playfieldWidth     = view->getSize().x - (view->getSize().x * playfieldFactor)          ; // Playfield width
-    const  double centeredPlayer     = player->getPos().x + Entity::getBounds(EntityID::PLAYER).width / 2.; // The players position centered to its hitbox
-    double        viewOffset         = player->getVel().x                                                 ; // View offset
-    double        xOffset                                                                                 ; // Player position - playfield percentage
-    bool   atEdge             = false;
-
-    if (player->getVel().x > 0) // If moving right
-    {
-        // Player relative to the left playfield cutoff (center - field width / 2)
-        xOffset = centeredPlayer - (view->getCenter().x - playfieldWidth / 2);
-
-        // Set if it has reached its side
-        if (xOffset <= 4.5) // 4.5 is a magic number for stabilization. it probably makes sense if you follow the viewport and player tick pipelines more closely, im not gonna.
-            atEdge = true;
-
-        // Apply a normalization width to prevent reaching the asymptote & a minimum value
-        xOffset = std::max(xOffset + normalizationWidth, -1.);
-    }
-    else if (player->getVel().x < 0) // If moving left
-    {
-        // Player relative to the left playfield cutoff (center + field width / 2)
-        xOffset = centeredPlayer - (view->getCenter().x + playfieldWidth / 2);
-
-        // Set if it has reached its side
-        if (xOffset >= -4.5)
-            atEdge = true;
-
-        // Apply a normalization width to prevent reaching the asymptote & a minimum value
-        xOffset = std::min(xOffset - normalizationWidth, 1.);
-    }
-    else // If not moving
-        return;
-
-    // Offset MUST be positive
-    if (xOffset < 0)
-        xOffset = -xOffset;
-
-    // Apply a scaling speed difference based off of the offset
-    if (!atEdge)
-    {
-        viewOffset += player->getVel().x * xOffset / 100;
-
-
-        // Finally move by dx, performing screen width wrapping as well as integer bound rounding.
-        view->setCenter(
-            static_cast<float>(
-                static_cast<int>(std::round(view->getCenter().x + viewOffset)) %
-                static_cast<int>(std::round(view->getSize().x * 9))),
-            COMN::resolution.y / 2);
+        // flip centerOffset
+        workingPlayerCenter += centerOffset;
     }
     else
     {
-        view->setCenter({
-            (float)std::round(centeredPlayer + (player->getVel().x > 0 ? 1 : -1) * playfieldWidth / 2),
-            COMN::resolution.y / 2
-            });
+        workingPlayerCenter -= centerOffset;
+
     }
-    */
+    centerDiff = centeredPlayer - workingPlayerCenter;
+
+    vel += centerDiff / range;
+    newX += vel * deltatime;
+
+    view->setCenter(newX, view->getCenter().y);
 }
 
 EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions)
@@ -369,7 +296,7 @@ void EntityManager::tickPlayer(double deltatime, Action& actions)
         //playerState = false;
     }
     else
-        adjViewport(&DisplayManager::getView());
+        adjViewport(&DisplayManager::getView(), deltatime);
 }
 
 void EntityManager::tickLander(double deltatime, uint16_t index)
