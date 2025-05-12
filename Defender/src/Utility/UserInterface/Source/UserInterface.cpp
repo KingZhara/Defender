@@ -247,7 +247,7 @@ void UserInterface::initialize()
     shiftingShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     deathShader->   setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
-
+    deathReplacement.whiteTime.tick(0); // Reset
     // World
     UserInterface::World::generate();
 
@@ -349,7 +349,7 @@ const void UserInterface::shaderTick(double deltatime)
             {
 				deathReplacement.color.shift(1);
 
-                if (HSV::hasPassedHue(HSV(0.6, 1., 1.), deathReplacement.color, 0))
+                if (HSV::hasPassedHue(HSV(60, 1., 1.), deathReplacement.color, 0))
                     deathReplacement.passedHue = true;
             }
             else
@@ -358,7 +358,7 @@ const void UserInterface::shaderTick(double deltatime)
 				if (deathReplacement.color.getV() <= 0)
 				{
                     // Reset
-                    deathReplacement.color = HSV(0.6, 0, 1.);
+                    deathReplacement.color = HSV(60, 0, 1.);
 					deathReplacement.active = false;
 					deathReplacement.passedHue = false;
                     deathReplacement.passedWhite = false;

@@ -139,7 +139,7 @@ private:
 	struct DeathReplacement
 	{
 		bool active = false, passedWhite = false, passedHue = false;
-		HSV color;
+		HSV color = HSV(0.5, 0, 1.);
 		float     shift, fadeFactor;
 		Timer<double> whiteTime{ 2 };
 	};
