@@ -144,8 +144,7 @@ void HighscoreState::addScore(const char initials[4], int score)
 
 bool HighscoreState::isHighscore(int score)
 {
-	for (int i = 0; i < HS_COUNT; i++)
-		return (score > today[i].score || score > allTime[i].score);
+	return (score > today[7].score || score > allTime[7].score);
 }
 
 void HighscoreState::loadHighscores()

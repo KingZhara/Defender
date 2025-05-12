@@ -229,17 +229,13 @@ void UserInterface::initialize()
 
     // Shaders
 
-    std::cout << "BEF SHIFTING: " << shiftingShader << '\n';
     shiftingShader = new sf::Shader;
-    std::cout << "AFT SHIFTING: " << shiftingShader << '\n';
     flashingShader = new sf::Shader;
     williamsShader = new sf::Shader;
     deathShader = new sf::Shader;
 
-    if(!shiftingShader->loadFromFile("res/shaders/replace.frag",
-        sf::Shader::Type::Fragment))
-	    throw (std::runtime_error(""));
-    std::cout << "AFT2 SHIFTING: " << shiftingShader << '\n';
+    shiftingShader->loadFromFile("./res/shaders/replace.frag",
+        sf::Shader::Type::Fragment);
     flashingShader->loadFromFile("./res/shaders/replace.frag",
         sf::Shader::Type::Fragment);
     williamsShader->loadFromFile("./res/shaders/replace.frag",

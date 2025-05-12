@@ -1,5 +1,6 @@
 #pragma once
 #include "../Projectile.h"
+#include "../Player.h"
 class Laser :
     public Projectile
 {
@@ -17,7 +18,7 @@ public:
 
         startX = 0;// pos.x;
 
-        if (EntityData::PLAYER_REF.vel->x < 0)
+        if (dynamic_cast<Player*>(EntityData::PLAYER_REF.entity)->getDir())
             shftDra.setScale(-1, 1);
 
         // Add a flag to the entity constructor to not make a visual
@@ -78,8 +79,8 @@ public:
 
             // Noise
             for (int i = 0; i < dx / 5 - oldDx / 5; i++)
-                if (rand() % 3 == 0)
-                    laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Black);
+                if (rand() % 2 == 0)
+                    laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Transparent);
 
             // Transparent
             for (int i = 0; i < dx / 5 - oldDx / 5; i++)
