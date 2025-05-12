@@ -7,65 +7,124 @@
 
 class EntityManager::LanderTargetTable
 {
-	std::unordered_map<uint16_t, uint16_t> landerToAstronaut;
-	std::unordered_map<uint16_t, uint16_t> astronautToLander;
-	bool                                   hasplayerReserved;
-	uint16_t                               playerReservedIndex;
+
+	uint16_t lander = 0, astro = 0, playerAstro = 0;
+	bool playerLinked = false, landerLinked = false;
 
 public:
 	LanderTargetTable() = default;
 
-	bool isLinkedAstro(uint16_t index)
+	void reserve(uint16_t astroIndex)
 	{
-		return astronautToLander.count(index);
+		playerLinked = true;
+		playerAstro = astroIndex;
+		if (landerLinked && astro == astroIndex)
+		{
+			getLander()->setTarget(nullptr);
+
+		    unlinkLander();
+		}
+		dynamic_cast<Astronaut*>(astronauts.entities.at(astroIndex))->setTargeted(true);
+
 	}
 
-	bool isLinkedLander(uint16_t index)
+	bool isLanderLinked()
 	{
-		return landerToAstronaut.count(index);
+		return landerLinked;
 	}
 
-	void link(uint16_t lander, uint16_t astronaut)
+	void linkLander(uint16_t lander_, uint16_t astronaut)
 	{
-		landerToAstronaut[lander] = astronaut;
-		astronautToLander[astronaut] = lander;
+		lander = lander_;
+		astro = astronaut;
+
+		landerLinked = true;
+
+		getLander()->setTarget(getAstro(false));
+		getAstro(false)->setTargeted(true);
+		getAstro(false)->setHolder(getLander());
 	}
 
-	void unlinkAstro(uint16_t astronaut)
+	void linkPlayer(uint16_t astroIndex)
 	{
-		landerToAstronaut.erase(astronautToLander[astronaut]);
-		astronautToLander.erase(astronaut);
+		playerLinked = true;
+		playerAstro = astroIndex;
+		if (landerLinked && astro == astroIndex)
+		{
+			getLander()->setTarget(nullptr);
+			unlinkLander();
+		}
+		getAstro(true)->setTargeted(true);
+		getAstro(true)->setHolder(player);
+		player->setAstro(getAstro(true));
 	}
 
-	void unlinkLander(uint16_t lander)
+	void unlinkLander()
 	{
-		astronautToLander.erase(landerToAstronaut[lander]);
-		landerToAstronaut.erase(lander);
+		unlinkLander(lander);
 	}
 
-	Lander* getLander(uint16_t astroIndex)
+	void unlinkLander(uint16_t index)
 	{
-		return dynamic_cast<Lander*>(enemies.entities.at(astronautToLander[astroIndex]));
+  		if (lander == index)
+		{
+			if (getLander())
+				getLander()->setTarget(nullptr);
+
+			if (getAstro(false))
+			{
+				getAstro(false)->setTargeted(false);
+				getAstro(false)->setHolder(nullptr);
+			}
+
+			landerLinked = false;
+		}
+	}
+	void unlinkPlayer()
+	{
+		if (getAstro(true))
+		{
+			getAstro(true)->setTargeted(false);
+			getAstro(true)->setHolder(nullptr);
+		}
+
+		player->setAstro(nullptr);
+
+		playerLinked = false;
+	}
+	void unlinkAstro(uint16_t index)
+	{
+		if (index == playerAstro)
+			unlinkPlayer();
+		else if (index == astro)
+			unlinkLander();
 	}
 
-	Astronaut* getAstro(uint16_t landerIndex)
+	Lander* getLander()
 	{
-		return dynamic_cast<Astronaut*>(astronauts.entities.at(landerToAstronaut[landerIndex]));
+	    return landerLinked ? dynamic_cast<Lander*>(enemies.entities.at(lander)) : nullptr;
 	}
 
-	uint16_t getLanderIndex(uint16_t astroIndex)
+	Astronaut* getAstro(bool player)
 	{
-		return astronautToLander[astroIndex];
+		bool valid = (player ? playerLinked : landerLinked);
+		uint16_t index = player ? playerAstro : astro;
+		return valid ? dynamic_cast<Astronaut*>(astronauts.entities.at(index)) : nullptr;
 	}
 
-	uint16_t getAstroIndex(uint16_t landerIndex)
+	uint16_t getLanderIndex()
 	{
-		return landerToAstronaut[landerIndex];
+		return lander;
+	}
+
+	uint16_t getAstroIndex(bool player)
+	{
+		return player ? playerAstro : astro;
 	}
 
 	void reset()
 	{
-		landerToAstronaut.clear();
-		astronautToLander.clear();
+		lander = playerAstro = astro = 0;
+		playerLinked = landerLinked = false;
 	}
 };

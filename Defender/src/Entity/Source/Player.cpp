@@ -1,4 +1,5 @@
 #include "../Player.h"
+#include "../Astronaut.h"
 
 
 Action* Player::actions = nullptr;
@@ -34,6 +35,14 @@ void Player::tick(double deltatime) {
     }
     Entity::tick(deltatime);
     visual->forceUpdateSprite();
+
+    if (astronaut)
+    {
+        if (dynamic_cast<Astronaut*>(astronaut)->isOnGround())
+            astronaut = nullptr;
+        else
+            astronaut->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
+    }
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -49,7 +58,7 @@ void Player::setActions(Action& actions_)
 }
 
 bool Player::collide(Entity *other) {
-    return false;// Entity::collide(other);
+    return Entity::collide(other);
 }
 
 bool Player::getDir() const {
@@ -74,6 +83,9 @@ void Player::processActions() {
             });
     }
 }
+
+// Landers occasionally dont collide
+// Astros occasionally dont fall
 
 void Player::wrap() {
     float diff = pos.x - DisplayManager::getView().getCenter().x;

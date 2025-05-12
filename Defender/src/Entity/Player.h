@@ -26,12 +26,23 @@ public:
         visual->setPosition({ x_, pos.y });
     }
 
+    void setAstro(Entity* astro)
+    {
+        astronaut = astro;
+    }
+
+    bool hasAstro()
+    {
+        return astronaut;
+    }
+
     bool getDir() const;
 
 private:
 	void         processActions();
     virtual void wrap() override;
 
+    Entity* astronaut = nullptr;
     static Action* actions;
 	bool left = false;
 };

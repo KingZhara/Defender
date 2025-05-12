@@ -37,8 +37,6 @@ void Astronaut::setTargeted(bool v)
 bool Astronaut::targeted() { return isTargeted; } // May not be targeted if not on ground
 void Astronaut::setHolder(Entity* holder_)
 {
-	holder = holder_;
-
 	if (holder_ == nullptr)
 		held = false;
 	else

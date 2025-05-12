@@ -232,6 +232,9 @@ void EntityManager::tickEntities(double deltatime)
                 if (particle->isComplete())
                     astronauts.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
             }
+            else if (!dynamic_cast<Astronaut*>(entity)->isOnGround() && !player->hasAstro() && player->collide(entity))
+                player->setAstro(entity); // Handle freeing somewhere
+
         }
     }
 
@@ -356,6 +359,9 @@ void EntityManager::tickPlayer(double deltatime, Action& actions)
             if (uiPassthrough.extraLives != 255)
                 ++uiPassthrough.extraLives;
         }
+
+        if (player && !player->hasAstro())
+            landerTargetTable.unlinkPlayer();
     }
 
     // Should handle saving the high score if needed
@@ -396,31 +402,27 @@ void EntityManager::tickLander(double deltatime, uint16_t index)
 
     }
 
-    if (!entity->hasTarget())
+    if (!landerTargetTable.isLanderLinked() && !entity->hasTarget())
     {
         for (uint16_t i = 0; i < astronauts.entities.size(); ++i)
         {
             Astronaut* astronaut = dynamic_cast<Astronaut*>(astronauts.entities.at(i));
             if (astronaut && !astronaut->targeted() && astronaut->isOnGround())
             {
-				int16_t dx = std::abs(astronaut->getPos().x - entity->getPos().x);
-				if (minDx == -1 || dx < minDx)
-				{
-					minDx = dx;
-					newTarget = astronaut;
-					astroIndex = i;
-				}
+                int16_t dx = std::abs(astronaut->getPos().x - entity->getPos().x);
+                if (minDx == -1 || dx < minDx)
+                {
+                    minDx = dx;
+                    newTarget = astronaut;
+                    astroIndex = i;
+                }
             }
 
         }
+        if (newTarget)
+            landerTargetTable.linkLander(index, astroIndex);
     }
 
-    if (newTarget)
-    {
-        entity->setTarget(newTarget);
-		dynamic_cast<Astronaut*>(astronauts.entities.at(astroIndex))->setTargeted(true);
-        landerTargetTable.link(index, astroIndex);
-    }
 
     enemies.entities.at(index)->tick(deltatime);
 }
@@ -571,17 +573,9 @@ void EntityManager::enemyCollisionBranch(Enemy *enemy,
 {
     uiPassthrough.score += enemy->getXP();
 
-    if (dynamic_cast<Lander*>(enemy))
+    if (dynamic_cast<Lander*>(enemy) && dynamic_cast<Lander*>(enemy)->hasTarget())
     {
-        Astronaut* astronaut = landerTargetTable.getAstro(enemyIndex);
-        if (astronaut && dynamic_cast<Lander*>(enemy)->
-            hasTarget())
-        {
-            astronaut->setTargeted(false);
-            astronaut->setHolder(nullptr);
-            // Erase the entry pairing this astronaut with the lander
-            landerTargetTable.unlinkLander(enemyIndex); // @todo this is wrong
-        }
+        landerTargetTable.unlinkLander(enemyIndex);
     }
     else if (dynamic_cast<Pod*>(enemy))
     {
@@ -598,11 +592,7 @@ void EntityManager::enemyCollisionBranch(Enemy *enemy,
 void EntityManager::astroCollisionBranch(Astronaut *astro, uint16_t astroIndex)
 {
     if (astro->targeted())
-    {
-        landerTargetTable.getLander(astroIndex)->setTarget(nullptr);
-        // Erase the entry pairing this astronaut with the lander
         landerTargetTable.unlinkAstro(astroIndex);
-    }
 }
 
 void EntityManager::clearQueue()

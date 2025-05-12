@@ -14,7 +14,6 @@ public:
 	void setTargeted(bool v);
 	bool targeted();
 	bool isOnGround()   const { return onGround; }
-	Entity* getHolder() const { return holder; }
 	void setHolder(Entity* holder_);
 
 private:
@@ -23,7 +22,6 @@ private:
 	bool onGround;
 
 	// Player and lander can set holder
-	Entity* holder;
 	/**
 	 * Add fall length; kill if > COMN::Resolution.y / 4
 	 *

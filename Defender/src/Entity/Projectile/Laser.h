@@ -69,8 +69,8 @@ public:
         dx += abs(vel.x * deltatime);
         if (dx <= COMN::resolution.x)
         {
-            if (laserTrail.getPixel(0, 0) != sf::Color::Transparent)
-                laserTrail.setPixel(0, 0, sf::Color::Transparent);
+            if (laserTrail.getPixel(0, 0) != sf::Color::Black)
+                laserTrail.setPixel(0, 0, sf::Color::Black);
 
             // Solid
             for (int i = 0; i < dx - oldDx + 2; ++i) // + 2 for white tip
@@ -79,11 +79,11 @@ public:
             // Noise
             for (int i = 0; i < dx / 5 - oldDx / 5; i++)
                 if (rand() % 3 == 0)
-                    laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Transparent);
+                    laserTrail.setPixel(clamp(dx - (dx - dx / 5) / 3 - i), 0, sf::Color::Black);
 
             // Transparent
             for (int i = 0; i < dx / 5 - oldDx / 5; i++)
-                laserTrail.setPixel(clamp(dx / 5 - i), 0, sf::Color::Transparent);
+                laserTrail.setPixel(clamp(dx / 5 - i), 0, sf::Color::Black);
 
             // Laser tip
             laserTrail.setPixel(clamp(dx), 0, sf::Color::White);
@@ -113,10 +113,6 @@ public:
         shftDra.setPosition(pos);
         visual->setPosition(pos);
 
-    }
-
-    void updateTex()
-    {
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
