@@ -9,20 +9,13 @@ class Swarmer :
 {
 public:
     explicit Swarmer(sf::Vector2f pos_,
-        bool         isScripted_ = false, EntityScript* script_ = nullptr)
-        : Enemy(pos_, EntityID::SWARMER, isScripted_, script_)
-    {
-        vel = getEVel(ID);
-        double rot = static_cast<double>(rand()) / RAND_MAX * 2.0f * M_PI;
+        bool         isScripted_ = false, EntityScript* script_ = nullptr);
 
-        vel.x *= std::cos(rot);
-        vel.y *= std::sin(rot);
+    virtual ~Swarmer() override = default;
 
-        attackTimer.tick(0);
-		switchTimer.tick(4.5);
-    }
     virtual void tick(double deltatime) override;
 
+private:
     bool init = true, targeted = false;
     float yVal = 0;
     int8_t direction = 0;

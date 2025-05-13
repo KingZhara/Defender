@@ -5,13 +5,10 @@ class Bomb :
 {
 public:
     explicit Bomb(sf::Vector2f pos_,
-        bool         isScripted_ = false, EntityScript* script_ = nullptr)
-        : Projectile(pos_, EntityID::SWARMER, isScripted_, script_)
-    {}
+        bool         isScripted_ = false, EntityScript* script_ = nullptr);
 
-    virtual void tick(double deltatime) override
-    {
-        applyFriction(deltatime, 3);
-    }
+    virtual ~Bomb() override = default;
+
+    virtual void tick(double deltatime) override;
 };
 

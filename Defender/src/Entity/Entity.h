@@ -34,29 +34,13 @@ public:
     Entity(sf::Vector2f  pos_,
            EntityID::ID  ID_,
            bool          isScripted_ = false,
-           EntityScript *script_     = nullptr) : pos(pos_),
-                                                  isScripted(isScripted_),
-                                                  script(script_),
-                                                  visual(new VisualComponent(ID_)),
-                                                  ID(ID_)
-    {
-        visual->setPosition(pos);
-
-        // Lazy initialization of the miniSprite
-        if (!miniSprite)
-            miniSprite = new sf::Sprite(*DisplayManager::getTexture(),
-                                        sf::IntRect(0, 0, 2, 2));
-    }
+           EntityScript *script_     = nullptr);
 
     Entity(sf::Vector2f pos_,
            EntityID::ID ID_    = EntityID::PIECE,
-           sf::IntRect  bounds = {}) : pos(pos_),
-                                       isScripted(false),
-                                       script(nullptr),
-                                       visual(new PieceVisualComponent(bounds, ID_)),
-                                       ID(ID_) {}
+           sf::IntRect  bounds = {});
 
-    virtual ~Entity();
+    virtual ~Entity() override;
 
     // Static Methods
     static std::queue<QueuedEntity> &getQueue() { return entityQueue; }
@@ -86,11 +70,6 @@ public:
     virtual void
         draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 protected:
-
-    sf::Vector2f makeMiniDrawPos() const;
-    static const EntityTarget        makeTargetedVec(sf::Vector2f pos, EntityID::ID ID, Entity* other,
-        uint8_t scale, bool velType);
-
     struct EntityData
     {
         EntityData(Vec2<double> velocityFactor,
@@ -101,9 +80,9 @@ protected:
 
         struct PlayerRef
         {
-            static sf::Vector2f *pos;
-            static sf::Vector2f *vel;
-			static Entity* entity;
+            static sf::Vector2f* pos;
+            static sf::Vector2f* vel;
+            static Entity* entity;
         };
 
         static constexpr Vec2<double> BASE_VELOCITY
@@ -116,12 +95,13 @@ protected:
         uint16_t               XP;
     };
 
+    sf::Vector2f              makeMiniDrawPos() const;
+    static const EntityTarget makeTargetedVec(sf::Vector2f pos, EntityID::ID ID, Entity* other, uint8_t scale, bool velType);
 
-    // The data table used for generating a given sprite
-    static const EntityData DATA_TABLE[
-        EntityID::LENGTH]; // i REALLY tried to make this constexpr
-    static sf::Sprite *             miniSprite;
-    static std::queue<QueuedEntity> entityQueue;
+    // Static data members
+    static const EntityData               DATA_TABLE[EntityID::LENGTH];
+    static       sf::Sprite *             miniSprite;
+    static       std::queue<QueuedEntity> entityQueue;
 
     sf::Vector2f       pos, vel;
     EntityScript *     script;

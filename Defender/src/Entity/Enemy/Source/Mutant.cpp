@@ -1,5 +1,9 @@
 #include "../Mutant.h"
 
+Mutant::Mutant(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enemy(pos_, EntityID::MUTANT, isScripted_, script_)
+{
+}
+
 void Mutant::tick(double deltatime)
 {
 

@@ -6,8 +6,7 @@ class Projectile :
 {
 public:
 	Projectile(sf::Vector2f pos_, EntityID::ID id_,
-		bool         isScripted_ = false, EntityScript* script_ = nullptr)
-		: Entity(pos_, id_, isScripted_, script_) {}
+		bool         isScripted_ = false, EntityScript* script_ = nullptr);
 
 	virtual bool collide(Entity *other) override;
 	virtual bool collide(sf::FloatRect otherBound) override;
@@ -17,10 +16,3 @@ public:
 private:
 	float lastDT;
 };
-
-inline void Projectile::tick(double deltatime)
-{
-	lastDT = deltatime;
-    Entity::tick(deltatime);
-}
-

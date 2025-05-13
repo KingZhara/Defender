@@ -130,6 +130,29 @@ const Entity::EntityData Entity::DATA_TABLE[EntityID::LENGTH] =
     },
 };
 
+Entity::Entity(sf::Vector2f pos_,
+        EntityID::ID ID_,
+        bool isScripted_,
+        EntityScript *script_): pos(pos_),
+                                isScripted(isScripted_),
+                                script(script_),
+                                visual(new VisualComponent(ID_)),
+                                ID(ID_) {
+    visual->setPosition(pos);
+
+    // Lazy initialization of the miniSprite
+    if (!miniSprite)
+        miniSprite = new sf::Sprite(*DisplayManager::getTexture(),
+                                    sf::IntRect(0, 0, 2, 2));
+}
+
+Entity::Entity(sf::Vector2f pos_, EntityID::ID ID_, sf::IntRect bounds): pos(pos_),
+                                                                         isScripted(false),
+                                                                         script(nullptr),
+                                                                         visual(new PieceVisualComponent(bounds, ID_)),
+                                                                         ID(ID_)
+{}
+
 void Entity::tick(double deltatime)
 {
     pos.x += static_cast<float>(vel.x * deltatime);
@@ -204,6 +227,7 @@ const Entity::EntityTarget Entity::makePlayerTargetedVec(
 {
     return makeTargetedVec(pos, ID, EntityData::PLAYER_REF.entity, scale, playerVelType);
 }
+
 
 Entity::~Entity()
 {

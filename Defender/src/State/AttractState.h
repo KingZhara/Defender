@@ -59,8 +59,9 @@ public:
 
 		states.shader = UserInterface::getShader(ShaderID::RAND_COL);
 		target.draw(flshDra, states);
-		UserInterface::getShader(ShaderID::RAND_COL)->setUniform("targetColor", COMN::ShaderTarget);
 
+		// Reset shader target
+		UserInterface::getShader(ShaderID::RAND_COL)->setUniform("targetColor", COMN::ShaderTarget);
 
 		states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
 		target.draw(shftDra, states);
@@ -73,24 +74,15 @@ private:
 
 	static sf::Image willSteps;
 	static sf::RectangleShape williams;
-
 	static sf::Text electronicsInc, presents, copyright, credits;
-
 	static sf::Texture *defenderTex;
 	static sf::RectangleShape defender;
-
 	static sf::RenderTexture *flashing, *shifting, *willFlashing;
-
 	static sf::Sprite flshDra, shftDra, willFlshDra;
-
-	// needs to be recreated each time
-	// The width of these is actually 1 less because the shader cut off the final pixels
-	// For width use willSteps
 	static sf::Image willImg;
 	static sf::Texture* willTex;
 	
 	unsigned willPos = 0;
-
 	int stage = 0;
 	
 };

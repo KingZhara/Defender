@@ -1,5 +1,17 @@
 #include "../Swarmer.h"
 
+Swarmer::Swarmer(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enemy(pos_, EntityID::SWARMER, isScripted_, script_)
+{
+    vel        = getEVel(ID);
+    double rot = static_cast<double>(rand()) / RAND_MAX * 2.0f * M_PI;
+
+    vel.x *= std::cos(rot);
+    vel.y *= std::sin(rot);
+
+    attackTimer.tick(0);
+    switchTimer.tick(4.5);
+}
+
 void Swarmer::tick(double deltatime)
 {
 

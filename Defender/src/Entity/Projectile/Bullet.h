@@ -7,11 +7,9 @@ class Bullet :
 public:
     explicit Bullet(sf::Vector2f  pos_,
                     bool          isScripted_ = false,
-                    EntityScript *script_     = nullptr) :
-            Projectile(pos_, EntityID::BULLET, isScripted_, script_) {}
+                    EntityScript *script_     = nullptr);
 
-    virtual void tick(double deltatime) override
-    {
-        Entity::tick(deltatime);
-    }
+    virtual ~Bullet() override = default;
+
+    virtual void tick(double deltatime) override;
 };

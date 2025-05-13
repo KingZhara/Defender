@@ -1,36 +1,10 @@
 #include "../Enemy.h"
-/*
-void Enemy::tick(double deltatime)
-{
-	if (getID() == EntityID::MUTANT) 
-	{
-		Entity::tick(deltatime);
-	}
 
-	if (getID() == EntityID::LANDER)
-	{
-		if (playerPos->x < pos.x)
-			vel.x = -0.5f;
-		else if (playerPos->x > pos.x)
-			vel.x = 0.5f;
+Enemy::Enemy(sf::Vector2f pos_,
+        EntityID::ID id_,
+        bool isScripted_,
+        EntityScript *script_): Entity(pos_, id_, isScripted_, script_) {}
 
-		if (playerPos->y < pos.y)
-			vel.y = -0.5f;
-		else if (playerPos->y > pos.y)
-			vel.y = 0.5f;
-
-		Entity::tick(deltatime);
-	}
-	/*
-	Entity::entityQueue.emplace(
-		QueuedEntity{
-			pos,
-			atan2(playerPos->y - pos.y, playerPos->x - pos.x),
-			EntityID::BOMB
-		}
-	);
-	
-}*/
 void Enemy::tick(double deltatime)
 {
     Entity::tick(deltatime);
@@ -39,4 +13,10 @@ void Enemy::tick(double deltatime)
 		pos.y -= COMN::playHeight::max - COMN::playHeight::min;
 	else if (pos.y < COMN::playHeight::min)
 		pos.y += COMN::playHeight::max - COMN::playHeight::min;
+}
+
+void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+    miniSprite->setTextureRect(sf::IntRect(80 + (ID - EntityID::LANDER) * 3, 0, 2, 2));
+    Entity::draw(target, states);
 }

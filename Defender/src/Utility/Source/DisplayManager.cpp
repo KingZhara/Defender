@@ -42,8 +42,8 @@ void DisplayManager::initialize()
     frameB->setView(viewport);
 
     // This is your brain on drugs pookie
-    smoothShader->loadFromFile("./res/shaders/epilepsySmooth.frag",
-        sf::Shader::Type::Fragment);
+    //smoothShader->loadFromFile("./res/shaders/epilepsySmooth.frag",
+    //    sf::Shader::Type::Fragment);
 
     if (!frameA->create(resolution.x, resolution.y) ||
         !frameB->create(resolution.x, resolution.y))

@@ -4,6 +4,11 @@
 
 #include "../../Utility/common.h"
 
+Projectile::Projectile(sf::Vector2f pos_,
+        EntityID::ID id_,
+        bool isScripted_,
+        EntityScript *script_): Entity(pos_, id_, isScripted_, script_) {}
+
 bool Projectile::collide(Entity *other)
 {
 	sf::FloatRect bound = sf::FloatRect(other->getPos(), {(float)getBounds(other->getID()).getSize().x, (float)getBounds(other->getID()).getSize().y});
@@ -64,4 +69,10 @@ bool Projectile::collide(sf::FloatRect otherBound)
 		std::cout << "COLLISION!\n";
 
 	return ret;
+}
+
+void Projectile::tick(double deltatime)
+{
+	lastDT = deltatime;
+	Entity::tick(deltatime);
 }

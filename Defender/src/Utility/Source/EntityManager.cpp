@@ -73,28 +73,13 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 }
 
 EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions)
-{
-    // TMEPORARY DECLARATION
-    //playerState = PlayerState::ALIVE;
-	//std::cout << particles.entities.size() << " particles\n";
-    //uint16_t enemyIndex  = 0;
-
-    //std::cout << "There are " << particles.entities.size() - particles.count << " particles\n";
-
-    // Tick player first
+{3
     if (playerState == PlayerState::ALIVE)
     {
 
         if (player)
             player->tick(deltatime);
 
-        // Change playerState to be a player state -> make default to dead, handle in constructor... and spawn methods
-
-
-        // if player is respawning perform animation, if dead, reset data (maybe? look at constructor and reset methods to determine if necessary...) return accordingly.
-        // handle death animation interactions with user interface
-        // Handle UI changes..
-        // 
         tickEntities(deltatime);
         tickPlayer(deltatime, actions);
     }
@@ -110,11 +95,7 @@ EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions
         else
             deathReset();
 
-		//std::cout << "DEATH ANIM: " << deathAnim << ", COMPL: " << UserInterface::isDeathAnimCompleted() << '\n';
     }
-
-
-    //playerState = PlayerState::ALIVE;
 
     if (playerState == PlayerState::DEAD && deathAnim)
         return PlayerState::RESPAWNING;
@@ -145,7 +126,7 @@ void EntityManager::tickEntities(double deltatime)
         }
     }
 
-    // @todo Needs to detect death
+    // Tick astronauts
     for (uint16_t i = 0; i < astronauts.entities.size(); i++)
     {
         Entity*& entity = astronauts.entities.at(i);
@@ -159,9 +140,13 @@ void EntityManager::tickEntities(double deltatime)
                 if (particle->isComplete())
                     astronauts.spawn(i, particle->getEntity()); // Spawn the entity that was particleized
             }
+            else if (dynamic_cast<Astronaut*>(entity)->shouldDie()) // Death by falling
+            {
+                particleize(false, entity->getPos(), EntityID::ASTRONAUT, Particle::defCent(), nullptr);
+                astronauts.kill(i);
+            }
             else if (!dynamic_cast<Astronaut*>(entity)->isOnGround() && !player->hasAstro() && player->collide(entity))
-                player->setAstro(entity); // Handle freeing somewhere
-
+                player->setAstro(entity);
         }
     }
 

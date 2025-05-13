@@ -33,7 +33,7 @@ void Player::tick(double deltatime) {
 
     if (actions->flags.fire)
     {
-        entityQueue.emplace(sf::Vector2f{pos.x - 4, pos.y}, EntityID::LASER);
+        entityQueue.emplace(sf::Vector2f{pos.x + (left ? 0 : getBounds(ID).width), pos.y - 4}, EntityID::LASER);
         actions->flags.fire = false; // In theory this is redundant, yet here we are.
     }
     Entity::tick(deltatime);
@@ -62,6 +62,19 @@ void Player::setActions(Action& actions_)
 
 bool Player::collide(Entity *other) {
     return Entity::collide(other);
+}
+
+void Player::fixX(float x_)
+{
+    visual->setPosition({ x_, pos.y });
+}
+
+void Player::setAstro(Entity *astro) {
+    astronaut = astro;
+}
+
+bool Player::hasAstro() const {
+    return astronaut;
 }
 
 bool Player::getDir() const {

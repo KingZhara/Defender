@@ -1,5 +1,8 @@
 #include "../Bomber.h"
 
+Bomber::Bomber(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enemy(pos_, EntityID::BOMBER, isScripted_, script_)
+{}
+
 void Bomber::tick(double deltatime)
 {
 

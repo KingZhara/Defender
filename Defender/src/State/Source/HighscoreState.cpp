@@ -4,28 +4,22 @@
 
 #include <fstream>
 
-constexpr int HS_COUNT = 8;
+constexpr uint8_t HS_COUNT = 8;
 
 HighscoreState::Score HighscoreState::today[HS_COUNT], HighscoreState::allTime[HS_COUNT];
-
 sf::Text HighscoreState::goatoday, HighscoreState::goatime, 
 HighscoreState::goatodayTitle, HighscoreState::goatimeTitle, 
 HighscoreState::hallOfFame, HighscoreState::scoreTxt;
-
 sf::RectangleShape HighscoreState::goatodayUnder, HighscoreState::goatimeUnder;
-
 sf::Texture* HighscoreState::defenderTex;
 sf::RectangleShape HighscoreState::defender;
-
 sf::RenderTexture* HighscoreState::shifting;
-
 sf::Sprite HighscoreState::shftDra;
 
 
 HighscoreState::HighscoreState()
 {
 	shifting->clear();
-
 
 	tick(0);
 }
@@ -38,6 +32,7 @@ HighscoreState::~HighscoreState()
 bool HighscoreState::tick(double deltatime)
 {
 	static Timer<double> timeout{ 8, true }; // 10 seconds
+
 	if (timeout.tick(deltatime))
 		return !true;
 
@@ -109,9 +104,12 @@ void HighscoreState::addScore(const char initials[4], int score)
 		{
 			for (int ii = HS_COUNT - 1; ii > i; ii--)
 				today[ii] = today[ii - 1];
+
 			today[i].score = score;
+
 			for (int c = 0; c < 4; c++)
 				today[i].initials[c] = initials[c];
+
 			break;
 		}
 	}
@@ -124,7 +122,9 @@ void HighscoreState::addScore(const char initials[4], int score)
 		{
 			for (int ii = HS_COUNT - 1; ii > i; ii--)
 				allTime[ii] = allTime[ii - 1];
+
 			allTime[i].score = score;
+
 			for (int c = 0; c < 4; c++)
 				allTime[i].initials[c] = initials[c];
 
@@ -267,4 +267,9 @@ void HighscoreState::draw(sf::RenderTarget& target, sf::RenderStates states) con
 
 	states.shader = UserInterface::getShader(ShaderID::HUE_SHIFT);
 	target.draw(shftDra, states);
+}
+
+void HighscoreState::clean() {
+    delete defenderTex;
+    delete shifting;
 }

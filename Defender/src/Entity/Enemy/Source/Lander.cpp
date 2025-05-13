@@ -1,6 +1,13 @@
 #include "../Lander.h"
 #include "../../Astronaut.h"
 
+Lander::Lander(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Enemy(pos_, EntityID::LANDER, isScripted_, script_)
+{
+    dir = rand() % 2 == 0 ? -1 : 1;
+
+    wanderTimer.tick((rand() % 2 == 0 ? -1 : 1) * rand() % 100 / 10);
+}
+
 void Lander::tick(double deltatime)
 {
 	static Entity* tracked = this;
@@ -55,6 +62,11 @@ void Lander::tick(double deltatime)
 			vel.x *= -1;
 	}
 
+	// Fire
+	if (attackTimer.tick(deltatime))
+		entityQueue.emplace(QueuedEntity(makeCenteredTL(pos, ID), EntityID::BULLET));
+
+
 	Enemy::tick(deltatime);
 	// Target was nullptr here, check how this is possible. // Happens when you kill the astronaut, check if being cleared in entity manager on collision wrapper when astronaut is killed
 	if (holding && target)
@@ -62,6 +74,9 @@ void Lander::tick(double deltatime)
 }
 
 bool Lander::hasTarget() { return target; }
+bool Lander::shouldMutate() {
+    return pos.y <= COMN::uiHeight + 1 && holding;
+}
 
 void Lander::setTarget(Entity *target_)
 {

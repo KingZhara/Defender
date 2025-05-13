@@ -21,16 +21,15 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	{
 		throw std::overflow_error("Privided Glyph is too large for this type");
 	}
-	//std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
-	// If collision = {-1, -1}, reset
+
     if (collision.x == -1 || collision.y == -1)
 	{
 		collision.x = (size.x) / 2;
 	    collision.y = (size.y) / 2;
 	
-		//skipCenter = true;
+
 	}
-	// Create the array pointer, size.x * size.y - 1 (collision), if spawning
+
 	pieces = static_cast<Entity*>(malloc(sizeof(Entity) * (size.x * size.y - (skipCenter ? 1 : 0))));
 	if (!pieces) throw std::bad_alloc();
 
@@ -40,9 +39,6 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
     collision.x = std::max<int>(collision.x, 0);
     collision.y = std::max<int>(collision.y, 0);
 
-    //std::cout << "Size: " << (size.x * size.y - (skipCenter ? 1 : 0)) << '\n';
-
-	//std::cout << "COLLISION: (" << (short)collision.x << ", " << (short)collision.y << ")\n";
 
 	// For each piece, create a new particle
     /* // For x; +=2
@@ -72,10 +68,6 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 			// Center coordinates around the collision as the origin
 			gridPos -= collision;
 
-			// Skip the collision piece; Only triggered when collision piece is within bounds
-			//if (gridPos.x == 0 && gridPos.y == 0)
-			//	continue;
-
 			// Get the real position of the piece
 			sf::Vector2f nPos = pos;
 			nPos += {(float)x, (float)y};
@@ -86,10 +78,8 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 				(float)(gridPos.y)
 			};
 
-			//std::cout << "    BEF MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 			nVel.x *= baseVel.x;
 			nVel.y *= baseVel.y;
-			//std::cout << "    AFT MADE VEL: (" << (short)nVel.x << ", " << (short)nVel.y << ")\n";
 
 			// Modify position if spawning
 			if (spawning)
@@ -129,10 +119,6 @@ Particle::Particle(sf::Vector2f pos, EntityID::ID ID_, bool spawning, sf::Vector
 	}
 
 	lifetime.tick(0);
-	if (lifetime.isComplete())
-		throw std::runtime_error("Particle issue...");
-	//if (spawning)
-	//	lifetime.tick(29);
 }
 
 Particle::~Particle() {
@@ -178,6 +164,7 @@ void Particle::draw(sf::RenderTarget &target, sf::RenderStates states) const
 }
 
 bool Particle::isComplete() const { return lifetime.isComplete(); }
+
 sf::Vector2<int8_t> Particle::defCent() {
     return { -1, -1 };
 }
