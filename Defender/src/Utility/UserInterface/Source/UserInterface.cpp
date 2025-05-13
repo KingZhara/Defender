@@ -248,6 +248,7 @@ void UserInterface::initialize()
     williamsShader->setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     deathShader->   setUniform("targetColor", sf::Glsl::Vec3{ 136.0f / 255.0f, 0.0f, 255.0f / 255.0f });
     deathReplacement.whiteTime.tick(0); // Reset
+
     // World
     UserInterface::World::generate();
 
@@ -257,12 +258,9 @@ void UserInterface::initialize()
 	miniTarget->setRepeated(true);
 
 	miniSprite = new sf::Sprite(miniTarget->getTexture());
-
 	miniSprite->setScale(1, -1);
-
 	miniSprite->setPosition(UIBounds::MINIMAP_X, UIBounds::MINIMAP_Y);
-
-	miniSprite->setTextureRect(sf::IntRect(0, 0, UIBounds::MINIMAP_WIDTH*3, UIBounds::MINIMAP_HEIGHT));
+	miniSprite->setTextureRect(sf::IntRect(0, 0, UIBounds::MINIMAP_WIDTH * 3, UIBounds::MINIMAP_HEIGHT));
 }
 
 const sf::Font &UserInterface::getFont() { return *font; }

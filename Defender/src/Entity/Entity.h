@@ -30,15 +30,8 @@ public:
         QueuedEntity() = delete;
     };
 
-    // @todo Complete shader retrieval through UI when possible
-    Entity(sf::Vector2f  pos_,
-           EntityID::ID  ID_,
-           bool          isScripted_ = false,
-           EntityScript *script_     = nullptr);
-
-    Entity(sf::Vector2f pos_,
-           EntityID::ID ID_    = EntityID::PIECE,
-           sf::IntRect  bounds = {});
+    Entity(sf::Vector2f pos_, EntityID::ID ID_, bool isScripted_ = false, EntityScript *script_ = nullptr);
+    Entity(sf::Vector2f pos_, EntityID::ID ID_ = EntityID::PIECE, sf::IntRect bounds = {});
 
     virtual ~Entity() override;
 
@@ -47,28 +40,19 @@ public:
     static const sf::IntRect         getBounds(EntityID::ID ID);
     static const sf::Vector2f        makeCenteredTL(sf::Vector2f pos, EntityID::ID);
     static const sf::Vector2f        getEVel(EntityID::ID ID_);
-    static const EntityTarget        makePlayerTargetedVec(
-        sf::Vector2f pos,
-        EntityID::ID ID,
-        uint8_t      scale = 1,
-        bool         playerVelType = false);
+    static const EntityTarget        makePlayerTargetedVec( sf::Vector2f pos, EntityID::ID ID, uint8_t scale = 1, bool playerVelType = false);
+    virtual void                     tick(double deltatime);
+    virtual bool                     collide(Entity *other);
+    virtual bool                     collide(sf::FloatRect otherBound);
+    void                             setPos(sf::Vector2f newPos);
+    void                             setVel(sf::Vector2f newPos);
+    sf::Vector2f                     getPos() const { return pos; }
+    sf::Vector2f                     getVel() const { return vel; }
+    EntityID::ID                     getID() const { return ID; }
+    const uint16_t                   getXP() const { return DATA_TABLE[ID].XP; }
+    bool                             isOnScreen();
+    virtual void                     draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    // 
-    virtual void   tick(double deltatime);
-    virtual bool   collide(Entity *other);
-    virtual void   applyFriction(double deltatime, double time);
-    virtual bool   collide(sf::FloatRect otherBound); // Used by Laser
-    virtual void   wrap();
-    void           setPos(sf::Vector2f newPos);
-    void           setVel(sf::Vector2f newPos);
-    sf::Vector2f   getPos() const { return pos; }
-    sf::Vector2f   getVel() const { return vel; }
-    EntityID::ID   getID() const { return ID; }
-    const uint16_t getXP() const { return DATA_TABLE[ID].XP; }
-    bool           isOnScreen();
-
-    virtual void
-        draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 protected:
     struct EntityData
     {
@@ -97,6 +81,8 @@ protected:
 
     sf::Vector2f              makeMiniDrawPos() const;
     static const EntityTarget makeTargetedVec(sf::Vector2f pos, EntityID::ID ID, Entity* other, uint8_t scale, bool velType);
+    virtual void              applyFriction(double deltatime, double time);
+    virtual void              wrap();
 
     // Static data members
     static const EntityData               DATA_TABLE[EntityID::LENGTH];

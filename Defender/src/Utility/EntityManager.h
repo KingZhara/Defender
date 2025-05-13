@@ -40,7 +40,6 @@ public:
     static sf::Vector2f getPlayerPos();
 
 private:
-    // @todo If time permits, play with optimization, potentially using a spatial tree.
     template<typename T>
     static bool collisionWrapper(uint16_t projectile, EntityHolder<T> &entities);
     template<typename T>
@@ -60,7 +59,7 @@ private:
     static EntityHolder<Projectile>         projectiles;
     static EntityHolder<Entity>             enemies;
     static EntityHolder<Entity>             astronauts;
-    static EntityHolder<Particle>           particles; // Always scripted
+    static EntityHolder<Particle>           particles;
     static Player *                         player;
     static DeathAnimation *                 deathAnim;
     static UserInterface::EntityManagerData uiPassthrough;

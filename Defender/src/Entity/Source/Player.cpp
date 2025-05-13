@@ -33,7 +33,7 @@ void Player::tick(double deltatime) {
 
     if (actions->flags.fire)
     {
-        entityQueue.emplace(sf::Vector2f{pos.x + (left ? 0 : getBounds(ID).width), pos.y - 4}, EntityID::LASER);
+        entityQueue.emplace(sf::Vector2f{pos.x + (left ? 0 : getBounds(ID).width), pos.y + 4}, EntityID::LASER);
         actions->flags.fire = false; // In theory this is redundant, yet here we are.
     }
     Entity::tick(deltatime);

@@ -13,7 +13,6 @@ void Lander::tick(double deltatime)
 	static Entity* tracked = this;
 	// Ricky will handle logic for picking an astronaut
 
-	// When no astronauts are available, make wander based on a timer; assume can check with "getAstronaut()"; if it returns -1, no astronauts are available
 	if (wanderTimer.isComplete())
 	{
 		if (target)
@@ -68,7 +67,7 @@ void Lander::tick(double deltatime)
 
 
 	Enemy::tick(deltatime);
-	// Target was nullptr here, check how this is possible. // Happens when you kill the astronaut, check if being cleared in entity manager on collision wrapper when astronaut is killed
+
 	if (holding && target)
 		target->setPos({ makeCenteredTL(pos, ID).x - makeCenteredTL({0, 0}, EntityID::ASTRONAUT).x / 2, pos.y + (getBounds(ID).height + 2) });
 }
