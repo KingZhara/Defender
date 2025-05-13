@@ -73,7 +73,7 @@ void EntityManager::adjViewport(sf::View *view, double deltatime)
 }
 
 EntityManager::PlayerState EntityManager::tick(double deltatime, Action& actions)
-{3
+{
     if (playerState == PlayerState::ALIVE)
     {
 

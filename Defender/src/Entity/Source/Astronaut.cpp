@@ -1,7 +1,9 @@
 #include "../Astronaut.h"
 
 Astronaut::Astronaut(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Entity(pos_, EntityID::ASTRONAUT, isScripted_, script_), onGround(true), held(false)
-{}
+{
+	startFallHeight = pos.y;
+}
 
 void Astronaut::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
