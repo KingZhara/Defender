@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['b_0',['b',['../struct_color.html#aa19877ce718fce553d2c978437c1fa0c',1,'Color::b'],['../struct_display_manager_1_1_color.html#aca33cab795a409c6fe7c5022748b65cc',1,'DisplayManager::Color::b']]],
+  ['baiter_1',['BAITER',['../struct_entity_i_d.html#a5a4fd3edb6d5b771efaa3ba84f2b9cdead39bfc653d7cec3ed6cd158dfbb3d667',1,'EntityID']]],
+  ['baiter_2',['Baiter',['../class_baiter.html',1,'Baiter'],['../class_baiter.html#a72c12a9d4209f083a94945c6b6953e35',1,'Baiter::Baiter()']]],
+  ['baiter_2ecpp_3',['Baiter.cpp',['../_baiter_8cpp.html',1,'']]],
+  ['baiter_2eh_4',['Baiter.h',['../_baiter_8h.html',1,'']]],
+  ['base_5',['BASE',['../class_timer.html#ab3cdd95cf46ebc5b442454f8444761af',1,'Timer']]],
+  ['base_5fvelocity_6',['BASE_VELOCITY',['../struct_entity_1_1_entity_data.html#a6975e6424d1db575f4bdf01b46d3ae60',1,'Entity::EntityData']]],
+  ['basespeed_7',['baseSpeed',['../struct_c_o_m_n.html#ab281781aaef507998cd46cb64788e7e0',1,'COMN']]],
+  ['bomb_8',['BOMB',['../struct_entity_i_d.html#a5a4fd3edb6d5b771efaa3ba84f2b9cdea668c63b06a455d9fd23ba83669a78c2f',1,'EntityID']]],
+  ['bomb_9',['Bomb',['../class_bomb.html',1,'Bomb'],['../class_bomb.html#a3443a535ce458f039fa2564bc6495156',1,'Bomb::Bomb()']]],
+  ['bomb_2ecpp_10',['Bomb.cpp',['../_bomb_8cpp.html',1,'']]],
+  ['bomb_2eh_11',['Bomb.h',['../_bomb_8h.html',1,'']]],
+  ['bomb_5fspacing_12',['BOMB_SPACING',['../struct_user_interface_1_1_u_i_bounds.html#ad51c7c0b33f977a3c7203c75bdb458c6',1,'UserInterface::UIBounds']]],
+  ['bomber_13',['BOMBER',['../struct_entity_i_d.html#a5a4fd3edb6d5b771efaa3ba84f2b9cdea7006c3996cf1de2bbef5378247dcf082',1,'EntityID']]],
+  ['bomber_14',['Bomber',['../class_bomber.html',1,'Bomber'],['../class_bomber.html#ae92fdfbf2a2cb88e285e42b180ac8fa7',1,'Bomber::Bomber()']]],
+  ['bomber_2ecpp_15',['Bomber.cpp',['../_bomber_8cpp.html',1,'']]],
+  ['bomber_2eh_16',['Bomber.h',['../_bomber_8h.html',1,'']]],
+  ['bounds_17',['bounds',['../struct_sprite_data.html#a68b5fe14d8cd4b919e6a442effaaf8b2',1,'SpriteData::bounds'],['../struct_sprite_table_entry.html#a73e586ff5d547cc9bfcf152198eb855d',1,'SpriteTableEntry::bounds']]],
+  ['bullet_18',['BULLET',['../struct_entity_i_d.html#a5a4fd3edb6d5b771efaa3ba84f2b9cdea4e60e8e4dba7e591edf7f2731186fda6',1,'EntityID']]],
+  ['bullet_19',['Bullet',['../class_bullet.html',1,'Bullet'],['../class_bullet.html#a7d4b2a823607a0bd4d55f40f839861ae',1,'Bullet::Bullet()']]],
+  ['bullet_2ecpp_20',['Bullet.cpp',['../_bullet_8cpp.html',1,'']]],
+  ['bullet_2eh_21',['Bullet.h',['../_bullet_8h.html',1,'']]]
+];

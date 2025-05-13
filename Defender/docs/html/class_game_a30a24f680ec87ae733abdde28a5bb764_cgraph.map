@@ -1,0 +1,13 @@
+<map id="Game::tick" name="Game::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,91,57"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#a7577d58b23017104ae70b0de2dc20829" title=" " alt="" coords="139,5,311,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,35,123,31,123,36,91,41"/>
+<area shape="rect" id="Node000005" href="$class_visual_component.html#ac0e5a48eb94659cd5055323d0c8f8b0d" title=" " alt="" coords="148,56,302,83"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="91,47,133,53,132,59,91,53"/>
+<area shape="rect" id="Node000003" href="$class_h_s_v.html#aca54550bd331dbe60711c880c1ca5154" title=" " alt="" coords="359,5,504,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="312,16,344,16,344,21,312,21"/>
+<area shape="rect" id="Node000004" href="$class_h_s_v.html#a3cd3239c49f92f5fa3fbb8808a89bc41" title=" " alt="" coords="552,5,637,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="505,16,537,16,537,21,505,21"/>
+<area shape="rect" id="Node000006" href="$class_timer.html#af700c8220c883c2bb7488c533153d512" title=" " alt="" coords="390,56,473,83"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="302,67,375,67,375,72,302,72"/>
+</map>

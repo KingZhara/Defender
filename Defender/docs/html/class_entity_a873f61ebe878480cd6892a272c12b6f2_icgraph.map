@@ -1,0 +1,11 @@
+<map id="Entity::draw" name="Entity::draw">
+<area shape="rect" id="Node000001" title=" " alt="" coords="167,81,258,108"/>
+<area shape="rect" id="Node000002" href="$class_astronaut.html#a682e7f5c6c36f71c8e1f5558c868a4d7" title=" " alt="" coords="5,5,119,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,76,117,46,93,35,96,30,120,42,175,71"/>
+<area shape="rect" id="Node000003" href="$class_enemy.html#a0e6d39002cbf089dae649f3ad43a72b7" title=" " alt="" coords="13,56,111,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,87,111,80,112,75,152,82"/>
+<area shape="rect" id="Node000004" href="$class_particle.html#a496b3e9f6fad9180f80b0e1e6d439aa7" title=" " alt="" coords="11,107,113,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,108,113,114,113,109,151,102"/>
+<area shape="rect" id="Node000005" href="$class_player.html#a0ca934f76860c378cd991a8a32f27edd" title=" " alt="" coords="15,157,109,184"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="175,118,120,148,96,159,93,154,117,143,173,114"/>
+</map>

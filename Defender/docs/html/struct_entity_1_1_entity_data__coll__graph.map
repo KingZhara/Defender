@@ -1,0 +1,18 @@
+<map id="Entity::EntityData" name="Entity::EntityData">
+<area shape="rect" id="Node000001" title=" " alt="" coords="372,112,497,139"/>
+<area shape="rect" id="Node000004" href="$class_entity.html" title=" " alt="" coords="223,203,278,229"/>
+<area shape="poly" id="edge5_Node000004_Node000001" title=" " alt="" coords="374,146,328,165,295,185,268,204,264,200,292,180,326,160,372,141"/>
+<area shape="rect" id="Node000002" href="$struct_vec2.html" title=" " alt="" coords="378,5,490,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="437,47,437,112,432,112,432,47"/>
+<area shape="rect" id="Node000003" href="$struct_entity_1_1_entity_data_1_1_player_ref.html" title=" " alt="" coords="282,293,408,336"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="360,279,411,178,427,138,432,140,415,180,365,281"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="275,239,327,291,323,295,271,242"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,5,101,32"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="45,47,36,92,38,116,47,137,64,157,85,172,132,194,181,206,222,211,222,216,180,212,131,199,82,177,61,160,43,140,33,117,31,92,40,46"/>
+<area shape="rect" id="Node000007" href="$class_visual_component.html" title=" " alt="" coords="58,112,182,139"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="71,43,114,110,110,113,67,46"/>
+<area shape="rect" id="Node000006" href="$struct_entity_script.html" title=" " alt="" coords="206,112,295,139"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="253,154,253,202,248,202,248,154"/>
+<area shape="poly" id="edge7_Node000006_Node000006" title=" " alt="" coords="312,117,322,125,313,134,296,136,295,131,311,129,316,125,309,121"/>
+<area shape="poly" id="edge8_Node000004_Node000007" title=" " alt="" coords="152,145,233,200,230,204,149,150"/>
+</map>

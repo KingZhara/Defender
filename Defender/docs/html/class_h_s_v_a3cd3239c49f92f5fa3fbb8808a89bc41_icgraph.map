@@ -1,0 +1,9 @@
+<map id="HSV::HSV" name="HSV::HSV">
+<area shape="rect" id="Node000001" title=" " alt="" coords="552,5,637,32"/>
+<area shape="rect" id="Node000002" href="$class_h_s_v.html#aca54550bd331dbe60711c880c1ca5154" title=" " alt="" coords="359,5,504,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="537,21,505,21,505,16,537,16"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#a7577d58b23017104ae70b0de2dc20829" title=" " alt="" coords="139,5,311,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="343,21,311,21,311,16,343,16"/>
+<area shape="rect" id="Node000004" href="$class_game.html#a30a24f680ec87ae733abdde28a5bb764" title=" " alt="" coords="5,5,91,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="123,21,91,21,91,16,123,16"/>
+</map>

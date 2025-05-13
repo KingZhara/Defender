@@ -1,0 +1,9 @@
+<map id="Entity::makePlayerTargetedVec" name="Entity::makePlayerTargetedVec">
+<area shape="rect" id="Node000001" title=" " alt="" coords="156,56,360,83"/>
+<area shape="rect" id="Node000002" href="$class_baiter.html#a9fff376f43c46f35617365539a7c055a" title=" " alt="" coords="14,5,99,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,54,99,32,100,27,188,49"/>
+<area shape="rect" id="Node000003" href="$class_mutant.html#aff6510cdd666834b1e7e089a58eca77e" title=" " alt="" coords="11,56,102,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="140,72,102,72,102,67,140,67"/>
+<area shape="rect" id="Node000004" href="$class_swarmer.html#ae2101b985a6d4f598b341cbef3431786" title=" " alt="" coords="5,107,108,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,90,109,110,107,105,187,84"/>
+</map>

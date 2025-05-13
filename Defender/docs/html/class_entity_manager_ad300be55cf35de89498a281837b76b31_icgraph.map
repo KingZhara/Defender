@@ -1,0 +1,8 @@
+<map id="EntityManager::particleize" name="EntityManager::particleize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="458,5,630,32"/>
+<area shape="rect" id="Node000002" href="$class_entity_manager.html#a11daa0659ef055fc789829e72598ee83" title=" " alt="" coords="259,5,410,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="442,30,410,30,410,25,442,25"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="426,7,457,7,457,12,426,12"/>
+<area shape="rect" id="Node000003" href="$class_entity_manager.html#ac0b4cea2538dea8129444f790e3e0dc9" title=" " alt="" coords="5,5,211,32"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="243,21,211,21,211,16,243,16"/>
+</map>

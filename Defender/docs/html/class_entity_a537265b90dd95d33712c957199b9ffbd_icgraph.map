@@ -1,0 +1,24 @@
+<map id="Entity::makeCenteredTL" name="Entity::makeCenteredTL">
+<area shape="rect" id="Node000001" title=" " alt="" coords="623,168,787,195"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ad6c5fbd07c6cc55d0c3e0bedcf3902b9" title=" " alt="" coords="408,67,575,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="666,162,574,115,531,97,533,92,576,110,668,158"/>
+<area shape="rect" id="Node000005" href="$class_mutant.html#aff6510cdd666834b1e7e089a58eca77e" title=" " alt="" coords="11,16,102,43"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="684,157,639,103,608,77,574,57,512,35,446,20,379,12,313,9,193,13,102,24,102,19,192,8,313,3,379,6,447,15,513,30,576,52,612,73,643,100,688,153"/>
+<area shape="rect" id="Node000006" href="$class_swarmer.html#ae2101b985a6d4f598b341cbef3431786" title=" " alt="" coords="5,143,108,169"/>
+<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="608,180,108,161,108,155,608,175"/>
+<area shape="rect" id="Node000007" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="213,117,302,144"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="608,170,575,165,302,137,303,132,576,160,608,164"/>
+<area shape="rect" id="Node000008" href="$class_stage_state.html#aea9081d2eb6875433fbaf9a62ed8082a" title=" " alt="" coords="412,219,571,245"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="632,202,552,221,550,216,630,196"/>
+<area shape="rect" id="Node000009" href="$class_bomber.html#aa9d2fa626bfeeb694281112a63c87770" title=" " alt="" coords="444,269,539,296"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="672,206,628,233,576,260,541,273,539,268,574,255,625,229,670,201"/>
+<area shape="rect" id="Node000010" href="$class_player.html#af5fe052281d231613b40436579e7b298" title=" " alt="" coords="448,320,535,347"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="686,209,640,260,610,287,577,310,537,327,535,322,574,306,606,283,636,256,682,205"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#a7ef27df2acea1e533126d7254a38cabe" title=" " alt="" coords="156,67,360,93"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="392,83,360,83,360,77,392,77"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="412,100,304,124,302,119,411,95"/>
+<area shape="rect" id="Node000004" href="$class_baiter.html#a9fff376f43c46f35617365539a7c055a" title=" " alt="" coords="14,67,99,93"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="140,83,99,83,99,77,140,77"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="186,65,101,43,102,38,188,60"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="178,101,157,108,117,126,82,145,80,140,114,121,155,103,177,96"/>
+</map>

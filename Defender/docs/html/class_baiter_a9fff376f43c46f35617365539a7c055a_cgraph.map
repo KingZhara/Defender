@@ -1,0 +1,29 @@
+<map id="Baiter::tick" name="Baiter::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,220,90,247"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#a7ef27df2acea1e533126d7254a38cabe" title=" " alt="" coords="138,169,342,196"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,220,171,198,172,203,91,225"/>
+<area shape="rect" id="Node000012" href="$class_enemy.html#af856732a8967324a69deeb80d8e3fcbe" title=" " alt="" coords="194,245,286,272"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="90,236,179,248,178,253,90,241"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#ad6c5fbd07c6cc55d0c3e0bedcf3902b9" title=" " alt="" coords="390,157,557,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="342,175,374,173,374,178,343,180"/>
+<area shape="rect" id="Node000004" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="638,5,736,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="484,155,532,100,566,69,604,42,623,33,625,37,607,46,569,73,536,104,488,158"/>
+<area shape="rect" id="Node000006" href="$class_entity.html#ab0a29bd092bb8ae89c230b68c054e042" title=" " alt="" coords="633,56,741,83"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="494,155,543,124,604,92,620,86,622,91,606,97,546,129,497,159"/>
+<area shape="rect" id="Node000007" href="$class_entity.html#a02bff2bed5ed35d38b9d7ebb07334674" title=" " alt="" coords="639,107,735,133"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="532,154,623,132,624,137,534,159"/>
+<area shape="rect" id="Node000008" href="$class_entity.html#accc9c0c4d3d0083c08fcd866bd1d26e6" title=" " alt="" coords="635,157,739,184"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="558,168,619,168,619,173,558,173"/>
+<area shape="rect" id="Node000009" href="$class_entity.html#aab279b360915b41b817783810098dee0" title=" " alt="" coords="637,208,737,235"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="534,182,623,203,622,209,532,187"/>
+<area shape="rect" id="Node000010" href="$class_entity.html#a537265b90dd95d33712c957199b9ffbd" title=" " alt="" coords="605,259,769,285"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="497,182,546,213,606,244,622,251,620,255,604,249,543,217,494,187"/>
+<area shape="rect" id="Node000005" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="822,5,1006,32"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="736,16,806,16,806,21,736,21"/>
+<area shape="rect" id="Node000011" href="$class_visual_component.html#aa3147589104625d2956622fd7e8b0fa2" title=" " alt="" coords="817,259,1011,285"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="769,269,801,269,801,275,769,275"/>
+<area shape="rect" id="Node000013" href="$class_entity.html#a256687f4f254346912cb1db44db88c7d" title=" " alt="" coords="432,296,516,323"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="286,266,417,294,416,300,285,271"/>
+<area shape="rect" id="Node000014" href="$class_entity.html#ae9efdf42ee83bc273361db1b710e30ca" title=" " alt="" coords="641,309,733,336"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="516,309,626,316,626,322,516,315"/>
+</map>

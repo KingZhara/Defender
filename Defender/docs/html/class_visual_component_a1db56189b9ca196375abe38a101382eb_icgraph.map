@@ -1,0 +1,7 @@
+<map id="VisualComponent::VisualComponent" name="VisualComponent::VisualComponent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="243,35,478,61"/>
+<area shape="rect" id="Node000002" href="$class_visual_component.html#a4a99f8ee055892cbbd7b965d9459f6c8" title=" " alt="" coords="5,5,195,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,36,195,32,196,27,227,30"/>
+<area shape="rect" id="Node000003" href="$class_piece_visual_component.html#aa49827f4adc000081e2db72619420eed" title=" " alt="" coords="17,56,183,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,66,183,71,183,65,227,60"/>
+</map>

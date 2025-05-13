@@ -1,0 +1,7 @@
+<map id="Particle::getEntity" name="Particle::getEntity">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,131,32"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="179,5,276,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,16,163,16,163,21,131,21"/>
+<area shape="rect" id="Node000003" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="324,5,508,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="277,16,308,16,308,21,277,21"/>
+</map>

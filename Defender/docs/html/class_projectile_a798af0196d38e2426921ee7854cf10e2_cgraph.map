@@ -1,0 +1,7 @@
+<map id="Projectile::Projectile" name="Projectile::Projectile">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,143,32"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="191,5,288,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,16,175,16,175,21,143,21"/>
+<area shape="rect" id="Node000003" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="336,5,520,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="289,16,320,16,320,21,289,21"/>
+</map>

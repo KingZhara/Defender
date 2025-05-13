@@ -1,0 +1,33 @@
+<map id="Entity" name="Entity">
+<area shape="rect" id="Node000001" title=" " alt="" coords="352,80,407,107"/>
+<area shape="rect" id="Node000003" href="$class_astronaut.html" title=" " alt="" coords="160,155,237,181"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="338,114,231,157,229,152,336,109"/>
+<area shape="rect" id="Node000004" href="$class_enemy.html" title=" " alt="" coords="260,155,323,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="354,119,309,156,305,152,351,115"/>
+<area shape="rect" id="Node000011" href="$class_particle.html" title=" " alt="" coords="347,155,412,181"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="382,122,382,154,377,154,377,122"/>
+<area shape="rect" id="Node000012" href="$class_player.html" title=" " alt="" coords="436,155,494,181"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="408,115,452,152,449,156,404,119"/>
+<area shape="rect" id="Node000013" href="$class_projectile.html" title=" " alt="" coords="549,155,624,181"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="423,107,551,152,549,157,421,112"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="332,5,427,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="382,48,382,80,377,80,377,48"/>
+<area shape="rect" id="Node000005" href="$class_baiter.html" title=" " alt="" coords="5,229,61,256"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,185,74,232,62,235,60,230,72,227,245,180"/>
+<area shape="rect" id="Node000006" href="$class_bomber.html" title=" " alt="" coords="85,229,152,256"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="249,190,150,231,148,226,247,185"/>
+<area shape="rect" id="Node000007" href="$class_lander.html" title=" " alt="" coords="176,229,236,256"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="267,194,223,231,219,227,264,189"/>
+<area shape="rect" id="Node000008" href="$class_mutant.html" title=" " alt="" coords="261,229,322,256"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="294,197,294,229,289,229,289,197"/>
+<area shape="rect" id="Node000009" href="$class_pod.html" title=" " alt="" coords="347,229,391,256"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="318,190,358,227,354,231,314,194"/>
+<area shape="rect" id="Node000010" href="$class_swarmer.html" title=" " alt="" coords="415,229,488,256"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="335,186,425,226,422,231,332,191"/>
+<area shape="rect" id="Node000014" href="$class_bomb.html" title=" " alt="" coords="512,229,567,256"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="572,196,550,230,545,227,568,193"/>
+<area shape="rect" id="Node000015" href="$class_bullet.html" title=" " alt="" coords="591,229,646,256"/>
+<area shape="poly" id="edge14_Node000013_Node000015" title=" " alt="" coords="600,195,615,228,610,230,596,197"/>
+<area shape="rect" id="Node000016" href="$class_laser.html" title=" " alt="" coords="669,229,722,256"/>
+<area shape="poly" id="edge15_Node000013_Node000016" title=" " alt="" coords="620,188,678,226,675,231,617,193"/>
+</map>

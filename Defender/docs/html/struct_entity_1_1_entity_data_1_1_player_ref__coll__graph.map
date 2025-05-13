@@ -1,0 +1,18 @@
+<map id="Entity::EntityData::PlayerRef" name="Entity::EntityData::PlayerRef">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,131,48"/>
+<area shape="rect" id="Node000004" href="$struct_entity_1_1_entity_data.html" title=" " alt="" coords="116,128,241,155"/>
+<area shape="poly" id="edge5_Node000004_Node000001" title=" " alt="" coords="77,62,86,83,99,102,115,115,134,125,132,130,112,120,95,106,81,86,72,64"/>
+<area shape="rect" id="Node000002" href="$class_entity.html" title=" " alt="" coords="300,219,356,245"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="284,227,226,216,160,201,102,181,81,169,66,156,53,130,50,100,53,72,59,48,64,49,58,72,56,100,59,128,70,153,84,165,105,176,162,196,227,211,285,222"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="356,13,452,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="411,55,414,103,411,129,405,156,395,176,381,194,350,220,346,216,377,190,390,173,400,154,406,129,408,102,406,55"/>
+<area shape="rect" id="Node000007" href="$class_visual_component.html" title=" " alt="" coords="266,128,390,155"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="389,54,339,129,334,126,385,51"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,164,238,192,270,208,301,220,299,225,268,213,235,197,199,168"/>
+<area shape="rect" id="Node000005" href="$struct_vec2.html" title=" " alt="" coords="165,13,278,40"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="214,56,186,128,181,127,209,54"/>
+<area shape="rect" id="Node000006" href="$struct_entity_script.html" title=" " alt="" coords="466,128,555,155"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="489,167,448,197,401,216,357,228,355,223,399,211,445,192,486,163"/>
+<area shape="poly" id="edge7_Node000006_Node000006" title=" " alt="" coords="572,133,582,141,574,150,556,152,555,147,571,145,577,141,569,137"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="331,170,331,218,325,218,325,170"/>
+</map>

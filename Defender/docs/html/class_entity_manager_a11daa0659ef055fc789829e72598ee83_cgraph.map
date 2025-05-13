@@ -1,0 +1,8 @@
+<map id="EntityManager::spawn" name="EntityManager::spawn">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,157,83"/>
+<area shape="rect" id="Node000002" href="$class_particle.html#a13b01a8a4cf6080f1ce1264166fdc08b" title=" " alt="" coords="231,5,350,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,53,217,34,218,39,140,58"/>
+<area shape="rect" id="Node000003" href="$class_entity_manager.html#ad300be55cf35de89498a281837b76b31" title=" " alt="" coords="205,56,377,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,75,189,76,189,81,157,81"/>
+<area shape="poly" id="edge3_Node000003_Node000001" title=" " alt="" coords="204,63,172,63,172,58,204,58"/>
+</map>

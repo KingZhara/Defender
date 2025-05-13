@@ -1,0 +1,7 @@
+<map id="Entity::collide" name="Entity::collide">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,106,32"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="154,5,251,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,16,138,16,138,21,106,21"/>
+<area shape="rect" id="Node000003" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="299,5,483,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="252,16,283,16,283,21,252,21"/>
+</map>

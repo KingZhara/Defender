@@ -1,0 +1,9 @@
+<map id="WaveCompletionScreen::WaveCompletionScreen" name="WaveCompletionScreen::WaveCompletionScreen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,48,175,91"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#a456a2a580f55f4fb486f8600b09f8c4e" title=" " alt="" coords="229,5,386,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,47,232,33,233,39,176,52"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#af0ebc87599d2d5f052bece3374f788d6" title=" " alt="" coords="232,56,384,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,67,216,67,216,72,175,72"/>
+<area shape="rect" id="Node000004" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="223,107,393,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="176,86,233,100,232,105,175,92"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="StageState::draw" name="StageState::draw">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,128,83"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#a62c200f2509fc15ddb06293c080c3ecc" title=" " alt="" coords="176,5,381,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,53,204,34,205,39,126,58"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#af0ebc87599d2d5f052bece3374f788d6" title=" " alt="" coords="202,56,354,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,67,187,67,187,72,128,72"/>
+<area shape="rect" id="Node000004" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="193,107,364,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="126,81,205,100,204,105,125,86"/>
+</map>

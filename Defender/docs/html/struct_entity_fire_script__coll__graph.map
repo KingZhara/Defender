@@ -1,0 +1,6 @@
+<map id="EntityFireScript" name="EntityFireScript">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,81,117,108"/>
+<area shape="rect" id="Node000002" href="$struct_entity_script.html" title=" " alt="" coords="16,5,106,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,47,64,81,58,81,58,47"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="123,11,132,19,124,26,106,28,106,23,122,21,127,19,120,15"/>
+</map>

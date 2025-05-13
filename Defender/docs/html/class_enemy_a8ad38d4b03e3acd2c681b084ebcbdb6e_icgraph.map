@@ -1,0 +1,15 @@
+<map id="Enemy::Enemy" name="Enemy::Enemy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="187,132,298,159"/>
+<area shape="rect" id="Node000002" href="$class_baiter.html#a72c12a9d4209f083a94945c6b6953e35" title=" " alt="" coords="23,5,121,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,122,183,83,137,46,116,35,118,30,140,42,186,80,223,118"/>
+<area shape="rect" id="Node000003" href="$class_bomber.html#ae92fdfbf2a2cb88e285e42b180ac8fa7" title=" " alt="" coords="12,56,132,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,127,138,97,110,86,112,81,140,92,202,122"/>
+<area shape="rect" id="Node000004" href="$class_lander.html#a8daef6ae7be4631c7bba86f0b5212081" title=" " alt="" coords="18,107,126,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,137,126,131,126,125,172,132"/>
+<area shape="rect" id="Node000005" href="$class_mutant.html#a6589cbd54e08fe0093016573cc363766" title=" " alt="" coords="17,157,127,184"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,159,128,165,127,160,171,153"/>
+<area shape="rect" id="Node000006" href="$class_pod.html#a8198b746f8baa8c298f4f66dd45be7cf" title=" " alt="" coords="34,208,110,235"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="202,168,140,198,111,210,109,205,138,194,200,164"/>
+<area shape="rect" id="Node000007" href="$class_swarmer.html#a354e0a6471c3c03fc71a3cd745a0d2b0" title=" " alt="" coords="5,259,139,285"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="223,172,186,211,140,249,118,260,116,256,137,244,183,207,219,169"/>
+</map>

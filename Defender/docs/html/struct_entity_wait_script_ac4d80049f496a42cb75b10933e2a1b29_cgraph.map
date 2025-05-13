@@ -1,0 +1,6 @@
+<map id="EntityWaitScript::EntityWaitScript" name="EntityWaitScript::EntityWaitScript">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,21,163,64"/>
+<area shape="rect" id="Node000002" href="$struct_entity_script.html#a0e13d06c8b045f2f915f2c801a6ab04b" title=" " alt="" coords="211,29,376,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,40,195,40,195,45,163,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="258,30,251,21,256,11,270,5,293,3,318,5,332,12,329,16,317,10,293,8,271,10,260,15,257,20,262,27"/>
+</map>

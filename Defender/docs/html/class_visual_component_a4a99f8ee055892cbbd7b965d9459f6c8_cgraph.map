@@ -1,0 +1,7 @@
+<map id="VisualComponent::intersects" name="VisualComponent::intersects">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,195,57"/>
+<area shape="rect" id="Node000002" href="$class_visual_component.html#a8f0a40ed07e2e080038cdc87d17552e6" title=" " alt="" coords="266,5,455,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,32,250,27,250,32,195,37"/>
+<area shape="rect" id="Node000003" href="$class_visual_component.html#a1db56189b9ca196375abe38a101382eb" title=" " alt="" coords="243,56,478,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,51,227,54,227,59,195,56"/>
+</map>

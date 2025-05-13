@@ -1,0 +1,15 @@
+<map id="Entity::getVel" name="Entity::getVel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="623,81,723,108"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ad6c5fbd07c6cc55d0c3e0bedcf3902b9" title=" " alt="" coords="408,81,575,108"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="608,97,576,97,576,92,608,92"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#a7ef27df2acea1e533126d7254a38cabe" title=" " alt="" coords="156,56,360,83"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="392,87,360,83,361,78,393,81"/>
+<area shape="rect" id="Node000007" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="213,107,302,133"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="393,108,303,118,302,113,392,103"/>
+<area shape="rect" id="Node000004" href="$class_baiter.html#a9fff376f43c46f35617365539a7c055a" title=" " alt="" coords="14,5,99,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,54,99,32,100,27,188,49"/>
+<area shape="rect" id="Node000005" href="$class_mutant.html#aff6510cdd666834b1e7e089a58eca77e" title=" " alt="" coords="11,56,102,83"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="140,72,102,72,102,67,140,67"/>
+<area shape="rect" id="Node000006" href="$class_swarmer.html#ae2101b985a6d4f598b341cbef3431786" title=" " alt="" coords="5,107,108,133"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="186,90,156,97,109,109,107,104,155,92,185,84"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="UserInterface::drawForeground" name="UserInterface::drawForeground">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,207,32"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#af0ebc87599d2d5f052bece3374f788d6" title=" " alt="" coords="255,5,407,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,16,239,16,239,21,207,21"/>
+</map>

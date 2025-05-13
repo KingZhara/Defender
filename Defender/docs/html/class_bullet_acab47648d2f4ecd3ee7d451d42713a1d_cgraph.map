@@ -1,0 +1,7 @@
+<map id="Bullet::tick" name="Bullet::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,89,32"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#a256687f4f254346912cb1db44db88c7d" title=" " alt="" coords="137,5,221,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,16,121,16,121,21,89,21"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#ae9efdf42ee83bc273361db1b710e30ca" title=" " alt="" coords="269,5,360,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="222,16,254,16,254,21,222,21"/>
+</map>

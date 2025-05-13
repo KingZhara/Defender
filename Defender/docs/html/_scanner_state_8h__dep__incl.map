@@ -1,0 +1,18 @@
+<map id="src/State/ScannerState.h" name="src/State/ScannerState.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="95,5,263,32"/>
+<area shape="rect" id="Node000002" href="$_scanner_state_8cpp.html" title=" " alt="" coords="5,80,177,123"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,45,115,81,112,78,152,41"/>
+<area shape="rect" id="Node000003" href="$_state_8hpp.html" title=" " alt="" coords="201,88,336,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,40,257,86,253,90,202,44"/>
+<area shape="rect" id="Node000004" href="$_game_state_8h.html" title=" " alt="" coords="208,171,328,197"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="271,130,271,171,266,171,266,130"/>
+<area shape="rect" id="Node000005" href="$_game_8h.html" title=" " alt="" coords="224,245,313,272"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="271,213,271,245,266,245,266,213"/>
+<area shape="rect" id="Node000006" href="$_game_8hpp.html" title=" " alt="" coords="134,320,237,347"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="245,210,215,247,198,286,190,320,185,319,193,284,210,244,241,206"/>
+<area shape="rect" id="Node000008" href="$_game_state_8cpp.html" title=" " alt="" coords="337,245,517,272"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="311,202,400,242,398,247,309,207"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="244,285,202,322,198,318,241,280"/>
+<area shape="rect" id="Node000007" href="$_game_8cpp.html" title=" " alt="" coords="261,320,409,347"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="292,282,325,318,322,321,288,285"/>
+</map>

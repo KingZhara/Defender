@@ -1,0 +1,14 @@
+<map id="StageState::StageState" name="StageState::StageState">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,105,165,132"/>
+<area shape="rect" id="Node000002" href="$class_stage_state.html#a6f579cda6059d102e9074e11a27e0282" title=" " alt="" coords="216,29,394,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,102,212,65,234,58,236,63,214,71,119,107"/>
+<area shape="rect" id="Node000003" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="220,80,390,107"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="164,107,204,102,205,108,165,112"/>
+<area shape="rect" id="Node000004" href="$class_entity.html#a537265b90dd95d33712c957199b9ffbd" title=" " alt="" coords="223,131,386,157"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="165,125,208,130,207,135,164,130"/>
+<area shape="rect" id="Node000006" href="$class_stage_state_1_1_spawn_manager.html#a621cfc9144262a1274dee09b1b8aac97" title=" " alt="" coords="213,181,397,224"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="121,130,214,167,230,173,228,178,212,172,119,135"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="268,30,261,21,266,11,281,5,305,3,331,5,345,12,343,16,330,10,305,8,282,10,269,15,266,20,272,27"/>
+<area shape="rect" id="Node000005" href="$class_visual_component.html#aa3147589104625d2956622fd7e8b0fa2" title=" " alt="" coords="445,131,639,157"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="387,141,430,141,430,147,387,147"/>
+</map>

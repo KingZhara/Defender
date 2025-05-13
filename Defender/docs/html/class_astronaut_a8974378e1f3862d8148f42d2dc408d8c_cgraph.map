@@ -1,0 +1,11 @@
+<map id="Astronaut::tick" name="Astronaut::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,112,83"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ab0a29bd092bb8ae89c230b68c054e042" title=" " alt="" coords="188,5,296,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,53,175,34,177,39,110,58"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#a59373b8f9fec8deff4b72b7826ce4c7d" title=" " alt="" coords="160,56,324,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,67,144,67,144,72,112,72"/>
+<area shape="rect" id="Node000004" href="$class_entity.html#a256687f4f254346912cb1db44db88c7d" title=" " alt="" coords="200,107,284,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="110,81,185,102,184,107,109,86"/>
+<area shape="rect" id="Node000005" href="$class_entity.html#ae9efdf42ee83bc273361db1b710e30ca" title=" " alt="" coords="372,107,463,133"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="285,117,356,117,356,123,285,123"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="EntityManager::tick" name="EntityManager::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,64,140,91"/>
+<area shape="rect" id="Node000002" href="$class_entity_manager.html#aab5bbf7926d67adc69614f1e9a4e9ff6" title=" " alt="" coords="189,5,370,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,61,187,41,213,34,214,39,188,47,122,66"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#ae8a955ab45560663552c14ad6ec6d230" title=" " alt="" coords="188,56,371,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="140,75,172,75,172,80,140,80"/>
+<area shape="rect" id="Node000004" href="$class_user_interface.html#afb7884d20857e235bb63884dbe17ce5b" title=" " alt="" coords="195,123,364,165"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="117,89,197,115,195,120,116,94"/>
+</map>

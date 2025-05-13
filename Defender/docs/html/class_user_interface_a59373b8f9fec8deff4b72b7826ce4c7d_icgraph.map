@@ -1,0 +1,7 @@
+<map id="UserInterface::getHeight" name="UserInterface::getHeight">
+<area shape="rect" id="Node000001" title=" " alt="" coords="160,31,324,57"/>
+<area shape="rect" id="Node000002" href="$class_astronaut.html#a8974378e1f3862d8148f42d2dc408d8c" title=" " alt="" coords="5,5,112,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,33,112,29,113,23,145,28"/>
+<area shape="rect" id="Node000003" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="14,56,103,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,60,104,66,103,61,144,55"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="HighscoreState::initialize" name="HighscoreState::initialize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,172,57"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#af0ebc87599d2d5f052bece3374f788d6" title=" " alt="" coords="229,5,381,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,32,213,27,213,32,172,37"/>
+<area shape="rect" id="Node000003" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="220,56,390,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,51,204,55,204,60,172,56"/>
+</map>

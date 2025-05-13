@@ -1,0 +1,11 @@
+<map id="Swarmer::Swarmer" name="Swarmer::Swarmer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,139,57"/>
+<area shape="rect" id="Node000002" href="$class_enemy.html#a8ad38d4b03e3acd2c681b084ebcbdb6e" title=" " alt="" coords="187,5,298,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,31,171,27,172,32,140,37"/>
+<area shape="rect" id="Node000005" href="$class_entity.html#ab0a29bd092bb8ae89c230b68c054e042" title=" " alt="" coords="188,56,296,83"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="140,51,173,56,173,62,139,57"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="346,5,443,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="299,16,330,16,330,21,299,21"/>
+<area shape="rect" id="Node000004" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="491,5,676,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="444,16,476,16,476,21,444,21"/>
+</map>

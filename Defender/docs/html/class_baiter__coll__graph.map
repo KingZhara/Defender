@@ -1,0 +1,24 @@
+<map id="Baiter" name="Baiter">
+<area shape="rect" id="Node000001" title=" " alt="" coords="520,385,576,412"/>
+<area shape="rect" id="Node000002" href="$class_enemy.html" title=" " alt="" coords="576,271,638,297"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="603,313,595,338,584,363,564,386,560,383,579,360,590,336,598,312"/>
+<area shape="rect" id="Node000003" href="$class_entity.html" title=" " alt="" coords="151,172,206,199"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="222,189,375,213,470,234,565,260,584,268,582,273,563,265,469,239,374,218,221,194"/>
+<area shape="rect" id="Node000007" href="$struct_entity_1_1_entity_data_1_1_player_ref.html" title=" " alt="" coords="5,263,131,305"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="146,210,126,225,87,264,83,260,122,221,143,205"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="47,5,142,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="96,48,98,77,106,107,118,126,133,143,163,170,159,174,129,147,114,129,102,109,93,78,90,48"/>
+<area shape="rect" id="Node000009" href="$class_visual_component.html" title=" " alt="" coords="116,81,241,108"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="122,40,166,79,163,83,118,44"/>
+<area shape="rect" id="Node000005" href="$struct_entity_1_1_entity_data.html" title=" " alt="" coords="116,385,241,412"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="176,370,176,199,181,199,181,370"/>
+<area shape="rect" id="Node000006" href="$struct_vec2.html" title=" " alt="" coords="289,271,402,297"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="316,308,199,387,196,383,313,304"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="63,320,64,341,72,360,92,377,116,388,114,392,89,381,68,363,59,342,58,321"/>
+<area shape="rect" id="Node000008" href="$struct_entity_script.html" title=" " alt="" coords="265,81,354,108"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="280,119,199,174,196,169,277,115"/>
+<area shape="poly" id="edge9_Node000008_Node000008" title=" " alt="" coords="371,87,381,95,372,102,355,104,354,99,370,97,375,95,368,91"/>
+<area shape="poly" id="edge10_Node000003_Node000009" title=" " alt="" coords="181,124,181,171,176,171,176,124"/>
+<area shape="rect" id="Node000010" href="$class_timer.html" title=" " alt="" coords="435,271,552,297"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="497,312,501,336,511,360,532,383,528,387,506,363,496,338,492,313"/>
+</map>

@@ -1,0 +1,29 @@
+<map id="Entity::getEVel" name="Entity::getEVel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="623,208,732,235"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#adadb4909963feeefa776b90cf813afa6" title=" " alt="" coords="423,56,560,83"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="659,196,624,145,601,119,574,97,552,86,555,81,577,92,604,115,629,142,664,193"/>
+<area shape="rect" id="Node000005" href="$class_entity.html#ad6c5fbd07c6cc55d0c3e0bedcf3902b9" title=" " alt="" coords="408,107,575,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="646,201,574,154,533,136,536,132,577,150,648,196"/>
+<area shape="rect" id="Node000009" href="$class_swarmer.html#ae2101b985a6d4f598b341cbef3431786" title=" " alt="" coords="5,195,108,221"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="608,223,108,212,108,206,608,217"/>
+<area shape="rect" id="Node000010" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="213,157,302,184"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="607,211,575,205,425,188,303,177,303,171,426,182,576,200,608,205"/>
+<area shape="rect" id="Node000011" href="$class_particle.html#aa32a43192bc50cdd0b6ba409bf0c5093" title=" " alt="" coords="433,259,550,285"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="612,242,544,261,543,255,611,237"/>
+<area shape="rect" id="Node000012" href="$class_swarmer.html#a354e0a6471c3c03fc71a3cd745a0d2b0" title=" " alt="" coords="425,309,558,336"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="652,247,617,274,577,300,549,311,547,306,574,295,614,270,648,243"/>
+<area shape="rect" id="Node000013" href="$class_astronaut.html#a8974378e1f3862d8148f42d2dc408d8c" title=" " alt="" coords="438,360,545,387"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="664,250,629,301,604,327,577,350,546,365,544,360,574,346,601,323,624,297,659,246"/>
+<area shape="rect" id="Node000003" href="$class_bomb.html#af185de1502b1ddc25b5e277eb6da7f27" title=" " alt="" coords="216,5,300,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="411,55,300,30,301,25,413,50"/>
+<area shape="rect" id="Node000004" href="$class_player.html#af5fe052281d231613b40436579e7b298" title=" " alt="" coords="214,56,302,83"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="408,72,302,72,302,67,408,67"/>
+<area shape="rect" id="Node000006" href="$class_entity.html#a7ef27df2acea1e533126d7254a38cabe" title=" " alt="" coords="156,107,360,133"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="392,123,360,123,360,117,392,117"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="412,140,304,164,302,158,411,135"/>
+<area shape="rect" id="Node000007" href="$class_baiter.html#a9fff376f43c46f35617365539a7c055a" title=" " alt="" coords="14,81,99,108"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="140,108,99,103,99,97,141,103"/>
+<area shape="rect" id="Node000008" href="$class_mutant.html#aff6510cdd666834b1e7e089a58eca77e" title=" " alt="" coords="11,132,102,159"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="141,137,102,142,102,137,140,132"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="175,141,157,148,113,172,77,196,74,192,110,167,155,143,173,136"/>
+</map>

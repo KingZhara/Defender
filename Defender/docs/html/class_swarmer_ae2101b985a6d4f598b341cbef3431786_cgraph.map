@@ -1,0 +1,35 @@
+<map id="Swarmer::tick" name="Swarmer::tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,107,108,133"/>
+<area shape="rect" id="Node000002" href="$class_entity.html#ab0a29bd092bb8ae89c230b68c054e042" title=" " alt="" coords="654,5,762,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,104,112,83,155,64,220,47,287,34,420,19,542,13,638,13,638,18,542,18,421,24,288,40,221,52,157,69,114,87,79,108"/>
+<area shape="rect" id="Node000003" href="$class_entity.html#a8e4673c40f35b4de1ea79db9ac9d6989" title=" " alt="" coords="192,157,324,184"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="109,131,156,143,186,150,185,156,155,148,107,136"/>
+<area shape="rect" id="Node000005" href="$class_entity.html#a537265b90dd95d33712c957199b9ffbd" title=" " alt="" coords="626,56,790,83"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,103,155,92,278,78,401,69,611,65,611,70,401,75,278,83,156,97,104,109"/>
+<area shape="rect" id="Node000007" href="$class_entity.html#a7ef27df2acea1e533126d7254a38cabe" title=" " alt="" coords="156,107,360,133"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="108,117,140,117,140,123,108,123"/>
+<area shape="rect" id="Node000014" href="$class_enemy.html#af856732a8967324a69deeb80d8e3fcbe" title=" " alt="" coords="212,233,304,260"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="75,132,112,162,157,194,213,224,210,229,154,198,109,166,72,136"/>
+<area shape="rect" id="Node000004" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="408,157,578,184"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="324,168,392,168,392,173,324,173"/>
+<area shape="rect" id="Node000006" href="$class_visual_component.html#aa3147589104625d2956622fd7e8b0fa2" title=" " alt="" coords="838,56,1032,83"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="790,67,822,67,822,72,790,72"/>
+<area shape="rect" id="Node000008" href="$class_entity.html#ad6c5fbd07c6cc55d0c3e0bedcf3902b9" title=" " alt="" coords="410,107,577,133"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="361,117,394,117,394,123,361,123"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="514,104,564,73,625,42,641,35,643,40,627,46,566,78,517,108"/>
+<area shape="poly" id="edge14_Node000008_Node000005" title=" " alt="" coords="552,103,633,84,634,89,554,109"/>
+<area shape="rect" id="Node000009" href="$class_entity.html#ab300d0a57dd81d5d8222699a49c06fdc" title=" " alt="" coords="659,157,757,184"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="554,131,645,153,644,158,552,137"/>
+<area shape="rect" id="Node000011" href="$class_entity.html#a02bff2bed5ed35d38b9d7ebb07334674" title=" " alt="" coords="660,208,756,235"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="555,131,580,143,595,156,605,169,613,182,628,194,647,203,645,208,625,198,609,185,600,172,591,160,577,148,553,136"/>
+<area shape="rect" id="Node000012" href="$class_entity.html#accc9c0c4d3d0083c08fcd866bd1d26e6" title=" " alt="" coords="656,259,760,285"/>
+<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="562,132,580,143,592,156,599,169,605,195,611,221,617,233,628,245,643,255,640,259,625,249,613,236,606,223,600,197,594,171,588,159,577,147,559,136"/>
+<area shape="rect" id="Node000013" href="$class_entity.html#aab279b360915b41b817783810098dee0" title=" " alt="" coords="658,107,758,133"/>
+<area shape="poly" id="edge13_Node000008_Node000013" title=" " alt="" coords="577,117,643,117,643,123,577,123"/>
+<area shape="rect" id="Node000010" href="$class_display_manager.html#aae005fd1c91397dc4428fbdd5e3c57e6" title=" " alt="" coords="843,157,1027,184"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="757,168,827,168,827,173,757,173"/>
+<area shape="rect" id="Node000015" href="$class_entity.html#a256687f4f254346912cb1db44db88c7d" title=" " alt="" coords="451,284,535,311"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="305,254,436,283,435,288,303,259"/>
+<area shape="rect" id="Node000016" href="$class_entity.html#ae9efdf42ee83bc273361db1b710e30ca" title=" " alt="" coords="662,309,754,336"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="536,300,647,313,646,318,536,305"/>
+</map>

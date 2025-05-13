@@ -1,0 +1,7 @@
+<map id="Entity::getBounds" name="Entity::getBounds">
+<area shape="rect" id="Node000001" title=" " alt="" coords="143,31,268,57"/>
+<area shape="rect" id="Node000002" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="5,5,95,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,34,94,29,95,23,128,29"/>
+<area shape="rect" id="Node000003" href="$class_player.html#af5fe052281d231613b40436579e7b298" title=" " alt="" coords="6,56,94,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,59,94,65,94,60,127,54"/>
+</map>

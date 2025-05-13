@@ -1,0 +1,19 @@
+<map id="UserInterface::getShader" name="UserInterface::getShader">
+<area shape="rect" id="Node000001" title=" " alt="" coords="482,157,649,184"/>
+<area shape="rect" id="Node000002" href="$class_animation.html#a527de1494b1781e5f99f8702cd84481b" title=" " alt="" coords="265,5,380,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="543,146,496,95,466,68,433,46,407,35,380,28,381,23,409,30,435,42,469,64,500,91,547,143"/>
+<area shape="rect" id="Node000003" href="$class_attract_state.html#aa9cb99a72581d970d293b331fedb5d31" title=" " alt="" coords="259,56,386,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="531,151,486,123,433,97,386,83,387,78,435,92,488,118,534,146"/>
+<area shape="rect" id="Node000004" href="$class_death_animation.html#acbb1fe0c735da0a4601cbe2cf6527a6b" title=" " alt="" coords="247,107,398,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="482,156,389,137,390,131,483,151"/>
+<area shape="rect" id="Node000005" href="$class_highscore_state.html#ad3c98a72d2a60d208f2bbba74cf0f126" title=" " alt="" coords="249,157,396,184"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="466,173,397,173,397,168,466,168"/>
+<area shape="rect" id="Node000006" href="$class_laser.html#aa455651f363a5e585e85cdfa30a8a721" title=" " alt="" coords="278,208,367,235"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="484,190,368,215,367,210,483,185"/>
+<area shape="rect" id="Node000007" href="$class_visual_component.html#a333734ce46373b34107b7202ccd4d4ff" title=" " alt="" coords="242,259,402,285"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="534,195,488,223,435,249,399,261,397,256,433,244,486,219,531,191"/>
+<area shape="rect" id="Node000008" href="$class_visual_component.html#afcd52d62e6ec39e21d0286b291f6540a" title=" " alt="" coords="211,309,434,336"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="547,198,500,250,469,277,435,300,408,311,406,306,433,295,466,273,496,247,543,195"/>
+<area shape="rect" id="Node000009" href="$class_piece_visual_component.html#a5c13743b1b6570d9b46f723a7239c96d" title=" " alt="" coords="5,301,163,344"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="195,325,163,325,163,320,195,320"/>
+</map>

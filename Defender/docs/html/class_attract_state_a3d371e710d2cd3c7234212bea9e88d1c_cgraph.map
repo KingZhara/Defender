@@ -1,0 +1,9 @@
+<map id="AttractState::initialize" name="AttractState::initialize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,152,83"/>
+<area shape="rect" id="Node000002" href="$class_user_interface.html#af0ebc87599d2d5f052bece3374f788d6" title=" " alt="" coords="216,5,368,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,53,217,34,219,39,139,58"/>
+<area shape="rect" id="Node000003" href="$class_user_interface.html#a293bca12173f0f975faff222b92d63fa" title=" " alt="" coords="200,56,384,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,67,184,67,184,72,152,72"/>
+<area shape="rect" id="Node000004" href="$class_display_manager.html#ac7bb5a29ff2e5693e20d3a53a3340fb3" title=" " alt="" coords="207,107,377,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="139,81,219,100,217,105,137,86"/>
+</map>

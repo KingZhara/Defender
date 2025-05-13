@@ -1,0 +1,9 @@
+<map id="Entity::collide" name="Entity::collide">
+<area shape="rect" id="Node000001" title=" " alt="" coords="174,56,274,83"/>
+<area shape="rect" id="Node000002" href="$class_player.html#aa41d65970a071e8bd937ec25100d5163" title=" " alt="" coords="14,5,117,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,53,109,35,110,30,166,48"/>
+<area shape="rect" id="Node000003" href="$class_projectile.html#a0ffe06f13bbd86fe645c662a22c7f2ce" title=" " alt="" coords="5,56,126,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,72,126,72,126,67,158,67"/>
+<area shape="rect" id="Node000004" href="$class_lander.html#a25ef8041cf9c3d5b10efdfdc942b85dc" title=" " alt="" coords="21,107,110,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="166,91,110,109,109,104,164,85"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Entity::applyFriction" name="Entity::applyFriction">
+<area shape="rect" id="Node000001" title=" " alt="" coords="141,31,278,57"/>
+<area shape="rect" id="Node000002" href="$class_bomb.html#af185de1502b1ddc25b5e277eb6da7f27" title=" " alt="" coords="7,5,91,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,33,91,28,92,23,126,28"/>
+<area shape="rect" id="Node000003" href="$class_player.html#af5fe052281d231613b40436579e7b298" title=" " alt="" coords="5,56,93,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,60,93,65,93,60,125,55"/>
+</map>
