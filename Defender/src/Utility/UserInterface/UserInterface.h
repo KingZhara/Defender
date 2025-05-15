@@ -93,13 +93,8 @@ public:
 		delete otherFont;
 	}
 
-	// @todo complete shader conversion...
 	static const sf::Font& getFont();
 	static const sf::Font& getOtherFont();
-	//static       sf::Shader* getShiftingShader();
-	//static       sf::Shader* getFlashingShader();
-	//static       sf::Shader* getWilliamsShader();
-	//static sf::Shader* getDeathShader();
 	static sf::Shader* getShader(ShaderID::ID ID);
 	static const void shaderTick(double deltatime);
 	static sf::Color getColor()

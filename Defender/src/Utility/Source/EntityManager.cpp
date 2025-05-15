@@ -503,8 +503,7 @@ void EntityManager::enemyCollisionBranch(Enemy *enemy,
 
 void EntityManager::astroCollisionBranch(Astronaut *astro, uint16_t astroIndex)
 {
-    if (astro->targeted())
-        landerTargetTable.unlinkAstro(astroIndex);
+    landerTargetTable.unlinkAstro(astroIndex);
 }
 
 void EntityManager::clearQueue()
