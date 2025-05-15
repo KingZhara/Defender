@@ -108,13 +108,8 @@ bool EntityManager::collisionWrapper(uint16_t         projectile,
                     other->getPos(),
                     other->getID(),
                     {
-                        static_cast<int8_t>(projectiles.entities.at(projectile)
-                                                      ->getPos().x - other->
-                                                                     getPos().
-                                                                     x),
-                        static_cast<int8_t>(projectiles.entities.at(projectile)
-                                                      ->getPos().y - other->
-                                                                     getPos().y)
+                        static_cast<int8_t>(projectiles.entities.at(projectile)->getPos().x - other->getPos().x),
+                        static_cast<int8_t>(projectiles.entities.at(projectile)->getPos().y - other->getPos().y)
                     },
                     nullptr);
 

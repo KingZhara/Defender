@@ -12,7 +12,7 @@
 
 class StageState : public sf::Drawable
 {
-	// For shared variable
+	// For shared variables
 	friend class EntityManager;
 
 public:
@@ -26,22 +26,18 @@ public:
 
 private:
 	class SpawnManager;
-	// AAccess to wave as a reference
 	friend class UserInterface;
 
 	static bool SaveHighscore(Action& actions);
 
-	static EntityManager entityManager;
-	static char name[4];
-	static uint8_t namePos;
-
-	static bool playerDead;
-	static uint32_t wave;
-	static bool waveComplete;
-
+	static EntityManager         entityManager;
+	static char                  name[4];
+	static uint8_t               namePos;
+	static bool                  playerDead;
+	static uint32_t              wave;
+	static bool                  waveComplete;
 	static WaveCompletionScreen* waveScreen;
-
-	static const char validChars[];
+	static const char            validChars[];
 };
 
 // ################# STAGE STATE END #####################

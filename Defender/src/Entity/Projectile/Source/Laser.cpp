@@ -1,6 +1,7 @@
 #include "../Laser.h"
 
-Laser::Laser(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Projectile(pos_, EntityID::LASER, isScripted_, script_)
+Laser::
+Laser(sf::Vector2f pos_, bool isScripted_, EntityScript *script_): Projectile(pos_, EntityID::LASER, isScripted_, script_)
 {
     laserTex.create(COMN::resolution.x, 1);
     laserTrail.create(COMN::resolution.x, 1, sf::Color::Transparent);
